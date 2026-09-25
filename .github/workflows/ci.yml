@@ -25,6 +25,8 @@ jobs:
         with:
           version: "6.11.2"
           modules: qtshadertools qtmultimedia
+          aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
+
 
       - name: Setup build tools (Linux)
         if: runner.os == 'Linux'
