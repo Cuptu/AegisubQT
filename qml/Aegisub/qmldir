@@ -1,0 +1,3 @@
+module Aegisub
+ToolTip 6.0 ToolTip.qml
+ToolTip ToolTip.qml

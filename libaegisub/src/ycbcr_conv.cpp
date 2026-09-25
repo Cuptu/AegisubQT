@@ -1,0 +1,95 @@
+// Copyright (c) 2014, Thomas Goyne <plorkyeran@aegisub.org>
+// Modernized C++20 implementation for AegisubQtQuick
+#include <libaegisub/ycbcr_conv.h>
+
+#include <libaegisub/exception.h>
+
+namespace {
+const std::array<double, 3> matrix_coefficients_bt601 = {.299, .587, .114};
+const std::array<double, 3> matrix_coefficients_bt709 = {.2126, .7152, .0722};
+const std::array<double, 3> matrix_coefficients_fcc = {.3, .59, .11};
+const std::array<double, 3> matrix_coefficients_smpte240m = {.212, .701, .087};
+
+const std::array<double, 3> &get_coefficients(agi::ycbcr_matrix mat) {
+    using enum agi::ycbcr_matrix;
+    switch (mat) {
+        case BT709: return matrix_coefficients_bt709;
+        case FCC: return matrix_coefficients_fcc;
+        case BT470BG:
+        case SMPTE170M: return matrix_coefficients_bt601;
+        case SMPTE240M: return matrix_coefficients_smpte240m;
+        default: throw agi::InternalError("Unsupported colorspace conversion");
+    }
+}
+
+void row_mult(std::array<double, 9>& arr, std::array<double, 3> values) {
+    size_t i = 0;
+    for (auto v : values) {
+        arr[i++] *= v;
+        arr[i++] *= v;
+        arr[i++] *= v;
+    }
+}
+
+void col_mult(std::array<double, 9>& m, std::array<double, 3> v) {
+    m = {{
+        m[0] * v[0], m[1] * v[1], m[2] * v[2],
+        m[3] * v[0], m[4] * v[1], m[5] * v[2],
+        m[6] * v[0], m[7] * v[1], m[8] * v[2],
+    }};
+}
+} // anonymous namespace
+
+namespace agi {
+
+void ycbcr_converter::init_src(ycbcr::header_colorspace src) {
+    auto const& coeff = get_coefficients(src.matrix);
+    double Kr = coeff[0];
+    double Kg = coeff[1];
+    double Kb = coeff[2];
+    to_ycbcr = {{
+        Kr,         Kg,         Kb,
+        -Kr/(1-Kb), -Kg/(1-Kb), 1,
+        1,          -Kg/(1-Kr), -Kb/(1-Kr),
+    }};
+
+    if (src.range == ycbcr_range::JPEG) {
+        row_mult(to_ycbcr, {{1., .5, .5}});
+        shift_to = {{0, 128., 128.}};
+    } else {
+        row_mult(to_ycbcr, {{219./255., 112./255., 112./255.}});
+        shift_to = {{16., 128., 128.}};
+    }
+}
+
+void ycbcr_converter::init_dst(ycbcr::header_colorspace dst) {
+    auto const& coeff = get_coefficients(dst.matrix);
+    double Kr = coeff[0];
+    double Kg = coeff[1];
+    double Kb = coeff[2];
+    from_ycbcr = {{
+        1,  0,             (1-Kr),
+        1, -(1-Kb)*Kb/Kg, -(1-Kr)*Kr/Kg,
+        1,  (1-Kb),        0,
+    }};
+
+    if (dst.range == ycbcr_range::JPEG) {
+        col_mult(from_ycbcr, {{1., 2., 2.}});
+        shift_from = {{0, -128., -128.}};
+    } else {
+        col_mult(from_ycbcr, {{255./219., 255./112., 255./112.}});
+        shift_from = {{-16., -128., -128.}};
+    }
+}
+
+ycbcr_converter::ycbcr_converter(ycbcr::header_colorspace srcdst) {
+    init_src(srcdst);
+    init_dst(srcdst);
+}
+
+ycbcr_converter::ycbcr_converter(ycbcr::header_colorspace src, ycbcr::header_colorspace dst) {
+    init_src(src);
+    init_dst(dst);
+}
+
+} // namespace agi

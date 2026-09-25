@@ -1,0 +1,197 @@
+cmake_minimum_required(VERSION 3.20)
+project(AegisubQT VERSION 4.0.0 LANGUAGES C CXX)
+
+# Enable Windows Resource Compiler only on Windows (.rc files are platform-specific).
+if(WIN32)
+    enable_language(RC)
+endif()
+
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
+
+# Qt6 installation prefix passed via -DCMAKE_PREFIX_PATH=<path>, e.g.:
+#   Windows: cmake -B build -DCMAKE_PREFIX_PATH=C:/Qt
+#   macOS:   cmake -B build -DCMAKE_PREFIX_PATH=~/Qt/6.x.x/macos
+#   Linux:   system packages or -DCMAKE_PREFIX_PATH=/opt/Qt/6.x.x/gcc_64
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml QuickControls2 ShaderTools Multimedia)
+
+# Query Qt QML imports directory at configure time as a fallback import path.
+get_target_property(_qt_qmake_executable Qt6::qmake IMPORTED_LOCATION)
+if(_qt_qmake_executable)
+    execute_process(
+        COMMAND "${_qt_qmake_executable}" -query QT_INSTALL_QML
+        OUTPUT_VARIABLE QT_INSTALL_QML_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+endif()
+
+add_subdirectory(libaegisub)
+
+set(SOURCES
+    src/main.cpp
+    src/bridge/AstraCoreBridge.h
+    src/bridge/AstraCoreBridge.cpp
+    src/bridge/AegisubCoreBridge.h
+    src/bridge/AegisubCoreBridge.cpp
+    src/model/SubtitleModel.h
+    src/model/SubtitleModel.cpp
+    src/model/StyleStorageManager.h
+    src/model/StyleStorageManager.cpp
+    src/bridge/LanguageManager.h
+    src/bridge/LanguageManager.cpp
+    src/video/VideoProvider.h
+    src/video/VideoProvider.cpp
+    src/video/AstraVideoProvider.h
+    src/video/AstraVideoProvider.cpp
+    src/video/DummyVideoProvider.h
+    src/video/DummyVideoProvider.cpp
+    src/video/VideoFrameImageProvider.h
+    src/video/VideoSurfaceItem.h
+    src/video/VideoSurfaceItem.cpp
+    src/video/VideoController.h
+    src/video/VideoController.cpp
+    src/video/VideoDisplayController.h
+    src/video/VideoDisplayController.cpp
+    src/video/VisualToolBase.h
+    src/video/VisualToolBase.cpp
+    src/video/VisualTools.h
+    src/video/VisualTools.cpp
+    src/audio/AudioController.h
+    src/audio/AudioController.cpp
+    src/audio/AudioDisplayController.h
+    src/audio/AudioDisplayController.cpp
+    src/audio/AudioPcmProvider.h
+    src/audio/AudioPcmProvider.cpp
+    src/audio/AudioSliceDevice.h
+    src/audio/AegisubStftCore.h
+    src/audio/AegisubStftCore.cpp
+    src/audio/SpectrogramShaderMaterial.h
+    src/audio/SpectrogramShaderMaterial.cpp
+    src/audio/SpectrogramItem.h
+    src/audio/SpectrogramItem.cpp
+    src/automation/lpeg/lpeg.c
+    src/automation/LuaTextExtents.h
+    src/automation/LuaTextExtents.cpp
+    src/automation/LuaModules.h
+    src/automation/LuaModules.cpp
+    src/automation/LuaAssFileBridge.h
+    src/automation/LuaAssFileBridge.cpp
+    src/automation/LuaScript.h
+    src/automation/LuaScript.cpp
+    src/automation/AutomationManager.h
+    src/automation/AutomationManager.cpp
+)
+
+if(WIN32)
+    list(APPEND SOURCES src/aegisub.rc)
+endif()
+
+add_executable(AegisubQT ${SOURCES})
+
+# Compile QRHI shaders at build time.
+qt6_add_shaders(AegisubQT "aegisub_shaders"
+    PREFIX "/"
+    BATCHABLE
+    FILES
+        shaders/spectrogram.vert
+)
+
+qt6_add_shaders(AegisubQT "aegisub_shaders_frag"
+    PREFIX "/"
+    FILES
+        shaders/spectrogram.frag
+)
+
+target_include_directories(AegisubQT PRIVATE
+    ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/audio
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/video
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/model
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/automation
+    ${CMAKE_CURRENT_SOURCE_DIR}/luajit/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/libaegisub/include
+)
+
+if(QT_INSTALL_QML_PATH)
+    target_compile_definitions(AegisubQT PRIVATE QT_INSTALL_QML_PATH="${QT_INSTALL_QML_PATH}")
+endif()
+
+# LuaJIT: Windows uses in-tree prebuilt lua51.lib;
+# POSIX platforms build static library from source via LuaJIT makefile.
+if(WIN32)
+    add_library(luajit STATIC IMPORTED GLOBAL)
+    set_target_properties(luajit PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/lua51.lib"
+    )
+else()
+    include(ExternalProject)
+    ExternalProject_Add(luajit_build
+        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luajit"
+        CONFIGURE_COMMAND ""
+        BUILD_COMMAND ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>
+        BUILD_IN_SOURCE 1
+        INSTALL_COMMAND ""
+        BUILD_BYPRODUCTS "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/libluajit.a"
+    )
+    add_library(luajit STATIC IMPORTED GLOBAL)
+    set_target_properties(luajit PROPERTIES
+        IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/libluajit.a"
+    )
+    add_dependencies(luajit luajit_build)
+endif()
+
+target_link_libraries(AegisubQT PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Quick
+    Qt6::Qml
+    Qt6::QuickControls2
+    Qt6::Multimedia
+    luajit
+    libaegisub
+)
+
+# Copy runtime assets, QML, automation scripts, and locale data next to the binary.
+# Native DLLs are copied if present (AstraCore.Native is an optional runtime component).
+set(AEGISUB_POST_BUILD_COMMANDS
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets"
+        $<TARGET_FILE_DIR:AegisubQT>/assets
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/automation"
+        $<TARGET_FILE_DIR:AegisubQT>/automation
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/qml"
+        $<TARGET_FILE_DIR:AegisubQT>/qml
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+        "${CMAKE_CURRENT_SOURCE_DIR}/locale"
+        $<TARGET_FILE_DIR:AegisubQT>/locale
+)
+
+if(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
+    list(APPEND AEGISUB_POST_BUILD_COMMANDS
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll"
+            $<TARGET_FILE_DIR:AegisubQT>
+    )
+endif()
+
+add_custom_command(TARGET AegisubQT POST_BUILD ${AEGISUB_POST_BUILD_COMMANDS})
+
+# Installation rules (default prefix: /usr/local or C:/Program Files/AegisubQT, overridable via CMAKE_INSTALL_PREFIX).
+install(TARGETS AegisubQT
+    RUNTIME DESTINATION bin
+    BUNDLE DESTINATION .
+)
+install(DIRECTORY qml assets automation locale
+    DESTINATION share/AegisubQT
+    PATTERN "*.ts" EXCLUDE
+)
+if(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
+    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll" DESTINATION bin)
+endif()

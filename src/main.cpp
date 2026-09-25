@@ -1,0 +1,356 @@
+// Copyright (c) 2005 - 2026, Aegisub Project & Contributors
+// All rights reserved.
+//
+// Redistribution and use in source and binary forms, with or without
+// modification, are permitted provided that the following conditions are met:
+//
+//   * Redistributions of source code must retain the above copyright notice,
+//     this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright notice,
+//     this list of conditions and the following disclaimer in the documentation
+//     and/or other materials provided with the distribution.
+//   * Neither the name of the Aegisub Group nor the names of its contributors
+//     may be used to endorse or promote products derived from this software
+//     without specific prior written permission.
+//
+// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+// AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+// IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+// ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+// LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+// CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+// SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+// INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+// CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+// ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+// POSSIBILITY OF SUCH DAMAGE.
+//
+// Aegisub Project http://www.aegisub.org/
+
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
+#include <QQmlContext>
+#include <QQuickStyle>
+#include <QFileInfo>
+#include <QDir>
+#include <QUrl>
+#include <QDebug>
+#include "VideoController.h"
+#include "VideoFrameImageProvider.h"
+#include "VideoSurfaceItem.h"
+#include "AudioController.h"
+#include "AudioDisplayController.h"
+#include "VideoDisplayController.h"
+#include "AstraCoreBridge.h"
+#include "SpectrogramItem.h"
+#include "AutomationManager.h"
+#include "AegisubCoreBridge.h"
+#include "LanguageManager.h"
+#include "model/SubtitleModel.h"
+#include "model/StyleStorageManager.h"
+
+#include <QWindow>
+#include <QFont>
+#include <QFontDatabase>
+#include <QIcon>
+#include <QPalette>
+#include <QKeyEvent>
+#include <QLibraryInfo>
+#include <climits>
+
+static void customLogHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+{
+    Q_UNUSED(type);
+    Q_UNUSED(context);
+    std::fprintf(stderr, "[QT_LOG] %s\n", msg.toLocal8Bit().constData());
+    std::fflush(stderr);
+    if (qEnvironmentVariableIsSet("AEGISUB_DEBUG_LOG")) {
+        QFile file("debug_log.txt");
+        if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
+            QTextStream out(&file);
+            out << "[QT_LOG] " << msg << "\n";
+            out.flush();
+            file.flush();
+        }
+    }
+}
+
+// Cross-platform UI typography theme exposed to QML via context property 'uiTheme'.
+// Replaces hardcoded font families that cause inconsistent fallback across desktop OSs.
+// Defaults are aligned with platform UI metrics in main().
+class UiTheme : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QString uiFont READ uiFont CONSTANT)
+    Q_PROPERTY(QString monoFont READ monoFont CONSTANT)
+public:
+    explicit UiTheme(QObject *parent = nullptr) : QObject(parent) {}
+    // Application default UI font family configured for Windows/macOS/Linux.
+    QString uiFont() const { return QGuiApplication::font().family(); }
+    // Platform-native monospace font family resolved via QFontDatabase.
+    QString monoFont() const { return QFontDatabase::systemFont(QFontDatabase::FixedFont).family(); }
+};
+
+// Medusa mode (upstream "Toggle global hotkey overrides (Medusa Mode)"):
+// Audio playback hotkeys take precedence application-wide. The filter intercepts
+// key presses before focused controls, consuming audio navigation shortcuts.
+class MedusaKeyFilter : public QObject {
+public:
+    MedusaKeyFilter(AudioController *audio, AudioDisplayController *display, QObject *parent = nullptr)
+        : QObject(parent), m_audio(audio), m_display(display) {}
+
+protected:
+    bool eventFilter(QObject *watched, QEvent *event) override {
+        if (event->type() == QEvent::KeyPress && m_audio && m_display && m_audio->medusaMode()) {
+            auto *keyEvent = static_cast<QKeyEvent *>(event);
+            if (m_display->keyPressed(keyEvent->key(), static_cast<int>(keyEvent->modifiers()))) {
+                return true; // Audio hotkey consumed with global priority
+            }
+        }
+        return QObject::eventFilter(watched, event);
+    }
+
+private:
+    AudioController *m_audio = nullptr;
+    AudioDisplayController *m_display = nullptr;
+};
+
+int main(int argc, char *argv[])
+{
+    if (qEnvironmentVariableIsSet("AEGISUB_DEBUG_LOG")) {
+        QFile file("debug_log.txt");
+        (void)file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
+    }
+    qInstallMessageHandler(customLogHandler);
+    QQuickStyle::setStyle("Aegisub");
+    QQuickStyle::setFallbackStyle("Fusion");
+    QGuiApplication app(argc, argv);
+    QCoreApplication::addLibraryPath(app.applicationDirPath() + "/plugins");
+    QCoreApplication::addLibraryPath(app.applicationDirPath());
+    app.setApplicationName("AegisubQT");
+    app.setApplicationVersion("4.0.0");
+    app.setOrganizationName("AegisubQT");
+
+    // Align default system font metrics with platform conventions.
+    QFont defaultFont;
+#if defined(Q_OS_WIN)
+    defaultFont.setFamilies({"Segoe UI", "Microsoft YaHei UI", "Yu Gothic UI", "Malgun Gothic", "Tahoma"});
+    defaultFont.setPointSize(9);
+#elif defined(Q_OS_MACOS)
+    defaultFont.setFamilies({".AppleSystemUIFont", "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", "Helvetica Neue"});
+    defaultFont.setPointSize(12);
+#else
+    defaultFont.setFamilies({"Cantarell", "Ubuntu", "Noto Sans", "sans-serif"});
+    defaultFont.setPointSize(10);
+#endif
+    QGuiApplication::setFont(defaultFont);
+
+    // Set Windows 10 tooltip palette defaults
+    QPalette appPal = app.palette();
+    appPal.setColor(QPalette::ToolTipBase, Qt::white);
+    appPal.setColor(QPalette::ToolTipText, QColor("#575757"));
+    app.setPalette(appPal);
+
+    // Set official application window and taskbar icon
+    QIcon appIcon;
+    const QStringList iconCandidates = {
+        app.applicationDirPath() + "/assets/icons_native/icon.ico",
+        app.applicationDirPath() + "/../assets/icons_native/icon.ico",
+        QDir::current().filePath("assets/icons_native/icon.ico")
+    };
+    for (const QString &p : iconCandidates) {
+        if (QFileInfo::exists(p)) {
+            appIcon.addFile(p);
+            break;
+        }
+    }
+    if (!appIcon.isNull()) {
+        QGuiApplication::setWindowIcon(appIcon);
+    }
+
+    qmlRegisterType<SpectrogramItem>("Aegisub", 1, 0, "SpectrogramView");
+    qmlRegisterType<VideoSurfaceItem>("Aegisub", 1, 0, "VideoSurface");
+    qmlRegisterType<AegisubCoreBridge>("Aegisub", 1, 0, "AegisubCoreBridge");
+
+    // Command-line options for media playback and rendering configuration.
+    QString assPath;
+    bool karaokeMode = false;
+    QString audioPath;
+    QString videoPath;
+    QString initialLang;
+    int zoomLevel = INT_MIN;
+    int scrollPx = -1;
+    int selStart = -1;
+    int selEnd = -1;
+    int freqCurve = -1;
+    int sampleRate = 0;
+    bool waveformMode = true;
+
+    const QStringList args = app.arguments();
+    for (int i = 1; i < args.size(); ++i) {
+        const QString &a = args[i];
+        auto value = [&args, &i](const char *opt) -> QString {
+            if (i + 1 < args.size()) return args[++i];
+            qWarning() << "Missing value for" << opt;
+            return QString();
+        };
+        if (a == "--waveform") {
+            waveformMode = false;
+        } else if (a == "--ass") {
+            assPath = value("--ass");
+        } else if (a == "--karaoke") {
+            karaokeMode = true;
+        } else if (a == "--audio") {
+            audioPath = value("--audio");
+        } else if (a == "--video") {
+            videoPath = value("--video");
+        } else if (a == "--zoom") {
+            zoomLevel = value("--zoom").toInt();
+        } else if (a == "--scroll") {
+            scrollPx = value("--scroll").toInt();
+        } else if (a == "--freq-curve") {
+            freqCurve = value("--freq-curve").toInt();
+        } else if (a == "--sample-rate") {
+            sampleRate = value("--sample-rate").toInt();
+        } else if (a == "--sel") {
+            const QStringList parts = value("--sel").split(',');
+            if (parts.size() == 2) {
+                selStart = parts[0].toInt();
+                selEnd = parts[1].toInt();
+            }
+        } else if (a == "--lang" || a == "--language") {
+            initialLang = value(a.toUtf8().constData());
+        }
+    }
+
+    VideoController videoController;
+    AudioController audioController(&videoController);
+    // AudioDisplayController manages hit testing and drag state transitions.
+    // Must outlive QQmlApplicationEngine to ensure teardown order safety.
+    AudioDisplayController displayController(&audioController);
+    VideoDisplayController videoDisplayController(&videoController);
+
+    if (!videoPath.isEmpty()) {
+        videoController.openVideoFile(videoPath);
+        if (audioPath.isEmpty()) {
+            audioPath = videoPath;
+        }
+    }
+
+    if (!audioPath.isEmpty()) {
+        audioController.loadAudio(audioPath, sampleRate);
+    }
+
+    // Default spectrum frequency curve mapping (Audio/Renderer/Spectrum/FreqCurve = 0).
+    audioController.applyFreqCurve(freqCurve >= 0 ? freqCurve : 0);
+    if (zoomLevel != INT_MIN) audioController.setZoomLevel(zoomLevel);
+    if (selStart >= 0 && selEnd > selStart) audioController.setSelection(selStart, selEnd);
+    if (scrollPx >= 0) audioController.scrollTo(scrollPx);
+
+    if (!waveformMode) {
+        audioController.setSpectrumMode(false);
+    }
+
+    QQmlApplicationEngine engine;
+    engine.addImageProvider(QStringLiteral("videoframe"), new VideoFrameImageProvider());
+    engine.rootContext()->setContextProperty("videoController", &videoController);
+    engine.rootContext()->setContextProperty("videoDisplayController", &videoDisplayController);
+    engine.rootContext()->setContextProperty("audioController", &audioController);
+    engine.rootContext()->setContextProperty("displayController", &displayController);
+    engine.rootContext()->setContextProperty("astracore", AstraCoreBridge::instance());
+    AegisubCoreBridge aegisubCoreBridge;
+    engine.rootContext()->setContextProperty("aegisubCore", &aegisubCoreBridge);
+    engine.rootContext()->setContextProperty("automationManager", Automation::AutomationManager::instance());
+    // Unified platform font theme for all QML views
+    UiTheme uiTheme;
+    engine.rootContext()->setContextProperty("uiTheme", &uiTheme);
+    LanguageManager languageManager(&engine);
+    if (!initialLang.isEmpty()) {
+        languageManager.setLanguage(initialLang);
+    }
+    engine.rootContext()->setContextProperty("languageManager", &languageManager);
+
+    SubtitleModel subtitleModel;
+    // newDocument() initializes default 0:00:00.00-0:00:05.00 dialogue line
+    // and resets modification tracking to pristine state.
+    subtitleModel.newDocument();
+    engine.rootContext()->setContextProperty("nativeSubtitleModel", &subtitleModel);
+    Automation::AutomationManager::instance()->setSubtitleModel(&subtitleModel);
+
+    StyleStorageManager styleStorageManager;
+    engine.rootContext()->setContextProperty("styleStorageManager", &styleStorageManager);
+    // Inactive line boundaries and karaoke syllable marks require subtitle line data
+    audioController.setSubtitleModel(&subtitleModel);
+
+    if (!assPath.isEmpty() && QFileInfo::exists(assPath)) {
+        subtitleModel.loadFromFile(assPath);
+    }
+    if (karaokeMode) {
+        audioController.setKaraokeMode(true);
+    }
+
+    QStringList candidates = {
+        app.applicationDirPath() + "/../qml/Main.qml",
+        QDir::current().filePath("qml/Main.qml"),
+        app.applicationDirPath() + "/qml/Main.qml",
+        QDir::current().filePath("Main.qml"),
+        app.applicationDirPath() + "/Main.qml",
+        app.applicationDirPath() + "/../Main.qml"
+    };
+
+    QString mainQml;
+    for (const QString &path : candidates) {
+        if (QFileInfo::exists(path)) {
+            mainQml = QDir::cleanPath(path);
+            break;
+        }
+    }
+
+    if (mainQml.isEmpty()) {
+        qCritical() << "Fatal: Main.qml not found!";
+        return -1;
+    }
+
+    QString qmlDir = QFileInfo(mainQml).dir().absolutePath();
+    QStringList paths = engine.importPathList();
+    paths.prepend(qmlDir);
+    engine.setImportPathList(paths);
+    engine.addImportPath(qmlDir + "/views");
+    engine.addImportPath(qmlDir + "/dialogs");
+    engine.addImportPath(qmlDir + "/project");
+    engine.addImportPath(qmlDir + "/controls");
+    // Qt built-in QML module path: prioritize QLibraryInfo (relocatable deployment),
+    // with build-time qmake query fallback for in-source developer trees.
+    engine.addImportPath(QLibraryInfo::path(QLibraryInfo::QmlImportsPath));
+#ifdef QT_INSTALL_QML_PATH
+    engine.addImportPath(QStringLiteral(QT_INSTALL_QML_PATH));
+#endif
+    qInfo() << "[Aegisub-QtQuick] Import paths:" << engine.importPathList();
+
+    QObject::connect(&engine, &QQmlApplicationEngine::objectCreationFailed, [](const QUrl &url) {
+        qCritical() << "[QML Error] Object creation failed for URL:" << url;
+    });
+    QObject::connect(&engine, &QQmlApplicationEngine::warnings, [](const QList<QQmlError> &warnings) {
+        for (const auto &w : warnings) {
+            qWarning() << "[QML Warning]" << w.toString();
+        }
+    });
+
+    qInfo() << "[Aegisub-QtQuick] Loading QML from:" << mainQml;
+    engine.load(QUrl::fromLocalFile(mainQml));
+
+    qInfo() << "[Aegisub-QtQuick] QML loaded. Root objects count:" << engine.rootObjects().size();
+    if (engine.rootObjects().isEmpty()) {
+        qCritical() << "Fatal: Failed to load QML root object!";
+        return -1;
+    }
+
+    // Medusa mode: promote audio hotkeys to window-level global overrides
+    MedusaKeyFilter medusaFilter(&audioController, &displayController);
+    if (auto *rootWindow = qobject_cast<QWindow *>(engine.rootObjects().first())) {
+        rootWindow->installEventFilter(&medusaFilter);
+    }
+
+    return app.exec();
+}
+
+#include "main.moc"

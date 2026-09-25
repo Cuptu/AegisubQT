@@ -1,0 +1,59 @@
+# Build artifacts
+build/
+build-*/
+cmake-build-*/
+out/
+bin/
+*.exe
+*.dll
+*.so
+*.dylib
+*.a
+*.lib
+*.obj
+*.o
+*.pdb
+*.ilk
+*.exp
+
+# CMake generated
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+*.ninja
+.ninja_*
+
+# Qt / QML generated
+*.moc
+moc_*.cpp
+qrc_*.cpp
+ui_*.h
+.rcc/
+.qt/
+.qmlc/
+.jsc/
+
+# Visual Studio & IDEs
+.vs/
+.vscode/
+.idea/
+*.user
+*.suo
+*.sln.docstates
+
+# Logs and temporary files
+*.log
+*.tmp
+debug_log.txt
+*.bak
+
+# OS generated
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# AI assistant workspaces
+.trae/
+.claude/
+
