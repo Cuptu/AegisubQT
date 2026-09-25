@@ -82,13 +82,25 @@ MenuBar {
         antialiasing: false
     }
 
+    // Explicit Row layout ensures the child MenuBarItem delegates are always instantiated
+    // regardless of whether the platform style inherits standard template fallbacks.
+    contentItem: Row {
+        spacing: menuBarRoot.spacing
+        Repeater {
+            model: menuBarRoot.contentModel
+        }
+    }
+
     delegate: MenuBarItem {
         id: mbItem
         implicitHeight: 21
+        leftPadding: 8
+        rightPadding: 8
+        implicitWidth: Math.max(20, contentItem.implicitWidth + leftPadding + rightPadding)
         contentItem: Text {
-            text: mbItem.text.replace(/&/g, "")
+            text: (mbItem.text || "").replace(/&/g, "")
             font.pixelSize: 12
-            font.family: uiTheme.uiFont
+            font.family: (typeof uiTheme !== "undefined" && uiTheme) ? uiTheme.uiFont : ""
             renderType: Text.NativeRendering
             color: "#000000"
             verticalAlignment: Text.AlignVCenter

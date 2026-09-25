@@ -224,6 +224,8 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(customLogHandler);
     QQuickStyle::setStyle("Aegisub");
     QQuickStyle::setFallbackStyle("Fusion");
+    // Prevent platforms from attempting to delegate in-scene QML MenuBar to native menu bars
+    QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
     QGuiApplication app(argc, argv);
     QCoreApplication::addLibraryPath(app.applicationDirPath() + "/plugins");
     QCoreApplication::addLibraryPath(app.applicationDirPath());
