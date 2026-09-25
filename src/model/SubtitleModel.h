@@ -156,6 +156,11 @@ public:
     Q_INVOKABLE bool saveToFile(const QString &filePath = QString());
     Q_INVOKABLE void newDocument();
 
+    /// Writes a timestamped snapshot copy to the configured autosave/backup directory
+    /// without touching current document state. autosaveKind selects .AUTOSAVE.ass vs
+    /// .BACKUP.ass naming (upstream "Automatic Save" / "Automatic Backup" semantics).
+    Q_INVOKABLE bool saveBackup(bool autosaveKind);
+
     // Direct C++ model buffer access for automation and native processing engines
     const std::vector<SubtitleLine>& rawLines() const { return m_lines; }
     void setRawLines(std::vector<SubtitleLine> lines);
@@ -192,6 +197,10 @@ public:
     Q_INVOKABLE void sortByColumn(int col, bool ascending);
     Q_INVOKABLE int applyKanjiCopy(const QString &srcStyle, const QString &dstStyle);
 
+    /// Upstream "Split by karaoke": replaces each selected line containing \k tags
+    /// with one line per karaoke syllable, inheriting style/actor/margins from the original.
+    Q_INVOKABLE void splitSelectedByKaraoke(const QVariantList &selectedIndices);
+
     // High-performance native search and filter operations
     Q_INVOKABLE QList<int> selectLines(int action, int fieldIdx, int mode, bool invert, bool matchCase, bool comments, bool dialogues, const QString &query, const QVariantList &currentSelectedIndices);
     Q_INVOKABLE int findAndReplace(const QString &query, const QString &replaceWith, const QVariantMap &options, bool replaceAll, int currentIndex);
@@ -212,6 +221,8 @@ signals:
 private:
     SubtitleLine parseDialogueLine(const QString &rawLine, bool isComment, int lineNumber) const;
     QString formatDialogueLine(const SubtitleLine &line) const;
+    /// Serializes the current document to an ASS file without touching document state.
+    bool serializeDocument(const QString &target) const;
     /// Synchronizes savedCommitId with current commitId upon successful file save.
     void markSaved();
     /// Resets modification tracking counters when creating a new document or loading from disk.

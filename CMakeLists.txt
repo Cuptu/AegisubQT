@@ -37,6 +37,8 @@ set(SOURCES
     src/bridge/AstraCoreBridge.cpp
     src/bridge/AegisubCoreBridge.h
     src/bridge/AegisubCoreBridge.cpp
+    src/bridge/RecentFilesManager.h
+    src/bridge/RecentFilesManager.cpp
     src/model/SubtitleModel.h
     src/model/SubtitleModel.cpp
     src/model/StyleStorageManager.h

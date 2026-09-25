@@ -26,7 +26,25 @@ Flickable {
     }
 
     function savePreferences() {
-        // Persist backup preferences
+        // Persist backup preferences via the core settings bridge (QSettings-backed).
+        if (typeof aegisubCore === "undefined" || !aegisubCore) return;
+        aegisubCore.setSetting("Autosave/Enabled", chkAutosaveEnable.checked);
+        aegisubCore.setSetting("Autosave/IntervalSecs", spinAutosaveInterval.value);
+        aegisubCore.setSetting("Autosave/Path", txtAutosavePath.text);
+        aegisubCore.setSetting("Autosave/AfterChange", chkAutosaveAfterChange.checked);
+        aegisubCore.setSetting("Backup/Enabled", chkBackupEnable.checked);
+        aegisubCore.setSetting("Backup/Path", txtAutobackupPath.text);
+    }
+
+    // Restore persisted settings when the page is instantiated.
+    Component.onCompleted: {
+        if (typeof aegisubCore === "undefined" || !aegisubCore) return;
+        chkAutosaveEnable.checked = aegisubCore.getSetting("Autosave/Enabled", true);
+        spinAutosaveInterval.value = aegisubCore.getSetting("Autosave/IntervalSecs", 60);
+        txtAutosavePath.text = aegisubCore.getSetting("Autosave/Path", "?user/autosave");
+        chkAutosaveAfterChange.checked = aegisubCore.getSetting("Autosave/AfterChange", false);
+        chkBackupEnable.checked = aegisubCore.getSetting("Backup/Enabled", true);
+        txtAutobackupPath.text = aegisubCore.getSetting("Backup/Path", "?user/autobackup");
     }
 
     property var activeFolderTarget: null

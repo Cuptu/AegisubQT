@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "SubtitleModel.h"
+#include "AegisubCoreBridge.h"
 #include <libaegisub/ass/time.h>
 #include <QRegularExpression>
 #include <QFile>
@@ -9,6 +10,11 @@
 #include <QStringConverter>
 #include <QUrl>
 #include <QSet>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QDateTime>
+#include <QDir>
+#include <QFileInfo>
 #include <cmath>
 #include <algorithm>
 #include <climits>
@@ -769,13 +775,7 @@ bool SubtitleModel::loadFromFile(const QString &filePath) {
     return true;
 }
 
-bool SubtitleModel::saveToFile(const QString &filePath) {
-    QString target = filePath.isEmpty() ? m_fileName : filePath;
-    if (target.isEmpty() || target == QStringLiteral("Untitled")) return false;
-    if (target.startsWith(QStringLiteral("file:///"))) {
-        target = QUrl(target).toLocalFile();
-    }
-
+bool SubtitleModel::serializeDocument(const QString &target) const {
     QFile file(target);
     if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
         return false;
@@ -851,11 +851,95 @@ bool SubtitleModel::saveToFile(const QString &filePath) {
     }
 
     file.close();
+    return true;
+}
+
+bool SubtitleModel::saveToFile(const QString &filePath) {
+    QString target = filePath.isEmpty() ? m_fileName : filePath;
+    if (target.isEmpty() || target == QStringLiteral("Untitled")) return false;
+    if (target.startsWith(QStringLiteral("file:///"))) {
+        target = QUrl(target).toLocalFile();
+    }
+    if (!serializeDocument(target)) return false;
+
     m_fileName = target;
     emit fileNameChanged();
     // File written to disk: align savedCommitId with commitId to clear modified state.
     markSaved();
     return true;
+}
+
+bool SubtitleModel::saveBackup(bool autosaveKind) {
+    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    const QString key = autosaveKind ? QStringLiteral("Autosave/Path") : QStringLiteral("Backup/Path");
+    const QString fallback = autosaveKind ? QStringLiteral("?user/autosave") : QStringLiteral("?user/autobackup");
+    QString dirPath = AegisubCoreBridge::resolveUserPath(settings.value(key, fallback).toString());
+    if (!QDir().mkpath(dirPath)) return false;
+
+    QString stem = QStringLiteral("Untitled");
+    if (!m_fileName.isEmpty() && m_fileName != QStringLiteral("Untitled")) {
+        stem = QFileInfo(m_fileName).completeBaseName();
+    }
+    const QString stamp = QDateTime::currentDateTime().toString(QStringLiteral("yyyyMMdd-hhmmss"));
+    const QString suffix = autosaveKind ? QStringLiteral("AUTOSAVE") : QStringLiteral("BACKUP");
+    const QString target = QDir(dirPath).filePath(QStringLiteral("%1.%2.%3.ass").arg(stem, stamp, suffix));
+    return serializeDocument(target);
+}
+
+void SubtitleModel::splitSelectedByKaraoke(const QVariantList &selectedIndices) {
+    if (m_lines.empty() || selectedIndices.isEmpty()) return;
+    QList<int> sorted;
+    for (const auto &v : selectedIndices) sorted.append(v.toInt());
+    std::sort(sorted.begin(), sorted.end());
+    sorted.erase(std::unique(sorted.begin(), sorted.end()), sorted.end());
+    if (sorted.isEmpty()) return;
+
+    int grown = 0;
+    // Process bottom-up so row insertions never shift pending higher indices.
+    for (int i = sorted.size() - 1; i >= 0; --i) {
+        const int idx = sorted[i];
+        if (idx < 0 || idx >= static_cast<int>(m_lines.size())) continue;
+        const SubtitleLine original = m_lines[idx];
+        const QList<QVariantMap> syls = AegisubCoreBridge::parseKaraokeLine(
+            original.text, original.startMs, original.endMs, false);
+        if (syls.size() <= 1) continue;
+
+        // Slice the original timing across syllables: each boundary is the next start,
+        // and the final syllable stretches to the original line end (upstream semantics).
+        QList<SubtitleLine> pieces;
+        pieces.reserve(syls.size());
+        int cursor = original.startMs;
+        for (int s = 0; s < syls.size(); ++s) {
+            SubtitleLine piece = original;
+            const int dur = syls[s].value(QStringLiteral("duration")).toInt();
+            const int sylStart = cursor;
+            const int sylEnd = (s + 1 < syls.size())
+                ? sylStart + dur
+                : std::max(sylStart, original.endMs);
+            piece.setStartMs(sylStart);
+            piece.setEndMs(sylEnd);
+            piece.text = syls[s].value(QStringLiteral("text")).toString();
+            pieces.append(piece);
+            cursor = sylEnd;
+        }
+
+        m_lines[idx] = pieces[0];
+        emit dataChanged(createIndex(idx, 0), createIndex(idx, 0));
+
+        const int insPos = idx + 1;
+        beginInsertRows(QModelIndex(), insPos, insPos + static_cast<int>(pieces.size()) - 2);
+        for (int p = 1; p < pieces.size(); ++p) {
+            m_lines.insert(m_lines.begin() + idx + p, pieces[p]);
+        }
+        endInsertRows();
+        grown += static_cast<int>(pieces.size()) - 1;
+    }
+
+    if (grown > 0) {
+        renumberLines();
+        emit countChanged();
+        emit contentModified();
+    }
 }
 
 void SubtitleModel::newDocument() {

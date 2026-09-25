@@ -183,10 +183,24 @@ void VideoDisplayController::toggleMoveOrPos()
 
 // Viewport geometry and layout calculations
 
+void VideoDisplayController::setArOverride(qreal ar)
+{
+    // Sanitize: ratios below 0.05 are treated as invalid; 0 restores the native frame ratio.
+    const qreal clamped = (ar > 0.05) ? ar : 0.0;
+    if (clamped == m_arOverride) return;
+    m_arOverride = clamped;
+    recalculateVideoLayout();
+}
+
 void VideoDisplayController::recalculateVideoLayout()
 {
     int vw = (m_videoController && m_videoController->videoWidth() > 0) ? m_videoController->videoWidth() : 640;
     int vh = (m_videoController && m_videoController->videoHeight() > 0) ? m_videoController->videoHeight() : 480;
+
+    // Effective display aspect: the override (upstream Video > Override Aspect Ratio)
+    // takes precedence over the native frame ratio when set.
+    const double videoAR = (m_arOverride > 0.05) ? static_cast<double>(m_arOverride)
+                                                 : (double(vw) / double(vh));
 
     double boxW = 0.0;
     double boxH = 0.0;
@@ -197,7 +211,6 @@ void VideoDisplayController::recalculateVideoLayout()
         // Fit (adaptive, default): scales content to preserve video aspect ratio centered in the viewport.
         // Matches upstream PositionVideo freeSize branch (video_display.cpp:320-343:
         // compute content_width/height based on aspect ratio, then derive box dimensions).
-        const double videoAR = double(vw) / double(vh);
         const double viewportAR = (m_viewportHeight > 0) ? (m_viewportWidth / m_viewportHeight) : 1.0;
         if (viewportAR > videoAR) {
             boxH = m_viewportHeight;
@@ -213,8 +226,9 @@ void VideoDisplayController::recalculateVideoLayout()
     } else {
         // Explicit window zoom: video box = video dimensions * zoom factor,
         // anchored to the top-left corner (matching upstream FitClientSizeToVideo).
+        // With an AR override the box keeps native width but derives height from the override.
         boxW = vw * m_windowZoom;
-        boxH = vh * m_windowZoom;
+        boxH = (m_arOverride > 0.05) ? (boxW / videoAR) : (vh * m_windowZoom);
     }
     m_boxWidth = boxW;
     m_boxHeight = boxH;

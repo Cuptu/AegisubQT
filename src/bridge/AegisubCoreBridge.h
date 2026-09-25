@@ -88,5 +88,31 @@ public:
 
     /// Write UTF-8 text content to local filesystem or file URI.
     Q_INVOKABLE static bool writeTextFile(const QString &filePath, const QString &content);
+
+    /// Launch a brand-new application instance in a separate process.
+    Q_INVOKABLE static void launchNewInstance();
+
+    /// Place plain text on the system clipboard.
+    Q_INVOKABLE static void setClipboardText(const QString &text);
+
+    /// Load an image file and place it on the system clipboard. False when unreadable.
+    Q_INVOKABLE static bool copyImageFileToClipboard(const QString &imagePath);
+
+    /// Generic application settings access (QSettings "Aegisub"/"Aegisub").
+    Q_INVOKABLE static void setSetting(const QString &key, const QVariant &value);
+    Q_INVOKABLE static QVariant getSetting(const QString &key, const QVariant &defaultValue = QVariant());
+
+    /// Resolves the "?user" placeholder (Aegisub user directory convention) to the
+    /// writable per-application data location, mirroring upstream path semantics.
+    Q_INVOKABLE static QString resolveUserPath(const QString &path);
+
+    /// Enumerates autosave/backup snapshot files ({time,path} maps, newest first)
+    /// scanned from the configured Autosave/Path and Backup/Path directories.
+    Q_INVOKABLE static QVariantList listBackupFiles();
+
+    /// Extracts the first embedded subtitle track from a video container using the
+    /// system ffmpeg binary into a temporary .ass file. Returns the temp file path,
+    /// or an empty string when ffmpeg is missing or the container has no subtitle track.
+    Q_INVOKABLE static QString extractSubtitlesFromVideo(const QString &videoPath);
 };
 

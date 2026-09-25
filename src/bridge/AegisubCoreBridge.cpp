@@ -18,6 +18,15 @@
 #include <QTextStream>
 #include <QUrl>
 #include <QStringConverter>
+#include <QGuiApplication>
+#include <QClipboard>
+#include <QImage>
+#include <QProcess>
+#include <QCoreApplication>
+#include <QSettings>
+#include <QStandardPaths>
+#include <QDateTime>
+#include <QDir>
 #include <algorithm>
 
 namespace {
@@ -284,5 +293,102 @@ bool AegisubCoreBridge::writeTextFile(const QString &filePath, const QString &co
     out.setEncoding(QStringConverter::Utf8);
     out << content;
     return true;
+}
+
+void AegisubCoreBridge::launchNewInstance() {
+    QProcess::startDetached(QCoreApplication::applicationFilePath(), {});
+}
+
+void AegisubCoreBridge::setClipboardText(const QString &text) {
+    QGuiApplication::clipboard()->setText(text);
+}
+
+bool AegisubCoreBridge::copyImageFileToClipboard(const QString &imagePath) {
+    QString localPath = imagePath;
+    if (localPath.startsWith("file:///")) {
+        localPath = QUrl(imagePath).toLocalFile();
+    } else if (localPath.startsWith("file://")) {
+        localPath = localPath.mid(7);
+    }
+    const QImage image(localPath);
+    if (image.isNull()) return false;
+    QGuiApplication::clipboard()->setImage(image);
+    return true;
+}
+
+void AegisubCoreBridge::setSetting(const QString &key, const QVariant &value) {
+    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    settings.setValue(key, value);
+}
+
+QVariant AegisubCoreBridge::getSetting(const QString &key, const QVariant &defaultValue) {
+    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    return settings.value(key, defaultValue);
+}
+
+QString AegisubCoreBridge::resolveUserPath(const QString &path) {
+    if (path.startsWith(QStringLiteral("?user"), Qt::CaseInsensitive)) {
+        const QString userDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        return QDir::cleanPath(userDir + path.mid(QStringLiteral("?user").size()));
+    }
+    return path;
+}
+
+QVariantList AegisubCoreBridge::listBackupFiles() {
+    QVariantList result;
+
+    struct SourceDir {
+        QString settingsKey;
+        QString fallback;
+        QString label;
+    };
+    const SourceDir sources[] = {
+        { QStringLiteral("Autosave/Path"), QStringLiteral("?user/autosave"), QStringLiteral("autosave") },
+        { QStringLiteral("Backup/Path"), QStringLiteral("?user/autobackup"), QStringLiteral("autobackup") },
+    };
+
+    for (const auto &src : sources) {
+        QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+        QString dirPath = settings.value(src.settingsKey, src.fallback).toString();
+        dirPath = resolveUserPath(dirPath);
+
+        const QDir dir(dirPath);
+        if (!dir.exists()) continue;
+
+        const QFileInfoList files = dir.entryInfoList({ QStringLiteral("*.ass") }, QDir::Files, QDir::Time);
+        for (const QFileInfo &fi : files) {
+            QVariantMap entry;
+            entry.insert(QStringLiteral("time"), fi.lastModified().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss")));
+            entry.insert(QStringLiteral("path"), fi.absoluteFilePath());
+            entry.insert(QStringLiteral("kind"), src.label);
+            result.append(entry);
+        }
+    }
+    return result;
+}
+
+QString AegisubCoreBridge::extractSubtitlesFromVideo(const QString &videoPath)
+{
+    QString localPath = videoPath;
+    if (localPath.startsWith(QStringLiteral("file:///"))) {
+        localPath = QUrl(videoPath).toLocalFile();
+    } else if (localPath.startsWith(QStringLiteral("file://"))) {
+        localPath = localPath.mid(7);
+    }
+    if (localPath.isEmpty() || !QFileInfo::exists(localPath)) return QString();
+
+    const QString stem = QFileInfo(localPath).completeBaseName();
+    const QString outPath = QDir(QDir::temp()).filePath(
+        QStringLiteral("aegisubqt_subs_%1_%2.ass").arg(stem).arg(QDateTime::currentMSecsSinceEpoch()));
+    QFile::remove(outPath);
+
+    const int code = QProcess::execute(QStringLiteral("ffmpeg"),
+        { QStringLiteral("-y"), QStringLiteral("-hide_banner"), QStringLiteral("-loglevel"), QStringLiteral("error"),
+          QStringLiteral("-i"), localPath, QStringLiteral("-map"), QStringLiteral("0:s:0"), outPath });
+    if (code != 0 || !QFileInfo::exists(outPath) || QFileInfo(outPath).size() == 0) {
+        QFile::remove(outPath);
+        return QString();
+    }
+    return outPath;
 }
 

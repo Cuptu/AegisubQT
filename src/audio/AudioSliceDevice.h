@@ -113,3 +113,105 @@ private:
     qint64 m_pos = 0;
     mutable QMutex m_mutex;
 };
+
+/// Synthesizing read-only QIODevice streaming blank or white-noise 16-bit PCM to QAudioSink.
+/// Backs upstream "Open 2h30 Blank/Noise Audio" without materializing gigabytes of samples.
+class VirtualAudioSliceDevice : public QIODevice {
+public:
+    enum class Kind {
+        Blank,
+        Noise,
+    };
+
+    VirtualAudioSliceDevice(Kind kind, qint64 sampleCount, QObject *parent = nullptr)
+        : QIODevice(parent)
+        , m_kind(kind)
+        , m_totalBytes(std::max<qint64>(0, sampleCount) * static_cast<qint64>(sizeof(int16_t)))
+        , m_pos(0)
+    {
+        open(QIODevice::ReadOnly | QIODevice::Unbuffered);
+    }
+
+    ~VirtualAudioSliceDevice() override {
+        close();
+    }
+
+    qint64 readData(char *data, qint64 maxlen) override {
+        QMutexLocker locker(&m_mutex);
+        if (maxlen <= 0 || m_pos >= m_totalBytes) {
+            return 0;
+        }
+        const qint64 bytesToRead = std::min(maxlen, m_totalBytes - m_pos);
+        auto *out = reinterpret_cast<int16_t *>(data);
+        const qint64 sampleCount = bytesToRead / 2;
+        for (qint64 i = 0; i < sampleCount; ++i) {
+            out[i] = sampleAt((m_pos / 2) + i);
+        }
+        // Trailing odd byte is zero-filled to keep the stream byte-aligned.
+        if (bytesToRead % 2 == 1) {
+            data[bytesToRead - 1] = '\0';
+        }
+        m_pos += bytesToRead;
+        return bytesToRead;
+    }
+
+    qint64 writeData(const char *, qint64) override {
+        return -1; // Read-only streaming device.
+    }
+
+    qint64 bytesAvailable() const override {
+        QMutexLocker locker(&m_mutex);
+        return (m_totalBytes - m_pos);
+    }
+
+    bool isSequential() const override {
+        return false;
+    }
+
+    qint64 size() const override {
+        return m_totalBytes;
+    }
+
+    qint64 pos() const override {
+        QMutexLocker locker(&m_mutex);
+        return m_pos;
+    }
+
+    bool seek(qint64 pos) override {
+        QMutexLocker locker(&m_mutex);
+        if (pos < 0 || pos > m_totalBytes) {
+            return false;
+        }
+        m_pos = pos;
+        QIODevice::seek(pos);
+        return true;
+    }
+
+    bool atEnd() const override {
+        QMutexLocker locker(&m_mutex);
+        return m_pos >= m_totalBytes;
+    }
+
+    bool reset() override {
+        QMutexLocker locker(&m_mutex);
+        m_pos = 0;
+        QIODevice::reset();
+        return true;
+    }
+
+private:
+    // Deterministic position-seeded synthesis (mirrors AudioPcmProvider::getAudio).
+    int16_t sampleAt(qint64 index) const {
+        if (m_kind == Kind::Blank) return 0;
+        uint32_t x = static_cast<uint32_t>(index) * 2654435761u + 0x9E3779B9u;
+        x ^= x >> 15;
+        x *= 0x85EBCA6Bu;
+        x ^= x >> 13;
+        return static_cast<int16_t>(x);
+    }
+
+    Kind m_kind;
+    qint64 m_totalBytes = 0;
+    qint64 m_pos = 0;
+    mutable QMutex m_mutex;
+};

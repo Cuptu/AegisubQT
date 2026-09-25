@@ -45,6 +45,7 @@
 #include "SpectrogramItem.h"
 #include "AutomationManager.h"
 #include "AegisubCoreBridge.h"
+#include "RecentFilesManager.h"
 #include "LanguageManager.h"
 #include "model/SubtitleModel.h"
 #include "model/StyleStorageManager.h"
@@ -56,7 +57,69 @@
 #include <QPalette>
 #include <QKeyEvent>
 #include <QLibraryInfo>
+#include <QDateTime>
+#include <QMutex>
+#include <QMutexLocker>
+#include <QStringListModel>
 #include <climits>
+
+// Thread-safe in-memory log ring buffer powering the in-app Log Window
+// (upstream Help > Log Window). Qt log messages are mirrored here in addition
+// to stderr so users can inspect runtime diagnostics without a console.
+class AppLogBuffer : public QObject {
+    Q_OBJECT
+    Q_PROPERTY(QStringList lines READ lines NOTIFY linesChanged)
+public:
+    explicit AppLogBuffer(QObject *parent = nullptr) : QObject(parent) {}
+
+    void append(QtMsgType type, const QString &msg) {
+        static constexpr int kMaxLines = 1000;
+        const QString stamp = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm:ss.zzz"));
+        const QString prefix = (type == QtWarningMsg) ? QStringLiteral("W")
+                               : (type == QtCriticalMsg) ? QStringLiteral("C")
+                               : (type == QtFatalMsg) ? QStringLiteral("F")
+                               : QStringLiteral("I");
+        const QString line = QStringLiteral("[%1][%2] %3").arg(stamp, prefix, msg);
+        {
+            QMutexLocker lock(&m_mutex);
+            m_lines.append(line);
+            while (m_lines.size() > kMaxLines) m_lines.removeFirst();
+            const QStringList snapshot = m_lines;
+            QMetaObject::invokeMethod(this, [this, snapshot]() {
+                m_model.setStringList(snapshot);
+                Q_EMIT linesChanged();
+            }, Qt::QueuedConnection);
+        }
+    }
+
+    QStringList lines() const {
+        QMutexLocker lock(&m_mutex);
+        return m_lines;
+    }
+
+    Q_INVOKABLE void clear() {
+        {
+            QMutexLocker lock(&m_mutex);
+            m_lines.clear();
+        }
+        QMetaObject::invokeMethod(this, [this]() {
+            m_model.setStringList({});
+            Q_EMIT linesChanged();
+        }, Qt::QueuedConnection);
+    }
+
+    QAbstractListModel *model() { return &m_model; }
+
+signals:
+    void linesChanged();
+
+private:
+    mutable QMutex m_mutex;
+    QStringList m_lines;
+    QStringListModel m_model;
+};
+
+static AppLogBuffer *g_appLog = nullptr;
 
 static void customLogHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
 {
@@ -64,6 +127,9 @@ static void customLogHandler(QtMsgType type, const QMessageLogContext &context, 
     Q_UNUSED(context);
     std::fprintf(stderr, "[QT_LOG] %s\n", msg.toLocal8Bit().constData());
     std::fflush(stderr);
+    if (g_appLog) {
+        g_appLog->append(type, msg);
+    }
     if (qEnvironmentVariableIsSet("AEGISUB_DEBUG_LOG")) {
         QFile file("debug_log.txt");
         if (file.open(QIODevice::WriteOnly | QIODevice::Append | QIODevice::Text)) {
@@ -120,6 +186,8 @@ int main(int argc, char *argv[])
         QFile file("debug_log.txt");
         (void)file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
     }
+    AppLogBuffer appLog;
+    g_appLog = &appLog;
     qInstallMessageHandler(customLogHandler);
     QQuickStyle::setStyle("Aegisub");
     QQuickStyle::setFallbackStyle("Fusion");
@@ -263,6 +331,11 @@ int main(int argc, char *argv[])
     // Unified platform font theme for all QML views
     UiTheme uiTheme;
     engine.rootContext()->setContextProperty("uiTheme", &uiTheme);
+    // In-app Log Window model and persistent MRU lists (upstream Log Window / Recent Files).
+    engine.rootContext()->setContextProperty("appLog", &appLog);
+    engine.rootContext()->setContextProperty("appLogModel", appLog.model());
+    RecentFilesManager recentFiles;
+    engine.rootContext()->setContextProperty("recentFiles", &recentFiles);
     LanguageManager languageManager(&engine);
     if (!initialLang.isEmpty()) {
         languageManager.setLanguage(initialLang);

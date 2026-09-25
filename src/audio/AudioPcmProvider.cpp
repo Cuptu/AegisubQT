@@ -278,14 +278,53 @@ bool AudioPcmProvider::loadWav(const QString &filePath)
     return true;
 }
 
+bool AudioPcmProvider::loadVirtualAudio(VirtualKind kind, double durationSec, int sampleRate)
+{
+    if (kind == VirtualKind::None) return false;
+
+    auto data = std::make_shared<AudioData>();
+    data->isVirtual = true;
+    data->virtualKind = static_cast<int>(kind);
+    data->sampleRate = sampleRate > 0 ? sampleRate : 44100;
+    data->channels = 1;
+
+    const double dur = durationSec > 0.0 ? durationSec : 9000.0;
+    const int64_t count = static_cast<int64_t>(dur * static_cast<double>(data->sampleRate));
+    if (count <= 0) return false;
+
+    data->sampleCount = static_cast<size_t>(count);
+    m_data = std::move(data);
+    return true;
+}
+
 void AudioPcmProvider::getAudio(float *dest, int64_t startSample, size_t count) const
 {
     constexpr float kScale = 1.0f / 32768.0f;
     const int64_t total = numSamples();
+
+    if (isVirtual()) {
+        // On-demand synthesis: blank audio is silence; noise audio is a deterministic
+        // xorshift white-noise stream seeded from the sample offset.
+        const bool noise = (virtualKind() == VirtualKind::Noise);
+        for (size_t i = 0; i < count; ++i) {
+            const int64_t idx = startSample + static_cast<int64_t>(i);
+            if (noise && idx >= 0 && idx < total) {
+                uint32_t x = static_cast<uint32_t>(idx) * 2654435761u + 0x9E3779B9u;
+                x ^= x >> 15;
+                x *= 0x85EBCA6Bu;
+                x ^= x >> 13;
+                dest[i] = (static_cast<float>(static_cast<int16_t>(x)) * kScale) * 0.8f;
+            } else {
+                dest[i] = 0.0f;
+            }
+        }
+        return;
+    }
+
     const auto s = samples();
     for (size_t i = 0; i < count; ++i) {
-        const int64_t idx = startSample + i;
-        if (idx >= 0 && idx < total) {
+        const int64_t idx = startSample + static_cast<int64_t>(i);
+        if (idx >= 0 && idx < total && !s.empty()) {
             dest[i] = static_cast<float>(s[idx]) * kScale;
         } else {
             dest[i] = 0.0f;

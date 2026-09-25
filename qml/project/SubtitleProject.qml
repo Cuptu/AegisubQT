@@ -24,6 +24,10 @@ QtObject {
     property int sortColumn: -1
     property bool sortAscending: true
 
+    // Last search parameters backing Edit > Find Next (upstream edit/find_next).
+    property string lastFindQuery: ""
+    property var lastFindOptions: null
+
     // Undo / Redo history delegated directly to native C++ SubtitleModel
     readonly property bool canUndo: subtitleModel ? subtitleModel.canUndo : false
     readonly property bool canRedo: subtitleModel ? subtitleModel.canRedo : false
@@ -504,6 +508,9 @@ QtObject {
 
     function findAndReplace(query, replaceWith, options, replaceAll) {
         if (!subtitleModel || subtitleModel.count === 0 || !query) return 0;
+        // Record search parameters so Edit > Find Next can repeat them (upstream edit/find_next).
+        lastFindQuery = query;
+        lastFindOptions = options || {};
         pushUndo(qsTr("replace"));
         var count = subtitleModel.findAndReplace(query, replaceWith, options || {}, replaceAll, currentSelectedIndex);
         if (count > 0) {
@@ -515,6 +522,16 @@ QtObject {
             statusMessage(qsTr("正则表达式语法错误"));
         }
         return count;
+    }
+
+    // Upstream Subtitle > Split by Karaoke: one line per karaoke syllable.
+    function splitSelectedByKaraoke() {
+        if (!subtitleModel || selectedIndices.length === 0) return;
+        pushUndo(qsTr("split by karaoke"));
+        subtitleModel.splitSelectedByKaraoke(selectedIndices);
+        selectRow(currentSelectedIndex, false, false);
+        statusMessage(qsTr("已按卡拉OK音节分割选中行"));
+        dataModified();
     }
 
     // Subtitle export filter pipeline stub
@@ -576,9 +593,18 @@ QtObject {
         }
     }
 
-    // Searches for the next occurrence of query in lines without altering content
+    // Searches for the next occurrence of query in lines without altering content.
+    // When called without arguments (Edit > Find Next) it repeats the last search.
     function findNext(query, options) {
-        if (!subtitleModel || !query) return -1;
+        if (!subtitleModel) return -1;
+        if (!query) {
+            query = lastFindQuery;
+            options = lastFindOptions || {};
+        }
+        if (!query) {
+            statusMessage(qsTr("Not found: %1").arg(""));
+            return -1;
+        }
         var startIdx = (currentSelectedIndex >= 0) ? (currentSelectedIndex + 1) : 0;
         var found = subtitleModel.findNext(query, options || {}, startIdx);
         if (found >= 0) {

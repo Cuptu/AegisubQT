@@ -22,25 +22,42 @@ NativeDialogFrame {
     // Emitted to broadcast informational status notifications
     signal statusMessage(string msg)
 
-    property var filesList: [
-        {
-            name: "episode01.ass",
-            versions: [
-                { time: "2026-09-22 23:20:15", path: "autosave/episode01.2026-09-22-23-20-15.AUTOSAVE.ass" },
-                { time: "2026-09-22 23:15:00", path: "autosave/episode01.2026-09-22-23-15-00.AUTOSAVE.ass" },
-                { time: "2026-09-22 23:00:00 [ORIGINAL BACKUP]", path: "autobackup/episode01.2026-09-22-23-00-00.ORIGINAL.ass" }
-            ]
-        },
-        {
-            name: "movie_trailer.ass",
-            versions: [
-                { time: "2026-09-21 18:45:10", path: "autosave/movie_trailer.2026-09-21-18-45-10.AUTOSAVE.ass" }
-            ]
-        }
-    ]
+    // Snapshot inventory grouped by original document, sourced from the real
+    // autosave/backup directories (AegisubCoreBridge::listBackupFiles).
+    property var filesList: []
 
     property int selectedFileIndex: 0
     property int selectedVersionIndex: 0
+
+    function rebuildFilesList() {
+        var flat = (typeof aegisubCore !== "undefined" && aegisubCore) ? aegisubCore.listBackupFiles() : [];
+        var groups = {};
+        var order = [];
+        for (var i = 0; i < flat.length; ++i) {
+            var e = flat[i];
+            var base = String(e.path).split('/').pop();
+            // "stem.YYYYMMDD-hhmmss.AUTOSAVE.ass" -> "stem"
+            var m = base.match(/^(.+)\.\d{8}-\d{6}\.(AUTOSAVE|BACKUP)\.ass$/);
+            var name = m ? m[1] : base;
+            if (!groups[name]) {
+                groups[name] = { name: name, versions: [] };
+                order.push(groups[name]);
+            }
+            groups[name].versions.push({
+                time: e.time + " [" + String(e.kind).toUpperCase() + "]",
+                path: e.path
+            });
+        }
+        filesList = order;
+        selectedFileIndex = 0;
+        selectedVersionIndex = 0;
+    }
+
+    onVisibleChanged: {
+        if (visible) {
+            rebuildFilesList();
+        }
+    }
 
     function openSelected() {
         if (selectedFileIndex >= 0 && selectedFileIndex < filesList.length) {

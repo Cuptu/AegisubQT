@@ -39,6 +39,14 @@
 
 class AudioPcmProvider {
 public:
+    // Upstream "Open 2h30 Blank/Noise Audio": virtual on-demand synthesis modes.
+    // Samples are never materialized; getAudio() synthesizes and samples() stays empty.
+    enum class VirtualKind {
+        None = 0,
+        Blank = 1,
+        Noise = 2,
+    };
+
     struct AudioData {
         std::unique_ptr<QFile> file;
         uchar *mappedBytes = nullptr;
@@ -47,6 +55,8 @@ public:
         int sampleRate = 16000;
         int channels = 1;
         std::vector<int16_t> fallbackBuffer;
+        bool isVirtual = false;
+        int virtualKind = 0;
 
         ~AudioData() {
             if (file) {
@@ -71,9 +81,16 @@ public:
     // targetSampleRate = 0 preserves the native stream sampling rate.
     bool loadAudioFile(const QString &filePath, int targetSampleRate = 0);
     bool loadWav(const QString &filePath);
+    // Configures virtual synthesis audio (upstream blank/noise 2h30 providers).
+    bool loadVirtualAudio(VirtualKind kind, double durationSec = 9000.0, int sampleRate = 44100);
     void reset() { m_data.reset(); }
 
     bool isLoaded() const { return m_data && m_data->sampleCount > 0; }
+    bool isVirtual() const { return m_data && m_data->isVirtual; }
+    VirtualKind virtualKind() const {
+        return m_data && m_data->isVirtual ? static_cast<VirtualKind>(m_data->virtualKind)
+                                           : VirtualKind::None;
+    }
     int sampleRate() const { return m_data ? m_data->sampleRate : 0; }
     int numChannels() const { return m_data ? m_data->channels : 1; }
     int64_t numSamples() const { return m_data ? static_cast<int64_t>(m_data->sampleCount) : 0; }
@@ -86,9 +103,12 @@ public:
     // Zero-copy span over 16-bit signed PCM samples.
     // Points directly into memory-mapped WAV cache on disk, avoiding hundreds
     // of megabytes of uncompressed PCM heap allocation.
+    // Virtual audio synthesizes on demand in getAudio(); its span stays empty.
     std::span<const int16_t> samples() const {
-        return m_data ? std::span<const int16_t>(m_data->samples, m_data->sampleCount)
-                      : std::span<const int16_t>();
+        if (!m_data || m_data->isVirtual || !m_data->samples) {
+            return std::span<const int16_t>();
+        }
+        return std::span<const int16_t>(m_data->samples, m_data->sampleCount);
     }
 
     // Fills dest with count samples normalized to [-1.0, 1.0], zero-padding out-of-range indices.

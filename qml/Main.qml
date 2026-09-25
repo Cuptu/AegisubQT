@@ -64,10 +64,26 @@ ApplicationWindow {
     SubtitleProject {
         id: subProject
         onStatusMessage: (msg) => root.statusMsgText = msg
+        onDataModified: {
+            // Upstream "Autosave after every change": debounce a snapshot shortly
+            // after each document mutation when the preference is enabled.
+            if (typeof aegisubCore !== "undefined" && aegisubCore
+                    && aegisubCore.getSetting("Autosave/AfterChange", false)) {
+                afterChangeSaveTimer.restart();
+            }
+        }
     }
 
-    property bool showVideo: (typeof videoController !== "undefined" && videoController) ? videoController.hasVideo : false
-    property bool showAudio: (typeof audioController !== "undefined" && audioController) ? audioController.hasAudio : false
+    // Upstream View menu display modes: "subs" (grid only), "video" (video+grid),
+    // "audio" (audio+grid), "full" (audio+video+grid).
+    property string viewMode: "full"
+    property bool toolbarVisible: true
+    property bool videoDetached: false
+    property bool overscanMask: false
+    property bool hasVideoLoaded: (typeof videoController !== "undefined" && videoController) ? videoController.hasVideo : false
+    property bool hasAudioLoaded: (typeof audioController !== "undefined" && audioController) ? audioController.hasAudio : false
+    property bool showVideo: (viewMode === "video" || viewMode === "full") && hasVideoLoaded && !videoDetached
+    property bool showAudio: (viewMode === "audio" || viewMode === "full") && hasAudioLoaded
 
     // Audio box height: defaults to 200px. Overridable via --audio-height.
     property int audioBoxHeight: (typeof audioHeightOverride !== "undefined" && audioHeightOverride > 0)
@@ -131,6 +147,7 @@ ApplicationWindow {
     property alias dlgExport: dialogManager.dlgExport
     property alias dlgAutosave: dialogManager.dlgAutosave
     property alias dlgSaveConfirm: dialogManager.dlgSaveConfirm
+    property alias dlgLog: dialogManager.dlgLog
 
     // UI component aliases
     property alias subtitleEditArea: subtitleEditBox.subtitleEditArea
@@ -154,7 +171,10 @@ ApplicationWindow {
         id: fileDialogSubOpen
         title: qsTr("Open Subtitles")
         nameFilters: ["Advanced SubStation Alpha (*.ass *.ssa)", "SubRip (*.srt)", "All Files (*.*)"]
-        onAccepted: subProject.openSubtitles(selectedFile.toString())
+        onAccepted: {
+            recentFiles.add("subtitles", selectedFile.toString());
+            subProject.openSubtitles(selectedFile.toString());
+        }
     }
 
     FileDialog {
@@ -164,6 +184,7 @@ ApplicationWindow {
         nameFilters: ["Advanced SubStation Alpha (*.ass)", "All Files (*.*)"]
         onAccepted: {
             var ok = subProject.saveSubtitles(selectedFile.toString());
+            recentFiles.add("subtitles", selectedFile.toString());
             if (ok && root.pendingAction !== "") {
                 var act = root.pendingAction;
                 var dat = root.pendingActionData;
@@ -183,6 +204,7 @@ ApplicationWindow {
         title: qsTr("Open Video")
         nameFilters: ["Video Files (*.mkv *.mp4 *.avi *.webm *.ts)", "All Files (*.*)"]
         onAccepted: {
+            recentFiles.add("video", selectedFile.toString());
             if (typeof videoController !== "undefined") {
                 videoController.openVideo(selectedFile.toString());
             }
@@ -194,6 +216,7 @@ ApplicationWindow {
         title: qsTr("Open Audio")
         nameFilters: ["Audio Files (*.wav *.mp3 *.aac *.flac *.m4a *.ogg)", "All Files (*.*)"]
         onAccepted: {
+            recentFiles.add("audio", selectedFile.toString());
             if (typeof audioController !== "undefined") {
                 audioController.openAudio(selectedFile.toString());
             }
@@ -205,6 +228,7 @@ ApplicationWindow {
         title: qsTr("Open Keyframes")
         nameFilters: ["Keyframe Files (*.txt *.keyframes *.pass)", "All Files (*.*)"]
         onAccepted: {
+            recentFiles.add("keyframes", selectedFile.toString());
             if (typeof videoController !== "undefined") {
                 videoController.openKeyframesFile(selectedFile.toString());
             }
@@ -229,6 +253,7 @@ ApplicationWindow {
         title: qsTr("Open Timecodes")
         nameFilters: ["Timecode Files (*.txt *.tc)", "All Files (*.*)"]
         onAccepted: {
+            recentFiles.add("timecodes", selectedFile.toString());
             if (typeof videoController !== "undefined") {
                 videoController.openTimecodesFile(selectedFile.toString());
             }
@@ -255,6 +280,11 @@ ApplicationWindow {
         dialogs: dialogManager
         videoCtrl: typeof videoController !== "undefined" ? videoController : null
         audioCtrl: typeof audioController !== "undefined" ? audioController : null
+        videoDisplayCtrl: typeof videoDisplayController !== "undefined" ? videoDisplayController : null
+        viewMode: root.viewMode
+        toolbarVisible: root.toolbarVisible
+        videoDetached: root.videoDetached
+        overscanMask: root.overscanMask
         onStatusMessage: (msg) => root.statusMsgText = msg
         onNewSubtitlesRequested: root.confirmSaveAndProceed("new")
         onOpenSubtitlesRequested: root.confirmSaveAndProceed("open")
@@ -270,11 +300,17 @@ ApplicationWindow {
         onSaveKeyframesRequested: fileDialogKeyframesSave.open()
         onOpenTimecodesRequested: fileDialogTimecodesOpen.open()
         onSaveTimecodesRequested: fileDialogTimecodesSave.open()
+        onViewModeRequested: (mode) => { root.viewMode = mode }
+        onToggleToolbarRequested: { root.toolbarVisible = !root.toolbarVisible }
+        onDetachVideoChanged: (detached) => { root.videoDetached = detached }
+        onOverscanMaskToggled: (mask) => { root.overscanMask = mask }
+        onOpenRecentFileRequested: (type, path) => root.openRecentFile(type, path)
     }
 
     // Top action toolbar
     header: TopToolBar {
         id: topToolBar
+        visible: root.toolbarVisible
         project: subProject
         dialogs: dialogManager
         audioCtrl: typeof audioController !== "undefined" ? audioController : null
@@ -288,6 +324,51 @@ ApplicationWindow {
         onJumpToLineStartRequested: root.jumpToLineStart()
         onJumpToLineEndRequested: root.jumpToLineEnd()
         onSaveSubtitlesRequested: root.saveSubtitlesRequested()
+    }
+
+    // Upstream "Automatic Save / Automatic Backup": periodic snapshots of unsaved work
+    // written to the user data directory (never overwrites the working file).
+    Timer {
+        id: autosaveTimer
+        interval: Math.max(30, (typeof aegisubCore !== "undefined" && aegisubCore)
+                               ? aegisubCore.getSetting("Autosave/IntervalSecs", 60) : 60) * 1000
+        repeat: true
+        running: subProject.isModified
+        onTriggered: {
+            var didSave = false;
+            if (typeof aegisubCore !== "undefined" && aegisubCore && subProject.subtitleModel) {
+                if (aegisubCore.getSetting("Autosave/Enabled", true)
+                        && subProject.subtitleModel.saveBackup(true)) {
+                    didSave = true;
+                }
+                if (aegisubCore.getSetting("Backup/Enabled", true)
+                        && subProject.subtitleModel.saveBackup(false)) {
+                    didSave = true;
+                }
+            }
+            if (didSave) {
+                root.statusMsgText = qsTr("自动保存: 已写入安全副本");
+            }
+        }
+    }
+
+    // Upstream "Autosave after every change": debounced snapshot timer (5s) so a
+    // burst of edits triggers one snapshot instead of one per keystroke.
+    Timer {
+        id: afterChangeSaveTimer
+        interval: 5000
+        repeat: false
+        onTriggered: {
+            if (typeof aegisubCore !== "undefined" && aegisubCore && subProject.isModified && subProject.subtitleModel) {
+                subProject.subtitleModel.saveBackup(true);
+            }
+        }
+    }
+
+    // Upstream "Detach Video": independent playback window mirroring the main video.
+    DetachedVideoWindow {
+        id: detachedVideoWindow
+        visible: root.videoDetached && root.hasVideoLoaded
     }
 
     // Application-wide file drag-and-drop handler
@@ -382,6 +463,8 @@ ApplicationWindow {
                 winBg: pal.winBg
                 winBorder: pal.winBorder
                 winSunkenBorder: pal.winSunkenBorder
+                showOverscan: root.overscanMask
+                playbackSuspended: root.videoDetached
 
                 onZoomApplied: (zoomStr) => {
                     if (typeof videoDisplayController !== "undefined") {
@@ -804,6 +887,7 @@ ApplicationWindow {
         // 1. Subtitle files: .ass, .ssa, .srt, .sub, .vtt
         var subExts = [".ass", ".ssa", ".srt", ".sub", ".vtt"];
         if (subExts.some(ext => lower.endsWith(ext))) {
+            recentFiles.add("subtitles", localPath);
             root.confirmSaveAndProceed("drop", localPath);
             return;
         }
@@ -812,6 +896,7 @@ ApplicationWindow {
         var videoExts = [".mp4", ".mkv", ".avi", ".webm", ".mov", ".wmv", ".flv", ".ts", ".m2ts", ".m4v", ".ogv", ".mpg", ".mpeg", ".3gp", ".vob", ".rmvb"];
         if (videoExts.some(ext => lower.endsWith(ext))) {
             if (typeof videoController !== "undefined" && videoController) {
+                recentFiles.add("video", localPath);
                 videoController.openVideo(localPath);
                 root.statusMsgText = qsTr("已加载视频: ") + fileName;
                 if (typeof audioController !== "undefined" && audioController) {
@@ -825,6 +910,7 @@ ApplicationWindow {
         var audioExts = [".wav", ".mp3", ".aac", ".flac", ".m4a", ".ogg", ".opus", ".wma", ".ac3", ".alac", ".aiff"];
         if (audioExts.some(ext => lower.endsWith(ext))) {
             if (typeof audioController !== "undefined" && audioController) {
+                recentFiles.add("audio", localPath);
                 audioController.openAudio(localPath);
                 root.statusMsgText = qsTr("已加载音频: ") + fileName;
             }
@@ -834,6 +920,7 @@ ApplicationWindow {
         // 4. Keyframe files
         if (lower.endsWith(".keyframes") || lower.endsWith(".pass") || lower.endsWith(".key") || (lower.endsWith(".txt") && lower.includes("keyframe"))) {
             if (typeof videoController !== "undefined" && videoController) {
+                recentFiles.add("keyframes", localPath);
                 videoController.openKeyframesFile(localPath);
                 root.statusMsgText = qsTr("已加载关键帧: ") + fileName;
             }
@@ -843,6 +930,7 @@ ApplicationWindow {
         // 5. Timecode files
         if (lower.endsWith(".tc") || lower.endsWith(".timecode") || (lower.endsWith(".txt") && lower.includes("timecode"))) {
             if (typeof videoController !== "undefined" && videoController) {
+                recentFiles.add("timecodes", localPath);
                 videoController.openTimecodesFile(localPath);
                 root.statusMsgText = qsTr("已加载时间码: ") + fileName;
             }
@@ -851,8 +939,39 @@ ApplicationWindow {
 
         // Fallback: try opening as video
         if (typeof videoController !== "undefined" && videoController) {
+            recentFiles.add("video", localPath);
             videoController.openVideo(localPath);
             root.statusMsgText = qsTr("已加载视频: ") + fileName;
+        }
+    }
+
+    // Opens a MRU entry by media type (upstream Recent Files menus).
+    // Reuses the pendingAction pipeline so subtitle opens still confirm unsaved changes.
+    function openRecentFile(type, path) {
+        if (!path) return;
+        if (type === "subtitles") {
+            recentFiles.add("subtitles", path);
+            confirmSaveAndProceed("drop", path);
+        } else if (type === "video") {
+            recentFiles.add("video", path);
+            if (typeof videoController !== "undefined" && videoController) {
+                videoController.openVideo(path);
+            }
+        } else if (type === "audio") {
+            recentFiles.add("audio", path);
+            if (typeof audioController !== "undefined" && audioController) {
+                audioController.openAudio(path);
+            }
+        } else if (type === "keyframes") {
+            recentFiles.add("keyframes", path);
+            if (typeof videoController !== "undefined" && videoController) {
+                videoController.openKeyframesFile(path);
+            }
+        } else if (type === "timecodes") {
+            recentFiles.add("timecodes", path);
+            if (typeof videoController !== "undefined" && videoController) {
+                videoController.openTimecodesFile(path);
+            }
         }
     }
 }

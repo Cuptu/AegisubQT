@@ -82,6 +82,7 @@ Item {
     property alias dlgExport: _dlgExport
     property alias dlgAutosave: _dlgAutosave
     property alias dlgSaveConfirm: _dlgSaveConfirm
+    property alias dlgLog: _dlgLog
 
     // Shift Times dialog: adjusts subtitle start/end timestamps
     LazyDialog {
@@ -573,6 +574,14 @@ Item {
                 onDiscardConfirmed: manager.discardConfirmed()
                 onCancelled: manager.cancelled()
             }
+        }
+    }
+
+    // Log window: runtime diagnostics mirrored from the Qt message handler (upstream Help > Log Window)
+    LazyDialog {
+        id: _dlgLog
+        sourceComponent: Component {
+            DialogLog {}
         }
     }
 }

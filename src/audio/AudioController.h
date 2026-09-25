@@ -44,6 +44,7 @@
 #include "SubtitleModel.h"
 
 class QAudioSink;
+class QIODevice;
 class AudioSliceDevice;
 
 class AudioController : public QObject {
@@ -227,6 +228,9 @@ public Q_SLOTS:
     void loadAudio(const QString &path, int targetSampleRate = 0);
     void openAudio(const QString &path);
     bool openAudioFromVideo(const QString &customVideoPath = QString());
+    // Upstream "Open 2h30 Blank/Noise Audio": on-demand synthesized virtual providers.
+    bool openBlankAudio();
+    bool openNoiseAudio();
     void closeAudio();
     // Maps to Audio/Renderer/Spectrum/FreqCurve: 0=Linear ... 4=Logarithmic.
     void applyFreqCurve(int curve);
@@ -263,6 +267,8 @@ Q_SIGNALS:
 private:
     static int getZoomLevelFactor(int level);
     void updateAmplitudeScale();
+    // Synchronous virtual (blank/noise) audio loading shared by openBlank/openNoise.
+    bool openVirtualAudio(AudioPcmProvider::VirtualKind kind);
     void setupAudioSink(int sampleRate);
     void onPlaybackTimerTick();
 
@@ -295,7 +301,9 @@ private:
     std::vector<int16_t> m_playbackBuffer;
 
     QAudioSink *m_audioSink = nullptr;
-    AudioSliceDevice *m_sliceDevice = nullptr;
+    // Streams a sample slice to QAudioSink: either an AudioSliceDevice over real PCM
+    // or a VirtualAudioSliceDevice for blank/noise audio.
+    QIODevice *m_sliceDevice = nullptr;
     QTimer m_playbackTimer;
     QElapsedTimer m_fallbackTimer;
     int m_playbackStartMs = 0;

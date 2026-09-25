@@ -18,9 +18,23 @@ Item {
     property color winBorder: "#bebebe"
     property color winSunkenBorder: "#ababab" // Standard 1px neutral gray sunken border
 
+    // Upstream "Show Overscan Mask": action-safe (90%) and title-safe (80%) guide frames.
+    property bool showOverscan: false
+    // True while the video plays in the detached window; suspends this box's player
+    // (paused + muted) so exactly one decoder pipeline drives the timeline.
+    property bool playbackSuspended: false
+
     property int currentTool: typeof videoDisplayController !== "undefined" ? videoDisplayController.currentTool : 0
 
     signal zoomApplied(string zoomStr)
+
+    onPlaybackSuspendedChanged: {
+        // Detached window owns playback: release this box's decoder without
+        // disturbing the shared timeline position.
+        if (videoBox.playbackSuspended) {
+            mediaVideoPlayer.pause();
+        }
+    }
 
     // Video pane layout hierarchy:
     // 1. Top row (visual toolbar + video display viewport)
@@ -221,9 +235,11 @@ Item {
                         audioOutput: AudioOutput {
                             id: mediaAudioOutput
                             muted: (typeof audioController !== "undefined" && audioController && audioController.hasAudio && audioController.isPlaying)
+                                   || videoBox.playbackSuspended
                         }
 
                         onPositionChanged: {
+                            if (videoBox.playbackSuspended) return;
                             if (mediaVideoPlayer.playbackState === MediaPlayer.PlayingState) {
                                 if (typeof audioController === "undefined" || !audioController || !audioController.hasAudio || !audioController.isPlaying) {
                                     var sec = mediaVideoPlayer.position / 1000.0;
@@ -249,6 +265,38 @@ Item {
                         anchors.fill: parent
                         fillMode: VideoOutput.Stretch
                         visible: !videoController.isDummy && videoController.hasVideo && mediaVideoPlayer.hasVideo
+                    }
+
+                    // Upstream "Show Overscan Mask": action-safe (90%) and title-safe (80%)
+                    // guide frames drawn as alternating white/black dashes over the video.
+                    Canvas {
+                        id: overscanCanvas
+                        anchors.fill: parent
+                        visible: videoBox.showOverscan && videoController && videoController.hasVideo
+                        onWidthChanged: requestPaint()
+                        onHeightChanged: requestPaint()
+                        Component.onCompleted: requestPaint()
+                        onPaint: {
+                            var ctx = getContext("2d");
+                            ctx.reset();
+                            var w = width;
+                            var h = height;
+                            if (w <= 0 || h <= 0) return;
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
+                            function guides(frac) {
+                                var gw = w * frac;
+                                var gh = h * frac;
+                                var x0 = (w - gw) / 2;
+                                var y0 = (h - gh) / 2;
+                                ctx.strokeStyle = "#000000";
+                                ctx.strokeRect(x0 + 1, y0 + 1, gw, gh);
+                                ctx.strokeStyle = "#ffffff";
+                                ctx.strokeRect(x0, y0, gw, gh);
+                            }
+                            guides(0.9);  // action safe area
+                            guides(0.8);  // title safe area
+                        }
                     }
 
                     Connections {

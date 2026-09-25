@@ -500,7 +500,29 @@ void AudioController::playRange(int startMs, int endMs)
     if (sampleRate <= 0) sampleRate = 16000;
 
     bool audioHardwareStarted = false;
-    if (!samples.empty()) {
+    if (m_pcmProvider.isVirtual()) {
+        // Blank/noise audio: stream synthesized samples instead of a materialized buffer.
+        const int64_t totalSamples = m_pcmProvider.numSamples();
+        int64_t startSample = static_cast<int64_t>((static_cast<double>(startMs) / 1000.0) * sampleRate);
+        int64_t endSample = static_cast<int64_t>((static_cast<double>(endMs) / 1000.0) * sampleRate);
+        startSample = std::clamp<int64_t>(startSample, 0, totalSamples);
+        endSample = std::clamp<int64_t>(endSample, startSample, totalSamples);
+        const int64_t sampleCount = endSample - startSample;
+
+        if (sampleCount > 0) {
+            setupAudioSink(sampleRate);
+            if (m_audioSink) {
+                const auto kind = (m_pcmProvider.virtualKind() == AudioPcmProvider::VirtualKind::Noise)
+                    ? VirtualAudioSliceDevice::Kind::Noise
+                    : VirtualAudioSliceDevice::Kind::Blank;
+                m_sliceDevice = new VirtualAudioSliceDevice(kind, sampleCount, this);
+                float vol = std::clamp(m_volume / 100.0f, 0.0f, 1.0f);
+                m_audioSink->setVolume(vol);
+                m_audioSink->start(m_sliceDevice);
+                audioHardwareStarted = (m_audioSink->state() != QAudio::StoppedState);
+            }
+        }
+    } else if (!samples.empty()) {
         int64_t startSample = static_cast<int64_t>((static_cast<double>(startMs) / 1000.0) * sampleRate);
         int64_t endSample = static_cast<int64_t>((static_cast<double>(endMs) / 1000.0) * sampleRate);
         startSample = std::clamp<int64_t>(startSample, 0, static_cast<int64_t>(samples.size()));
@@ -1009,6 +1031,53 @@ bool AudioController::openAudioFromVideo(const QString &customVideoPath)
     }
 
     loadAudio(clean, 0);
+    return true;
+}
+
+bool AudioController::openBlankAudio()
+{
+    return openVirtualAudio(AudioPcmProvider::VirtualKind::Blank);
+}
+
+bool AudioController::openNoiseAudio()
+{
+    return openVirtualAudio(AudioPcmProvider::VirtualKind::Noise);
+}
+
+bool AudioController::openVirtualAudio(AudioPcmProvider::VirtualKind kind)
+{
+    if (kind == AudioPcmProvider::VirtualKind::None) return false;
+    stop();
+
+    const uint64_t reqId = ++m_audioLoadRequestId;
+
+    AudioPcmProvider provider;
+    if (!provider.loadVirtualAudio(kind)) return false;
+
+    // Synthesized waveform peak envelope: blank is pure silence; uniform white noise
+    // peaks near full scale for every 10ms bucket (mirrors the real-file envelope builder).
+    QVector<float> peaks;
+    const int64_t bucketCount = static_cast<int64_t>(provider.duration() * 100.0);
+    const int64_t bucketCap = 2'000'000; // hard safety cap (~5.5h envelope)
+    if (bucketCount > 0) {
+        const int clamped = static_cast<int>(std::min<int64_t>(bucketCount, bucketCap));
+        peaks.resize(clamped);
+        peaks.fill(kind == AudioPcmProvider::VirtualKind::Noise ? 0.95f : 0.0f);
+    }
+
+    m_pcmProvider = std::move(provider);
+    m_peaks = std::move(peaks);
+    m_hasAudio = m_pcmProvider.isLoaded();
+    m_audioPath = (kind == AudioPcmProvider::VirtualKind::Noise)
+        ? QStringLiteral("virtual://noise")
+        : QStringLiteral("virtual://blank");
+    m_audioDuration = m_pcmProvider.duration();
+    m_isLoadingAudio = false;
+    (void)reqId; // Synchronous virtual load supersedes any queued decode jobs.
+    m_stftCore.processAudio(m_pcmProvider);
+
+    Q_EMIT audioInfoChanged();
+    Q_EMIT playbackChanged();
     return true;
 }
 

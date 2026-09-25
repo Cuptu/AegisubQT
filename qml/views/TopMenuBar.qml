@@ -15,6 +15,11 @@ MenuBar {
     property var dialogs: null
     property var videoCtrl: null
     property var audioCtrl: null
+    property var videoDisplayCtrl: null
+    property string viewMode: "full"
+    property bool toolbarVisible: true
+    property bool videoDetached: false
+    property bool overscanMask: false
 
     signal statusMessage(string text)
     signal newSubtitlesRequested()
@@ -31,6 +36,38 @@ MenuBar {
     signal saveKeyframesRequested()
     signal openTimecodesRequested()
     signal saveTimecodesRequested()
+    signal viewModeRequested(string mode)
+    signal toggleToolbarRequested()
+    signal detachVideoChanged(bool detached)
+    signal overscanMaskToggled(bool mask)
+    signal openRecentFileRequested(string type, string path)
+
+    // Queries the GitHub Releases API and opens the release page when a newer
+    // build exists (replaces the legacy fake "up to date" placeholder).
+    function checkForUpdates() {
+        var xhr = new XMLHttpRequest();
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState !== XMLHttpRequest.DONE) return;
+            if (xhr.status === 200) {
+                try {
+                    var rel = JSON.parse(xhr.responseText);
+                    var remote = (rel.tag_name || "").replace(/^v/i, "");
+                    if (remote && remote !== "4.0.0") {
+                        menuBarRoot.statusMessage(qsTr("发现新版本 %1，正在打开发布页...").arg(remote));
+                        Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/releases/latest");
+                    } else {
+                        menuBarRoot.statusMessage(qsTr("当前已是最新版本 (4.0.0)"));
+                    }
+                    return;
+                } catch (e) {
+                    // fall through to the failure message
+                }
+            }
+            menuBarRoot.statusMessage(qsTr("检查更新失败: 无法访问 GitHub Releases"));
+        };
+        xhr.open("GET", "https://api.github.com/repos/Cuptu/AegisubQT/releases/latest");
+        xhr.send();
+    }
 
     property alias fileMenu: fileMenu
     property alias editMenu: editMenu
@@ -74,9 +111,36 @@ MenuBar {
         Action {
             text: qsTr("Open Subtitles from &Video"); icon.source: "../../assets/icons_native/open_toolbutton_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage(qsTr("从视频中打开字幕..."))
+            onTriggered: {
+                var extracted = aegisubCore.extractSubtitlesFromVideo(menuBarRoot.videoCtrl ? menuBarRoot.videoCtrl.videoPath : "");
+                if (extracted) {
+                    menuBarRoot.openRecentFileRequested("subtitles", extracted);
+                } else {
+                    menuBarRoot.statusMessage(qsTr("从视频提取字幕失败 (需要 ffmpeg 且容器需包含字幕轨)"));
+                }
+            }
         }
         Action { text: qsTr("Open &Autosaved Subtitles..."); icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: if (dialogs) dialogs.dlgAutosave.open() }
+        NativeMenu {
+            id: recentSubsMenu
+            title: qsTr("Recent &Subtitles")
+            Instantiator {
+                model: (typeof recentFiles !== "undefined") ? recentFiles.entries("subtitles") : []
+                onObjectAdded: (index, object) => recentSubsMenu.insertAction(index, object)
+                onObjectRemoved: (index, object) => recentSubsMenu.removeAction(object)
+                delegate: Action {
+                    text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
+                          : (modelData + qsTr(" (缺失)"))
+                    enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
+                    onTriggered: menuBarRoot.openRecentFileRequested("subtitles", modelData)
+                }
+            }
+            Action {
+                text: qsTr("&Clear Recent Subtitles")
+                enabled: (typeof recentFiles !== "undefined") && recentFiles.entries("subtitles").length > 0
+                onTriggered: if (typeof recentFiles !== "undefined") recentFiles.clear("subtitles")
+            }
+        }
         Action {
             text: qsTr("&Save Subtitles") + "\tCtrl+S"
             icon.source: "../../assets/icons_native/save_toolbutton_16.png"
@@ -90,7 +154,7 @@ MenuBar {
         Action { text: qsTr("&Attachments..."); icon.source: "../../assets/icons_native/attach_button_16.png"; onTriggered: if (dialogs) dialogs.dlgAttachments.open() }
         Action { text: qsTr("&Fonts Collector..."); icon.source: "../../assets/icons_native/font_collector_button_16.png"; onTriggered: if (dialogs) dialogs.dlgFontsCollector.open() }
         NativeMenuSep {}
-        Action { text: qsTr("New &Window"); icon.source: "../../assets/icons_native/new_window_menu_16.png"; onTriggered: menuBarRoot.statusMessage("新建窗口") }
+        Action { text: qsTr("New &Window"); icon.source: "../../assets/icons_native/new_window_menu_16.png"; onTriggered: aegisubCore.launchNewInstance() }
         Action { text: qsTr("E&xit") + "\tCtrl+Q"; onTriggered: menuBarRoot.exitRequested() }
     }
 
@@ -139,7 +203,7 @@ MenuBar {
         }
         NativeMenuSep {}
         Action { text: qsTr("&Find...") + "\tCtrl+F"; icon.source: "../../assets/icons_native/find_button_16.png"; onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = false; dialogs.dlgSearchReplace.open(); } }
-        Action { text: qsTr("Find &Next") + "\tF3"; icon.source: "../../assets/icons_native/find_next_menu_16.png"; onTriggered: menuBarRoot.statusMessage("查找下一个") }
+        Action { text: qsTr("Find &Next") + "\tF3"; icon.source: "../../assets/icons_native/find_next_menu_16.png"; onTriggered: if (menuBarRoot.project) menuBarRoot.project.findNext() }
         Action { text: qsTr("&Replace...") + "\tCtrl+H"; icon.source: "../../assets/icons_native/find_replace_menu_16.png"; onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = true; dialogs.dlgSearchReplace.open(); } }
     }
 
@@ -213,7 +277,7 @@ MenuBar {
         }
         Action {
             text: qsTr("Split by Karaoke"); enabled: !!(menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
-            onTriggered: menuBarRoot.statusMessage(qsTr("按卡拉OK音节分割行"))
+            onTriggered: menuBarRoot.project.splitSelectedByKaraoke()
         }
         NativeMenuSep {}
         NativeMenu {
@@ -293,6 +357,26 @@ MenuBar {
         id: videoMenu
         title: qsTr("&Video")
         Action { text: qsTr("&Open Video..."); icon.source: "../../assets/icons_native/open_video_menu_16.png"; onTriggered: menuBarRoot.openVideoRequested() }
+        NativeMenu {
+            id: recentVideoMenu
+            title: qsTr("Recent &Videos")
+            Instantiator {
+                model: (typeof recentFiles !== "undefined") ? recentFiles.entries("video") : []
+                onObjectAdded: (index, object) => recentVideoMenu.insertAction(index, object)
+                onObjectRemoved: (index, object) => recentVideoMenu.removeAction(object)
+                delegate: Action {
+                    text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
+                          : (modelData + qsTr(" (缺失)"))
+                    enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
+                    onTriggered: menuBarRoot.openRecentFileRequested("video", modelData)
+                }
+            }
+            Action {
+                text: qsTr("&Clear Recent Videos")
+                enabled: (typeof recentFiles !== "undefined") && recentFiles.entries("video").length > 0
+                onTriggered: if (typeof recentFiles !== "undefined") recentFiles.clear("video")
+            }
+        }
         Action {
             text: qsTr("&Close Video"); icon.source: "../../assets/icons_native/close_video_menu_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
@@ -322,6 +406,26 @@ MenuBar {
                 menuBarRoot.statusMessage(qsTr("已关闭时间码文件"));
             }
         }
+        NativeMenu {
+            id: recentTimecodesMenu
+            title: qsTr("Recent &Timecodes")
+            Instantiator {
+                model: (typeof recentFiles !== "undefined") ? recentFiles.entries("timecodes") : []
+                onObjectAdded: (index, object) => recentTimecodesMenu.insertAction(index, object)
+                onObjectRemoved: (index, object) => recentTimecodesMenu.removeAction(object)
+                delegate: Action {
+                    text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
+                          : (modelData + qsTr(" (缺失)"))
+                    enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
+                    onTriggered: menuBarRoot.openRecentFileRequested("timecodes", modelData)
+                }
+            }
+            Action {
+                text: qsTr("&Clear Recent Timecodes")
+                enabled: (typeof recentFiles !== "undefined") && recentFiles.entries("timecodes").length > 0
+                onTriggered: if (typeof recentFiles !== "undefined") recentFiles.clear("timecodes")
+            }
+        }
         NativeMenuSep {}
         Action { text: qsTr("Open Keyframes..."); icon.source: "../../assets/icons_native/open_keyframes_menu_16.png"; onTriggered: menuBarRoot.openKeyframesRequested() }
         Action {
@@ -337,31 +441,100 @@ MenuBar {
                 menuBarRoot.statusMessage(qsTr("已关闭关键帧"));
             }
         }
+        NativeMenu {
+            id: recentKeyframesMenu
+            title: qsTr("Recent &Keyframes")
+            Instantiator {
+                model: (typeof recentFiles !== "undefined") ? recentFiles.entries("keyframes") : []
+                onObjectAdded: (index, object) => recentKeyframesMenu.insertAction(index, object)
+                onObjectRemoved: (index, object) => recentKeyframesMenu.removeAction(object)
+                delegate: Action {
+                    text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
+                          : (modelData + qsTr(" (缺失)"))
+                    enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
+                    onTriggered: menuBarRoot.openRecentFileRequested("keyframes", modelData)
+                }
+            }
+            Action {
+                text: qsTr("&Clear Recent Keyframes")
+                enabled: (typeof recentFiles !== "undefined") && recentFiles.entries("keyframes").length > 0
+                onTriggered: if (typeof recentFiles !== "undefined") recentFiles.clear("keyframes")
+            }
+        }
         NativeMenuSep {}
         Action {
             text: qsTr("Detach &Video"); icon.source: "../../assets/icons_native/detach_video_menu_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage(qsTr("拆分视频窗口"))
+            checkable: true
+            checked: menuBarRoot.videoDetached
+            onTriggered: menuBarRoot.detachVideoChanged(!menuBarRoot.videoDetached)
         }
         NativeMenu {
             title: qsTr("Set &Zoom")
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            Action { text: "&50%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 50%")) }
-            Action { text: "&100%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 100%")) }
-            Action { text: "&200%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 200%")) }
+            Action {
+                text: "&50%"; checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.windowZoom - 0.5) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setWindowZoom(0.5)
+            }
+            Action {
+                text: "&75%"; checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.windowZoom - 0.75) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setWindowZoom(0.75)
+            }
+            Action {
+                text: "&100%"; checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.windowZoom - 1.0) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setWindowZoom(1.0)
+            }
+            Action {
+                text: "&150%"; checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.windowZoom - 1.5) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setWindowZoom(1.5)
+            }
+            Action {
+                text: "&200%"; checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.windowZoom - 2.0) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setWindowZoom(2.0)
+            }
         }
         NativeMenu {
             title: qsTr("Override &Aspect Ratio")
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            Action { text: qsTr("&Default"); onTriggered: menuBarRoot.statusMessage("宽高比: 默认") }
-            Action { text: qsTr("&Fullscreen (4:3)"); onTriggered: menuBarRoot.statusMessage("宽高比: 4:3") }
-            Action { text: qsTr("&Widescreen (16:9)"); onTriggered: menuBarRoot.statusMessage("宽高比: 16:9") }
-            Action { text: qsTr("&Cinematic (2.35)"); onTriggered: menuBarRoot.statusMessage("宽高比: 2.35:1") }
-            Action { text: qsTr("C&ustom..."); onTriggered: menuBarRoot.statusMessage("自定义宽高比...") }
+            Action {
+                text: qsTr("&Default"); checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverride === 0
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(0)
+            }
+            Action {
+                text: qsTr("&Fullscreen (4:3)"); checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 4/3) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(4/3)
+            }
+            Action {
+                text: qsTr("&Widescreen (16:9)"); checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 16/9) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(16/9)
+            }
+            Action {
+                text: qsTr("&Cinematic (2.35)"); checkable: true
+                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 2.35) < 0.01
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(2.35)
+            }
+            Action {
+                text: qsTr("C&ustom...")
+                onTriggered: {
+                    arCustomInput.text = (menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverride > 0)
+                            ? menuBarRoot.videoDisplayCtrl.arOverride.toFixed(3) : "2.00"
+                    arCustomPopup.open()
+                }
+            }
         }
         Action {
             text: qsTr("Show &Overscan Mask"); enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage(qsTr("切换过扫描遮罩"))
+            checkable: true
+            checked: menuBarRoot.overscanMask
+            onTriggered: menuBarRoot.overscanMaskToggled(!menuBarRoot.overscanMask)
         }
         Action {
             text: qsTr("Reset Video &Pan")
@@ -420,6 +593,26 @@ MenuBar {
                 menuBarRoot.statusMessage(qsTr("已关闭音频"));
             }
         }
+        NativeMenu {
+            id: recentAudioMenu
+            title: qsTr("Recent &Audio")
+            Instantiator {
+                model: (typeof recentFiles !== "undefined") ? recentFiles.entries("audio") : []
+                onObjectAdded: (index, object) => recentAudioMenu.insertAction(index, object)
+                onObjectRemoved: (index, object) => recentAudioMenu.removeAction(object)
+                delegate: Action {
+                    text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
+                          : (modelData + qsTr(" (缺失)"))
+                    enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
+                    onTriggered: menuBarRoot.openRecentFileRequested("audio", modelData)
+                }
+            }
+            Action {
+                text: qsTr("&Clear Recent Audio")
+                enabled: (typeof recentFiles !== "undefined") && recentFiles.entries("audio").length > 0
+                onTriggered: if (typeof recentFiles !== "undefined") recentFiles.clear("audio")
+            }
+        }
         NativeMenuSep {}
         Action {
             text: qsTr("&Spectrum Display"); enabled: !!(menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.hasAudio)
@@ -439,8 +632,22 @@ MenuBar {
                 }
             }
         }
-        Action { text: qsTr("Open 2h30 Blank Audio"); onTriggered: menuBarRoot.statusMessage("已加载空白音频") }
-        Action { text: qsTr("Open 2h30 Noise Audio"); onTriggered: menuBarRoot.statusMessage("已加载噪声音频") }
+        Action {
+            text: qsTr("Open 2h30 Blank Audio")
+            onTriggered: {
+                if (menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.openBlankAudio()) {
+                    menuBarRoot.statusMessage(qsTr("已加载2小时30分空白音频 (虚拟合成)"));
+                }
+            }
+        }
+        Action {
+            text: qsTr("Open 2h30 Noise Audio")
+            onTriggered: {
+                if (menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.openNoiseAudio()) {
+                    menuBarRoot.statusMessage(qsTr("已加载2小时30分白噪声音频 (虚拟合成)"));
+                }
+            }
+        }
     }
 
     // Automation menu
@@ -476,10 +683,26 @@ MenuBar {
         Action { text: qsTr("&Language..."); icon.source: "../../assets/icons_native/languages_menu_16.png"; onTriggered: if (dialogs) { dialogs.dlgLanguage.open(); } }
         Action { text: qsTr("&Options..."); icon.source: "../../assets/icons_native/options_button_16.png"; onTriggered: if (dialogs) dialogs.dlgPreferences.open() }
         NativeMenuSep {}
-        Action { text: qsTr("S&ubs Only View"); onTriggered: menuBarRoot.statusMessage("切换视图: 仅字幕") }
-        Action { text: qsTr("&Video+Subs View"); onTriggered: menuBarRoot.statusMessage("切换视图: 视频+字幕") }
-        Action { text: qsTr("&Audio+Subs View"); onTriggered: menuBarRoot.statusMessage("切换视图: 音频+字幕") }
-        Action { text: qsTr("&Full view"); onTriggered: menuBarRoot.statusMessage("切换视图: 完全模式") }
+        Action {
+            text: qsTr("S&ubs Only View"); checkable: true
+            checked: menuBarRoot.viewMode === "subs"
+            onTriggered: menuBarRoot.viewModeRequested("subs")
+        }
+        Action {
+            text: qsTr("&Video+Subs View"); checkable: true
+            checked: menuBarRoot.viewMode === "video"
+            onTriggered: menuBarRoot.viewModeRequested("video")
+        }
+        Action {
+            text: qsTr("&Audio+Subs View"); checkable: true
+            checked: menuBarRoot.viewMode === "audio"
+            onTriggered: menuBarRoot.viewModeRequested("audio")
+        }
+        Action {
+            text: qsTr("&Full view"); checkable: true
+            checked: menuBarRoot.viewMode === "full"
+            onTriggered: menuBarRoot.viewModeRequested("full")
+        }
         NativeMenuSep {}
         Action {
             text: qsTr("Sh&ow Tags")
@@ -511,7 +734,9 @@ MenuBar {
         NativeMenuSep {}
         Action {
             text: qsTr("Toggle &Toolbar")
-            onTriggered: menuBarRoot.statusMessage(qsTr("开启和关闭主工具栏"))
+            checkable: true
+            checked: menuBarRoot.toolbarVisible
+            onTriggered: menuBarRoot.toggleToolbarRequested()
         }
     }
 
@@ -520,12 +745,64 @@ MenuBar {
         title: qsTr("&Help")
         Action { text: qsTr("&Contents") + "\tF1"; icon.source: "../../assets/icons_native/contents_button_16.png"; onTriggered: Qt.openUrlExternally("http://www.aegisub.org/docs/3.2/") }
         NativeMenuSep {}
-        Action { text: qsTr("&Website"); icon.source: "../../assets/icons_native/website_button_16.png"; onTriggered: Qt.openUrlExternally("http://www.aegisub.org/") }
-        Action { text: qsTr("&Bug Tracker..."); icon.source: "../../assets/icons_native/bugtracker_button_16.png"; onTriggered: Qt.openUrlExternally("https://github.com/Aegisub/Aegisub/issues") }
+        Action { text: qsTr("&Website"); icon.source: "../../assets/icons_native/website_button_16.png"; onTriggered: Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT") }
+        Action { text: qsTr("&Bug Tracker..."); icon.source: "../../assets/icons_native/bugtracker_button_16.png"; onTriggered: Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/issues") }
         NativeMenuSep {}
-        Action { text: qsTr("&IRC Channel..."); icon.source: "../../assets/icons_native/irc_button_16.png"; onTriggered: menuBarRoot.statusMessage("IRC: #aegisub on irc.rizon.net") }
-        Action { text: qsTr("&Check for Updates..."); onTriggered: menuBarRoot.statusMessage("当前已是最新版本") }
+        Action { text: qsTr("&Check for Updates..."); onTriggered: menuBarRoot.checkForUpdates() }
         Action { text: qsTr("&About Aegisub..."); icon.source: "../../assets/icons_native/about_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgAbout.open() }
-        Action { text: qsTr("&Log Window..."); icon.source: "../../assets/icons_native/about_menu_16.png"; onTriggered: menuBarRoot.statusMessage("打开日志窗口...") }
+        Action { text: qsTr("&Log Window..."); icon.source: "../../assets/icons_native/about_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgLog.open() }
+    }
+
+    // Custom aspect ratio input popup (upstream "Custom" entry in Override AR).
+    Popup {
+        id: arCustomPopup
+        x: (menuBarRoot.width - width) / 2
+        y: menuBarRoot.height + 4
+        width: 220
+        height: 108
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnEscape | Popup.CloseOnPressOutside
+        background: Rectangle {
+            color: "#f0f0f0"
+            border.color: "#a0a0a0"
+            border.width: 1
+        }
+        ColumnLayout {
+            anchors.fill: parent
+            anchors.margins: 10
+            spacing: 8
+            Text {
+                text: qsTr("输入自定义宽高比 (宽/高):")
+                font.pixelSize: 12
+                font.family: uiTheme.uiFont
+            }
+            NativeTextBox {
+                id: arCustomInput
+                Layout.fillWidth: true
+                text: "2.00"
+            }
+            RowLayout {
+                Layout.alignment: Qt.AlignRight
+                spacing: 6
+                NativeButton {
+                    text: qsTr("OK")
+                    implicitWidth: 64
+                    onClicked: {
+                        var ar = parseFloat(arCustomInput.text);
+                        if (!isNaN(ar) && ar > 0.05 && menuBarRoot.videoDisplayCtrl) {
+                            menuBarRoot.videoDisplayCtrl.setArOverride(ar);
+                            menuBarRoot.statusMessage(qsTr("宽高比已覆盖为 %1").arg(ar.toFixed(3)));
+                        }
+                        arCustomPopup.close();
+                    }
+                }
+                NativeButton {
+                    text: qsTr("Cancel")
+                    implicitWidth: 64
+                    onClicked: arCustomPopup.close()
+                }
+            }
+        }
     }
 }
