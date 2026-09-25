@@ -230,7 +230,7 @@ int main(int argc, char *argv[])
     QCoreApplication::addLibraryPath(app.applicationDirPath() + "/plugins");
     QCoreApplication::addLibraryPath(app.applicationDirPath());
     app.setApplicationName("AegisubQT");
-    app.setApplicationVersion("4.0.0");
+    app.setApplicationVersion("4.0.1");
     app.setOrganizationName("AegisubQT");
 
     // Portable mode: a "portable.txt" marker next to the executable keeps all

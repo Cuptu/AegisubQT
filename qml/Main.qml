@@ -19,7 +19,7 @@ ApplicationWindow {
     height: 640
     minimumWidth: 800
     minimumHeight: 480
-    title: (subProject.isModified ? "* " : "") + subProject.currentFileName + " - AegisubQT 4.0.0"
+    title: (subProject.isModified ? "* " : "") + subProject.currentFileName + " - AegisubQT " + (Qt.application.version || "4.0.1")
 
     onClosing: (close) => {
         if (isForceClosing) {

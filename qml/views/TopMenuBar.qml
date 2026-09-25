@@ -52,11 +52,12 @@ MenuBar {
                 try {
                     var rel = JSON.parse(xhr.responseText);
                     var remote = (rel.tag_name || "").replace(/^v/i, "");
-                    if (remote && remote !== "4.0.0") {
+                    var currentVer = Qt.application.version || "4.0.1";
+                    if (remote && remote !== currentVer) {
                         menuBarRoot.statusMessage(qsTr("New version %1 found, opening release page...").arg(remote));
                         Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/releases/latest");
                     } else {
-                        menuBarRoot.statusMessage(qsTr("Already running the latest version (4.0.0)"));
+                        menuBarRoot.statusMessage(qsTr("Already running the latest version (%1)").arg(currentVer));
                     }
                     return;
                 } catch (e) {

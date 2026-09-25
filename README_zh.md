@@ -6,11 +6,11 @@
 
 **基于 Qt 6 Quick 与现代 C++20 构建的新一代高级 ASS/SSA 动画字幕制作与特效排版引擎**
 
-[![Release](https://img.shields.io/badge/Release-v4.0.0-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
+[![Release](https://img.shields.io/badge/Release-v4.0.1-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
 [![Status](https://img.shields.io/badge/Status-Release--Ready-10B981?style=flat-square&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-0078D4?style=flat-square&logo=windows&logoColor=white&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%2020-00599C?style=flat-square&logo=c%2B%2B&logoColor=white&labelColor=1F2937)](https://en.cppreference.com/w/cpp/20)
-[![Qt](https://img.shields.io/badge/Qt-6.8%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
+[![Qt](https://img.shields.io/badge/Qt-6.11%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
 [![Lua](https://img.shields.io/badge/Automation-LuaJIT%202.1-000080?style=flat-square&logo=lua&logoColor=white&labelColor=1F2937)](https://luajit.org/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause%20%2F%20MIT-F59E0B?style=flat-square&labelColor=1F2937)](./LICENSE)
 

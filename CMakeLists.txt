@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(AegisubQT VERSION 4.0.0 LANGUAGES C CXX)
+project(AegisubQT VERSION 4.0.1 LANGUAGES C CXX)
 
 # Enable Windows Resource Compiler only on Windows (.rc files are platform-specific).
 if(WIN32)

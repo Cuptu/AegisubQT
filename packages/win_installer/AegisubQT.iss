@@ -11,7 +11,7 @@
 #define StagingDir "..\..\build\installer-staging"
 #endif
 #ifndef Version
-#define Version "4.0.0"
+#define Version "4.0.1"
 #endif
 #ifndef SourceRoot
 #define SourceRoot "..\.."
