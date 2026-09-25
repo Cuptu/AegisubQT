@@ -21,11 +21,11 @@ bin/
 !assets/bin/
 !assets/bin/AstraCore.Native.dll
 
-# CMake generated
+# CMake generated (root only; vendored luajit ships its own Makefiles)
 CMakeCache.txt
 CMakeFiles/
 cmake_install.cmake
-Makefile
+/Makefile
 *.ninja
 .ninja_*
 

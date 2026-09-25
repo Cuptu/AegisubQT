@@ -1,1 +1,4 @@
 vmdef.lua
+# AegisubQT: ship vmdef.lua (required by the jit module at runtime on the
+# prebuilt-Windows path where make never runs to regenerate it).
+!vmdef.lua

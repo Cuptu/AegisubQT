@@ -1,5 +1,8 @@
 luajit
 luajit.h
+# AegisubQT: Windows builds use the prebuilt lua51.lib and never run make,
+# so the generated version header must ship with the repo.
+!luajit.h
 luajit_relver.txt
 lj_bcdef.h
 lj_ffdef.h
