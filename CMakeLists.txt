@@ -113,6 +113,37 @@ qt6_add_shaders(AegisubQT "aegisub_shaders_frag"
         shaders/spectrogram.frag
 )
 
+# LuaJIT: Discover source from subprojects/luajit, vendor/luajit, or fallback to FetchContent
+set(LUAJIT_SRC_DIR "")
+foreach(_candidate_dir
+    "${CMAKE_CURRENT_SOURCE_DIR}/subprojects/luajit"
+    "${CMAKE_CURRENT_SOURCE_DIR}/vendor/luajit"
+    "${CMAKE_CURRENT_SOURCE_DIR}/luajit"
+)
+    if(EXISTS "${_candidate_dir}/src/luaconf.h")
+        set(LUAJIT_SRC_DIR "${_candidate_dir}")
+        message(STATUS "Found local LuaJIT source at: ${LUAJIT_SRC_DIR}")
+        break()
+    endif()
+endforeach()
+
+if(NOT LUAJIT_SRC_DIR)
+    message(STATUS "Local LuaJIT source not found; retrieving via FetchContent...")
+    include(FetchContent)
+    FetchContent_Declare(
+        luajit_repo
+        GIT_REPOSITORY https://github.com/LuaJIT/LuaJIT.git
+        GIT_TAG        v2.1
+        GIT_SHALLOW    TRUE
+    )
+    FetchContent_GetProperties(luajit_repo)
+    if(NOT luajit_repo_POPULATED)
+        FetchContent_Populate(luajit_repo)
+    endif()
+    set(LUAJIT_SRC_DIR "${luajit_repo_SOURCE_DIR}")
+endif()
+set(LUAJIT_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/luajit-build")
+
 target_include_directories(AegisubQT PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/src/audio
@@ -120,7 +151,8 @@ target_include_directories(AegisubQT PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge
     ${CMAKE_CURRENT_SOURCE_DIR}/src/model
     ${CMAKE_CURRENT_SOURCE_DIR}/src/automation
-    ${CMAKE_CURRENT_SOURCE_DIR}/luajit/src
+    ${LUAJIT_BUILD_DIR}/src
+    ${LUAJIT_SRC_DIR}/src
     ${CMAKE_CURRENT_SOURCE_DIR}/libaegisub/include
 )
 
@@ -139,17 +171,48 @@ if(APPLE)
     )
 endif()
 
-# LuaJIT: Windows uses in-tree prebuilt lua51.lib;
-# POSIX platforms build static library from source via LuaJIT makefile.
+# Hermetic out-of-tree build: compile LuaJIT into CMAKE_CURRENT_BINARY_DIR.
+set(LUAJIT_BUILD_DIR "${CMAKE_CURRENT_BINARY_DIR}/luajit-build")
+include(ExternalProject)
+
 if(WIN32)
-    add_library(luajit STATIC IMPORTED GLOBAL)
-    set_target_properties(luajit PROPERTIES
-        IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/lua51.lib"
+    set(LUAJIT_STATIC_LIB "${LUAJIT_BUILD_DIR}/src/lua51.lib")
+    if(CMAKE_BUILD_TYPE STREQUAL "Debug")
+        set(LUAJIT_BUILD_ARGS "debug static")
+    else()
+        set(LUAJIT_BUILD_ARGS "static")
+    endif()
+
+    set(LUAJIT_VCVARS_LINE "")
+    if(NOT DEFINED ENV{INCLUDE} AND CMAKE_C_COMPILER)
+        get_filename_component(_vc_tools_dir "${CMAKE_C_COMPILER}" DIRECTORY)
+        get_filename_component(_vc_root "${_vc_tools_dir}/../../../../.." ABSOLUTE)
+        set(_vcvarsall "${_vc_root}/Auxiliary/Build/vcvarsall.bat")
+        if(EXISTS "${_vcvarsall}")
+            if(CMAKE_SIZEOF_VOID_P EQUAL 8)
+                set(LUAJIT_VCVARS_LINE "call \"${_vcvarsall}\" x64\r\n")
+            else()
+                set(LUAJIT_VCVARS_LINE "call \"${_vcvarsall}\" x86\r\n")
+            endif()
+        endif()
+    endif()
+
+    set(LUAJIT_BATCH_FILE "${CMAKE_CURRENT_BINARY_DIR}/build_luajit.bat")
+    file(GENERATE OUTPUT "${LUAJIT_BATCH_FILE}"
+        CONTENT "@echo off\r\n${LUAJIT_VCVARS_LINE}cd /d \"${LUAJIT_BUILD_DIR}/src\" || exit /b 1\r\ncall msvcbuild.bat ${LUAJIT_BUILD_ARGS}\r\nexit /b %ERRORLEVEL%\r\n"
+    )
+
+    ExternalProject_Add(luajit_build
+        SOURCE_DIR "${LUAJIT_SRC_DIR}"
+        DOWNLOAD_COMMAND ""
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory "${LUAJIT_SRC_DIR}" "${LUAJIT_BUILD_DIR}"
+        BUILD_COMMAND cmd.exe /c "${LUAJIT_BATCH_FILE}"
+        BUILD_IN_SOURCE 0
+        INSTALL_COMMAND ""
+        BUILD_BYPRODUCTS "${LUAJIT_STATIC_LIB}"
     )
 else()
-    include(ExternalProject)
-    # LuaJIT's Makefile hard-errors on macOS unless MACOSX_DEPLOYMENT_TARGET is
-    # exported, so always provide one (11.0 = oldest macOS supported by Qt 6.8).
+    set(LUAJIT_STATIC_LIB "${LUAJIT_BUILD_DIR}/src/libluajit.a")
     if(APPLE)
         if(NOT CMAKE_OSX_DEPLOYMENT_TARGET)
             set(AEGISUB_LUAJIT_DEPLOYMENT_TARGET "11.0")
@@ -157,24 +220,28 @@ else()
             set(AEGISUB_LUAJIT_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}")
         endif()
         set(AEGISUB_LUAJIT_BUILD_COMMAND
-            ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${AEGISUB_LUAJIT_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>)
+            ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${AEGISUB_LUAJIT_DEPLOYMENT_TARGET}" make -C "${LUAJIT_BUILD_DIR}")
     else()
-        set(AEGISUB_LUAJIT_BUILD_COMMAND make -C <SOURCE_DIR>)
+        set(AEGISUB_LUAJIT_BUILD_COMMAND make -C "${LUAJIT_BUILD_DIR}")
     endif()
+
     ExternalProject_Add(luajit_build
-        SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luajit"
-        CONFIGURE_COMMAND ""
+        SOURCE_DIR "${LUAJIT_SRC_DIR}"
+        DOWNLOAD_COMMAND ""
+        CONFIGURE_COMMAND ${CMAKE_COMMAND} -E copy_directory "${LUAJIT_SRC_DIR}" "${LUAJIT_BUILD_DIR}"
         BUILD_COMMAND ${AEGISUB_LUAJIT_BUILD_COMMAND}
-        BUILD_IN_SOURCE 1
+        BUILD_IN_SOURCE 0
         INSTALL_COMMAND ""
-        BUILD_BYPRODUCTS "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/libluajit.a"
+        BUILD_BYPRODUCTS "${LUAJIT_STATIC_LIB}"
     )
-    add_library(luajit STATIC IMPORTED GLOBAL)
-    set_target_properties(luajit PROPERTIES
-        IMPORTED_LOCATION "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/libluajit.a"
-    )
-    add_dependencies(luajit luajit_build)
 endif()
+
+add_library(luajit STATIC IMPORTED GLOBAL)
+set_target_properties(luajit PROPERTIES
+    IMPORTED_LOCATION "${LUAJIT_STATIC_LIB}"
+)
+add_dependencies(luajit luajit_build)
+add_dependencies(AegisubQT luajit_build)
 
 target_link_libraries(AegisubQT PRIVATE
     Qt6::Core
