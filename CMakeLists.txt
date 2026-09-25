@@ -148,11 +148,16 @@ if(WIN32)
     )
 else()
     include(ExternalProject)
-    # Only forward MACOSX_DEPLOYMENT_TARGET when set: an empty value would
-    # override LuaJIT's own default and trip the clang deployment-target check.
-    if(CMAKE_OSX_DEPLOYMENT_TARGET)
+    # LuaJIT's Makefile hard-errors on macOS unless MACOSX_DEPLOYMENT_TARGET is
+    # exported, so always provide one (11.0 = oldest macOS supported by Qt 6.8).
+    if(APPLE)
+        if(NOT CMAKE_OSX_DEPLOYMENT_TARGET)
+            set(AEGISUB_LUAJIT_DEPLOYMENT_TARGET "11.0")
+        else()
+            set(AEGISUB_LUAJIT_DEPLOYMENT_TARGET "${CMAKE_OSX_DEPLOYMENT_TARGET}")
+        endif()
         set(AEGISUB_LUAJIT_BUILD_COMMAND
-            ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>)
+            ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${AEGISUB_LUAJIT_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>)
     else()
         set(AEGISUB_LUAJIT_BUILD_COMMAND make -C <SOURCE_DIR>)
     endif()
@@ -210,6 +215,7 @@ set(AEGISUB_POST_BUILD_COMMANDS
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/qml"
         $<TARGET_FILE_DIR:AegisubQT>/qml
+    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:AegisubQT>/locale
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${AEGISUB_QM_FILES}
         $<TARGET_FILE_DIR:AegisubQT>/locale

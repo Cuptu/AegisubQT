@@ -48,7 +48,9 @@ header_variant parse_ycbcr_header(std::string const& matrix) {
     if (CM == ycbcr_matrix::Unspecified || CR == ycbcr_range::Unspecified)
         return header_invalid{};
 
-    return header_colorspace(CM, CR);
+    // Brace-init: parenthesized aggregate initialization (P0960) is not
+    // implemented by Apple clang 15, unlike MSVC/GCC.
+    return header_colorspace{CM, CR};
 }
 
 } // anonymous namespace
