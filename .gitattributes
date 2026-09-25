@@ -1,0 +1,27 @@
+# Language detection overrides (GitHub Linguist)
+# Retain only C, Lua, QML, and C++ in repository language statistics.
+
+# Packaging & installer definitions
+packages/** linguist-detectable=false
+*.iss linguist-detectable=false
+*.isl linguist-detectable=false
+
+# Build systems & auxiliary scripts
+Makefile linguist-detectable=false
+makefile linguist-detectable=false
+*.mk linguist-detectable=false
+CMakeLists.txt linguist-detectable=false
+*.cmake linguist-detectable=false
+*.bat linguist-detectable=false
+*.cmd linguist-detectable=false
+*.ps1 linguist-detectable=false
+
+# Automation scripts & utilities
+*.moon linguist-detectable=false
+*.js linguist-detectable=false
+
+# Hardware shaders
+shaders/** linguist-detectable=false
+*.vert linguist-detectable=false
+*.frag linguist-detectable=false
+*.glsl linguist-detectable=false
