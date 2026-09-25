@@ -195,3 +195,13 @@ install(DIRECTORY qml assets automation locale
 if(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll" DESTINATION bin)
 endif()
+
+# Linux desktop integration: application launcher entry and hicolor icon.
+if(UNIX AND NOT APPLE)
+    install(FILES packaging/AegisubQT.desktop DESTINATION share/applications)
+    install(FILES assets/branding/icon_64.png
+        DESTINATION share/icons/hicolor/64x64/apps
+        RENAME AegisubQT.png
+    )
+endif()
+

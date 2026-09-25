@@ -125,7 +125,7 @@ Item {
             DialogDummyVideo {
                 onDummyVideoCreated: (w, h, col, fpsVal, frameCount, checker) => {
                     if (manager.videoCtrl) manager.videoCtrl.openDummyVideo(fpsVal, frameCount, w, h, col);
-                    manager.statusMessage("已生成虚拟视频 (" + w + "×" + h + "@" + fpsVal + "fps)");
+                    manager.statusMessage(qsTr("已生成虚拟视频 (") + w + "×" + h + "@" + fpsVal + "fps)");
                 }
             }
         }
@@ -185,7 +185,7 @@ Item {
                             nativeSubtitleModel.setStyle(_dlgStyleEditor.styleIndex, styleData);
                         }
                     }
-                    manager.statusMessage("样式 [" + styleData.name + "] 已更新");
+                    manager.statusMessage(qsTr("样式 [") + styleData.name + qsTr("] 已更新"));
                 }
                 onOpenColorPickerRequested: (propName, col) => {
                     _dlgColorPicker.targetProp = "style_" + propName;
@@ -226,7 +226,7 @@ Item {
                 onStyleApplied: (styleName) => {
                     if (manager.project.currentSelectedIndex >= 0 && manager.project.currentSelectedIndex < manager.project.subtitleModel.count) {
                         manager.project.subtitleModel.setProperty(manager.project.currentSelectedIndex, "style", styleName);
-                        manager.statusMessage("已为行 #" + (manager.project.currentSelectedIndex + 1) + " 应用样式: " + styleName);
+                        manager.statusMessage(qsTr("已为行 #") + (manager.project.currentSelectedIndex + 1) + qsTr(" 应用样式: ") + styleName);
                     }
                 }
                 onPrevRequested: manager.project.selectRow(Math.max(0, manager.project.currentSelectedIndex - 1), false, false)
@@ -264,7 +264,7 @@ Item {
                 currentColor: _dlgColorPicker.currentColor
                 onDropperActivated: {
                     _dlgColorPicker.dropperActivated();
-                    manager.statusMessage("吸色滴管已激活 (点击视频画面任意位置取色)");
+                    manager.statusMessage(qsTr("吸色滴管已激活 (点击视频画面任意位置取色)"));
                 }
                 onColorSelected: (col) => {
                     _dlgColorPicker.colorSelected(col);
@@ -315,7 +315,7 @@ Item {
                     }
                     var rx = dstW / srcW;
                     var ry = dstH / srcH;
-                    manager.statusMessage("已完成分辨率重采样: " + srcW + "x" + srcH + " ➔ " + dstW + "x" + dstH + " (X: " + rx.toFixed(2) + ", Y: " + ry.toFixed(2) + ")");
+                    manager.statusMessage(qsTr("已完成分辨率重采样: ") + srcW + "x" + srcH + " ➔ " + dstW + "x" + dstH + " (X: " + rx.toFixed(2) + ", Y: " + ry.toFixed(2) + ")");
                 }
             }
         }
@@ -329,7 +329,7 @@ Item {
                 project: manager.project
                 videoCtrl: manager.videoCtrl
                 onPropertiesUpdated: (title, orig, trans, resX, resY, wrapStyle, matrix) => {
-                    manager.statusMessage("已更新脚本工程属性 (PlayRes: " + resX + "×" + resY + ", YCbCr: " + matrix + ")");
+                    manager.statusMessage(qsTr("已更新脚本工程属性 (PlayRes: ") + resX + "×" + resY + ", YCbCr: " + matrix + ")");
                 }
             }
         }
@@ -372,7 +372,7 @@ Item {
                     if (manager.project.subtitleModel.count === 0 || manager.project.currentSelectedIndex < 0) return;
                     if (text.length > 0) {
                         manager.project.subtitleModel.setProperty(manager.project.currentSelectedIndex, "text", text);
-                        manager.statusMessage("行 #" + (manager.project.currentSelectedIndex + 1) + " 译文已提交");
+                        manager.statusMessage(qsTr("行 #") + (manager.project.currentSelectedIndex + 1) + qsTr(" 译文已提交"));
                     }
                     if (autoNext && manager.project.currentSelectedIndex < manager.project.subtitleModel.count - 1) {
                         manager.project.selectRow(manager.project.currentSelectedIndex + 1, false, false);
@@ -402,7 +402,7 @@ Item {
                 fps: (manager.videoCtrl && manager.videoCtrl.fps > 0) ? manager.videoCtrl.fps : 23.976
                 onJumpRequested: (frame, timeStr, timeSec) => {
                     if (manager.videoCtrl) manager.videoCtrl.seekTime(timeSec);
-                    manager.statusMessage("已跳转至帧 #" + frame + " (" + timeStr + ")");
+                    manager.statusMessage(qsTr("已跳转至帧 #") + frame + " (" + timeStr + ")");
                 }
             }
         }
@@ -414,7 +414,7 @@ Item {
         sourceComponent: Component {
             DialogFontsCollector {
                 onStatusMessage: (msg) => manager.statusMessage(msg)
-                onBrowseDirectoryRequested: manager.statusMessage("选择导出字体目录...")
+                onBrowseDirectoryRequested: manager.statusMessage(qsTr("选择导出字体目录..."))
             }
         }
     }
@@ -438,7 +438,7 @@ Item {
         sourceComponent: Component {
             DialogPreferences {
                 currentPageIndex: _dlgPreferences.currentPageIndex
-                onPreferencesSaved: manager.statusMessage("首选项配置已更新保存")
+                onPreferencesSaved: manager.statusMessage(qsTr("首选项配置已更新保存"))
             }
         }
 
@@ -458,7 +458,7 @@ Item {
             DialogLanguage {
                 onLanguageSelected: (langCode) => {
                     if (typeof languageManager !== "undefined" && languageManager) {
-                        manager.statusMessage("语言已切换: " + languageManager.getDisplayName(langCode));
+                        manager.statusMessage(qsTr("语言已切换: ") + languageManager.getDisplayName(langCode));
                     }
                 }
             }
@@ -506,10 +506,10 @@ Item {
                     manager.project.findAndReplace(origWord, newWord, { matchCase: true, field: "text" }, replaceAll);
                 }
                 onIgnoreRequested: (origWord, ignoreAll) => {
-                    manager.statusMessage("已忽略单词: " + origWord);
+                    manager.statusMessage(qsTr("已忽略单词: ") + origWord);
                 }
                 onAddWordRequested: (word) => {
-                    manager.statusMessage("已将单词 [" + word + "] 加入用户词典");
+                    manager.statusMessage(qsTr("已将单词 [") + word + qsTr("] 加入用户词典"));
                 }
             }
         }
@@ -557,7 +557,7 @@ Item {
         sourceComponent: Component {
             DialogAutosave {
                 onRestoreAutosaveRequested: (path) => {
-                    manager.statusMessage("已恢复工程快照: " + path);
+                    manager.statusMessage(qsTr("已恢复工程快照: ") + path);
                 }
                 onStatusMessage: (msg) => manager.statusMessage(msg)
             }

@@ -628,7 +628,7 @@ ApplicationWindow {
             }
         }
         function onCommitRequested(desc) {
-            root.statusMsgText = "视觉排版提交: " + desc;
+            root.statusMsgText = qsTr("视觉排版提交: ") + desc;
         }
     }
 
@@ -722,7 +722,7 @@ ApplicationWindow {
         if (hasValidFile) {
             subProject.saveSubtitles(subProject.currentFileName);
             // 原版 subs_controller.cpp:250 陷阱语义：
-            // 保存失败（仍 modified）等效于"取消退出"，字幕绝不丢失
+            // 保存失败（仍 modified）等效于qsTr("取消退出")，字幕绝不丢失
             if (!subProject.isModified) {
                 var act = pendingAction;
                 var dat = pendingActionData;
@@ -734,7 +734,7 @@ ApplicationWindow {
                 pendingActionData = null;
             }
         } else {
-            // 无文件名：弹另存为；用户在另存为对话框中取消同样等效于"取消退出"
+            // 无文件名：弹另存为；用户在另存为对话框中取消同样等效于qsTr("取消退出")
             fileDialogSubSave.open();
         }
     }
@@ -756,7 +756,7 @@ ApplicationWindow {
     function createAudioClip() {
         if (subProject.subtitleModel.count === 0) return;
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
-        root.statusMsgText = "已为行 #" + it.lineNumber + " 创建音频剪辑";
+        root.statusMsgText = qsTr("已为行 #") + it.lineNumber + qsTr(" 创建音频剪辑");
     }
 
     function jumpToLineStart() {
@@ -764,7 +764,7 @@ ApplicationWindow {
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
         var sMs = AssUtils.assToMs(it.start);
         videoController.seekTime(sMs / 1000.0);
-        root.statusMsgText = "已跳转至当前行开始时间: " + it.start;
+        root.statusMsgText = qsTr("已跳转至当前行开始时间: ") + it.start;
     }
 
     function jumpToLineEnd() {
@@ -772,14 +772,14 @@ ApplicationWindow {
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
         var eMs = AssUtils.assToMs(it.end);
         videoController.seekTime(eMs / 1000.0);
-        root.statusMsgText = "已跳转至当前行结束时间: " + it.end;
+        root.statusMsgText = qsTr("已跳转至当前行结束时间: ") + it.end;
     }
 
     function cycleTagHiding() {
         tagHidingMode = (tagHidingMode + 1) % 3;
         subProject.tagHidingMode = tagHidingMode;
-        var modes = ["显示全部 ASS 标签", "简化 ASS 标签 (❚)", "完全隐藏 ASS 标签"];
-        root.statusMsgText = "ASS 标签显示模式: " + modes[tagHidingMode];
+        var modes = [qsTr("显示全部 ASS 标签"), qsTr("简化 ASS 标签 (❚)"), qsTr("完全隐藏 ASS 标签")];
+        root.statusMsgText = qsTr("ASS 标签显示模式: ") + modes[tagHidingMode];
     }
 
     // Handles dropped URLs or file paths by routing to corresponding controllers

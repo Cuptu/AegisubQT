@@ -74,7 +74,7 @@ MenuBar {
         Action {
             text: qsTr("Open Subtitles from &Video"); icon.source: "../../assets/icons_native/open_toolbutton_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage("从视频中打开字幕...")
+            onTriggered: menuBarRoot.statusMessage(qsTr("从视频中打开字幕..."))
         }
         Action { text: qsTr("Open &Autosaved Subtitles..."); icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: if (dialogs) dialogs.dlgAutosave.open() }
         Action {
@@ -85,11 +85,6 @@ MenuBar {
         }
         Action { text: qsTr("Save Subtitles &as...") + "\tCtrl+Shift+S"; icon.source: "../../assets/icons_native/save_as_toolbutton_16.png"; onTriggered: menuBarRoot.saveSubtitlesAsRequested() }
         Action { text: qsTr("&Export Subtitles..."); icon.source: "../../assets/icons_native/export_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgExport.open() }
-        NativeMenu {
-            title: qsTr("Recent &Subtitles")
-            enabled: false
-            Action { text: qsTr("No recent files"); enabled: false }
-        }
         NativeMenuSep {}
         Action { text: qsTr("&Properties..."); icon.source: "../../assets/icons_native/properties_toolbutton_16.png"; onTriggered: if (dialogs) dialogs.dlgProperties.open() }
         Action { text: qsTr("&Attachments..."); icon.source: "../../assets/icons_native/attach_button_16.png"; onTriggered: if (dialogs) dialogs.dlgAttachments.open() }
@@ -218,7 +213,7 @@ MenuBar {
         }
         Action {
             text: qsTr("Split by Karaoke"); enabled: !!(menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
-            onTriggered: menuBarRoot.statusMessage("按卡拉OK音节分割行")
+            onTriggered: menuBarRoot.statusMessage(qsTr("按卡拉OK音节分割行"))
         }
         NativeMenuSep {}
         NativeMenu {
@@ -303,13 +298,8 @@ MenuBar {
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
             onTriggered: {
                 if (menuBarRoot.videoCtrl) menuBarRoot.videoCtrl.closeVideo();
-                menuBarRoot.statusMessage("已关闭视频");
+                menuBarRoot.statusMessage(qsTr("已关闭视频"));
             }
-        }
-        NativeMenu {
-            title: qsTr("Recent &Videos")
-            enabled: false
-            Action { text: qsTr("No recent files"); enabled: false }
         }
         Action { text: qsTr("Use &Dummy Video..."); icon.source: "../../assets/icons_native/use_dummy_video_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgDummyVideo.open() }
         Action {
@@ -332,11 +322,6 @@ MenuBar {
                 menuBarRoot.statusMessage(qsTr("已关闭时间码文件"));
             }
         }
-        NativeMenu {
-            title: qsTr("Recent &Timecodes")
-            enabled: false
-            Action { text: qsTr("No recent files"); enabled: false }
-        }
         NativeMenuSep {}
         Action { text: qsTr("Open Keyframes..."); icon.source: "../../assets/icons_native/open_keyframes_menu_16.png"; onTriggered: menuBarRoot.openKeyframesRequested() }
         Action {
@@ -352,23 +337,18 @@ MenuBar {
                 menuBarRoot.statusMessage(qsTr("已关闭关键帧"));
             }
         }
-        NativeMenu {
-            title: qsTr("Recent &Keyframes")
-            enabled: false
-            Action { text: qsTr("No recent files"); enabled: false }
-        }
         NativeMenuSep {}
         Action {
             text: qsTr("Detach &Video"); icon.source: "../../assets/icons_native/detach_video_menu_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage("拆分视频窗口")
+            onTriggered: menuBarRoot.statusMessage(qsTr("拆分视频窗口"))
         }
         NativeMenu {
             title: qsTr("Set &Zoom")
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            Action { text: "&50%"; onTriggered: menuBarRoot.statusMessage("视频缩放 50%") }
-            Action { text: "&100%"; onTriggered: menuBarRoot.statusMessage("视频缩放 100%") }
-            Action { text: "&200%"; onTriggered: menuBarRoot.statusMessage("视频缩放 200%") }
+            Action { text: "&50%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 50%")) }
+            Action { text: "&100%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 100%")) }
+            Action { text: "&200%"; onTriggered: menuBarRoot.statusMessage(qsTr("视频缩放 200%")) }
         }
         NativeMenu {
             title: qsTr("Override &Aspect Ratio")
@@ -381,7 +361,7 @@ MenuBar {
         }
         Action {
             text: qsTr("Show &Overscan Mask"); enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.statusMessage("切换过扫描遮罩")
+            onTriggered: menuBarRoot.statusMessage(qsTr("切换过扫描遮罩"))
         }
         Action {
             text: qsTr("Reset Video &Pan")
@@ -437,13 +417,8 @@ MenuBar {
             enabled: !!(menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.hasAudio)
             onTriggered: {
                 if (menuBarRoot.audioCtrl) menuBarRoot.audioCtrl.closeAudio();
-                menuBarRoot.statusMessage("已关闭音频");
+                menuBarRoot.statusMessage(qsTr("已关闭音频"));
             }
-        }
-        NativeMenu {
-            title: qsTr("Recent &Audio")
-            enabled: false
-            Action { text: qsTr("No recent files"); enabled: false }
         }
         NativeMenuSep {}
         Action {
@@ -451,7 +426,7 @@ MenuBar {
             onTriggered: {
                 if (menuBarRoot.audioCtrl) {
                     menuBarRoot.audioCtrl.waveformMode = false;
-                    menuBarRoot.statusMessage("音频视图切换为: 频谱");
+                    menuBarRoot.statusMessage(qsTr("音频视图切换为: 频谱"));
                 }
             }
         }
@@ -460,7 +435,7 @@ MenuBar {
             onTriggered: {
                 if (menuBarRoot.audioCtrl) {
                     menuBarRoot.audioCtrl.waveformMode = true;
-                    menuBarRoot.statusMessage("音频视图切换为: 波形");
+                    menuBarRoot.statusMessage(qsTr("音频视图切换为: 波形"));
                 }
             }
         }
@@ -476,7 +451,7 @@ MenuBar {
         Action {
             text: qsTr("&Reload Automation Scripts"); onTriggered: {
                 if (typeof automationManager !== "undefined") automationManager.reloadAll();
-                menuBarRoot.statusMessage("已重新载入所有自动化脚本");
+                menuBarRoot.statusMessage(qsTr("已重新载入所有自动化脚本"));
             }
         }
         NativeMenuSep {}
@@ -536,7 +511,7 @@ MenuBar {
         NativeMenuSep {}
         Action {
             text: qsTr("Toggle &Toolbar")
-            onTriggered: menuBarRoot.statusMessage("开启和关闭主工具栏")
+            onTriggered: menuBarRoot.statusMessage(qsTr("开启和关闭主工具栏"))
         }
     }
 

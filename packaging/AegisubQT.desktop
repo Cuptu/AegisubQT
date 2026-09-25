@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=AegisubQT
+GenericName=Subtitle Editor
+Comment=Create and modify ASS/SSA subtitles with audio timing and video preview
+Comment[zh_CN]=创建与编辑 ASS/SSA 字幕，支持音频打轴与视频预览
+Exec=AegisubQT %F
+Icon=AegisubQT
+MimeType=application/x-subtitle;text/x-microdvd;text/x-ssa;application/x-ass;video/mp4;video/x-matroska;
+Categories=AudioVideo;AudioVideoEditing;Video;
+Keywords=subtitle;captions;timing;karaoke;ass;ssa;
+Terminal=false
+StartupWMClass=AegisubQT
