@@ -668,7 +668,7 @@ Item {
             AudioBtn {
                 iconSrc: "../../assets/icons_native/button_leadout_16.png"
                 tipText: qsTr("Add the lead out time to the selected lines") + " (V)"
-                // 默认 100/350 取自原版 Audio/Lead/IN 与 Audio/Lead/OUT，可在偏好设置里改
+                // Default 100/350 ms originates from upstream Audio/Lead/IN and Audio/Lead/OUT preferences
                 onClicked: { if (audioController) audioController.leadOut(audioController.leadOutMs); }
             }
 
@@ -679,8 +679,8 @@ Item {
             AudioBtn {
                 iconSrc: "../../assets/icons_native/button_audio_commit_16.png"
                 tipText: qsTr("Commit any pending audio timing changes") + " (G / Enter)"
-                // autoNext 跳行由 C++ AudioController::commit 统一发出 nextLineRequested，
-                // 按钮与键盘快捷键行为一致，QML 不再重复实现
+                // Line advancement is triggered by C++ AudioController::commit via nextLineRequested signal,
+                // ensuring identical behavior between UI buttons and keyboard hotkeys without duplicate QML logic
                 onClicked: { if (audioController) audioController.commit(); }
             }
             AudioBtn {

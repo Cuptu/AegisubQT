@@ -692,7 +692,7 @@ ApplicationWindow {
 
     Connections {
         target: typeof audioController !== "undefined" ? audioController : null
-        // commit + autoNext 的统一入口（按钮与快捷键行为一致，C++ 端发出）
+        // Unified entry point for commit + autoNext (consistent between UI buttons and hotkeys, emitted from C++)
         function onNextLineRequested() { subProject.selectRow(subProject.currentSelectedIndex + 1, false, false); }
         function onAudioError(msg) { root.statusMsgText = msg; }
     }
@@ -719,8 +719,8 @@ ApplicationWindow {
         target: typeof videoController !== "undefined" ? videoController : null
         function onVideoInfoChanged() {
             if (videoController && videoController.hasVideo && videoController.videoWidth > 0) {
-                // 原版不做自适应猜测档位：窗口缩放固定取 Video/Default Zoom（默认 100%），
-                // 视频框尺寸 = 视频尺寸 × 窗口缩放，贴着面板左上角放置。
+                // Upstream does not guess adaptive zooms: window zoom adheres to Video/Default Zoom (default 100%),
+                // sizing the video box to video dimensions multiplied by window zoom, aligned to panel top-left.
                 if (typeof videoDisplayController !== "undefined") {
                     root.videoBoxWidth = Math.min(root.width - 380, Math.max(380, Math.round(videoDisplayController.preferredBoxWidth)));
                     root.topRowHeight = Math.min(root.height - 220, Math.max(260, Math.round(videoDisplayController.preferredBoxHeight)));
@@ -769,7 +769,7 @@ ApplicationWindow {
     // Subtitle save confirmation coordinator workflow
     function confirmSaveAndProceed(action, data) {
         if (subProject.isModified) {
-            // 原版 frame_main.cpp:315-316：弹确认框前先停止音视频播放
+            // Upstream frame_main.cpp:315-316: stop audio/video playback before displaying confirmation dialog
             if (typeof audioController !== "undefined" && audioController) audioController.stop();
             if (typeof videoController !== "undefined" && videoController) videoController.pause();
             pendingAction = action;
@@ -804,8 +804,8 @@ ApplicationWindow {
                            subProject.currentFileName !== "Untitled";
         if (hasValidFile) {
             subProject.saveSubtitles(subProject.currentFileName);
-            // 原版 subs_controller.cpp:250 陷阱语义：
-            // 保存失败（仍 modified）等效于取消退出，字幕绝不丢失
+            // Upstream subs_controller.cpp:250 invariant:
+            // Save failure (still modified) is treated as cancelling the exit, preventing subtitle data loss.
             if (!subProject.isModified) {
                 var act = pendingAction;
                 var dat = pendingActionData;
@@ -817,7 +817,7 @@ ApplicationWindow {
                 pendingActionData = null;
             }
         } else {
-            // 无文件名：弹另存为；用户在另存为对话框中取消同样等效于取消退出
+            // No existing file name: open Save As dialog; cancelling the dialog likewise cancels the pending action.
             fileDialogSubSave.open();
         }
     }

@@ -24,9 +24,9 @@ NativeDialogFrame {
         { name: qsTr("End Time"), key: "end", checked: false },
         { name: qsTr("Style"), key: "style", checked: false },
         { name: qsTr("Actor"), key: "actor", checked: false },
-        { name: qsTr("Margin Left"), key: "margin_l", checked: false },
-        { name: qsTr("Margin Right"), key: "margin_r", checked: false },
-        { name: qsTr("Margin Vertical"), key: "margin_v", checked: false },
+        { name: qsTr("Margin Left"), key: "marginLeft", checked: false },
+        { name: qsTr("Margin Right"), key: "marginRight", checked: false },
+        { name: qsTr("Margin Vertical"), key: "marginVert", checked: false },
         { name: qsTr("Effect"), key: "effect", checked: false },
         { name: qsTr("Text"), key: "text", checked: true }
     ]

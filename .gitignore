@@ -62,4 +62,5 @@ Desktop.ini
 # AI assistant workspaces
 .trae/
 .claude/
+.local/
 

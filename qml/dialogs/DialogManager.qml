@@ -478,7 +478,7 @@ Item {
             DialogSearchReplace {
                 hasReplace: _dlgSearchReplace.hasReplace
                 onFindRequested: (query, options) => {
-                    manager.project.findAndReplace(query, undefined, options, false);
+                    manager.project.findNext(query, options);
                 }
                 onReplaceRequested: (query, replaceWith, options) => {
                     manager.project.findAndReplace(query, replaceWith, options, false);

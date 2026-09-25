@@ -36,7 +36,6 @@ NativeDialogFrame {
     function acceptCurrent() {
         dialog.commitTranslation(txtTrans.text);
         dialog.commitRequested(txtTrans.text, true);
-        dialog.nextRequested();
     }
 
     function insertOriginal() {

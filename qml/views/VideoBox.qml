@@ -186,8 +186,8 @@ Item {
                 id: videoDisplayArea
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                // 原版视频显示窗口的 OpenGL 清屏色是透明黑（video_out_gl.cpp glClearColor(0,0,0,0)），
-                // 视频框以外的留白露出的是面板底色，不是黑边。
+                // Upstream video display OpenGL clear color is transparent black (video_out_gl.cpp glClearColor(0,0,0,0));
+                // blank area beyond the video frame exposes panel background, not artificial letterboxing.
                 color: videoBox.winBg
                 clip: true
 
@@ -208,13 +208,13 @@ Item {
                     visible: videoController && videoController.hasVideo
                     clip: true
 
-                    // 直接以场景图纹理渲染当前帧：帧到达由渲染线程上传纹理，
-                    // 不再经过 QQuickImageProvider + Image 的每帧 URL 变更同步加载。
+                    // Render current frame directly via scene graph texture: frame uploads happen on the render thread,
+                    // avoiding synchronous URL reloads through QQuickImageProvider + Image on every seek/step.
                     VideoSurface {
                         anchors.fill: parent
                         controller: typeof videoController !== "undefined" ? videoController : null
-                        // 与原 Image 的条件保持一致：MediaPlayer 未接管画面时由纹理直连渲染
-                        visible: !videoController.isDummy && videoController.hasVideo
+                        // Consistent with fallback image condition: render directly via texture when MediaPlayer is inactive
+                        visible: videoController && !videoController.isDummy && videoController.hasVideo
                                  && (!mediaVideoPlayer.hasVideo || mediaVideoPlayer.playbackState === MediaPlayer.StoppedState)
                     }
 
@@ -1164,7 +1164,7 @@ Item {
         Item {
             id: videoSlider
             Layout.fillWidth: true
-            // 原版 VideoSlider 的客户区尺寸是 20x25（video_slider.cpp:60）
+            // Upstream VideoSlider client dimensions are 20x25 (video_slider.cpp:60)
             implicitHeight: 25
 
             property int val: videoController.currentFrame
@@ -1206,16 +1206,16 @@ Item {
                     var w = width;
                     var h = height;
 
-                    // 系统色：wxSYS_COLOUR_3DFACE / 3DDKSHADOW / 3DLIGHT
+                    // System colors: wxSYS_COLOUR_3DFACE / 3DDKSHADOW / 3DLIGHT
                     var face = videoBox.winBg;
                     var shad = "#696969";
                     var high = "#e3e3e3";
 
-                    // 背景：整个客户区填 3DFACE
+                    // Background: fill entire client rect with 3DFACE
                     ctx.fillStyle = face;
                     ctx.fillRect(0, 0, w, h);
 
-                    // 获得焦点时整圈 1px 点线（原版 wxPENSTYLE_DOT + 3DDKSHADOW）
+                    // Focused state: 1px dotted outline around perimeter (upstream wxPENSTYLE_DOT + 3DDKSHADOW)
                     if (videoSlider.hasFocus) {
                         ctx.strokeStyle = shad;
                         ctx.lineWidth = 1;
@@ -1229,7 +1229,7 @@ Item {
                     var y1 = 8;
                     var y2 = h - 8;
 
-                    // 1. 关键帧刻度：3DDKSHADOW，位于滑轨上方 y=2..8（原版 video_slider.cpp:221-227）
+                    // 1. Keyframe ticks: 3DDKSHADOW, located above the slider track at y=2..8 (upstream video_slider.cpp:221-227)
                     if (videoController && videoController.keyframeList && videoController.keyframeList.length > 0) {
                         ctx.fillStyle = shad;
                         for (var i = 0; i < videoController.keyframeList.length; i++) {
@@ -1238,7 +1238,7 @@ Item {
                         }
                     }
 
-                    // 2. 滑轨：1px 3D 凹陷方框，只描边不填充（上/左暗，下/右亮）
+                    // 2. Track: 1px sunken 3D rect outline without fill (top/left dark, bottom/right light)
                     ctx.fillStyle = shad;
                     ctx.fillRect(x1, y1, x2 - x1 + 1, 1);
                     ctx.fillRect(x1, y1, 1, y2 - y1 + 1);
@@ -1249,7 +1249,7 @@ Item {
             }
 
             // 2. Scene-graph positioned thumb cursor (zero Canvas repaints on frame ticks)
-            //    几何与配色严格对齐原版 OnPaint：先铺 3DFACE 底，再画 highlights / shades / 黑色描边
+            //    Geometry and palette aligned with upstream OnPaint: fill 3DFACE base, then draw highlights / shades / black outline
             Item {
                 id: sliderThumb
                 width: 9
@@ -1278,11 +1278,11 @@ Item {
                         var face = videoBox.winBg;
                         var shad = "#696969";
                         var high = "#e3e3e3";
-                        var sel = "#7bfbe8";       // 焦点高亮青
-                        var notSel = "#31645c";    // 非焦点：sel 的 2/5 暗色
+                        var sel = "#7bfbe8";       // Focused highlight cyan
+                        var notSel = "#31645c";    // Unfocused: 2/5 darkness of sel
                         var bord = "#000000";
 
-                        // 游标底：rect(curX-2, y1-1, 4, y2-y1+5)
+                        // Thumb body: rect(curX-2, y1-1, 4, y2-y1+5)
                         ctx.fillStyle = face;
                         ctx.fillRect(2, 2, 4, 14);
 
@@ -1293,19 +1293,19 @@ Item {
                             ctx.stroke();
                         };
 
-                        // highlights（3DLIGHT）
+                        // Highlights (3DLIGHT)
                         ctx.strokeStyle = high;
                         ctx.lineWidth = 1;
                         line(4, 1, 0, 5);
                         ctx.fillRect(1, 5, 1, 13);
 
-                        // shades（3DDKSHADOW）
+                        // Shades (3DDKSHADOW)
                         ctx.strokeStyle = shad;
                         line(5, 2, 8, 5);
                         ctx.fillRect(7, 5, 1, 13);
                         ctx.fillRect(1, 16, 7, 1);
 
-                        // outline（黑）
+                        // Outline (black)
                         ctx.strokeStyle = bord;
                         line(4, 0, 0, 4);
                         line(4, 0, 8, 4);
@@ -1314,7 +1314,7 @@ Item {
                         ctx.fillRect(1, 17, 8, 1);
                         ctx.fillRect(1, 12, 8, 1);
 
-                        // 底部选区块：rect(curX-3, y2+1, 7, 4)
+                        // Bottom selection notch: rect(curX-3, y2+1, 7, 4)
                         ctx.fillStyle = videoSlider.hasFocus ? sel : notSel;
                         ctx.fillRect(1, 13, 7, 4);
                     }
@@ -1327,12 +1327,12 @@ Item {
                 preventStealing: true
                 hoverEnabled: true
 
-                // 原版：Shift 点击吸附到最近关键帧（video_slider.cpp:126-137）
+                // Upstream: Shift-click snaps to closest keyframe (video_slider.cpp:126-137)
                 function snapToKeyframe(frame) {
-                    if (!videoController.keyframeList || videoController.keyframeList.length === 0)
+                    if (!videoController || !videoController.keyframeList || videoController.keyframeList.length === 0)
                         return frame;
                     var kfs = videoController.keyframeList;
-                    // 关键帧表按帧号升序，找第一个 >= frame 的项，再和它的前一项比谁更近
+                    // Keyframes are sorted ascending; find first keyframe >= frame, then compare distances with preceding keyframe
                     var lo = 0, hi = kfs.length - 1, pos = kfs.length;
                     while (lo <= hi) {
                         var mid = (lo + hi) >> 1;
@@ -1340,12 +1340,12 @@ Item {
                         else { pos = mid; hi = mid - 1; }
                     }
                     if (pos === kfs.length) return kfs[kfs.length - 1];
-                    if (pos + 1 < kfs.length && (frame - kfs[pos]) > (kfs[pos + 1] - frame))
-                        return kfs[pos + 1];
+                    if (pos > 0 && (kfs[pos] - frame) > (frame - kfs[pos - 1]))
+                        return kfs[pos - 1];
                     return kfs[pos];
                 }
 
-                // 原版：Shift 滚轮按关键帧步进（video_slider.cpp:148-155）
+                // Upstream: Shift-wheel steps by keyframe (video_slider.cpp:148-155)
                 function stepKeyframe(dir) {
                     var kfs = videoController.keyframeList;
                     if (!kfs || kfs.length === 0) return;
@@ -1366,7 +1366,7 @@ Item {
                         videoController.pause();
                     }
                     videoSlider.hasFocus = true;
-                    // 拖动期间按低分辨率解码，松手补全尺寸（见 setScrubbing）
+                    // Decode at lower preview resolution during drag scrub, restore full size on release (see setScrubbing)
                     videoController.setScrubbing(true);
                     var target = videoSlider.getValueAtX(mouse.x);
                     if (mouse.modifiers & Qt.ShiftModifier) target = snapToKeyframe(target);
@@ -1545,7 +1545,7 @@ Item {
                 Text {
                     anchors.fill: parent
                     anchors.leftMargin: 6
-                    text: videoController.relativeTimeString
+                    text: videoController ? videoController.relativeTimeString : ""
                     font.pixelSize: 12
                     font.family: uiTheme.uiFont
                     renderType: Text.NativeRendering
@@ -1573,7 +1573,7 @@ Item {
                 model: ["Fit", "12.5%", "25%", "37.5%", "50%", "62.5%", "75%", "87.5%", "100%",
                         "112.5%", "125%", "137.5%", "150%", "162.5%", "175%", "187.5%", "200%",
                         "212.5%", "225%", "237.5%", "250%", "262.5%", "275%", "287.5%", "300%"]
-                // 初值跟随控制器；Fit = 自适应视口（默认档）
+                // Initial value tracks controller; Fit = adapt to viewport (default)
                 currentIndex: (typeof videoDisplayController !== "undefined" && videoDisplayController)
                               ? Math.max(0, model.indexOf(videoDisplayController.zoomText)) : 0
 
@@ -1586,9 +1586,8 @@ Item {
                     videoBox.zoomApplied(z);
                 }
 
-                // 只在用户主动选档（onActivated）时回写控制器；程序侧的同步
-                // （Fit 比例更新、窗口缩放变化）不能反过来推给控制器，
-                // 否则会把 Fit 状态顶成显式档位。
+                // Only write back to controller on explicit user selection (onActivated); programmatic sync
+                // (Fit ratio updates, window resize) must not overwrite controller state, preserving Fit mode.
 
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Video zoom")
