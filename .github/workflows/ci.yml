@@ -22,7 +22,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.8.*"
-          modules: qtshadertools qtmultimedia qttools
+          modules: qtshadertools qtmultimedia
 
       - name: Setup build tools (Linux)
         if: runner.os == 'Linux'

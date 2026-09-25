@@ -1,4 +1,4 @@
-name: Release
+﻿name: Release
 
 on:
   push:
@@ -24,7 +24,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.8.*"
-          modules: qtshadertools qtmultimedia qttools
+          modules: qtshadertools qtmultimedia
           cache: true
 
       - name: Setup MSVC toolchain
@@ -72,7 +72,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.8.*"
-          modules: qtshadertools qtmultimedia qttools
+          modules: qtshadertools qtmultimedia
           cache: true
 
       - name: Setup build tools
@@ -140,7 +140,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.8.*"
-          modules: qtshadertools qtmultimedia qttools
+          modules: qtshadertools qtmultimedia
           cache: true
 
       - name: Configure
