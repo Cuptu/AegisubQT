@@ -60,8 +60,11 @@ if (!$windeployqt) {
     $qtBin = Split-Path (Split-Path (Get-ChildItem "$BuildRoot\CMakeCache.txt" -ErrorAction SilentlyContinue) -Parent) -Parent
     throw "windeployqt.exe not found on PATH"
 }
-& $windeployqt --release --compiler-runtime --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
+& $windeployqt --release --compiler-runtime --no-opengl-sw --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
+
+# Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.
+Remove-Item -Path (Join-Path $StagingDir "vc_redist*.exe") -Force -ErrorAction SilentlyContinue
 
 # --compiler-runtime normally copies the MSVC CRT next to the app; verify and
 # fall back to a manual redist copy for toolchains that cannot locate it.

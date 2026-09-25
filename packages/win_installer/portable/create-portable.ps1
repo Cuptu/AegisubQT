@@ -49,8 +49,11 @@ $windeployqt = (Get-Command windeployqt.exe -ErrorAction SilentlyContinue).Sourc
 if (!$windeployqt) {
     throw "windeployqt.exe not found on PATH"
 }
-& $windeployqt --release --compiler-runtime --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
+& $windeployqt --release --compiler-runtime --no-opengl-sw --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
+
+# Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.
+Remove-Item -Path (Join-Path $StagingDir "vc_redist*.exe") -Force -ErrorAction SilentlyContinue
 
 $needed = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll")
 $missing = @($needed | Where-Object { !(Test-Path (Join-Path $StagingDir $_)) })
