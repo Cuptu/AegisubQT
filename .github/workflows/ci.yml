@@ -21,7 +21,7 @@ jobs:
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
-          version: "6.8.*"
+          version: "6.11.2"
           modules: qtshadertools qtmultimedia
 
       - name: Setup build tools (Linux)
@@ -78,6 +78,15 @@ jobs:
           path: |
             build/AegisubQT.exe
             build/*.dll
+            build/platforms/
+            build/imageformats/
+            build/iconengines/
+            build/generic/
+            build/tls/
+            build/multimedia/
+            build/networkinformation/
+            build/translations/
+            build/qmltooling/
             build/qml/
             build/assets/
             build/automation/
