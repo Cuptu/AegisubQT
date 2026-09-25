@@ -30,6 +30,8 @@
 #include "LuaTextExtents.h"
 
 #ifdef _WIN32
+// Prevent windows.h min/max macros from polluting identifiers in this TU.
+#define NOMINMAX
 #include <windows.h>
 #else
 #include <QFont>

@@ -2,6 +2,8 @@
 *.so
 *.obj
 *.lib
+# AegisubQT: ship the prebuilt MSVC static LuaJIT library referenced by CMakeLists.txt.
+!lua51.lib
 *.exp
 *.pdb
 *.dll

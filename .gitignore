@@ -16,6 +16,11 @@ bin/
 *.ilk
 *.exp
 
+# AegisubQT optional native runtime component shipped with the repo
+# (must re-include the directory first: `bin/` above excludes it).
+!assets/bin/
+!assets/bin/AstraCore.Native.dll
+
 # CMake generated
 CMakeCache.txt
 CMakeFiles/
@@ -33,6 +38,7 @@ ui_*.h
 .qt/
 .qmlc/
 .jsc/
+*.qm
 
 # Visual Studio & IDEs
 .vs/

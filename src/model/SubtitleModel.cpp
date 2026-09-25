@@ -6,6 +6,7 @@
 #include <libaegisub/ass/time.h>
 #include <QRegularExpression>
 #include <QFile>
+#include <QSaveFile>
 #include <QTextStream>
 #include <QStringConverter>
 #include <QUrl>
@@ -776,8 +777,11 @@ bool SubtitleModel::loadFromFile(const QString &filePath) {
 }
 
 bool SubtitleModel::serializeDocument(const QString &target) const {
-    QFile file(target);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+    // QSaveFile writes to a temp file then atomically renames on commit:
+    // a crash mid-write never corrupts the document, and on Windows the
+    // replace succeeds even when another process holds the old file open.
+    QSaveFile file(target);
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         return false;
     }
 
@@ -850,8 +854,11 @@ bool SubtitleModel::serializeDocument(const QString &target) const {
         }
     }
 
-    file.close();
-    return true;
+    out.flush();
+    if (out.status() != QTextStream::Ok) {
+        return false;
+    }
+    return file.commit();
 }
 
 bool SubtitleModel::saveToFile(const QString &filePath) {
@@ -870,7 +877,7 @@ bool SubtitleModel::saveToFile(const QString &filePath) {
 }
 
 bool SubtitleModel::saveBackup(bool autosaveKind) {
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     const QString key = autosaveKind ? QStringLiteral("Autosave/Path") : QStringLiteral("Backup/Path");
     const QString fallback = autosaveKind ? QStringLiteral("?user/autosave") : QStringLiteral("?user/autobackup");
     QString dirPath = AegisubCoreBridge::resolveUserPath(settings.value(key, fallback).toString());

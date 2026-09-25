@@ -73,6 +73,8 @@ QString LanguageManager::findQmPath(const QString &langCode) const {
     const QStringList candidates = {
         QCoreApplication::applicationDirPath() + "/locale/" + fileName,
         QCoreApplication::applicationDirPath() + "/../locale/" + fileName,
+        QCoreApplication::applicationDirPath() + "/../share/AegisubQT/locale/" + fileName,
+        QCoreApplication::applicationDirPath() + "/../Resources/locale/" + fileName,
         QDir::current().filePath("locale/" + fileName),
         ":/locale/" + fileName
     };
@@ -86,7 +88,7 @@ QString LanguageManager::findQmPath(const QString &langCode) const {
 }
 
 void LanguageManager::initLocale() {
-    QSettings settings("Aegisub", "Aegisub");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "Aegisub", "Aegisub");
     QString savedLang = settings.value("App/Language").toString();
 
     if (savedLang.isEmpty()) {
@@ -138,7 +140,7 @@ void LanguageManager::setLanguage(const QString &langCode) {
     }
 
     // Persist selection
-    QSettings settings("Aegisub", "Aegisub");
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, "Aegisub", "Aegisub");
     settings.setValue("App/Language", m_currentLanguage);
 
     // Retranslate all QML bindings live

@@ -317,12 +317,12 @@ bool AegisubCoreBridge::copyImageFileToClipboard(const QString &imagePath) {
 }
 
 void AegisubCoreBridge::setSetting(const QString &key, const QVariant &value) {
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     settings.setValue(key, value);
 }
 
 QVariant AegisubCoreBridge::getSetting(const QString &key, const QVariant &defaultValue) {
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     return settings.value(key, defaultValue);
 }
 
@@ -348,7 +348,7 @@ QVariantList AegisubCoreBridge::listBackupFiles() {
     };
 
     for (const auto &src : sources) {
-        QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+        QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
         QString dirPath = settings.value(src.settingsKey, src.fallback).toString();
         dirPath = resolveUserPath(dirPath);
 
@@ -369,6 +369,15 @@ QVariantList AegisubCoreBridge::listBackupFiles() {
 
 QString AegisubCoreBridge::extractSubtitlesFromVideo(const QString &videoPath)
 {
+    // Lazily purge extraction temp files older than a day; successful extractions
+    // enter the MRU flow and are expected to be saved elsewhere by the user.
+    const qint64 staleCutoff = QDateTime::currentDateTime().addDays(-1).toMSecsSinceEpoch();
+    for (const QFileInfo &stale : QDir(QDir::temp()).entryInfoList(
+             { QStringLiteral("aegisubqt_subs_*.ass") }, QDir::Files)) {
+        if (stale.lastModified().toMSecsSinceEpoch() < staleCutoff)
+            QFile::remove(stale.absoluteFilePath());
+    }
+
     QString localPath = videoPath;
     if (localPath.startsWith(QStringLiteral("file:///"))) {
         localPath = QUrl(videoPath).toLocalFile();

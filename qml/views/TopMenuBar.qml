@@ -53,17 +53,17 @@ MenuBar {
                     var rel = JSON.parse(xhr.responseText);
                     var remote = (rel.tag_name || "").replace(/^v/i, "");
                     if (remote && remote !== "4.0.0") {
-                        menuBarRoot.statusMessage(qsTr("发现新版本 %1，正在打开发布页...").arg(remote));
+                        menuBarRoot.statusMessage(qsTr("New version %1 found, opening release page...").arg(remote));
                         Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/releases/latest");
                     } else {
-                        menuBarRoot.statusMessage(qsTr("当前已是最新版本 (4.0.0)"));
+                        menuBarRoot.statusMessage(qsTr("Already running the latest version (4.0.0)"));
                     }
                     return;
                 } catch (e) {
                     // fall through to the failure message
                 }
             }
-            menuBarRoot.statusMessage(qsTr("检查更新失败: 无法访问 GitHub Releases"));
+            menuBarRoot.statusMessage(qsTr("Update check failed: cannot access GitHub Releases"));
         };
         xhr.open("GET", "https://api.github.com/repos/Cuptu/AegisubQT/releases/latest");
         xhr.send();
@@ -116,7 +116,7 @@ MenuBar {
                 if (extracted) {
                     menuBarRoot.openRecentFileRequested("subtitles", extracted);
                 } else {
-                    menuBarRoot.statusMessage(qsTr("从视频提取字幕失败 (需要 ffmpeg 且容器需包含字幕轨)"));
+                    menuBarRoot.statusMessage(qsTr("Failed to extract subtitles from video (requires ffmpeg and a subtitle track in the container)"));
                 }
             }
         }
@@ -130,7 +130,7 @@ MenuBar {
                 onObjectRemoved: (index, object) => recentSubsMenu.removeAction(object)
                 delegate: Action {
                     text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
-                          : (modelData + qsTr(" (缺失)"))
+                          : (modelData + qsTr(" (missing)"))
                     enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
                     onTriggered: menuBarRoot.openRecentFileRequested("subtitles", modelData)
                 }
@@ -366,7 +366,7 @@ MenuBar {
                 onObjectRemoved: (index, object) => recentVideoMenu.removeAction(object)
                 delegate: Action {
                     text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
-                          : (modelData + qsTr(" (缺失)"))
+                          : (modelData + qsTr(" (missing)"))
                     enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
                     onTriggered: menuBarRoot.openRecentFileRequested("video", modelData)
                 }
@@ -382,7 +382,7 @@ MenuBar {
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
             onTriggered: {
                 if (menuBarRoot.videoCtrl) menuBarRoot.videoCtrl.closeVideo();
-                menuBarRoot.statusMessage(qsTr("已关闭视频"));
+                menuBarRoot.statusMessage(qsTr("Video closed"));
             }
         }
         Action { text: qsTr("Use &Dummy Video..."); icon.source: "../../assets/icons_native/use_dummy_video_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgDummyVideo.open() }
@@ -403,7 +403,7 @@ MenuBar {
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasTimecodes)
             onTriggered: {
                 if (menuBarRoot.videoCtrl) menuBarRoot.videoCtrl.closeTimecodesFile();
-                menuBarRoot.statusMessage(qsTr("已关闭时间码文件"));
+                menuBarRoot.statusMessage(qsTr("Timecode file closed"));
             }
         }
         NativeMenu {
@@ -415,7 +415,7 @@ MenuBar {
                 onObjectRemoved: (index, object) => recentTimecodesMenu.removeAction(object)
                 delegate: Action {
                     text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
-                          : (modelData + qsTr(" (缺失)"))
+                          : (modelData + qsTr(" (missing)"))
                     enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
                     onTriggered: menuBarRoot.openRecentFileRequested("timecodes", modelData)
                 }
@@ -438,7 +438,7 @@ MenuBar {
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasCustomKeyframes)
             onTriggered: {
                 if (menuBarRoot.videoCtrl) menuBarRoot.videoCtrl.closeKeyframes();
-                menuBarRoot.statusMessage(qsTr("已关闭关键帧"));
+                menuBarRoot.statusMessage(qsTr("Keyframes closed"));
             }
         }
         NativeMenu {
@@ -450,7 +450,7 @@ MenuBar {
                 onObjectRemoved: (index, object) => recentKeyframesMenu.removeAction(object)
                 delegate: Action {
                     text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
-                          : (modelData + qsTr(" (缺失)"))
+                          : (modelData + qsTr(" (missing)"))
                     enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
                     onTriggered: menuBarRoot.openRecentFileRequested("keyframes", modelData)
                 }
@@ -578,9 +578,9 @@ MenuBar {
                 if (menuBarRoot.audioCtrl) {
                     var ok = menuBarRoot.audioCtrl.openAudioFromVideo(menuBarRoot.videoCtrl ? menuBarRoot.videoCtrl.videoPath : "");
                     if (ok) {
-                        menuBarRoot.statusMessage(qsTr("已从当前视频提取音频并加载"));
+                        menuBarRoot.statusMessage(qsTr("Audio extracted from the current video and loaded"));
                     } else {
-                        menuBarRoot.statusMessage(qsTr("提取视频音频失败"));
+                        menuBarRoot.statusMessage(qsTr("Failed to extract audio from video"));
                     }
                 }
             }
@@ -590,7 +590,7 @@ MenuBar {
             enabled: !!(menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.hasAudio)
             onTriggered: {
                 if (menuBarRoot.audioCtrl) menuBarRoot.audioCtrl.closeAudio();
-                menuBarRoot.statusMessage(qsTr("已关闭音频"));
+                menuBarRoot.statusMessage(qsTr("Audio closed"));
             }
         }
         NativeMenu {
@@ -602,7 +602,7 @@ MenuBar {
                 onObjectRemoved: (index, object) => recentAudioMenu.removeAction(object)
                 delegate: Action {
                     text: (typeof recentFiles !== "undefined" && recentFiles.exists(modelData)) ? modelData
-                          : (modelData + qsTr(" (缺失)"))
+                          : (modelData + qsTr(" (missing)"))
                     enabled: (typeof recentFiles !== "undefined") ? recentFiles.exists(modelData) : false
                     onTriggered: menuBarRoot.openRecentFileRequested("audio", modelData)
                 }
@@ -619,7 +619,7 @@ MenuBar {
             onTriggered: {
                 if (menuBarRoot.audioCtrl) {
                     menuBarRoot.audioCtrl.waveformMode = false;
-                    menuBarRoot.statusMessage(qsTr("音频视图切换为: 频谱"));
+                    menuBarRoot.statusMessage(qsTr("Audio view switched to: spectrum"));
                 }
             }
         }
@@ -628,7 +628,7 @@ MenuBar {
             onTriggered: {
                 if (menuBarRoot.audioCtrl) {
                     menuBarRoot.audioCtrl.waveformMode = true;
-                    menuBarRoot.statusMessage(qsTr("音频视图切换为: 波形"));
+                    menuBarRoot.statusMessage(qsTr("Audio view switched to: waveform"));
                 }
             }
         }
@@ -636,7 +636,7 @@ MenuBar {
             text: qsTr("Open 2h30 Blank Audio")
             onTriggered: {
                 if (menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.openBlankAudio()) {
-                    menuBarRoot.statusMessage(qsTr("已加载2小时30分空白音频 (虚拟合成)"));
+                    menuBarRoot.statusMessage(qsTr("Loaded 2h30m blank audio (virtually synthesised)"));
                 }
             }
         }
@@ -644,7 +644,7 @@ MenuBar {
             text: qsTr("Open 2h30 Noise Audio")
             onTriggered: {
                 if (menuBarRoot.audioCtrl && menuBarRoot.audioCtrl.openNoiseAudio()) {
-                    menuBarRoot.statusMessage(qsTr("已加载2小时30分白噪声音频 (虚拟合成)"));
+                    menuBarRoot.statusMessage(qsTr("Loaded 2h30m white noise audio (virtually synthesised)"));
                 }
             }
         }
@@ -658,7 +658,7 @@ MenuBar {
         Action {
             text: qsTr("&Reload Automation Scripts"); onTriggered: {
                 if (typeof automationManager !== "undefined") automationManager.reloadAll();
-                menuBarRoot.statusMessage(qsTr("已重新载入所有自动化脚本"));
+                menuBarRoot.statusMessage(qsTr("Reloaded all automation scripts"));
             }
         }
         NativeMenuSep {}
@@ -773,7 +773,7 @@ MenuBar {
             anchors.margins: 10
             spacing: 8
             Text {
-                text: qsTr("输入自定义宽高比 (宽/高):")
+                text: qsTr("Enter a custom aspect ratio (width/height):")
                 font.pixelSize: 12
                 font.family: uiTheme.uiFont
             }
@@ -792,7 +792,7 @@ MenuBar {
                         var ar = parseFloat(arCustomInput.text);
                         if (!isNaN(ar) && ar > 0.05 && menuBarRoot.videoDisplayCtrl) {
                             menuBarRoot.videoDisplayCtrl.setArOverride(ar);
-                            menuBarRoot.statusMessage(qsTr("宽高比已覆盖为 %1").arg(ar.toFixed(3)));
+                            menuBarRoot.statusMessage(qsTr("Aspect ratio overridden to %1").arg(ar.toFixed(3)));
                         }
                         arCustomPopup.close();
                     }

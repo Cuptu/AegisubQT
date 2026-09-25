@@ -19,7 +19,7 @@ QString RecentFilesManager::groupFor(const QString &type) const
 
 QStringList RecentFilesManager::entries(const QString &type) const
 {
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     return settings.value(groupFor(type)).toStringList();
 }
 
@@ -27,7 +27,7 @@ void RecentFilesManager::add(const QString &type, const QString &path)
 {
     if (type.isEmpty() || path.isEmpty()) return;
 
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     QStringList list = settings.value(groupFor(type)).toStringList();
 
     // Normalize separators and deduplicate, newest first.
@@ -42,7 +42,7 @@ void RecentFilesManager::add(const QString &type, const QString &path)
 
 void RecentFilesManager::clear(const QString &type)
 {
-    QSettings settings(QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     settings.remove(groupFor(type));
     emit entriesChanged();
 }

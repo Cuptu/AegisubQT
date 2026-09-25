@@ -1,0 +1,188 @@
+name: Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    name: Windows (installer + portable)
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive version
+        id: ver
+        shell: bash
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.8.*"
+          modules: qtshadertools qtmultimedia qttools
+          cache: true
+
+      - name: Setup MSVC toolchain
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Setup Ninja and Inno Setup
+        run: choco install -y ninja innosetup
+
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${env:Qt6_DIR}"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Build installer
+        run: powershell -ExecutionPolicy Bypass -File packages/win_installer/build-installer.ps1 -Version "${{ steps.ver.outputs.version }}"
+
+      - name: Build portable zip
+        run: powershell -ExecutionPolicy Bypass -File packages/win_installer/portable/create-portable.ps1 -Version "${{ steps.ver.outputs.version }}"
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: build/AegisubQT-${{ steps.ver.outputs.version }}.exe
+
+      - name: Upload portable zip
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-portable
+          path: build/AegisubQT-${{ steps.ver.outputs.version }}-portable.zip
+
+  linux:
+    name: Linux (tar.xz)
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive version
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.8.*"
+          modules: qtshadertools qtmultimedia qttools
+          cache: true
+
+      - name: Setup build tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ninja-build
+
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Stage install tree
+        run: cmake --install build --prefix staging
+
+      - name: Create tarball
+        run: tar -C staging -cJf AegisubQT-${{ steps.ver.outputs.version }}.tar.xz bin share
+
+      - name: Upload tarball
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-tarball
+          path: AegisubQT-${{ steps.ver.outputs.version }}.tar.xz
+
+      # Self-contained AppImage: bundles the Qt runtime so end users do not need
+      # a matching system Qt. The tarball above remains for distro packagers.
+      - name: Install linuxdeploy tooling
+        run: |
+          wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-x86_64.AppImage -O linuxdeploy
+          wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/1-alpha-20240109-1/linuxdeploy-plugin-qt-x86_64.AppImage -O linuxdeploy-plugin-qt
+          chmod +x linuxdeploy linuxdeploy-plugin-qt
+
+      - name: Build AppImage
+        run: |
+          cmake --install build --prefix AppDir/usr
+          cp packaging/AegisubQT.desktop AppDir/AegisubQT.desktop
+          cp assets/branding/icon_64.png AppDir/AegisubQT.png
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          export LD_LIBRARY_PATH="$Qt6_DIR/lib:$LD_LIBRARY_PATH"
+          OUTPUT="AegisubQT-x86_64.AppImage" ./linuxdeploy --appdir AppDir \
+            --desktop-file AppDir/AegisubQT.desktop \
+            --icon-file AppDir/AegisubQT.png \
+            --plugin qt --output appimage
+          mv AegisubQT-x86_64.AppImage "AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage"
+
+      - name: Upload AppImage
+        uses: actions/upload-artifact@v4
+        with:
+          name: linux-appimage
+          path: AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage
+
+  macos:
+    name: macOS (dmg)
+    runs-on: macos-14
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Derive version
+        id: ver
+        run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Install Qt
+        uses: jurplel/install-qt-action@v4
+        with:
+          version: "6.8.*"
+          modules: qtshadertools qtmultimedia qttools
+          cache: true
+
+      - name: Configure
+        run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      # macdeployqt only deploys Qt modules; the app's own QML/assets/automation/
+      # locale payloads must be staged into Contents/Resources manually. main.cpp
+      # and LanguageManager both search the Resources layout.
+      - name: Stage app resources into bundle
+        run: |
+          mkdir -p build/AegisubQT.app/Contents/Resources
+          cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
+          mkdir -p build/AegisubQT.app/Contents/Resources/locale
+          cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
+
+      - name: Bundle and create dmg
+        run: |
+          macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -dmg
+          mv build/AegisubQT.dmg "AegisubQT-${{ steps.ver.outputs.version }}.dmg"
+
+      - name: Upload dmg
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-dmg
+          path: AegisubQT-${{ steps.ver.outputs.version }}.dmg
+
+  release:
+    name: Publish release assets
+    needs: [windows, linux, macos]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist
+          merge-multiple: true
+
+      - name: Publish GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          generate_release_notes: true
+          files: dist/*

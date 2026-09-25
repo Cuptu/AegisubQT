@@ -1,249 +1,191 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
 <TS version="2.1" language="fr_FR">
-    <extra-po-header-language>fr_FR</extra-po-header-language>
-    <extra-po-header-language_team>Céréales Killer &lt;cerkil@free.fr&gt;</extra-po-header-language_team>
-    <extra-po-header-last_translator>GundamGuy</extra-po-header-last_translator>
-    <extra-po-header-po_revision_date />
-    <extra-po-header-pot_creation_date>2026-07-25 16:15+0200</extra-po-header-pot_creation_date>
-    <extra-po-header-project_id_version>Aegisub 3.4.2</extra-po-header-project_id_version>
-    <extra-po-header-report_msgid_bugs_to />
-    <extra-po-header-x_generator>Poedit 3.9</extra-po-header-x_generator>
-    <extra-po-header-x_poedit_bookmarks>-1,596,-1,-1,-1,-1,-1,-1,-1,-1</extra-po-header-x_poedit_bookmarks>
-    <extra-po-header-x_poedit_sourcecharset>UTF-8</extra-po-header-x_poedit_sourcecharset>
-    <extra-po-headers>Project-Id-Version,Report-Msgid-Bugs-To,POT-Creation-Date,PO-Revision-Date,Last-Translator,Language-Team,Language,MIME-Version,Content-Type,Content-Transfer-Encoding,Plural-Forms,X-Poedit-SourceCharset,X-Poedit-Bookmarks,X-Generator</extra-po-headers>
 <context>
-    <name />
+    <name></name>
     <message>
-        <location filename="../src/aegisublocale.cpp" line="113" />
-        <location filename="../src/command/app.cpp" line="156" />
         <source>Language</source>
-        <translation>Langue</translation>
+        <translation type="vanished">Langue</translation>
     </message>
     <message>
-        <location filename="../src/aegisublocale.cpp" line="113" />
         <source>Please choose a language:</source>
-        <translation>Veuillez choisir une langue :</translation>
+        <translation type="vanished">Veuillez choisir une langue :</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="196" />
         <source>Auto-detect base direction (libass only)</source>
-        <translation>Détection automatique de l'orientation du texte (libass uniquement)</translation>
+        <translation type="vanished">Détection automatique de l&apos;orientation du texte (libass uniquement)</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="197" />
         <source>ANSI</source>
-        <translation>ANSI</translation>
+        <translation type="vanished">ANSI</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="198" />
-        <location filename="../src/command/video.cpp" line="144" />
-        <location filename="default_hotkey.json" line="109" />
         <source>Default</source>
-        <translation>Défaut</translation>
+        <translation type="vanished">Défaut</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="199" />
         <source>Symbol</source>
-        <translation>Symbole</translation>
+        <translation type="vanished">Symbole</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="200" />
         <source>Mac</source>
-        <translation>Mac</translation>
+        <translation type="vanished">Mac</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="201" />
         <source>Shift_JIS</source>
-        <translation>JIS décalé</translation>
+        <translation type="vanished">JIS décalé</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="202" />
         <source>Hangeul</source>
-        <translation>Coréen (hangeul)</translation>
+        <translation type="vanished">Coréen (hangeul)</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="203" />
         <source>Johab</source>
-        <translation>Coréen (johab)</translation>
+        <translation type="vanished">Coréen (johab)</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="204" />
         <source>GB2312</source>
-        <translation>GB2312</translation>
+        <translation type="vanished">GB2312</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="205" />
         <source>Chinese BIG5</source>
-        <translation>Chinois BIG5</translation>
+        <translation type="vanished">Chinois BIG5</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="206" />
         <source>Greek</source>
-        <translation>Grec</translation>
+        <translation type="vanished">Grec</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="207" />
         <source>Turkish</source>
-        <translation>Turc</translation>
+        <translation type="vanished">Turc</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="208" />
         <source>Vietnamese</source>
-        <translation>Vietnamien</translation>
+        <translation type="vanished">Vietnamien</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="209" />
         <source>Hebrew</source>
-        <translation>Hébreu</translation>
+        <translation type="vanished">Hébreu</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="210" />
         <source>Arabic</source>
-        <translation>Arabe</translation>
+        <translation type="vanished">Arabe</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="211" />
         <source>Baltic</source>
-        <translation>Balte</translation>
+        <translation type="vanished">Balte</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="212" />
         <source>Russian</source>
-        <translation>Russe</translation>
+        <translation type="vanished">Russe</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="213" />
         <source>Thai</source>
-        <translation>Thai</translation>
+        <translation type="vanished">Thai</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="214" />
         <source>East European</source>
-        <translation>Europe de l'Est</translation>
+        <translation type="vanished">Europe de l&apos;Est</translation>
     </message>
     <message>
-        <location filename="../src/ass_style.cpp" line="215" />
         <source>OEM</source>
-        <translation>OEM</translation>
+        <translation type="vanished">OEM</translation>
     </message>
     <message>
-        <location filename="../src/audio_box.cpp" line="73" />
         <source>Horizontal zoom</source>
-        <translation>Zoom horizontal</translation>
+        <translation type="vanished">Zoom horizontal</translation>
     </message>
     <message>
-        <location filename="../src/audio_box.cpp" line="74" />
         <source>Vertical zoom</source>
-        <translation>Zoom vertical</translation>
+        <translation type="vanished">Zoom vertical</translation>
     </message>
     <message>
-        <location filename="../src/audio_box.cpp" line="75" />
         <source>Audio Volume</source>
-        <translation>Volume audio</translation>
+        <translation type="vanished">Volume audio</translation>
     </message>
     <message>
-        <location filename="../src/audio_display.cpp" line="718" />
         <source>%d%%, %d pixel/second</source>
-        <translation>%d%%, %d pixels/seconde</translation>
+        <translation type="vanished">%d%%, %d pixels/seconde</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="67" />
         <source>Discard all uncommitted splits</source>
-        <translation>Annuler toutes les divisions non validées</translation>
+        <translation type="vanished">Annuler toutes les divisions non validées</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="71" />
         <source>Commit splits</source>
-        <translation>Valider les divisions</translation>
+        <translation type="vanished">Valider les divisions</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="234" />
         <source>Karaoke tag</source>
-        <translation>Balise karaoké</translation>
+        <translation type="vanished">Balise karaoké</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="237" />
         <source>Change karaoke tag to \k</source>
-        <translation>Remplacer la balise karaoké par \k</translation>
+        <translation type="vanished">Remplacer la balise karaoké par \k</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="238" />
         <source>Change karaoke tag to \kf</source>
-        <translation>Remplacer la balise karaoké par \kf</translation>
+        <translation type="vanished">Remplacer la balise karaoké par \kf</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="239" />
         <source>Change karaoke tag to \ko</source>
-        <translation>Remplacer la balise karaoké par \ko</translation>
+        <translation type="vanished">Remplacer la balise karaoké par \ko</translation>
     </message>
     <message>
-        <location filename="../src/audio_karaoke.cpp" line="414" />
         <source>karaoke split</source>
-        <translation>division karaoké</translation>
+        <translation type="vanished">division karaoké</translation>
     </message>
     <message>
-        <location filename="../src/audio_renderer_waveform.cpp" line="155" />
         <source>Maximum</source>
-        <translation>Maximum</translation>
+        <translation type="vanished">Maximum</translation>
     </message>
     <message>
-        <location filename="../src/audio_renderer_waveform.cpp" line="156" />
         <source>Maximum + Average</source>
-        <translation>Maximum + moyenne</translation>
+        <translation type="vanished">Maximum + moyenne</translation>
     </message>
     <message>
-        <location filename="../src/audio_timing_dialogue.cpp" line="514" />
-        <location filename="../src/audio_timing_dialogue.cpp" line="520" />
-        <location filename="../src/command/time.cpp" line="176" />
         <source>timing</source>
-        <translation>synchronisation</translation>
+        <translation type="vanished">synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/audio_timing_karaoke.cpp" line="240" />
         <source>karaoke timing</source>
-        <translation>temps karaoké</translation>
+        <translation type="vanished">temps karaoké</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="346" />
         <source>A script in the Automation autoload directory failed to load.
 Please review the errors, fix them and use the Rescan Autoload Dir button in Automation Manager to load the scripts again.</source>
-        <translation>Un script du dossier autoload des automatismes n'a pas pu être chargé.
-Veuillez vérifier les erreurs, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d'automatismes pour recharger les scripts.</translation>
+        <translation type="vanished">Un script du dossier autoload des automatismes n&apos;a pas pu être chargé.
+Veuillez vérifier les erreurs, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d&apos;automatismes pour recharger les scripts.</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="349" />
         <source>Multiple scripts in the Automation autoload directory failed to load.
 Please review the errors, fix them and use the Rescan Autoload Dir button in Automation Manager to load the scripts again.</source>
-        <translation>Plusieurs scripts du dossier autoload des automatismes n'ont pas pu être chargés.
-Veuillez vérifier les erreurs, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d'automatismes pour recharger les scripts.</translation>
+        <translation type="vanished">Plusieurs scripts du dossier autoload des automatismes n&apos;ont pas pu être chargés.
+Veuillez vérifier les erreurs, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d&apos;automatismes pour recharger les scripts.</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="352" />
         <source>A script in the Automation autoload directory loaded with warnings.
 Please review the warnings, fix them and use the Rescan Autoload Dir button in Automation Manager to load the scripts again.</source>
-        <translation>Un script du dossier autoload des automatismes a été chargé avec des avertissements.
-Veuillez vérifier les avertissements, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d'automatismes pour recharger les scripts.</translation>
+        <translation type="vanished">Un script du dossier autoload des automatismes a été chargé avec des avertissements.
+Veuillez vérifier les avertissements, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d&apos;automatismes pour recharger les scripts.</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="355" />
         <source>Multiple scripts in the Automation autoload directory loaded with warnings.
 Please review the warnings, fix them and use the Rescan Autoload Dir button in Automation Manager to load the scripts again.</source>
-        <translation>Plusieurs scripts du dossier autoload des automatismes ont été chargés avec des avertissements.
-Veuillez vérifier les avertissements, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d'automatismes pour recharger les scripts.</translation>
+        <translation type="vanished">Plusieurs scripts du dossier autoload des automatismes ont été chargés avec des avertissements.
+Veuillez vérifier les avertissements, les corriger et utiliser le bouton « Rescanner le dossier autoload » dans le Gestionnaire d&apos;automatismes pour recharger les scripts.</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="394" />
         <source>Automation Script referenced with unknown location specifier character.
 Location specifier found: %c
 Filename specified: %s</source>
-        <translation>Le script d'automatisme utilise un caractère invalide dans son chemin d'accès.
+        <translation type="vanished">Le script d&apos;automatisme utilise un caractère invalide dans son chemin d&apos;accès.
 Caractère en cause : %c
 Nom du fichier : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="412" />
         <source>The subtitle file you have opened contains local automation scripts. Do you want to load the associated automation scripts?
 
 List of scripts:
@@ -251,7 +193,7 @@ List of scripts:
 %s
 
 You should only load associated automation scripts if you trust their authors! They are not required to view or edit the subtitle file.</source>
-        <translation>Le fichier de sous-titres que vous avez ouvert contient des scripts d'automatisme locaux. Voulez-vous charger les scripts d'automatisme associés ?
+        <translation type="vanished">Le fichier de sous-titres que vous avez ouvert contient des scripts d&apos;automatisme locaux. Voulez-vous charger les scripts d&apos;automatisme associés ?
 
 Liste des scripts :
 
@@ -261,3610 +203,2689 @@ Vous ne devriez charger ces scripts que si vous faites confiance à leurs auteur
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="418" />
         <source>    %s (%s)</source>
-        <translation>    %s (%s)</translation>
+        <translation type="vanished">    %s (%s)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="419" />
         <source>Load associated automation scripts?</source>
-        <translation>Charger les scripts d'automatisme associés ?</translation>
+        <translation type="vanished">Charger les scripts d&apos;automatisme associés ?</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="422" />
         <source>No</source>
-        <translation>Non</translation>
+        <translation type="vanished">Non</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="422" />
         <source>Trust the authors &amp;&amp; load scripts</source>
-        <translation>Faire confiance aux auteurs et charger les scripts</translation>
+        <translation type="vanished">Faire confiance aux auteurs et charger les scripts</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="437" />
         <source>Automation Script referenced could not be found.
 Filename specified: %s
 Searched relative to: %s
 Resolved filename: %s</source>
-        <translation>Le script d'automatisme référencé est introuvable.
+        <translation type="vanished">Le script d&apos;automatisme référencé est introuvable.
 Nom du fichier : %s
 Recherché par rapport à : %s
 Fichier final recherché : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="498" />
-        <source>Failed to load Automation script '%s':
+        <source>Failed to load Automation script &apos;%s&apos;:
 %s</source>
-        <translation>Échec du chargement du script d'automatisme « %s » :
+        <translation type="vanished">Échec du chargement du script d&apos;automatisme « %s » :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="501" />
-        <source>Warning when loading Automation script '%s':
+        <source>Warning when loading Automation script &apos;%s&apos;:
 %s</source>
-        <translation>Avertissement lors du chargement du script d'automatisme « %s » :
+        <translation type="vanished">Avertissement lors du chargement du script d&apos;automatisme « %s » :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="508" />
         <source>The file was not recognised as an Automation script: %s</source>
-        <translation>Le fichier n'a pas été reconnu comme un script d'automatisme : %s</translation>
+        <translation type="vanished">Le fichier n&apos;a pas été reconnu comme un script d&apos;automatisme : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="537" />
-        <location filename="../src/command/audio.cpp" line="84" />
-        <location filename="../src/command/keyframe.cpp" line="76" />
-        <location filename="../src/command/timecode.cpp" line="73" />
-        <location filename="../src/command/timecode.cpp" line="93" />
-        <location filename="../src/command/video.cpp" line="592" />
         <source>All Files</source>
-        <translation>Tous les fichiers</translation>
+        <translation type="vanished">Tous les fichiers</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="543" />
-        <location filename="../src/command/keyframe.cpp" line="74" />
-        <location filename="../src/dialog_attachments.cpp" line="170" />
-        <location filename="../src/subtitle_format.cpp" line="318" />
         <source>All Supported Formats</source>
-        <translation>Tous les formats supportés</translation>
+        <translation type="vanished">Tous les formats supportés</translation>
     </message>
     <message>
-        <location filename="../src/auto4_base.cpp" line="549" />
         <source>File was not recognized as a script</source>
-        <translation>Le fichier n'a pas été reconnu en tant que script</translation>
+        <translation type="vanished">Le fichier n&apos;a pas été reconnu en tant que script</translation>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="180" />
-        <source>Warning in Automation script '%s':
+        <source>Warning in Automation script &apos;%s&apos;:
 %s</source>
-        <translation>Avertissement dans le script d'automatisme « %s » :
+        <translation type="vanished">Avertissement dans le script d&apos;automatisme « %s » :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="464" />
         <source>Could not initialize Lua state</source>
-        <translation>Impossible d'initialiser l'état Lua</translation>
+        <translation type="vanished">Impossible d&apos;initialiser l&apos;état Lua</translation>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="547" />
-        <source>Error initialising Lua script "%s":
+        <source>Error initialising Lua script &quot;%s&quot;:
 
 %s</source>
-        <translation>Erreur lors de l'initialisation du script Lua « %s » :
+        <translation type="vanished">Erreur lors de l&apos;initialisation du script Lua « %s » :
 
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="557" />
         <source>Attempted to load an Automation 3 script as an Automation 4 Lua script. Automation 3 is no longer supported.</source>
-        <translation>Tentative de chargement d'un script Automatisme 3 en tant que script Lua Automatisme 4. Automatisme 3 n'est plus pris en charge.</translation>
+        <translation type="vanished">Tentative de chargement d&apos;un script Automatisme 3 en tant que script Lua Automatisme 4. Automatisme 3 n&apos;est plus pris en charge.</translation>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="831" />
         <source>Runtime error in Lua macro validation function:
 %s</source>
-        <translation>Erreur d'exécution dans la fonction de validation de la macro Lua :
+        <translation type="vanished">Erreur d&apos;exécution dans la fonction de validation de la macro Lua :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="885" />
         <source>Active row %d is out of bounds (must be 1-%u)</source>
-        <translation>La ligne active %d est hors limites (elle doit être comprise entre 1 et %u)</translation>
+        <translation type="vanished">La ligne active %d est hors limites (elle doit être comprise entre 1 et %u)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="901" />
         <source>Selected row %d is out of bounds (must be 1-%u)</source>
-        <translation>La ligne sélectionnée %d est hors limites (elle doit être comprise entre 1 et %u)</translation>
+        <translation type="vanished">La ligne sélectionnée %d est hors limites (elle doit être comprise entre 1 et %u)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="907" />
         <source>Selected row %d is not a dialogue line</source>
-        <translation>La ligne sélectionnée %d n'est pas une ligne de dialogue</translation>
+        <translation type="vanished">La ligne sélectionnée %d n&apos;est pas une ligne de dialogue</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="973" />
         <source>Runtime error in Lua macro IsActive function:
 %s</source>
-        <translation>Erreur d'exécution dans la fonction IsActive de la macro Lua :
+        <translation type="vanished">Erreur d&apos;exécution dans la fonction IsActive de la macro Lua :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/auto4_lua.cpp" line="1079" />
         <source>Runtime error in Lua config dialog function:
 %s</source>
-        <translation>Erreur d'exécution dans la fonction de la boîte de dialogue de configuration Lua :
+        <translation type="vanished">Erreur d&apos;exécution dans la fonction de la boîte de dialogue de configuration Lua :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/charset_detect.cpp" line="50" />
         <source>Aegisub could not narrow down the character set to a single one.
 Please pick one below:</source>
-        <translation>Aegisub ne peut réduire le jeu de caractère à un seul.
+        <translation type="vanished">Aegisub ne peut réduire le jeu de caractère à un seul.
 Choisissez-en un ci-dessous :</translation>
     </message>
     <message>
-        <location filename="../src/charset_detect.cpp" line="51" />
         <source>Choose character set</source>
-        <translation>Choisir le jeu de caractères</translation>
+        <translation type="vanished">Choisir le jeu de caractères</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="56" />
         <source>&amp;About</source>
-        <translation>&amp;À propos</translation>
+        <translation type="vanished">&amp;À propos</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="57" />
         <source>About</source>
-        <translation>À propos</translation>
+        <translation type="vanished">À propos</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="58" />
-        <location filename="../src/dialog_about.cpp" line="44" />
         <source>About Aegisub</source>
-        <translation>À propos d'Aegisub</translation>
+        <translation type="vanished">À propos d&apos;Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="67" />
         <source>&amp;Audio+Subs View</source>
-        <translation>&amp;Affichage audio + sous-titres</translation>
+        <translation type="vanished">&amp;Affichage audio + sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="68" />
         <source>Audio+Subs View</source>
-        <translation>Affichage audio + sous-titres</translation>
+        <translation type="vanished">Affichage audio + sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="69" />
         <source>Display audio and the subtitles grid only</source>
-        <translation>Afficher uniquement l'audio et la grille des sous-titres</translation>
+        <translation type="vanished">Afficher uniquement l&apos;audio et la grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="87" />
         <source>&amp;Full view</source>
-        <translation>A&amp;ffichage complet</translation>
+        <translation type="vanished">A&amp;ffichage complet</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="88" />
         <source>Full view</source>
-        <translation>Affichage complet</translation>
+        <translation type="vanished">Affichage complet</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="89" />
         <source>Display audio, video and then subtitles grid</source>
-        <translation>Afficher audio, vidéo et la grille de sous-titres</translation>
+        <translation type="vanished">Afficher audio, vidéo et la grille de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="107" />
         <source>S&amp;ubs Only View</source>
-        <translation>Affichage des so&amp;us-titres seuls</translation>
+        <translation type="vanished">Affichage des so&amp;us-titres seuls</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="108" />
         <source>Subs Only View</source>
-        <translation>Affichage des sous-titres seuls</translation>
+        <translation type="vanished">Affichage des sous-titres seuls</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="109" />
         <source>Display the subtitles grid only</source>
-        <translation>Afficher uniquement la grille des sous-titres</translation>
+        <translation type="vanished">Afficher uniquement la grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="123" />
         <source>&amp;Video+Subs View</source>
-        <translation>Affichage &amp;vidéo + sous-titres</translation>
+        <translation type="vanished">Affichage &amp;vidéo + sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="124" />
         <source>Video+Subs View</source>
-        <translation>Affichage vidéo + sous-titres</translation>
+        <translation type="vanished">Affichage vidéo + sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="125" />
         <source>Display video and the subtitles grid only</source>
-        <translation>Afficher uniquement la vidéo et la grille des sous-titres</translation>
+        <translation type="vanished">Afficher uniquement la vidéo et la grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="143" />
         <source>E&amp;xit</source>
-        <translation>&amp;Quitter</translation>
+        <translation type="vanished">&amp;Quitter</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="144" />
         <source>Exit</source>
-        <translation>Sortie</translation>
+        <translation type="vanished">Sortie</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="145" />
         <source>Exit the application</source>
-        <translation>Quitter l'application</translation>
+        <translation type="vanished">Quitter l&apos;application</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="155" />
         <source>&amp;Language...</source>
-        <translation>&amp;Langue...</translation>
+        <translation type="vanished">&amp;Langue...</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="157" />
         <source>Select Aegisub interface language</source>
-        <translation>Choix de la langue d'interface d'Aegisub</translation>
+        <translation type="vanished">Choix de la langue d&apos;interface d&apos;Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="167" />
         <source>Aegisub needs to be restarted so that the new language can be applied. Restart now?</source>
-        <translation>Aegisub doit être redémarré pour que la nouvelle langue soit appliquée. Redémarrer maintenant ?</translation>
+        <translation type="vanished">Aegisub doit être redémarré pour que la nouvelle langue soit appliquée. Redémarrer maintenant ?</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="167" />
         <source>Restart Aegisub?</source>
-        <translation>Redémarrer Aegisub ?</translation>
+        <translation type="vanished">Redémarrer Aegisub ?</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="180" />
         <source>&amp;Log window</source>
-        <translation>Fenêtre d'&amp;historique</translation>
+        <translation type="vanished">Fenêtre d&apos;&amp;historique</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="181" />
-        <location filename="../src/dialog_log.cpp" line="100" />
         <source>Log window</source>
-        <translation>Fenêtre d'historique</translation>
+        <translation type="vanished">Fenêtre d&apos;historique</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="182" />
         <source>View the event log</source>
-        <translation>Voir l'historique des événements</translation>
+        <translation type="vanished">Voir l&apos;historique des événements</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="192" />
         <source>New &amp;Window</source>
-        <translation>Nou&amp;velle fenêtre</translation>
+        <translation type="vanished">Nou&amp;velle fenêtre</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="193" />
         <source>New Window</source>
-        <translation>Nouvelle fenêtre</translation>
+        <translation type="vanished">Nouvelle fenêtre</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="194" />
         <source>Open a new application window</source>
-        <translation>Ouvrir une nouvelle fenêtre du logiciel</translation>
+        <translation type="vanished">Ouvrir une nouvelle fenêtre du logiciel</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="204" />
         <source>&amp;Options...</source>
-        <translation>&amp;Options...</translation>
+        <translation type="vanished">&amp;Options...</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="205" />
-        <location filename="../src/dialog_properties.cpp" line="151" />
-        <location filename="../src/dialog_timing_processor.cpp" line="169" />
-        <location filename="../src/preferences.cpp" line="166" />
-        <location filename="../src/preferences.cpp" line="206" />
         <source>Options</source>
-        <translation>Options</translation>
+        <translation type="vanished">Options</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="206" />
         <source>Configure Aegisub</source>
-        <translation>Configurer Aegisub</translation>
+        <translation type="vanished">Configurer Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="220" />
-        <location filename="../src/command/app.cpp" line="221" />
         <source>Toggle global hotkey overrides</source>
-        <translation>Alterner entre les touches de raccourcis globales et modifiées</translation>
+        <translation type="vanished">Alterner entre les touches de raccourcis globales et modifiées</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="222" />
         <source>Toggle global hotkey overrides (Medusa Mode)</source>
-        <translation>Alterner entre les touches de raccourcis globales et modifiées (Mode Medusa)</translation>
+        <translation type="vanished">Alterner entre les touches de raccourcis globales et modifiées (Mode Medusa)</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="237" />
         <source>Toggle the main toolbar</source>
-        <translation>Alterner la barre d'outils principale</translation>
+        <translation type="vanished">Alterner la barre d&apos;outils principale</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="242" />
         <source>Hide Toolbar</source>
-        <translation>Masquer la barre d'outils</translation>
+        <translation type="vanished">Masquer la barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="243" />
         <source>Show Toolbar</source>
-        <translation>Afficher la barre d'outils</translation>
+        <translation type="vanished">Afficher la barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="258" />
         <source>&amp;Check for Updates...</source>
-        <translation>&amp;Vérifier les mises à jour...</translation>
+        <translation type="vanished">&amp;Vérifier les mises à jour...</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="259" />
         <source>Check for Updates</source>
-        <translation>Vérifier les mises à jour</translation>
+        <translation type="vanished">Vérifier les mises à jour</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="260" />
         <source>Check to see if there is a new version of Aegisub available</source>
-        <translation>Vérifier s'il existe une nouvelle version disponible d'Aegisub</translation>
+        <translation type="vanished">Vérifier s&apos;il existe une nouvelle version disponible d&apos;Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="270" />
-        <location filename="../src/command/app.cpp" line="271" />
         <source>Minimize</source>
-        <translation>Réduire</translation>
+        <translation type="vanished">Réduire</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="272" />
         <source>Minimize the active window</source>
-        <translation>Réduire la fenêtre active</translation>
+        <translation type="vanished">Réduire la fenêtre active</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="281" />
-        <location filename="../src/command/app.cpp" line="282" />
         <source>Zoom</source>
-        <translation>Zoom</translation>
+        <translation type="vanished">Zoom</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="283" />
         <source>Maximize the active window</source>
-        <translation>Agrandir la fenêtre active</translation>
+        <translation type="vanished">Agrandir la fenêtre active</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="292" />
-        <location filename="../src/command/app.cpp" line="293" />
         <source>Bring All to Front</source>
-        <translation>Tout ramener au premier plan</translation>
+        <translation type="vanished">Tout ramener au premier plan</translation>
     </message>
     <message>
-        <location filename="../src/command/app.cpp" line="294" />
         <source>Bring forward all open documents to the front</source>
-        <translation>Ramener tous les documents ouverts au premier plan</translation>
+        <translation type="vanished">Ramener tous les documents ouverts au premier plan</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="65" />
         <source>&amp;Close Audio</source>
-        <translation>&amp;Fermer l'audio</translation>
+        <translation type="vanished">&amp;Fermer l&apos;audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="66" />
         <source>Close Audio</source>
-        <translation>Fermer l'audio</translation>
+        <translation type="vanished">Fermer l&apos;audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="67" />
         <source>Close the currently open audio file</source>
-        <translation>Fermer le fichier audio actuellement ouvert</translation>
+        <translation type="vanished">Fermer le fichier audio actuellement ouvert</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="77" />
         <source>&amp;Open Audio File...</source>
-        <translation>&amp;Ouvrir un fichier audio...</translation>
+        <translation type="vanished">&amp;Ouvrir un fichier audio...</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="78" />
         <source>Open Audio File</source>
-        <translation>Ouvrir un fichier audio</translation>
+        <translation type="vanished">Ouvrir un fichier audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="79" />
         <source>Open an audio file</source>
-        <translation>Ouvrir un fichier audio</translation>
+        <translation type="vanished">Ouvrir un fichier audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="82" />
         <source>Audio Formats</source>
-        <translation>Formats audio</translation>
+        <translation type="vanished">Formats audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="83" />
-        <location filename="../src/command/video.cpp" line="591" />
         <source>Video Formats</source>
-        <translation>Formats vidéo</translation>
+        <translation type="vanished">Formats vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="85" />
         <source>Open Audio File</source>
         <comment>dialog title</comment>
-        <translation>Ouvrir un fichier audio</translation>
+        <translation type="vanished">Ouvrir un fichier audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="93" />
-        <location filename="../src/command/audio.cpp" line="94" />
         <source>Open 2h30 Blank Audio</source>
-        <translation>Ouvrir un audio vierge de 2 h 30</translation>
+        <translation type="vanished">Ouvrir un audio vierge de 2 h 30</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="95" />
         <source>Open a 150 minutes blank audio clip, for debugging</source>
-        <translation>Ouvrir 150 minutes d'audio vierge, pour débogage</translation>
+        <translation type="vanished">Ouvrir 150 minutes d&apos;audio vierge, pour débogage</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="104" />
-        <location filename="../src/command/audio.cpp" line="105" />
         <source>Open 2h30 Noise Audio</source>
-        <translation>Ouvrir 2 h 30 de bruit audio</translation>
+        <translation type="vanished">Ouvrir 2 h 30 de bruit audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="106" />
         <source>Open a 150 minutes noise-filled audio clip, for debugging</source>
-        <translation>Ouvrir 150 minutes de bruit audio, pour débogage</translation>
+        <translation type="vanished">Ouvrir 150 minutes de bruit audio, pour débogage</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="116" />
         <source>Open Audio from &amp;Video</source>
-        <translation>Ouvrir l'audio de la &amp;vidéo</translation>
+        <translation type="vanished">Ouvrir l&apos;audio de la &amp;vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="117" />
         <source>Open Audio from Video</source>
-        <translation>Ouvrir l'audio de la vidéo</translation>
+        <translation type="vanished">Ouvrir l&apos;audio de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="118" />
         <source>Open the audio from the current video file</source>
-        <translation>Ouvrir l'audio du fichier vidéo en cours</translation>
+        <translation type="vanished">Ouvrir l&apos;audio du fichier vidéo en cours</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="132" />
         <source>&amp;Spectrum Display</source>
-        <translation>Affichage &amp;spectral</translation>
+        <translation type="vanished">Affichage &amp;spectral</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="133" />
         <source>Spectrum Display</source>
-        <translation>Affichage spectral</translation>
+        <translation type="vanished">Affichage spectral</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="134" />
         <source>Display audio as a frequency-power spectrograph</source>
-        <translation>Afficher l'audio en spectrographe de puissance de fréquence</translation>
+        <translation type="vanished">Afficher l&apos;audio en spectrographe de puissance de fréquence</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="148" />
         <source>&amp;Waveform Display</source>
-        <translation>Affichage &amp;ondulaire</translation>
+        <translation type="vanished">Affichage &amp;ondulaire</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="149" />
         <source>Waveform Display</source>
-        <translation>Affichage ondulaire</translation>
+        <translation type="vanished">Affichage ondulaire</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="150" />
         <source>Display audio as a linear amplitude graph</source>
-        <translation>Afficher l'audio en graphique linéaire d'amplitude</translation>
+        <translation type="vanished">Afficher l&apos;audio en graphique linéaire d&apos;amplitude</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="164" />
-        <location filename="../src/command/audio.cpp" line="165" />
         <source>Create audio clip</source>
-        <translation>Créer un clip audio</translation>
+        <translation type="vanished">Créer un clip audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="166" />
         <source>Save an audio clip of the selected line</source>
-        <translation>Enregistrer un clip audio de la ligne sélectionnée</translation>
+        <translation type="vanished">Enregistrer un clip audio de la ligne sélectionnée</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="177" />
         <source>Save Audio Clip</source>
-        <translation>Enregistrer le clip audio</translation>
+        <translation type="vanished">Enregistrer le clip audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="192" />
-        <location filename="../src/command/audio.cpp" line="193" />
         <source>Play current audio selection</source>
-        <translation>Lire la sélection audio</translation>
+        <translation type="vanished">Lire la sélection audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="194" />
         <source>Play the current audio selection, ignoring changes made while playing</source>
-        <translation>Lire la sélection audio en ignorant les modifications apportées pendant la lecture</translation>
+        <translation type="vanished">Lire la sélection audio en ignorant les modifications apportées pendant la lecture</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="205" />
-        <location filename="../src/command/audio.cpp" line="206" />
         <source>Play current line</source>
-        <translation>Lire la ligne active</translation>
+        <translation type="vanished">Lire la ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="207" />
         <source>Play the audio for the current line</source>
-        <translation>Lire l'audio de la ligne actuelle</translation>
+        <translation type="vanished">Lire l&apos;audio de la ligne actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="220" />
-        <location filename="../src/command/audio.cpp" line="221" />
         <source>Play audio selection</source>
-        <translation>Lire la sélection audio</translation>
+        <translation type="vanished">Lire la sélection audio</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="222" />
         <source>Play audio until the end of the selection is reached</source>
-        <translation>Lire l'audio jusqu'à la fin de la sélection</translation>
+        <translation type="vanished">Lire l&apos;audio jusqu&apos;à la fin de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="232" />
-        <location filename="../src/command/audio.cpp" line="233" />
         <source>Play audio selection or stop</source>
-        <translation>Lire la sélection audio ou arrêter</translation>
+        <translation type="vanished">Lire la sélection audio ou arrêter</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="234" />
-        <source>Play selection, or stop playback if it's already playing</source>
-        <translation>Lire la sélection, ou arrêter la lecture si elle est déjà en cours</translation>
+        <source>Play selection, or stop playback if it&apos;s already playing</source>
+        <translation type="vanished">Lire la sélection, ou arrêter la lecture si elle est déjà en cours</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="249" />
-        <location filename="../src/command/audio.cpp" line="250" />
         <source>Stop playing</source>
-        <translation>Arrêter la lecture</translation>
+        <translation type="vanished">Arrêter la lecture</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="251" />
         <source>Stop audio and video playback</source>
-        <translation>Arrêtez la lecture audio et vidéo</translation>
+        <translation type="vanished">Arrêtez la lecture audio et vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="267" />
-        <location filename="../src/command/audio.cpp" line="268" />
-        <location filename="../src/command/audio.cpp" line="269" />
         <source>Play 500 ms before selection</source>
-        <translation>Lire 500 ms avant la sélection</translation>
+        <translation type="vanished">Lire 500 ms avant la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="281" />
-        <location filename="../src/command/audio.cpp" line="282" />
-        <location filename="../src/command/audio.cpp" line="283" />
         <source>Play 500 ms after selection</source>
-        <translation>Lire 500 ms après la sélection</translation>
+        <translation type="vanished">Lire 500 ms après la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="295" />
-        <location filename="../src/command/audio.cpp" line="296" />
-        <location filename="../src/command/audio.cpp" line="297" />
         <source>Play last 500 ms of selection</source>
-        <translation>Lire les dernières 500 ms de la sélection</translation>
+        <translation type="vanished">Lire les dernières 500 ms de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="309" />
-        <location filename="../src/command/audio.cpp" line="310" />
-        <location filename="../src/command/audio.cpp" line="311" />
         <source>Play first 500 ms of selection</source>
-        <translation>Lire les premières 500 ms de la sélection</translation>
+        <translation type="vanished">Lire les premières 500 ms de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="325" />
-        <location filename="../src/command/audio.cpp" line="326" />
-        <location filename="../src/command/audio.cpp" line="327" />
         <source>Play from selection start to end of file</source>
-        <translation>Lire du début de la sélection à la fin du fichier</translation>
+        <translation type="vanished">Lire du début de la sélection à la fin du fichier</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="338" />
-        <location filename="../src/command/audio.cpp" line="339" />
         <source>Commit</source>
-        <translation>Valider</translation>
+        <translation type="vanished">Valider</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="340" />
         <source>Commit any pending audio timing changes</source>
-        <translation>Valider tous les changements de temps audio en attente</translation>
+        <translation type="vanished">Valider tous les changements de temps audio en attente</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="354" />
-        <location filename="../src/command/audio.cpp" line="355" />
         <source>Commit and use default timing for next line</source>
-        <translation>Valider et utiliser le temps par défaut pour la ligne suivante</translation>
+        <translation type="vanished">Valider et utiliser le temps par défaut pour la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="356" />
-        <source>Commit any pending audio timing changes and reset the next line's times to the default</source>
-        <translation>Valider les modifications de temps audio en attente et appliquer le temps par défaut à la ligne suivante</translation>
+        <source>Commit any pending audio timing changes and reset the next line&apos;s times to the default</source>
+        <translation type="vanished">Valider les modifications de temps audio en attente et appliquer le temps par défaut à la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="369" />
-        <location filename="../src/command/audio.cpp" line="370" />
         <source>Commit and move to next line</source>
-        <translation>Valider et aller à la ligne suivante</translation>
+        <translation type="vanished">Valider et aller à la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="371" />
         <source>Commit any pending audio timing changes and move to the next line</source>
-        <translation>Valider les modifications de temps audio en attente et aller à la ligne suivante</translation>
+        <translation type="vanished">Valider les modifications de temps audio en attente et aller à la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="384" />
-        <location filename="../src/command/audio.cpp" line="385" />
         <source>Commit and stay on current line</source>
-        <translation>Valider et rester sur la ligne courante</translation>
+        <translation type="vanished">Valider et rester sur la ligne courante</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="386" />
         <source>Commit any pending audio timing changes and stay on the current line</source>
-        <translation>Valider les modifications de temps audio en attente et rester sur la ligne active</translation>
+        <translation type="vanished">Valider les modifications de temps audio en attente et rester sur la ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="397" />
-        <location filename="../src/command/audio.cpp" line="398" />
         <source>Go to selection</source>
-        <translation>Aller à la sélection</translation>
+        <translation type="vanished">Aller à la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="399" />
         <source>Scroll the audio display to center on the current audio selection</source>
-        <translation>Faire défiler l'affichage audio pour le centrer sur la sélection audio actuelle</translation>
+        <translation type="vanished">Faire défiler l&apos;affichage audio pour le centrer sur la sélection audio actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="408" />
-        <location filename="../src/command/audio.cpp" line="409" />
         <source>Go to selection start</source>
-        <translation>Aller au début de la sélection</translation>
+        <translation type="vanished">Aller au début de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="410" />
         <source>Scroll the audio display to center on the start of current audio selection</source>
-        <translation>Faire défiler l'affichage audio pour le centrer sur le début de la sélection audio actuelle</translation>
+        <translation type="vanished">Faire défiler l&apos;affichage audio pour le centrer sur le début de la sélection audio actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="419" />
-        <location filename="../src/command/audio.cpp" line="420" />
         <source>Go to selection end</source>
-        <translation>Aller à la fin de la sélection</translation>
+        <translation type="vanished">Aller à la fin de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="421" />
         <source>Scroll the audio display to center on the end of current audio selection</source>
-        <translation>Faire défiler l'affichage audio pour le centrer sur la fin de la sélection audio actuelle</translation>
+        <translation type="vanished">Faire défiler l&apos;affichage audio pour le centrer sur la fin de la sélection audio actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="430" />
-        <location filename="../src/command/audio.cpp" line="431" />
         <source>Scroll left</source>
-        <translation>Défiler à gauche</translation>
+        <translation type="vanished">Défiler à gauche</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="432" />
         <source>Scroll the audio display left</source>
-        <translation>Défiler l'affichage audio à gauche</translation>
+        <translation type="vanished">Défiler l&apos;affichage audio à gauche</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="441" />
-        <location filename="../src/command/audio.cpp" line="442" />
         <source>Scroll right</source>
-        <translation>Défiler à droite</translation>
+        <translation type="vanished">Défiler à droite</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="443" />
         <source>Scroll the audio display right</source>
-        <translation>Défiler l'affichage audio à droite</translation>
+        <translation type="vanished">Défiler l&apos;affichage audio à droite</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="457" />
-        <location filename="../src/command/audio.cpp" line="458" />
-        <location filename="../src/command/audio.cpp" line="459" />
         <source>Auto scroll audio display to selected line</source>
-        <translation>Auto-défilement de l'affichage audio vers la ligne sélectionnée</translation>
+        <translation type="vanished">Auto-défilement de l&apos;affichage audio vers la ligne sélectionnée</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="474" />
-        <location filename="../src/command/audio.cpp" line="475" />
-        <location filename="../src/command/audio.cpp" line="476" />
         <source>Automatically commit all changes</source>
-        <translation>Valider automatiquement toutes les modifications</translation>
+        <translation type="vanished">Valider automatiquement toutes les modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="491" />
-        <location filename="../src/command/audio.cpp" line="492" />
         <source>Auto go to next line on commit</source>
-        <translation>Passer automatiquement à la ligne suivante après validation</translation>
+        <translation type="vanished">Passer automatiquement à la ligne suivante après validation</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="493" />
         <source>Automatically go to next line on commit</source>
-        <translation>Passer automatiquement à la ligne suivante après validation</translation>
+        <translation type="vanished">Passer automatiquement à la ligne suivante après validation</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="508" />
-        <location filename="../src/command/audio.cpp" line="509" />
-        <location filename="../src/command/audio.cpp" line="510" />
         <source>Spectrum analyzer mode</source>
-        <translation>Mode analyse de spectre</translation>
+        <translation type="vanished">Mode analyse de spectre</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="525" />
-        <location filename="../src/command/audio.cpp" line="526" />
-        <location filename="../src/command/audio.cpp" line="527" />
         <source>Link vertical zoom and volume sliders</source>
-        <translation>Lier les curseurs de zoom vertical et de volume</translation>
+        <translation type="vanished">Lier les curseurs de zoom vertical et de volume</translation>
     </message>
     <message>
-        <location filename="../src/command/audio.cpp" line="542" />
-        <location filename="../src/command/audio.cpp" line="543" />
-        <location filename="../src/command/audio.cpp" line="544" />
         <source>Toggle karaoke mode</source>
-        <translation>Alterner mode karaoké</translation>
+        <translation type="vanished">Alterner mode karaoké</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="47" />
         <source>&amp;Reload Automation scripts</source>
-        <translation>&amp;Recharger les scripts d'automatisme</translation>
+        <translation type="vanished">&amp;Recharger les scripts d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="48" />
         <source>Reload Automation scripts</source>
-        <translation>Recharger les scripts d'automatisme</translation>
+        <translation type="vanished">Recharger les scripts d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="49" />
         <source>Reload all Automation scripts and rescan the autoload folder</source>
-        <translation>Recharger tous les scripts d'automatisme et rescanner le dossier autoload</translation>
+        <translation type="vanished">Recharger tous les scripts d&apos;automatisme et rescanner le dossier autoload</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="54" />
         <source>Reloaded all Automation scripts</source>
-        <translation>Recharge de tous les scripts d'automatisme</translation>
+        <translation type="vanished">Recharge de tous les scripts d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="60" />
         <source>R&amp;eload autoload Automation scripts</source>
-        <translation>R&amp;echarger les scripts d'automatisme « autoload »</translation>
+        <translation type="vanished">R&amp;echarger les scripts d&apos;automatisme « autoload »</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="61" />
         <source>Reload autoload Automation scripts</source>
-        <translation>Recharger les scripts d'automatisme « autoload »</translation>
+        <translation type="vanished">Recharger les scripts d&apos;automatisme « autoload »</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="62" />
         <source>Rescan the Automation autoload folder</source>
-        <translation>Rescanner le dossier des automatismes « autoload »</translation>
+        <translation type="vanished">Rescanner le dossier des automatismes « autoload »</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="66" />
         <source>Reloaded autoload Automation scripts</source>
-        <translation>Recharge des scripts d'automatisme « autoload »</translation>
+        <translation type="vanished">Recharge des scripts d&apos;automatisme « autoload »</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="73" />
-        <location filename="../src/command/automation.cpp" line="85" />
         <source>&amp;Automation...</source>
-        <translation>&amp;Automatisme...</translation>
+        <translation type="vanished">&amp;Automatisme...</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="74" />
-        <location filename="../src/command/automation.cpp" line="86" />
-        <location filename="../src/preferences.cpp" line="376" />
         <source>Automation</source>
-        <translation>Automatisme</translation>
+        <translation type="vanished">Automatisme</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="75" />
         <source>Open automation manager</source>
-        <translation>Ouvre le gestionnaire des automatismes</translation>
+        <translation type="vanished">Ouvre le gestionnaire des automatismes</translation>
     </message>
     <message>
-        <location filename="../src/command/automation.cpp" line="87" />
         <source>Open automation manager. Ctrl: Rescan autoload folder. Ctrl+Shift: Rescan autoload folder and reload all automation scripts</source>
-        <translation>Ouvrir le gestionnaire des automatismes. Ctrl: Rescanne le dossier « autoload »chargement. Ctrl+Maj: Rescanner le dossier « autoload » et recharger tous les scripts d'automatisme</translation>
+        <translation type="vanished">Ouvrir le gestionnaire des automatismes. Ctrl: Rescanne le dossier « autoload »chargement. Ctrl+Maj: Rescanner le dossier « autoload » et recharger tous les scripts d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/command/command.cpp" line="35" />
-        <source>'%s' is not a valid command name</source>
-        <translation>« %s » n'est pas un nom de commande valide</translation>
+        <source>&apos;%s&apos; is not a valid command name</source>
+        <translation type="vanished">« %s » n&apos;est pas un nom de commande valide</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="135" />
-        <location filename="../src/command/edit.cpp" line="844" />
         <source>paste</source>
-        <translation>coller</translation>
+        <translation type="vanished">coller</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="377" />
         <source>set color</source>
-        <translation>régler couleur</translation>
+        <translation type="vanished">régler couleur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="391" />
         <source>Primary Color...</source>
-        <translation>Couleur principale...</translation>
+        <translation type="vanished">Couleur principale...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="392" />
         <source>Primary Color</source>
-        <translation>Couleur principale</translation>
+        <translation type="vanished">Couleur principale</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="393" />
         <source>Set the primary fill color (\c) at the cursor position</source>
-        <translation>Définir la couleur principale de remplissage (\c) à la position du curseur</translation>
+        <translation type="vanished">Définir la couleur principale de remplissage (\c) à la position du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="403" />
         <source>Secondary Color...</source>
-        <translation>Couleur secondaire...</translation>
+        <translation type="vanished">Couleur secondaire...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="404" />
         <source>Secondary Color</source>
-        <translation>Couleur secondaire</translation>
+        <translation type="vanished">Couleur secondaire</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="405" />
         <source>Set the secondary (karaoke) fill color (\2c) at the cursor position</source>
-        <translation>Définir la couleur secondaire de remplissage (karaoké) (\2c) à la position du curseur</translation>
+        <translation type="vanished">Définir la couleur secondaire de remplissage (karaoké) (\2c) à la position du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="415" />
         <source>Outline Color...</source>
-        <translation>Couleur du contour...</translation>
+        <translation type="vanished">Couleur du contour...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="416" />
         <source>Outline Color</source>
-        <translation>Couleur de bordure</translation>
+        <translation type="vanished">Couleur de bordure</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="417" />
         <source>Set the outline color (\3c) at the cursor position</source>
-        <translation>Définir la couleur du contour (\3c) à la position du curseur</translation>
+        <translation type="vanished">Définir la couleur du contour (\3c) à la position du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="427" />
         <source>Shadow Color...</source>
-        <translation>Couleur de l'ombre...</translation>
+        <translation type="vanished">Couleur de l&apos;ombre...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="428" />
         <source>Shadow Color</source>
-        <translation>Couleur d'ombre</translation>
+        <translation type="vanished">Couleur d&apos;ombre</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="429" />
         <source>Set the shadow color (\4c) at the cursor position</source>
-        <translation>Définir la couleur de l'ombre (\4c) à la position du curseur</translation>
+        <translation type="vanished">Définir la couleur de l&apos;ombre (\4c) à la position du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="439" />
-        <location filename="../src/command/edit.cpp" line="440" />
         <source>Toggle Bold</source>
-        <translation>Alterner le gras</translation>
+        <translation type="vanished">Alterner le gras</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="441" />
         <source>Toggle bold (\b) for the current selection or at the current cursor position</source>
-        <translation>Alterner le gras (\b) pour la sélection en cours ou à la position actuelle du curseur</translation>
+        <translation type="vanished">Alterner le gras (\b) pour la sélection en cours ou à la position actuelle du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="444" />
         <source>toggle bold</source>
-        <translation>alterner le gras</translation>
+        <translation type="vanished">alterner le gras</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="451" />
-        <location filename="../src/command/edit.cpp" line="452" />
         <source>Toggle Italics</source>
-        <translation>Alterner l'italique</translation>
+        <translation type="vanished">Alterner l&apos;italique</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="453" />
         <source>Toggle italics (\i) for the current selection or at the current cursor position</source>
-        <translation>Alterner l'italique (\i) pour la sélection en cours ou à la position actuelle du curseur</translation>
+        <translation type="vanished">Alterner l&apos;italique (\i) pour la sélection en cours ou à la position actuelle du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="456" />
         <source>toggle italic</source>
-        <translation>alterner l'italique</translation>
+        <translation type="vanished">alterner l&apos;italique</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="463" />
-        <location filename="../src/command/edit.cpp" line="464" />
         <source>Toggle Underline</source>
-        <translation>Alterner le soulignage</translation>
+        <translation type="vanished">Alterner le soulignage</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="465" />
         <source>Toggle underline (\u) for the current selection or at the current cursor position</source>
-        <translation>Alterner le soulignage (\u) pour la sélection en cours ou à la position actuelle du curseur</translation>
+        <translation type="vanished">Alterner le soulignage (\u) pour la sélection en cours ou à la position actuelle du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="468" />
         <source>toggle underline</source>
-        <translation>alterner le soulignage</translation>
+        <translation type="vanished">alterner le soulignage</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="475" />
-        <location filename="../src/command/edit.cpp" line="476" />
         <source>Toggle Strikeout</source>
-        <translation>Alterner la biffure</translation>
+        <translation type="vanished">Alterner la biffure</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="477" />
         <source>Toggle strikeout (\s) for the current selection or at the current cursor position</source>
-        <translation>Alterner la biffure (\s) pour la sélection en cours ou à la position actuelle du curseur</translation>
+        <translation type="vanished">Alterner la biffure (\s) pour la sélection en cours ou à la position actuelle du curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="480" />
         <source>toggle strikeout</source>
-        <translation>alterner la biffure</translation>
+        <translation type="vanished">alterner la biffure</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="487" />
         <source>Font Face...</source>
-        <translation>Police personnalisée...</translation>
+        <translation type="vanished">Police personnalisée...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="488" />
-        <location filename="../src/preferences_base.cpp" line="277" />
         <source>Font Face</source>
-        <translation>Police d'écriture</translation>
+        <translation type="vanished">Police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="489" />
         <source>Select a font face and size</source>
-        <translation>Sélectionner police d'écriture et taille</translation>
+        <translation type="vanished">Sélectionner police d&apos;écriture et taille</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="516" />
         <source>set font</source>
-        <translation>définir police d'écriture</translation>
+        <translation type="vanished">définir police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="543" />
         <source>Find and R&amp;eplace...</source>
-        <translation>Chercher et &amp;remplacer...</translation>
+        <translation type="vanished">Chercher et &amp;remplacer...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="544" />
         <source>Find and Replace</source>
-        <translation>Chercher et remplacer</translation>
+        <translation type="vanished">Chercher et remplacer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="545" />
         <source>Find and replace words in subtitles</source>
-        <translation>Chercher et remplacer des mots dans les sous-titres</translation>
+        <translation type="vanished">Chercher et remplacer des mots dans les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="606" />
         <source>&amp;Copy Lines</source>
-        <translation>&amp;Copier des lignes</translation>
+        <translation type="vanished">&amp;Copier des lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="607" />
         <source>Copy Lines</source>
-        <translation>Copier les lignes</translation>
+        <translation type="vanished">Copier les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="608" />
         <source>Copy subtitles to the clipboard</source>
-        <translation>Copier les sous-titres dans le presse-papiers</translation>
+        <translation type="vanished">Copier les sous-titres dans le presse-papiers</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="629" />
         <source>Cu&amp;t Lines</source>
-        <translation>Co&amp;uper les lignes</translation>
+        <translation type="vanished">Co&amp;uper les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="630" />
         <source>Cut Lines</source>
-        <translation>Couper les lignes</translation>
+        <translation type="vanished">Couper les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="631" />
         <source>Cut subtitles</source>
-        <translation>Couper les sous-titres</translation>
+        <translation type="vanished">Couper les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="638" />
         <source>cut lines</source>
-        <translation>couper les lignes</translation>
+        <translation type="vanished">couper les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="646" />
         <source>De&amp;lete Lines</source>
-        <translation>Supprimer les &amp;lignes</translation>
+        <translation type="vanished">Supprimer les &amp;lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="647" />
         <source>Delete Lines</source>
-        <translation>Supprimer les lignes</translation>
+        <translation type="vanished">Supprimer les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="648" />
         <source>Delete currently selected lines</source>
-        <translation>Supprimer les lignes sélectionnées</translation>
+        <translation type="vanished">Supprimer les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="651" />
         <source>delete lines</source>
-        <translation>supprimer les lignes</translation>
+        <translation type="vanished">supprimer les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="716" />
         <source>duplicate lines</source>
-        <translation>dupliquer les lignes</translation>
+        <translation type="vanished">dupliquer les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="716" />
-        <location filename="../src/command/edit.cpp" line="1109" />
         <source>split</source>
-        <translation>diviser</translation>
+        <translation type="vanished">diviser</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="723" />
         <source>&amp;Duplicate Lines</source>
-        <translation>&amp;Dupliquer les lignes</translation>
+        <translation type="vanished">&amp;Dupliquer les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="724" />
         <source>Duplicate Lines</source>
-        <translation>Dupliquer les lignes</translation>
+        <translation type="vanished">Dupliquer les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="725" />
         <source>Duplicate the selected lines</source>
-        <translation>Dupliquer les lignes sélectionnées</translation>
+        <translation type="vanished">Dupliquer les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="734" />
-        <location filename="../src/command/edit.cpp" line="735" />
         <source>Split lines after current frame</source>
-        <translation>Scinder les lignes après l'image en cours</translation>
+        <translation type="vanished">Scinder les lignes après l&apos;image en cours</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="736" />
         <source>Split the current line into a line which ends on the current frame and a line which starts on the next frame</source>
-        <translation>Scinder la ligne en cours en une ligne qui se termine à l'image actuelle et une ligne qui démarre à l'image suivante</translation>
+        <translation type="vanished">Scinder la ligne en cours en une ligne qui se termine à l&apos;image actuelle et une ligne qui démarre à l&apos;image suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="746" />
-        <location filename="../src/command/edit.cpp" line="747" />
         <source>Split lines before current frame</source>
-        <translation>Scinder les lignes avant l'image actuelle</translation>
+        <translation type="vanished">Scinder les lignes avant l&apos;image actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="748" />
         <source>Split the current line into a line which ends on the previous frame and a line which starts on the current frame</source>
-        <translation>Scinder la ligne en cours en une ligne qui se termine à l'image précédente et une ligne qui démarre à l'image actuelle</translation>
+        <translation type="vanished">Scinder la ligne en cours en une ligne qui se termine à l&apos;image précédente et une ligne qui démarre à l&apos;image actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="788" />
         <source>As &amp;Karaoke</source>
-        <translation>En &amp;karaoké</translation>
+        <translation type="vanished">En &amp;karaoké</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="789" />
         <source>As Karaoke</source>
-        <translation>En karaoké</translation>
+        <translation type="vanished">En karaoké</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="790" />
         <source>Join selected lines in a single one, as karaoke</source>
-        <translation>Fusionner les lignes sélectionnées en une seule, comme un karaoké</translation>
+        <translation type="vanished">Fusionner les lignes sélectionnées en une seule, comme un karaoké</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="793" />
         <source>join as karaoke</source>
-        <translation>joindre en karaoké</translation>
+        <translation type="vanished">joindre en karaoké</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="799" />
         <source>&amp;Concatenate</source>
-        <translation>&amp;Concaténer</translation>
+        <translation type="vanished">&amp;Concaténer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="800" />
         <source>Concatenate</source>
-        <translation>Concaténer</translation>
+        <translation type="vanished">Concaténer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="801" />
         <source>Join selected lines in a single one, concatenating text together</source>
-        <translation>Fusionner les lignes sélectionnées en une seule, tout en concaténant le texte</translation>
+        <translation type="vanished">Fusionner les lignes sélectionnées en une seule, tout en concaténant le texte</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="804" />
-        <location filename="../src/command/edit.cpp" line="815" />
         <source>join lines</source>
-        <translation>fusionner lignes</translation>
+        <translation type="vanished">fusionner lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="810" />
         <source>Keep &amp;First</source>
-        <translation>Garder la &amp;première</translation>
+        <translation type="vanished">Garder la &amp;première</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="811" />
         <source>Keep First</source>
-        <translation>Garder la première</translation>
+        <translation type="vanished">Garder la première</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="812" />
         <source>Join selected lines in a single one, keeping text of first and discarding remaining</source>
-        <translation>Fusionner les lignes sélectionnées en une seule, et ne garder que le texte de la première</translation>
+        <translation type="vanished">Fusionner les lignes sélectionnées en une seule, et ne garder que le texte de la première</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="853" />
         <source>&amp;Paste Lines</source>
-        <translation>Coller les lignes</translation>
+        <translation type="vanished">Coller les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="854" />
         <source>Paste Lines</source>
-        <translation>Coller les lignes</translation>
+        <translation type="vanished">Coller les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="855" />
         <source>Paste subtitles</source>
-        <translation>Coller les sous-titres</translation>
+        <translation type="vanished">Coller les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="884" />
         <source>Paste Lines &amp;Over...</source>
-        <translation>C&amp;oller les lignes sur...</translation>
+        <translation type="vanished">C&amp;oller les lignes sur...</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="885" />
         <source>Paste Lines Over</source>
-        <translation>Coller les lignes sur</translation>
+        <translation type="vanished">Coller les lignes sur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="886" />
         <source>Paste subtitles over others</source>
-        <translation>Coller les sous-titres sur d'autres</translation>
+        <translation type="vanished">Coller les sous-titres sur d&apos;autres</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="968" />
         <source>Recom&amp;bine Lines</source>
-        <translation>Recom&amp;biner les lignes</translation>
+        <translation type="vanished">Recom&amp;biner les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="969" />
         <source>Recombine Lines</source>
-        <translation>Recombiner les lignes</translation>
+        <translation type="vanished">Recombiner les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="970" />
         <source>Recombine subtitles which have been split and merged</source>
-        <translation>Recombiner des sous-titres qui ont été coupés et fusionnés</translation>
+        <translation type="vanished">Recombiner des sous-titres qui ont été coupés et fusionnés</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1040" />
         <source>combining</source>
-        <translation>combinaison</translation>
+        <translation type="vanished">combinaison</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1046" />
-        <location filename="../src/command/edit.cpp" line="1047" />
         <source>Split Lines (by karaoke)</source>
-        <translation>Couper des lignes (en karaoké)</translation>
+        <translation type="vanished">Couper des lignes (en karaoké)</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1048" />
         <source>Use karaoke timing to split line into multiple smaller lines</source>
-        <translation>Utiliser les temps karaoké pour couper la ligne en plusieurs petites lignes</translation>
+        <translation type="vanished">Utiliser les temps karaoké pour couper la ligne en plusieurs petites lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1082" />
         <source>splitting</source>
-        <translation>division</translation>
+        <translation type="vanished">division</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1114" />
-        <location filename="../src/command/edit.cpp" line="1115" />
-        <location filename="../src/subs_edit_ctrl.cpp" line="417" />
         <source>Split at cursor (estimate times)</source>
-        <translation>Couper au curseur (durée estimée)</translation>
+        <translation type="vanished">Couper au curseur (durée estimée)</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1116" />
-        <source>Split the current line at the cursor, dividing the original line's duration between the new ones</source>
-        <translation>Couper la ligne en cours au niveau du curseur, en divisant la durée de la ligne d'origine entre les nouveaux</translation>
+        <source>Split the current line at the cursor, dividing the original line&apos;s duration between the new ones</source>
+        <translation type="vanished">Couper la ligne en cours au niveau du curseur, en divisant la durée de la ligne d&apos;origine entre les nouveaux</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1130" />
-        <location filename="../src/command/edit.cpp" line="1131" />
-        <location filename="../src/subs_edit_ctrl.cpp" line="416" />
         <source>Split at cursor (preserve times)</source>
-        <translation>Couper au curseur (durée préservée)</translation>
+        <translation type="vanished">Couper au curseur (durée préservée)</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1132" />
-        <source>Split the current line at the cursor, setting both lines to the original line's times</source>
-        <translation>Couper la ligne en cours au niveau du curseur, en plaçant les deux lignes aux temps de la ligne originale</translation>
+        <source>Split the current line at the cursor, setting both lines to the original line&apos;s times</source>
+        <translation type="vanished">Couper la ligne en cours au niveau du curseur, en plaçant les deux lignes aux temps de la ligne originale</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1141" />
-        <location filename="../src/command/edit.cpp" line="1142" />
         <source>Split at cursor (at video frame)</source>
-        <translation>Couper au curseur (à l'image de la vidéo)</translation>
+        <translation type="vanished">Couper au curseur (à l&apos;image de la vidéo)</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1143" />
-        <source>Split the current line at the cursor, dividing the line's duration at the current video frame</source>
-        <translation>Couper la ligne en cours au niveau du curseur, en divisant la durée de la ligne à l'image actuelle de la vidéo</translation>
+        <source>Split the current line at the cursor, dividing the line&apos;s duration at the current video frame</source>
+        <translation type="vanished">Couper la ligne en cours au niveau du curseur, en divisant la durée de la ligne à l&apos;image actuelle de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1159" />
         <source>Redo last undone action</source>
-        <translation>Restaurer la dernière action annulée</translation>
+        <translation type="vanished">Restaurer la dernière action annulée</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1164" />
         <source>Nothing to &amp;redo</source>
-        <translation>Rien à &amp;restaurer</translation>
+        <translation type="vanished">Rien à &amp;restaurer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1165" />
         <source>&amp;Redo %s</source>
-        <translation>&amp;Restaurer %s</translation>
+        <translation type="vanished">&amp;Restaurer %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1169" />
         <source>Nothing to redo</source>
-        <translation>Rien à restaurer</translation>
+        <translation type="vanished">Rien à restaurer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1170" />
         <source>Redo %s</source>
-        <translation>Restaurer %s</translation>
+        <translation type="vanished">Restaurer %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1185" />
         <source>Undo last action</source>
-        <translation>Annuler la dernière action</translation>
+        <translation type="vanished">Annuler la dernière action</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1190" />
         <source>Nothing to &amp;undo</source>
-        <translation>Rien à &amp;annuler</translation>
+        <translation type="vanished">Rien à &amp;annuler</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1191" />
         <source>&amp;Undo %s</source>
-        <translation>Ann&amp;uler %s</translation>
+        <translation type="vanished">Ann&amp;uler %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1195" />
         <source>Nothing to undo</source>
-        <translation>Rien à annuler</translation>
+        <translation type="vanished">Rien à annuler</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1196" />
         <source>Undo %s</source>
-        <translation>Annuler %s</translation>
+        <translation type="vanished">Annuler %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1210" />
-        <location filename="../src/command/edit.cpp" line="1211" />
         <source>Revert</source>
-        <translation>Rétablir</translation>
+        <translation type="vanished">Rétablir</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1212" />
         <source>Revert the active line to its initial state (shown in the upper editor)</source>
-        <translation>Restaurer la ligne active à son état initial</translation>
+        <translation type="vanished">Restaurer la ligne active à son état initial</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1217" />
         <source>revert line</source>
-        <translation>rétablir la ligne</translation>
+        <translation type="vanished">rétablir la ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1223" />
-        <location filename="../src/command/edit.cpp" line="1224" />
-        <location filename="../src/preferences.cpp" line="453" />
         <source>Clear</source>
-        <translation>Effacer</translation>
+        <translation type="vanished">Effacer</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1225" />
-        <source>Clear the current line's text</source>
-        <translation>Effacer le texte de la ligne courante</translation>
+        <source>Clear the current line&apos;s text</source>
+        <translation type="vanished">Effacer le texte de la ligne courante</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1230" />
-        <location filename="../src/command/edit.cpp" line="1249" />
         <source>clear line</source>
-        <translation>effacer la ligne</translation>
+        <translation type="vanished">effacer la ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1237" />
-        <location filename="../src/command/edit.cpp" line="1238" />
         <source>Clear Text</source>
-        <translation>Effacer le texte</translation>
+        <translation type="vanished">Effacer le texte</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1239" />
-        <source>Clear the current line's text, leaving override tags</source>
-        <translation>Effacer le texte de la ligne courante, en laissant les balises de remplacement</translation>
+        <source>Clear the current line&apos;s text, leaving override tags</source>
+        <translation type="vanished">Effacer le texte de la ligne courante, en laissant les balises de remplacement</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1255" />
-        <location filename="../src/command/edit.cpp" line="1256" />
-        <location filename="../src/command/tool.cpp" line="256" />
         <source>Insert Original</source>
-        <translation>Insérer l'original</translation>
+        <translation type="vanished">Insérer l&apos;original</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1257" />
         <source>Insert the original line text at the cursor</source>
-        <translation>Insérer la ligne de texte original sur le curseur</translation>
+        <translation type="vanished">Insérer la ligne de texte original sur le curseur</translation>
     </message>
     <message>
-        <location filename="../src/command/edit.cpp" line="1265" />
         <source>insert original</source>
-        <translation>insérer l'original</translation>
+        <translation type="vanished">insérer l&apos;original</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="50" />
-        <location filename="../src/command/grid.cpp" line="51" />
-        <location filename="../src/command/grid.cpp" line="62" />
-        <location filename="../src/command/grid.cpp" line="63" />
-        <location filename="../src/command/time.cpp" line="355" />
-        <location filename="../src/command/time.cpp" line="356" />
-        <location filename="../src/command/tool.cpp" line="234" />
         <source>Next Line</source>
-        <translation>Ligne suivante</translation>
+        <translation type="vanished">Ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="52" />
         <source>Move to the next subtitle line</source>
-        <translation>Aller à la ligne de sous-titre suivante</translation>
+        <translation type="vanished">Aller à la ligne de sous-titre suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="64" />
         <source>Move to the next subtitle line, creating a new one if needed</source>
-        <translation>Aller à la ligne de sous-titre suivante, en la créant si nécessaire</translation>
+        <translation type="vanished">Aller à la ligne de sous-titre suivante, en la créant si nécessaire</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="81" />
-        <location filename="../src/command/subtitle.cpp" line="127" />
-        <location filename="../src/command/subtitle.cpp" line="161" />
-        <location filename="../src/command/subtitle.cpp" line="203" />
         <source>line insertion</source>
-        <translation>insertion de ligne</translation>
+        <translation type="vanished">insertion de ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="89" />
-        <location filename="../src/command/grid.cpp" line="90" />
-        <location filename="../src/command/time.cpp" line="367" />
-        <location filename="../src/command/time.cpp" line="368" />
-        <location filename="../src/command/tool.cpp" line="245" />
         <source>Previous Line</source>
-        <translation>Ligne précédente</translation>
+        <translation type="vanished">Ligne précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="91" />
         <source>Move to the previous line</source>
-        <translation>Aller à la ligne précédente</translation>
+        <translation type="vanished">Aller à la ligne précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="100" />
-        <location filename="../src/command/grid.cpp" line="120" />
         <source>&amp;Actor Name</source>
-        <translation>Nom de l'&amp;acteur</translation>
+        <translation type="vanished">Nom de l&apos;&amp;acteur</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="101" />
-        <location filename="../src/command/grid.cpp" line="121" />
         <source>Actor Name</source>
-        <translation>Nom de l'acteur</translation>
+        <translation type="vanished">Nom de l&apos;acteur</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="102" />
         <source>Sort all subtitles by their actor names</source>
-        <translation>Trier tous les sous-titres par leur nom d'acteur</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur nom d&apos;acteur</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="106" />
-        <location filename="../src/command/grid.cpp" line="126" />
-        <location filename="../src/command/grid.cpp" line="138" />
-        <location filename="../src/command/grid.cpp" line="150" />
-        <location filename="../src/command/grid.cpp" line="162" />
-        <location filename="../src/command/grid.cpp" line="174" />
-        <location filename="../src/command/grid.cpp" line="186" />
-        <location filename="../src/command/grid.cpp" line="198" />
-        <location filename="../src/command/grid.cpp" line="210" />
-        <location filename="../src/command/grid.cpp" line="222" />
-        <location filename="../src/command/grid.cpp" line="234" />
-        <location filename="../src/command/grid.cpp" line="246" />
         <source>sort</source>
-        <translation>tri</translation>
+        <translation type="vanished">tri</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="122" />
         <source>Sort selected subtitles by their actor names</source>
-        <translation>Trier les sous-titres sélectionnés par leur nom d'acteur</translation>
+        <translation type="vanished">Trier les sous-titres sélectionnés par leur nom d&apos;acteur</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="132" />
-        <location filename="../src/command/grid.cpp" line="144" />
-        <location filename="../src/dialog_search_replace.cpp" line="87" />
         <source>&amp;Effect</source>
-        <translation>&amp;Effet</translation>
+        <translation type="vanished">&amp;Effet</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="133" />
-        <location filename="../src/command/grid.cpp" line="145" />
-        <location filename="../src/dialog_paste_over.cpp" line="74" />
-        <location filename="../src/grid_column.cpp" line="216" />
-        <location filename="../src/grid_column.cpp" line="217" />
-        <location filename="../src/subs_edit_box.cpp" line="140" />
         <source>Effect</source>
-        <translation>Effet</translation>
+        <translation type="vanished">Effet</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="134" />
         <source>Sort all subtitles by their effects</source>
-        <translation>Trier tous les sous-titres par leur effet</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur effet</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="146" />
         <source>Sort selected subtitles by their effects</source>
-        <translation>Trier les sous-titres sélectionnés par leur effet</translation>
+        <translation type="vanished">Trier les sous-titres sélectionnés par leur effet</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="156" />
-        <location filename="../src/command/grid.cpp" line="168" />
         <source>&amp;End Time</source>
-        <translation>Heure de fin (&amp;E)</translation>
+        <translation type="vanished">Heure de fin (&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="157" />
-        <location filename="../src/command/grid.cpp" line="169" />
-        <location filename="../src/dialog_paste_over.cpp" line="68" />
-        <location filename="../src/grid_column.cpp" line="172" />
         <source>End Time</source>
-        <translation>Temps fin</translation>
+        <translation type="vanished">Temps fin</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="158" />
         <source>Sort all subtitles by their end times</source>
-        <translation>Trier tous les sous-titres par leur temps de fin</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur temps de fin</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="170" />
         <source>Sort selected subtitles by their end times</source>
-        <translation>Trier les sous-titres sélectionnés par leur temps de fin</translation>
+        <translation type="vanished">Trier les sous-titres sélectionnés par leur temps de fin</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="180" />
-        <location filename="../src/command/grid.cpp" line="192" />
         <source>&amp;Layer</source>
-        <translation>Couche (&amp;L)</translation>
+        <translation type="vanished">Couche (&amp;L)</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="181" />
-        <location filename="../src/command/grid.cpp" line="193" />
-        <location filename="../src/dialog_paste_over.cpp" line="66" />
-        <location filename="../src/grid_column.cpp" line="132" />
         <source>Layer</source>
-        <translation>Calque</translation>
+        <translation type="vanished">Calque</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="182" />
         <source>Sort all subtitles by their layer number</source>
-        <translation>Trier tous les sous-titres par leur numéro de calque</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur numéro de calque</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="194" />
         <source>Sort selected subtitles by their layer number</source>
-        <translation>Trier les sous-titres sélectionnés par leur numéro de calque</translation>
+        <translation type="vanished">Trier les sous-titres sélectionnés par leur numéro de calque</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="204" />
-        <location filename="../src/command/grid.cpp" line="216" />
         <source>&amp;Start Time</source>
-        <translation>Heure de début (&amp;S)</translation>
+        <translation type="vanished">Heure de début (&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="205" />
-        <location filename="../src/command/grid.cpp" line="217" />
-        <location filename="../src/dialog_paste_over.cpp" line="67" />
-        <location filename="../src/grid_column.cpp" line="154" />
         <source>Start Time</source>
-        <translation>Temps début</translation>
+        <translation type="vanished">Temps début</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="206" />
         <source>Sort all subtitles by their start times</source>
-        <translation>Trie tous les sous-titres par leur temps de début</translation>
+        <translation type="vanished">Trie tous les sous-titres par leur temps de début</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="218" />
         <source>Sort selected subtitles by their start times</source>
-        <translation>Trier tous les sous-titres par leur temps de début</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur temps de début</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="228" />
-        <location filename="../src/command/grid.cpp" line="240" />
         <source>St&amp;yle Name</source>
-        <translation>Nom du st&amp;yle</translation>
+        <translation type="vanished">Nom du st&amp;yle</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="229" />
-        <location filename="../src/command/grid.cpp" line="241" />
-        <location filename="../src/dialog_style_editor.cpp" line="180" />
         <source>Style Name</source>
-        <translation>Nom du style</translation>
+        <translation type="vanished">Nom du style</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="230" />
         <source>Sort all subtitles by their style names</source>
-        <translation>Trier tous les sous-titres par leur nom de style</translation>
+        <translation type="vanished">Trier tous les sous-titres par leur nom de style</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="242" />
         <source>Sort selected subtitles by their style names</source>
-        <translation>Trier les sous-titres sélectionnés par leur nom de style</translation>
+        <translation type="vanished">Trier les sous-titres sélectionnés par leur nom de style</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="253" />
-        <location filename="../src/command/grid.cpp" line="254" />
         <source>Cycle Tag Hiding Mode</source>
-        <translation>Défiler modes d'affichage balises</translation>
+        <translation type="vanished">Défiler modes d&apos;affichage balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="255" />
         <source>Cycle through tag hiding modes</source>
-        <translation>Défiler les modes d'affichage des balises</translation>
+        <translation type="vanished">Défiler les modes d&apos;affichage des balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="265" />
         <source>ASS Override Tag mode set to show full tags.</source>
-        <translation>Mode balise ASS réglé sur affichage complet.</translation>
+        <translation type="vanished">Mode balise ASS réglé sur affichage complet.</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="266" />
         <source>ASS Override Tag mode set to simplify tags.</source>
-        <translation>Mode balise ASS réglé sur affichage simplifié.</translation>
+        <translation type="vanished">Mode balise ASS réglé sur affichage simplifié.</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="267" />
         <source>ASS Override Tag mode set to hide tags.</source>
-        <translation>Mode balise ASS réglé sur masquage.</translation>
+        <translation type="vanished">Mode balise ASS réglé sur masquage.</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="277" />
         <source>&amp;Hide Tags</source>
-        <translation>Masquer les balises</translation>
+        <translation type="vanished">Masquer les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="278" />
         <source>Hide Tags</source>
-        <translation>Masquer les balises</translation>
+        <translation type="vanished">Masquer les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="279" />
         <source>Hide override tags in the subtitle grid</source>
-        <translation>Masquer les balises prioritaires dans la grille des sous-titres</translation>
+        <translation type="vanished">Masquer les balises prioritaires dans la grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="293" />
         <source>Sh&amp;ow Tags</source>
-        <translation>A&amp;fficher les balises</translation>
+        <translation type="vanished">A&amp;fficher les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="294" />
         <source>Show Tags</source>
-        <translation>Afficher les balises</translation>
+        <translation type="vanished">Afficher les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="295" />
         <source>Show full override tags in the subtitle grid</source>
-        <translation>Afficher complètement les balises prioritaires sur la grille des sous-titres</translation>
+        <translation type="vanished">Afficher complètement les balises prioritaires sur la grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="309" />
         <source>S&amp;implify Tags</source>
-        <translation>S&amp;implifier les balises</translation>
+        <translation type="vanished">S&amp;implifier les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="310" />
         <source>Simplify Tags</source>
-        <translation>Simplifier les balises</translation>
+        <translation type="vanished">Simplifier les balises</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="311" />
         <source>Replace override tags in the subtitle grid with a simplified placeholder</source>
-        <translation>Remplacer les balises prioritaires dans la grille des sous-titres par un repère simplifié</translation>
+        <translation type="vanished">Remplacer les balises prioritaires dans la grille des sous-titres par un repère simplifié</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="347" />
-        <location filename="../src/command/grid.cpp" line="348" />
         <source>Move line up</source>
-        <translation>Monter la ligne</translation>
+        <translation type="vanished">Monter la ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="349" />
         <source>Move the selected lines up one row</source>
-        <translation>Monter les lignes sélectionnées d'une rangée</translation>
+        <translation type="vanished">Monter les lignes sélectionnées d&apos;une rangée</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="358" />
-        <location filename="../src/command/grid.cpp" line="375" />
         <source>move lines</source>
-        <translation>déplacer des lignes</translation>
+        <translation type="vanished">déplacer des lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="364" />
-        <location filename="../src/command/grid.cpp" line="365" />
         <source>Move line down</source>
-        <translation>Descendre la ligne</translation>
+        <translation type="vanished">Descendre la ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="366" />
         <source>Move the selected lines down one row</source>
-        <translation>Descendre les lignes sélectionnées d'une rangée</translation>
+        <translation type="vanished">Descendre les lignes sélectionnées d&apos;une rangée</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="382" />
-        <location filename="../src/command/grid.cpp" line="383" />
         <source>Swap Lines</source>
-        <translation>Permuter les lignes</translation>
+        <translation type="vanished">Permuter les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="384" />
         <source>Swap the two selected lines</source>
-        <translation>Permuter les deux lignes sélectionnées</translation>
+        <translation type="vanished">Permuter les deux lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/grid.cpp" line="395" />
         <source>swap lines</source>
-        <translation>inverser les lignes</translation>
+        <translation type="vanished">inverser les lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="47" />
         <source>&amp;Bug Tracker...</source>
-        <translation>Traqueur de &amp;bogues...</translation>
+        <translation type="vanished">Traqueur de &amp;bogues...</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="48" />
         <source>Bug Tracker</source>
-        <translation>Traqueur de bogues</translation>
+        <translation type="vanished">Traqueur de bogues</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="49" />
-        <source>Visit Aegisub's bug tracker to report bugs and request new features</source>
-        <translation>Visitez le traqueur de bogues d'Aegisub pour signaler des bogues et proposer des nouvelles fonctions</translation>
+        <source>Visit Aegisub&apos;s bug tracker to report bugs and request new features</source>
+        <translation type="vanished">Visitez le traqueur de bogues d&apos;Aegisub pour signaler des bogues et proposer des nouvelles fonctions</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="68" />
         <source>&amp;Contents</source>
-        <translation>&amp;Contenus</translation>
+        <translation type="vanished">&amp;Contenus</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="69" />
         <source>Contents</source>
-        <translation>Contenus</translation>
+        <translation type="vanished">Contenus</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="70" />
         <source>Help topics</source>
-        <translation>Rubriques d'aide</translation>
+        <translation type="vanished">Rubriques d&apos;aide</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="80" />
         <source>&amp;IRC Channel</source>
-        <translation>Canal &amp;IRC</translation>
+        <translation type="vanished">Canal &amp;IRC</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="81" />
         <source>IRC Channel</source>
-        <translation>Canal IRC</translation>
+        <translation type="vanished">Canal IRC</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="82" />
-        <source>Visit Aegisub's official IRC channel</source>
-        <translation>Visitez le canal IRC officiel d'Aegisub</translation>
+        <source>Visit Aegisub&apos;s official IRC channel</source>
+        <translation type="vanished">Visitez le canal IRC officiel d&apos;Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="92" />
         <source>&amp;Visual Typesetting</source>
-        <translation>Éditions vidéos</translation>
+        <translation type="vanished">Éditions vidéos</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="93" />
         <source>Visual Typesetting</source>
-        <translation>Éditions vidéos</translation>
+        <translation type="vanished">Éditions vidéos</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="94" />
         <source>Open the manual page for Visual Typesetting</source>
-        <translation>Ouvrir la page du manuel des éditions vidéos</translation>
+        <translation type="vanished">Ouvrir la page du manuel des éditions vidéos</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="104" />
         <source>&amp;Website</source>
-        <translation>Site &amp;web</translation>
+        <translation type="vanished">Site &amp;web</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="105" />
         <source>Website</source>
-        <translation>Site web</translation>
+        <translation type="vanished">Site web</translation>
     </message>
     <message>
-        <location filename="../src/command/help.cpp" line="106" />
-        <source>Visit Aegisub's official website</source>
-        <translation>Visitez le site officiel d'Aegisub</translation>
+        <source>Visit Aegisub&apos;s official website</source>
+        <translation type="vanished">Visitez le site officiel d&apos;Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="49" />
-        <location filename="../src/command/keyframe.cpp" line="50" />
         <source>Close Keyframes</source>
-        <translation>Fermer les images clés</translation>
+        <translation type="vanished">Fermer les images clés</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="51" />
         <source>Discard the currently loaded keyframes and use those from the video, if any</source>
-        <translation>Ignorer les images clés chargées et utiliser celles de la vidéo, le cas échéant</translation>
+        <translation type="vanished">Ignorer les images clés chargées et utiliser celles de la vidéo, le cas échéant</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="66" />
         <source>Open Keyframes...</source>
-        <translation>Ouvrir des images clés...</translation>
+        <translation type="vanished">Ouvrir des images clés...</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="67" />
         <source>Open Keyframes</source>
-        <translation>Ouvrir des images clés</translation>
+        <translation type="vanished">Ouvrir des images clés</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="68" />
         <source>Open a keyframe list file</source>
-        <translation>Ouvrir un fichier de liste d'images clés</translation>
+        <translation type="vanished">Ouvrir un fichier de liste d&apos;images clés</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="72" />
         <source>Open Keyframes File</source>
-        <translation>Ouvrir un fichier d'images clés</translation>
+        <translation type="vanished">Ouvrir un fichier d&apos;images clés</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="87" />
         <source>Save Keyframes...</source>
-        <translation>Enregistrer les images clés...</translation>
+        <translation type="vanished">Enregistrer les images clés...</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="88" />
         <source>Save Keyframes</source>
-        <translation>Enregistrer les images clés</translation>
+        <translation type="vanished">Enregistrer les images clés</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="89" />
         <source>Save the current list of keyframes to a file</source>
-        <translation>Enregistrer la liste actuelle des images clés dans un fichier</translation>
+        <translation type="vanished">Enregistrer la liste actuelle des images clés dans un fichier</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="97" />
         <source>Save Keyframes File</source>
-        <translation>Enregistrer les images clés dans un fichier</translation>
+        <translation type="vanished">Enregistrer les images clés dans un fichier</translation>
     </message>
     <message>
-        <location filename="../src/command/keyframe.cpp" line="97" />
-        <location filename="../src/command/timecode.cpp" line="73" />
-        <location filename="../src/command/timecode.cpp" line="93" />
         <source>Text Files</source>
-        <translation>Fichiers texte</translation>
+        <translation type="vanished">Fichiers texte</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="43" />
-        <location filename="../src/command/recent.cpp" line="53" />
         <source>Open recent audio</source>
-        <translation>Ouvrir un fichier audio récent</translation>
+        <translation type="vanished">Ouvrir un fichier audio récent</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="44" />
-        <location filename="../src/command/recent.cpp" line="64" />
         <source>Open recent keyframes</source>
-        <translation>Ouvrir les images clés récentes</translation>
+        <translation type="vanished">Ouvrir les images clés récentes</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="45" />
-        <location filename="../src/command/recent.cpp" line="75" />
         <source>Open recent subtitles</source>
-        <translation>Ouvrir des sous-titres récents</translation>
+        <translation type="vanished">Ouvrir des sous-titres récents</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="46" />
-        <location filename="../src/command/recent.cpp" line="91" />
         <source>Open recent timecodes</source>
-        <translation>Ouvrir un fichier de codes temps récent</translation>
+        <translation type="vanished">Ouvrir un fichier de codes temps récent</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="47" />
         <source>Open recent video</source>
-        <translation>Ouvrir une vidéo récente</translation>
+        <translation type="vanished">Ouvrir une vidéo récente</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="51" />
-        <location filename="../src/command/recent.cpp" line="52" />
-        <location filename="../src/command/recent.cpp" line="62" />
-        <location filename="../src/command/recent.cpp" line="63" />
-        <location filename="../src/command/recent.cpp" line="73" />
-        <location filename="../src/command/recent.cpp" line="74" />
-        <location filename="../src/command/recent.cpp" line="89" />
-        <location filename="../src/command/recent.cpp" line="90" />
-        <location filename="../src/command/recent.cpp" line="100" />
-        <location filename="../src/command/recent.cpp" line="101" />
         <source>Recent</source>
-        <translation>Fichiers récents</translation>
+        <translation type="vanished">Fichiers récents</translation>
     </message>
     <message>
-        <location filename="../src/command/recent.cpp" line="102" />
         <source>Open recent videos</source>
-        <translation>Ouvrir des vidéos récentes</translation>
+        <translation type="vanished">Ouvrir des vidéos récentes</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="79" />
         <source>A&amp;ttachments...</source>
-        <translation>P&amp;ièces jointes...</translation>
+        <translation type="vanished">P&amp;ièces jointes...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="80" />
         <source>Attachments</source>
-        <translation>Pièces jointes</translation>
+        <translation type="vanished">Pièces jointes</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="81" />
         <source>Open the attachment manager dialog</source>
-        <translation>Ouvrir la boîte de dialogue du gestionnaire de pièce jointe</translation>
+        <translation type="vanished">Ouvrir la boîte de dialogue du gestionnaire de pièce jointe</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="92" />
         <source>&amp;Find...</source>
-        <translation>&amp;Chercher...</translation>
+        <translation type="vanished">&amp;Chercher...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="93" />
-        <location filename="../src/dialog_search_replace.cpp" line="47" />
         <source>Find</source>
-        <translation>Trouver</translation>
+        <translation type="vanished">Trouver</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="94" />
         <source>Search for text in the subtitles</source>
-        <translation>Rechercher du texte dans les sous-titres</translation>
+        <translation type="vanished">Rechercher du texte dans les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="105" />
         <source>Find &amp;Next</source>
-        <translation>Rechercher suivant (&amp;N)</translation>
+        <translation type="vanished">Rechercher suivant (&amp;N)</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="106" />
         <source>Find Next</source>
-        <translation>Chercher le suivant</translation>
+        <translation type="vanished">Chercher le suivant</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="107" />
         <source>Find next match of last search</source>
-        <translation>Trouver la prochaine occurrence de la recherche actuelle</translation>
+        <translation type="vanished">Trouver la prochaine occurrence de la recherche actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="134" />
         <source>&amp;After Current</source>
-        <translation>A&amp;près ligne active</translation>
+        <translation type="vanished">A&amp;près ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="135" />
         <source>After Current</source>
-        <translation>Après ligne active</translation>
+        <translation type="vanished">Après ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="136" />
         <source>Insert a new line after the current one</source>
-        <translation>Insérer une nouvelle ligne après celle active</translation>
+        <translation type="vanished">Insérer une nouvelle ligne après celle active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="168" />
-        <location filename="../src/command/subtitle.cpp" line="169" />
         <source>After Current, at Video Time</source>
-        <translation>Après l'active, au point de synchronisation</translation>
+        <translation type="vanished">Après l&apos;active, au point de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="170" />
         <source>Insert a new line after the current one, starting at video time</source>
-        <translation>Insérer une nouvelle ligne après celle active, au début de la vidéo</translation>
+        <translation type="vanished">Insérer une nouvelle ligne après celle active, au début de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="179" />
         <source>&amp;Before Current</source>
-        <translation>&amp;Avant ligne active</translation>
+        <translation type="vanished">&amp;Avant ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="180" />
         <source>Before Current</source>
-        <translation>Avant ligne active</translation>
+        <translation type="vanished">Avant ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="181" />
         <source>Insert a new line before the current one</source>
-        <translation>Insérer une nouvelle ligne avant la ligne active</translation>
+        <translation type="vanished">Insérer une nouvelle ligne avant la ligne active</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="210" />
-        <location filename="../src/command/subtitle.cpp" line="211" />
         <source>Before Current, at Video Time</source>
-        <translation>Avant l'active, au point de synchronisation</translation>
+        <translation type="vanished">Avant l&apos;active, au point de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="212" />
         <source>Insert a new line before the current one, starting at video time</source>
-        <translation>Insérez une nouvelle ligne avant la ligne active, au début de la vidéo</translation>
+        <translation type="vanished">Insérez une nouvelle ligne avant la ligne active, au début de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="238" />
         <source>&amp;New Subtitles</source>
-        <translation>&amp;Nouveaux sous-titres</translation>
+        <translation type="vanished">&amp;Nouveaux sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="239" />
         <source>New Subtitles</source>
-        <translation>Nouveaux sous-titres</translation>
+        <translation type="vanished">Nouveaux sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="240" />
         <source>New subtitles</source>
-        <translation>Nouveaux sous-titres</translation>
+        <translation type="vanished">Nouveaux sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="255" />
-        <location filename="../src/command/subtitle.cpp" line="256" />
-        <location filename="../src/command/subtitle.cpp" line="257" />
-        <location filename="../src/dialog_progress.cpp" line="175" />
-        <location filename="../src/dialog_style_manager.cpp" line="320" />
         <source>Close</source>
-        <translation>Fermer</translation>
+        <translation type="vanished">Fermer</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="267" />
         <source>&amp;Open Subtitles...</source>
-        <translation>&amp;Ouvrir des sous-titres...</translation>
+        <translation type="vanished">&amp;Ouvrir des sous-titres...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="268" />
         <source>Open Subtitles</source>
-        <translation>Ouvrir des sous-titres</translation>
+        <translation type="vanished">Ouvrir des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="269" />
         <source>Open a subtitles file</source>
-        <translation>Ouvrir un fichier de sous-titres</translation>
+        <translation type="vanished">Ouvrir un fichier de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="274" />
-        <location filename="../src/command/subtitle.cpp" line="304" />
-        <location filename="../src/dialog_style_manager.cpp" line="674" />
         <source>Open Subtitles File</source>
-        <translation>Ouvrir un fichier sous-titres</translation>
+        <translation type="vanished">Ouvrir un fichier sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="282" />
         <source>Open A&amp;utosaved Subtitles...</source>
-        <translation>Ouvrir un fichier de sous-titres a&amp;uto-sauvegardé...</translation>
+        <translation type="vanished">Ouvrir un fichier de sous-titres a&amp;uto-sauvegardé...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="283" />
         <source>Open Autosaved Subtitles</source>
-        <translation>Ouvrir un fichier de sous-titres auto-sauvegardé</translation>
+        <translation type="vanished">Ouvrir un fichier de sous-titres auto-sauvegardé</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="284" />
         <source>Open a previous version of a file which was autosaved by Aegisub</source>
-        <translation>Ouvrir une version précédente d'un fichier qui a été sauvegardée automatiquement par Aegisub</translation>
+        <translation type="vanished">Ouvrir une version précédente d&apos;un fichier qui a été sauvegardée automatiquement par Aegisub</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="297" />
         <source>Open Subtitles with &amp;Charset...</source>
-        <translation>Ouvrir sous-titres avec jeu de &amp;caractères...</translation>
+        <translation type="vanished">Ouvrir sous-titres avec jeu de &amp;caractères...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="298" />
         <source>Open Subtitles with Charset</source>
-        <translation>Ouvrir sous-titres avec jeu de caractères</translation>
+        <translation type="vanished">Ouvrir sous-titres avec jeu de caractères</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="299" />
         <source>Open a subtitles file with a specific file encoding</source>
-        <translation>Ouvrir un fichier de sous-titres avec un encodage de fichier spécifique</translation>
+        <translation type="vanished">Ouvrir un fichier de sous-titres avec un encodage de fichier spécifique</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="307" />
         <source>Charset</source>
-        <translation>Jeu de caractères</translation>
+        <translation type="vanished">Jeu de caractères</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="307" />
         <source>Choose charset code:</source>
-        <translation>Choix du jeu de caractères :</translation>
+        <translation type="vanished">Choix du jeu de caractères :</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="316" />
         <source>Open Subtitles from &amp;Video</source>
-        <translation>Ouvrir les sous-titres de la &amp;vidéo</translation>
+        <translation type="vanished">Ouvrir les sous-titres de la &amp;vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="317" />
         <source>Open Subtitles from Video</source>
-        <translation>Ouvrir les sous-titres de la vidéo</translation>
+        <translation type="vanished">Ouvrir les sous-titres de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="318" />
         <source>Open the subtitles from the current video file</source>
-        <translation>Ouvrez les sous-titres à partir du fichier vidéo actuel</translation>
+        <translation type="vanished">Ouvrez les sous-titres à partir du fichier vidéo actuel</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="334" />
         <source>&amp;Properties...</source>
-        <translation>&amp;Propriétés...</translation>
+        <translation type="vanished">&amp;Propriétés...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="335" />
         <source>Properties</source>
-        <translation>Propriétés</translation>
+        <translation type="vanished">Propriétés</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="336" />
         <source>Open script properties window</source>
-        <translation>Ouvrir la fenêtre des propriétés du script</translation>
+        <translation type="vanished">Ouvrir la fenêtre des propriétés du script</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="347" />
         <source>Save Subtitles File</source>
-        <translation>Enregistrer le fichier de sous-titres</translation>
+        <translation type="vanished">Enregistrer le fichier de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="357" />
-        <location filename="../src/command/subtitle.cpp" line="360" />
-        <location filename="../src/dialog_fonts_collector.cpp" line="312" />
-        <location filename="../src/dialog_fonts_collector.cpp" line="317" />
-        <location filename="../src/dialog_fonts_collector.cpp" line="322" />
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="495" />
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="497" />
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="547" />
-        <location filename="../src/dialog_search_replace.cpp" line="143" />
-        <location filename="../src/dialog_spellchecker.cpp" line="143" />
-        <location filename="../src/dialog_spellchecker.cpp" line="149" />
-        <location filename="../src/dialog_style_manager.cpp" line="689" />
-        <location filename="../src/dialog_style_manager.cpp" line="695" />
-        <location filename="../src/dialog_style_manager.cpp" line="698" />
-        <location filename="../src/main.cpp" line="202" />
-        <location filename="../src/preferences.cpp" line="309" />
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Error</source>
-        <translation>Erreur</translation>
+        <translation type="vanished">Erreur</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="360" />
-        <location filename="../src/dialog_export.cpp" line="211" />
-        <location filename="../src/dialog_style_manager.cpp" line="698" />
-        <location filename="../src/project.cpp" line="142" />
         <source>Unknown error</source>
-        <translation>Erreur inconnue</translation>
+        <translation type="vanished">Erreur inconnue</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="367" />
         <source>&amp;Save Subtitles</source>
-        <translation>Enregi&amp;strer les sous-titres</translation>
+        <translation type="vanished">Enregi&amp;strer les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="368" />
         <source>Save Subtitles</source>
-        <translation>Enregistrer les sous-titres</translation>
+        <translation type="vanished">Enregistrer les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="369" />
         <source>Save the current subtitles</source>
-        <translation>Enregistrer les sous-titres actuels</translation>
+        <translation type="vanished">Enregistrer les sous-titres actuels</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="384" />
         <source>Save Subtitles &amp;as...</source>
-        <translation>Enregistrer les sous-titres &amp;sous...</translation>
+        <translation type="vanished">Enregistrer les sous-titres &amp;sous...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="385" />
         <source>Save Subtitles as</source>
-        <translation>Enregistrer les sous-titres sous</translation>
+        <translation type="vanished">Enregistrer les sous-titres sous</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="386" />
         <source>Save subtitles with another name</source>
-        <translation>Enregistrer les sous-titres avec un autre nom</translation>
+        <translation type="vanished">Enregistrer les sous-titres avec un autre nom</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="395" />
-        <location filename="../src/dialog_export.cpp" line="127" />
-        <location filename="../src/dialog_selected_choices.cpp" line="26" />
-        <location filename="../src/subs_edit_ctrl.cpp" line="411" />
         <source>Select &amp;All</source>
-        <translation>Tout sélectionner (&amp;A)</translation>
+        <translation type="vanished">Tout sélectionner (&amp;A)</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="396" />
         <source>Select All</source>
-        <translation>Tout sélectionner</translation>
+        <translation type="vanished">Tout sélectionner</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="397" />
         <source>Select all dialogue lines</source>
-        <translation>Sélectionner toutes les lignes de dialogue</translation>
+        <translation type="vanished">Sélectionner toutes les lignes de dialogue</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="409" />
-        <location filename="../src/command/subtitle.cpp" line="410" />
         <source>Select Visible</source>
-        <translation>Sélection visible</translation>
+        <translation type="vanished">Sélection visible</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="411" />
         <source>Select all dialogue lines that are visible on the current video frame</source>
-        <translation>Sélectionner toutes les lignes de dialogue visibles sur l'image en cours</translation>
+        <translation type="vanished">Sélectionner toutes les lignes de dialogue visibles sur l&apos;image en cours</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="441" />
         <source>Spell &amp;Checker...</source>
-        <translation>&amp;Correcteur orthographique...</translation>
+        <translation type="vanished">&amp;Correcteur orthographique...</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="442" />
-        <location filename="../src/dialog_spellchecker.cpp" line="103" />
         <source>Spell Checker</source>
-        <translation>Correcteur orthographique</translation>
+        <translation type="vanished">Correcteur orthographique</translation>
     </message>
     <message>
-        <location filename="../src/command/subtitle.cpp" line="443" />
         <source>Open spell checker</source>
-        <translation>Ouvrir le correcteur orthographique</translation>
+        <translation type="vanished">Ouvrir le correcteur orthographique</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="100" />
         <source>adjoin</source>
-        <translation>joint</translation>
+        <translation type="vanished">joint</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="105" />
         <source>Change &amp;End</source>
-        <translation>Modifier la &amp;fin</translation>
+        <translation type="vanished">Modifier la &amp;fin</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="106" />
         <source>Change End</source>
-        <translation>Modifier la fin</translation>
+        <translation type="vanished">Modifier la fin</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="107" />
-        <source>Change end times of lines to the next line's start time</source>
-        <translation>Modifier les temps de fin des lignes au temps de début de la ligne suivante</translation>
+        <source>Change end times of lines to the next line&apos;s start time</source>
+        <translation type="vanished">Modifier les temps de fin des lignes au temps de début de la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="116" />
         <source>Change &amp;Start</source>
-        <translation>Modifier le &amp;début</translation>
+        <translation type="vanished">Modifier le &amp;début</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="117" />
         <source>Change Start</source>
-        <translation>Modifier le début</translation>
+        <translation type="vanished">Modifier le début</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="118" />
-        <source>Change start times of lines to the previous line's end time</source>
-        <translation>Modifier les temps de début des lignes au temps de fin de la ligne précédente</translation>
+        <source>Change start times of lines to the previous line&apos;s end time</source>
+        <translation type="vanished">Modifier les temps de début des lignes au temps de fin de la ligne précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="128" />
         <source>Shift to &amp;Current Frame</source>
-        <translation>Décaler vers l'image a&amp;ctive</translation>
+        <translation type="vanished">Décaler vers l&apos;image a&amp;ctive</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="129" />
         <source>Shift to Current Frame</source>
-        <translation>Décaler vers l'image active</translation>
+        <translation type="vanished">Décaler vers l&apos;image active</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="130" />
         <source>Shift selection so that the active line starts at current frame</source>
-        <translation>Décaler la sélection pour que la première ligne active démarre sur l'image active</translation>
+        <translation type="vanished">Décaler la sélection pour que la première ligne active démarre sur l&apos;image active</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="146" />
         <source>shift to frame</source>
-        <translation>décaler sur l'image</translation>
+        <translation type="vanished">décaler sur l&apos;image</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="153" />
         <source>S&amp;hift Times...</source>
-        <translation>&amp;Décalage temporel...</translation>
+        <translation type="vanished">&amp;Décalage temporel...</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="154" />
-        <location filename="../src/dialog_shift_times.cpp" line="135" />
         <source>Shift Times</source>
-        <translation>Décalage temps</translation>
+        <translation type="vanished">Décalage temps</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="155" />
         <source>Shift subtitles by time or frames</source>
-        <translation>Décaler des sous-titres en temps ou images</translation>
+        <translation type="vanished">Décaler des sous-titres en temps ou images</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="182" />
         <source>Snap &amp;End to Video</source>
-        <translation>Coll&amp;er la fin à la vidéo</translation>
+        <translation type="vanished">Coll&amp;er la fin à la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="183" />
         <source>Snap End to Video</source>
-        <translation>Coller la fin à la vidéo</translation>
+        <translation type="vanished">Coller la fin à la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="184" />
         <source>Set end of selected subtitles to current video frame</source>
-        <translation>Appliquer la fin des sous-titres sélectionnés à l'image vidéo active</translation>
+        <translation type="vanished">Appliquer la fin des sous-titres sélectionnés à l&apos;image vidéo active</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="194" />
         <source>Snap to S&amp;cene</source>
-        <translation>Coller à la s&amp;cène</translation>
+        <translation type="vanished">Coller à la s&amp;cène</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="195" />
         <source>Snap to Scene</source>
-        <translation>Coller à la scène</translation>
+        <translation type="vanished">Coller à la scène</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="196" />
         <source>Set start and end of subtitles to the keyframes around current video frame</source>
-        <translation>Définir le début et la fin des sous-titre sur les images-clés proche de l'image vidéo active</translation>
+        <translation type="vanished">Définir le début et la fin des sous-titre sur les images-clés proche de l&apos;image vidéo active</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="233" />
         <source>snap to scene</source>
-        <translation>coller à la scène</translation>
+        <translation type="vanished">coller à la scène</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="239" />
-        <location filename="../src/command/time.cpp" line="240" />
         <source>Add lead in and out</source>
-        <translation>Ajouter blancs de début et de fin</translation>
+        <translation type="vanished">Ajouter blancs de début et de fin</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="241" />
         <source>Add both lead in and out to the selected lines</source>
-        <translation>Ajouter blanc de début et de fin pour les lignes sélectionnées</translation>
+        <translation type="vanished">Ajouter blanc de début et de fin pour les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="253" />
-        <location filename="../src/command/time.cpp" line="254" />
         <source>Add lead in</source>
-        <translation>Ajouter blanc de début</translation>
+        <translation type="vanished">Ajouter blanc de début</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="255" />
         <source>Add the lead in time to the selected lines</source>
-        <translation>Ajouter blanc de début pour les lignes sélectionnées</translation>
+        <translation type="vanished">Ajouter blanc de début pour les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="265" />
-        <location filename="../src/command/time.cpp" line="266" />
         <source>Add lead out</source>
-        <translation>Ajouter blanc de fin</translation>
+        <translation type="vanished">Ajouter blanc de fin</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="267" />
         <source>Add the lead out time to the selected lines</source>
-        <translation>Ajouter un blanc de fin pour les lignes sélectionnées</translation>
+        <translation type="vanished">Ajouter un blanc de fin pour les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="276" />
-        <location filename="../src/command/time.cpp" line="277" />
         <source>Increase length</source>
-        <translation>Agrandir la durée</translation>
+        <translation type="vanished">Agrandir la durée</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="278" />
         <source>Increase the length of the current timing unit</source>
-        <translation>Agrandir la longueur de l'unité de temps actuelle</translation>
+        <translation type="vanished">Agrandir la longueur de l&apos;unité de temps actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="287" />
-        <location filename="../src/command/time.cpp" line="288" />
         <source>Increase length and shift</source>
-        <translation>Agrandir la longueur et décaler</translation>
+        <translation type="vanished">Agrandir la longueur et décaler</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="289" />
         <source>Increase the length of the current timing unit and shift the following items</source>
-        <translation>Agrandir la longueur de l'unité de temps actuelle et décaler les éléments suivants</translation>
+        <translation type="vanished">Agrandir la longueur de l&apos;unité de temps actuelle et décaler les éléments suivants</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="298" />
-        <location filename="../src/command/time.cpp" line="299" />
         <source>Decrease length</source>
-        <translation>Réduire la longueur</translation>
+        <translation type="vanished">Réduire la longueur</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="300" />
         <source>Decrease the length of the current timing unit</source>
-        <translation>Réduire la longueur de l'unité de temps actuelle</translation>
+        <translation type="vanished">Réduire la longueur de l&apos;unité de temps actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="309" />
-        <location filename="../src/command/time.cpp" line="310" />
         <source>Decrease length and shift</source>
-        <translation>Réduire la longueur et décaler</translation>
+        <translation type="vanished">Réduire la longueur et décaler</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="311" />
         <source>Decrease the length of the current timing unit and shift the following items</source>
-        <translation>Réduire la longueur de l'unité de temps actuelle et décaler les éléments suivants</translation>
+        <translation type="vanished">Réduire la longueur de l&apos;unité de temps actuelle et décaler les éléments suivants</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="320" />
-        <location filename="../src/command/time.cpp" line="321" />
         <source>Shift start time forward</source>
-        <translation>Décaler les temps de début vers l'avant</translation>
+        <translation type="vanished">Décaler les temps de début vers l&apos;avant</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="322" />
         <source>Shift the start time of the current timing unit forward</source>
-        <translation>Décaler le temps de début de l'unité de temps actuelle</translation>
+        <translation type="vanished">Décaler le temps de début de l&apos;unité de temps actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="331" />
-        <location filename="../src/command/time.cpp" line="332" />
         <source>Shift start time backward</source>
-        <translation>Décaler le temps de départ en arrière</translation>
+        <translation type="vanished">Décaler le temps de départ en arrière</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="333" />
         <source>Shift the start time of the current timing unit backward</source>
-        <translation>Décaler le temps de départ de l'unité de temps actuelle en arrière</translation>
+        <translation type="vanished">Décaler le temps de départ de l&apos;unité de temps actuelle en arrière</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="343" />
         <source>Snap &amp;Start to Video</source>
-        <translation>Coller le &amp;début à la vidéo</translation>
+        <translation type="vanished">Coller le &amp;début à la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="344" />
         <source>Snap Start to Video</source>
-        <translation>Coller le début à la vidéo</translation>
+        <translation type="vanished">Coller le début à la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="345" />
         <source>Set start of selected subtitles to current video frame</source>
-        <translation>Appliquer le début du sous-titre sélectionné à l'image vidéo active</translation>
+        <translation type="vanished">Appliquer le début du sous-titre sélectionné à l&apos;image vidéo active</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="357" />
         <source>Next line or syllable</source>
-        <translation>Ligne ou syllabe suivantes</translation>
+        <translation type="vanished">Ligne ou syllabe suivantes</translation>
     </message>
     <message>
-        <location filename="../src/command/time.cpp" line="369" />
         <source>Previous line or syllable</source>
-        <translation>Ligne ou syllabe précédentes</translation>
+        <translation type="vanished">Ligne ou syllabe précédentes</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="51" />
-        <location filename="../src/command/timecode.cpp" line="52" />
         <source>Close Timecodes File</source>
-        <translation>Fermer le fichier de codes temporels</translation>
+        <translation type="vanished">Fermer le fichier de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="53" />
         <source>Close the currently open timecodes file</source>
-        <translation>Fermer le fichier de codes temporels actuellement ouvert</translation>
+        <translation type="vanished">Fermer le fichier de codes temporels actuellement ouvert</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="68" />
         <source>Open Timecodes File...</source>
-        <translation>Ouvrir un fichier de codes temporels...</translation>
+        <translation type="vanished">Ouvrir un fichier de codes temporels...</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="69" />
         <source>Open Timecodes File</source>
-        <translation>Ouvrir un fichier de codes temporels</translation>
+        <translation type="vanished">Ouvrir un fichier de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="70" />
         <source>Open a VFR timecodes v1 or v2 file</source>
-        <translation>Ouvrir un fichier de codes temporels VFR v1 ou v2</translation>
+        <translation type="vanished">Ouvrir un fichier de codes temporels VFR v1 ou v2</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="74" />
         <source>Open Timecodes File</source>
         <comment>dialog title</comment>
-        <translation>Ouvrir un fichier de codes temporels</translation>
+        <translation type="vanished">Ouvrir un fichier de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="83" />
         <source>Save Timecodes File...</source>
-        <translation>Enregistrer un fichier de codes temporels...</translation>
+        <translation type="vanished">Enregistrer un fichier de codes temporels...</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="84" />
         <source>Save Timecodes File</source>
-        <translation>Enregistrer un fichier de codes temporels</translation>
+        <translation type="vanished">Enregistrer un fichier de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="85" />
         <source>Save a VFR timecodes v2 file</source>
-        <translation>Enregistrer un fichier de codes temporels VFR v2</translation>
+        <translation type="vanished">Enregistrer un fichier de codes temporels VFR v2</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="94" />
         <source>Save Timecodes File</source>
         <comment>dialog title</comment>
-        <translation>Enregistrer un fichier de codes temporels</translation>
+        <translation type="vanished">Enregistrer un fichier de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/timecode.cpp" line="103" />
         <source>Error saving timecodes</source>
-        <translation>Erreur lors de l'enregistrement de codes temporels</translation>
+        <translation type="vanished">Erreur lors de l&apos;enregistrement de codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="56" />
         <source>&amp;Export Subtitles...</source>
-        <translation>&amp;Exporter les sous-titres...</translation>
+        <translation type="vanished">&amp;Exporter les sous-titres...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="57" />
         <source>Export Subtitles</source>
-        <translation>Exporter les sous-titres</translation>
+        <translation type="vanished">Exporter les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="58" />
         <source>Save a copy of subtitles in a different format or with processing applied to it</source>
-        <translation>Enregistrer une copie de sous-titres dans un format différent ou avec un traitement à lui appliquer</translation>
+        <translation type="vanished">Enregistrer une copie de sous-titres dans un format différent ou avec un traitement à lui appliquer</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="69" />
         <source>&amp;Fonts Collector...</source>
-        <translation>Collecte des &amp;polices d'écriture...</translation>
+        <translation type="vanished">Collecte des &amp;polices d&apos;écriture...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="70" />
-        <location filename="../src/dialog_fonts_collector.cpp" line="226" />
         <source>Fonts Collector</source>
-        <translation>Collecteur de polices</translation>
+        <translation type="vanished">Collecteur de polices</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="71" />
         <source>Open fonts collector</source>
-        <translation>Ouvrir le collecteur de polices d'écriture</translation>
+        <translation type="vanished">Ouvrir le collecteur de polices d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="81" />
         <source>S&amp;elect Lines...</source>
-        <translation>S&amp;élection de lignes...</translation>
+        <translation type="vanished">S&amp;élection de lignes...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="82" />
         <source>Select Lines</source>
-        <translation>Choix de lignes</translation>
+        <translation type="vanished">Choix de lignes</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="83" />
         <source>Select lines based on defined criteria</source>
-        <translation>Sélectionner des lignes à partir de critères définis</translation>
+        <translation type="vanished">Sélectionner des lignes à partir de critères définis</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="93" />
         <source>&amp;Resample Resolution...</source>
-        <translation>&amp;Rééchantillonnage de la résolution...</translation>
+        <translation type="vanished">&amp;Rééchantillonnage de la résolution...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="94" />
-        <location filename="../src/dialog_resample.cpp" line="90" />
         <source>Resample Resolution</source>
-        <translation>Rééchantillonnage de la résolution</translation>
+        <translation type="vanished">Rééchantillonnage de la résolution</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="95" />
         <source>Resample subtitles to maintain their current appearance at a different script resolution</source>
-        <translation>Rééchantillonner les sous-titres pour maintenir leur aspect actuel à une résolution de script différente</translation>
+        <translation type="vanished">Rééchantillonner les sous-titres pour maintenir leur aspect actuel à une résolution de script différente</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="108" />
         <source>St&amp;yling Assistant...</source>
-        <translation>Assistant de st&amp;yles...</translation>
+        <translation type="vanished">Assistant de st&amp;yles...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="109" />
-        <location filename="../src/dialog_styling_assistant.cpp" line="54" />
-        <location filename="default_hotkey.json" line="223" />
         <source>Styling Assistant</source>
-        <translation>Assistant de styles</translation>
+        <translation type="vanished">Assistant de styles</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="110" />
         <source>Open styling assistant</source>
-        <translation>Ouvre l'assistant de style</translation>
+        <translation type="vanished">Ouvre l&apos;assistant de style</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="127" />
-        <location filename="../src/command/tool.cpp" line="211" />
         <source>&amp;Accept changes</source>
-        <translation>V&amp;alider les modifications</translation>
+        <translation type="vanished">V&amp;alider les modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="128" />
-        <location filename="../src/command/tool.cpp" line="212" />
-        <location filename="../src/dialog_styling_assistant.cpp" line="90" />
-        <location filename="../src/dialog_translation.cpp" line="114" />
         <source>Accept changes</source>
-        <translation>Valider les modifications</translation>
+        <translation type="vanished">Valider les modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="129" />
-        <location filename="../src/command/tool.cpp" line="213" />
         <source>Commit changes and move to the next line</source>
-        <translation>Valider les modifications et passer à la ligne suivante</translation>
+        <translation type="vanished">Valider les modifications et passer à la ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="138" />
-        <location filename="../src/command/tool.cpp" line="222" />
         <source>&amp;Preview changes</source>
-        <translation>A&amp;perçu des modifications</translation>
+        <translation type="vanished">A&amp;perçu des modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="139" />
-        <location filename="../src/command/tool.cpp" line="223" />
-        <location filename="../src/dialog_styling_assistant.cpp" line="91" />
-        <location filename="../src/dialog_translation.cpp" line="115" />
         <source>Preview changes</source>
-        <translation>Aperçu des modifications</translation>
+        <translation type="vanished">Aperçu des modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="140" />
-        <location filename="../src/command/tool.cpp" line="224" />
         <source>Commit changes and stay on the current line</source>
-        <translation>Valider les modifications et rester sur la ligne actuelle</translation>
+        <translation type="vanished">Valider les modifications et rester sur la ligne actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="150" />
         <source>&amp;Styles Manager...</source>
-        <translation>Gestionnaire de &amp;styles...</translation>
+        <translation type="vanished">Gestionnaire de &amp;styles...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="151" />
-        <location filename="../src/dialog_style_manager.cpp" line="259" />
         <source>Styles Manager</source>
-        <translation>Gestionnaire de styles</translation>
+        <translation type="vanished">Gestionnaire de styles</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="152" />
         <source>Open the styles manager</source>
-        <translation>Ouvrir le gestionnaire de styles</translation>
+        <translation type="vanished">Ouvrir le gestionnaire de styles</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="162" />
         <source>&amp;Kanji Timer...</source>
-        <translation>Minutage &amp;kanji...</translation>
+        <translation type="vanished">Minutage &amp;kanji...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="163" />
         <source>Kanji Timer</source>
-        <translation>Minuteur de kanji</translation>
+        <translation type="vanished">Minuteur de kanji</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="164" />
         <source>Open the Kanji timer copier</source>
-        <translation>Ouvrir le copieur de minutage Kanji</translation>
+        <translation type="vanished">Ouvrir le copieur de minutage Kanji</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="174" />
         <source>&amp;Timing Post-Processor...</source>
-        <translation>Postprocesseur &amp;de synchronisation...</translation>
+        <translation type="vanished">Postprocesseur &amp;de synchronisation...</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="175" />
-        <location filename="../src/dialog_timing_processor.cpp" line="139" />
         <source>Timing Post-Processor</source>
-        <translation>Post-processeur de synchronisation</translation>
+        <translation type="vanished">Post-processeur de synchronisation</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="176" />
         <source>Post-process the subtitle timing to add lead-ins and lead-outs, snap timing to scene changes, etc.</source>
-        <translation>Post-traitement de la synchronisation des sous-titres pour ajouter des blancs de fin, de début, synchronisation instantanée aux changements de scène, etc.</translation>
+        <translation type="vanished">Post-traitement de la synchronisation des sous-titres pour ajouter des blancs de fin, de début, synchronisation instantanée aux changements de scène, etc.</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="186" />
         <source>&amp;Translation Assistant...</source>
-        <translation>Assistant de traduction (&amp;T)…</translation>
+        <translation type="vanished">Assistant de traduction (&amp;T)…</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="187" />
-        <location filename="../src/dialog_translation.cpp" line="65" />
-        <location filename="../src/preferences.cpp" line="272" />
-        <location filename="default_hotkey.json" line="291" />
         <source>Translation Assistant</source>
-        <translation>Assistant de traduction</translation>
+        <translation type="vanished">Assistant de traduction</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="188" />
         <source>Open translation assistant</source>
-        <translation>Ouvrir l'assistant à la traduction</translation>
+        <translation type="vanished">Ouvrir l&apos;assistant à la traduction</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="196" />
         <source>There is nothing to translate in the file.</source>
-        <translation>Il n'y a rien à traduire dans le fichier.</translation>
+        <translation type="vanished">Il n&apos;y a rien à traduire dans le fichier.</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="233" />
         <source>&amp;Next Line</source>
-        <translation>Lig&amp;ne suivante</translation>
+        <translation type="vanished">Lig&amp;ne suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="235" />
         <source>Move to the next line without committing changes</source>
-        <translation>Aller à la ligne suivante sans valider les changements</translation>
+        <translation type="vanished">Aller à la ligne suivante sans valider les changements</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="244" />
         <source>&amp;Previous Line</source>
-        <translation>Ligne &amp;précédente</translation>
+        <translation type="vanished">Ligne &amp;précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="246" />
         <source>Move to the previous line without committing changes</source>
-        <translation>Aller à la ligne précédente sans valider les modifications</translation>
+        <translation type="vanished">Aller à la ligne précédente sans valider les modifications</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="255" />
         <source>&amp;Insert Original</source>
-        <translation>&amp;Insérer original</translation>
+        <translation type="vanished">&amp;Insérer original</translation>
     </message>
     <message>
-        <location filename="../src/command/tool.cpp" line="257" />
         <source>Insert the untranslated text</source>
-        <translation>Insérer le texte non traduit</translation>
+        <translation type="vanished">Insérer le texte non traduit</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="82" />
         <source>&amp;Cinematic (2.35)</source>
-        <translation>&amp;cinématographique (2.35)</translation>
+        <translation type="vanished">&amp;cinématographique (2.35)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="83" />
         <source>Cinematic (2.35)</source>
-        <translation>Cinématographique (2.35)</translation>
+        <translation type="vanished">Cinématographique (2.35)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="84" />
         <source>Force video to 2.35 aspect ratio</source>
-        <translation>Forcer la vidéo au rapport de forme 2.35</translation>
+        <translation type="vanished">Forcer la vidéo au rapport de forme 2.35</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="100" />
         <source>C&amp;ustom...</source>
-        <translation>Personnalisation...</translation>
+        <translation type="vanished">Personnalisation...</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="101" />
         <source>Custom</source>
-        <translation>Personnalisation</translation>
+        <translation type="vanished">Personnalisation</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="102" />
         <source>Force video to a custom aspect ratio</source>
-        <translation>Forcer la vidéo à un rapport de forme personnalisé</translation>
+        <translation type="vanished">Forcer la vidéo à un rapport de forme personnalisé</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="113" />
         <source>Enter aspect ratio in either:
   decimal (e.g. 2.35)
   fractional (e.g. 16:9)
   specific resolution (e.g. 853x480)</source>
-        <translation>Saisir le rapport de forme soit :
+        <translation type="vanished">Saisir le rapport de forme soit :
  en décimale (ex. 2.35)
  en fraction (ex. 16:9)
- en définition d'image spécifique (ex. 853x480)</translation>
+ en définition d&apos;image spécifique (ex. 853x480)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="114" />
         <source>Enter aspect ratio</source>
-        <translation>Saisir le rapport de forme</translation>
+        <translation type="vanished">Saisir le rapport de forme</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="133" />
         <source>Invalid Aspect Ratio</source>
-        <translation>Rapport de forme invalide</translation>
+        <translation type="vanished">Rapport de forme invalide</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="133" />
         <source>Invalid value! Aspect ratio must be between 0.5 and 5.0.</source>
-        <translation>Valeur incorrecte ! Le rapport de forme doit être compris entre 0.5 et 5.0.</translation>
+        <translation type="vanished">Valeur incorrecte ! Le rapport de forme doit être compris entre 0.5 et 5.0.</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="143" />
         <source>&amp;Default</source>
-        <translation>&amp;Défaut</translation>
+        <translation type="vanished">&amp;Défaut</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="145" />
-        <source>Use video's original aspect ratio</source>
-        <translation>Utiliser le rapport de forme d'origine de la vidéo</translation>
+        <source>Use video&apos;s original aspect ratio</source>
+        <translation type="vanished">Utiliser le rapport de forme d&apos;origine de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="161" />
         <source>&amp;Fullscreen (4:3)</source>
-        <translation>&amp;Plein écran (4:3)</translation>
+        <translation type="vanished">&amp;Plein écran (4:3)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="162" />
         <source>Fullscreen (4:3)</source>
-        <translation>Plein écran (4:3)</translation>
+        <translation type="vanished">Plein écran (4:3)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="163" />
         <source>Force video to 4:3 aspect ratio</source>
-        <translation>Forcer la vidéo au rapport de forme 4:3</translation>
+        <translation type="vanished">Forcer la vidéo au rapport de forme 4:3</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="179" />
         <source>&amp;Widescreen (16:9)</source>
-        <translation>&amp;Écran large (16:9)</translation>
+        <translation type="vanished">&amp;Écran large (16:9)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="180" />
         <source>Widescreen (16:9)</source>
-        <translation>Écran large (16:9)</translation>
+        <translation type="vanished">Écran large (16:9)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="181" />
         <source>Force video to 16:9 aspect ratio</source>
-        <translation>Forcer la vidéo au rapport de forme 16:9</translation>
+        <translation type="vanished">Forcer la vidéo au rapport de forme 16:9</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="198" />
         <source>&amp;Close Video</source>
-        <translation>&amp;Fermer la vidéo</translation>
+        <translation type="vanished">&amp;Fermer la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="199" />
         <source>Close Video</source>
-        <translation>Fermer la vidéo</translation>
+        <translation type="vanished">Fermer la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="200" />
         <source>Close the currently open video file</source>
-        <translation>Fermez le fichier vidéo actuel</translation>
+        <translation type="vanished">Fermez le fichier vidéo actuel</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="209" />
-        <location filename="../src/command/video.cpp" line="210" />
         <source>Copy coordinates to Clipboard</source>
-        <translation>Copie les coordonnées dans le presse-papier</translation>
+        <translation type="vanished">Copie les coordonnées dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="211" />
         <source>Copy the current coordinates of the mouse over the video to the clipboard</source>
-        <translation>Copier les coordonnées actuelles de la souris sur la vidéo dans le presse-papier</translation>
+        <translation type="vanished">Copier les coordonnées actuelles de la souris sur la vidéo dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="220" />
-        <location filename="../src/command/video.cpp" line="221" />
         <source>Cycle active subtitles provider</source>
-        <translation>Faire défiler les fournisseurs de sous-titres</translation>
+        <translation type="vanished">Faire défiler les fournisseurs de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="222" />
         <source>Cycle through the available subtitles providers</source>
-        <translation>Faire défiler les fournisseurs de sous-titres disponibles</translation>
+        <translation type="vanished">Faire défiler les fournisseurs de sous-titres disponibles</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="233" />
         <source>Subtitles provider set to %s</source>
-        <translation>Fournisseur de sous-titres configuré sur %s</translation>
+        <translation type="vanished">Fournisseur de sous-titres configuré sur %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="240" />
         <source>&amp;Detach Video</source>
-        <translation>&amp;Détacher la vidéo</translation>
+        <translation type="vanished">&amp;Détacher la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="241" />
         <source>Detach Video</source>
-        <translation>Détacher la vidéo</translation>
+        <translation type="vanished">Détacher la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="242" />
         <source>Detach the video display from the main window, displaying it in a separate Window</source>
-        <translation>Détacher l'affichage vidéo de la fenêtre principale et l'afficher dans une fenêtre séparée</translation>
+        <translation type="vanished">Détacher l&apos;affichage vidéo de la fenêtre principale et l&apos;afficher dans une fenêtre séparée</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="260" />
         <source>Show &amp;Video Details</source>
-        <translation>Afficher les détails &amp;vidéo</translation>
+        <translation type="vanished">Afficher les détails &amp;vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="261" />
         <source>Show Video Details</source>
-        <translation>Afficher les détails vidéo</translation>
+        <translation type="vanished">Afficher les détails vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="262" />
         <source>Show video details</source>
-        <translation>Afficher les détails vidéo</translation>
+        <translation type="vanished">Afficher les détails vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="272" />
-        <location filename="../src/command/video.cpp" line="273" />
         <source>Toggle video slider focus</source>
-        <translation>Changer cible de saisie curseur vidéo</translation>
+        <translation type="vanished">Changer cible de saisie curseur vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="274" />
         <source>Toggle focus between the video slider and the previous thing to have focus</source>
-        <translation>Changer la cible de saisie entre le curseur de la vidéo et l'élément précédemment ciblé</translation>
+        <translation type="vanished">Changer la cible de saisie entre le curseur de la vidéo et l&apos;élément précédemment ciblé</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="299" />
-        <location filename="../src/command/video.cpp" line="300" />
         <source>Copy image to Clipboard</source>
-        <translation>Copier l'image dans le presse-papier</translation>
+        <translation type="vanished">Copier l&apos;image dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="301" />
         <source>Copy the currently displayed frame to the clipboard</source>
-        <translation>Copier l'image affichée dans le presse-papier</translation>
+        <translation type="vanished">Copier l&apos;image affichée dans le presse-papier</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="310" />
-        <location filename="../src/command/video.cpp" line="311" />
         <source>Copy image to Clipboard (no subtitles)</source>
-        <translation>Copier l'image dans le presse-papier (sans sous-titres)</translation>
+        <translation type="vanished">Copier l&apos;image dans le presse-papier (sans sous-titres)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="312" />
         <source>Copy the currently displayed frame to the clipboard, without the subtitles</source>
-        <translation>Copier l'image affichée dans le presse-papier sans les sous-titres</translation>
+        <translation type="vanished">Copier l&apos;image affichée dans le presse-papier sans les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="321" />
-        <location filename="../src/command/video.cpp" line="322" />
         <source>Copy image to Clipboard (only subtitles)</source>
-        <translation>Copier l'image dans le presse-papiers (sous-titres uniquement)</translation>
+        <translation type="vanished">Copier l&apos;image dans le presse-papiers (sous-titres uniquement)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="323" />
         <source>Copy the currently displayed subtitles to the clipboard, with transparent background</source>
-        <translation>Copier les sous-titres actuellement affichés dans le presse-papiers, avec un arrière-plan transparent</translation>
+        <translation type="vanished">Copier les sous-titres actuellement affichés dans le presse-papiers, avec un arrière-plan transparent</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="332" />
-        <location filename="../src/command/video.cpp" line="333" />
         <source>Next Frame</source>
-        <translation>Image suivante</translation>
+        <translation type="vanished">Image suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="334" />
         <source>Seek to the next frame</source>
-        <translation>Aller à l'image suivante</translation>
+        <translation type="vanished">Aller à l&apos;image suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="343" />
-        <location filename="../src/command/video.cpp" line="344" />
         <source>Next Boundary</source>
-        <translation>Délimitation suivante</translation>
+        <translation type="vanished">Délimitation suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="345" />
         <source>Seek to the next beginning or end of a subtitle</source>
-        <translation>Aller au début ou la fin du sous-titre suivant</translation>
+        <translation type="vanished">Aller au début ou la fin du sous-titre suivant</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="372" />
-        <location filename="../src/command/video.cpp" line="373" />
         <source>Next Keyframe</source>
-        <translation>Image clé suivante</translation>
+        <translation type="vanished">Image clé suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="374" />
         <source>Seek to the next keyframe</source>
-        <translation>Aller à l'image clé suivante</translation>
+        <translation type="vanished">Aller à l&apos;image clé suivante</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="386" />
-        <location filename="../src/command/video.cpp" line="387" />
-        <location filename="../src/command/video.cpp" line="388" />
         <source>Fast jump forward</source>
-        <translation>Saut rapide vers l'avant</translation>
+        <translation type="vanished">Saut rapide vers l&apos;avant</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="399" />
-        <location filename="../src/command/video.cpp" line="400" />
         <source>Previous Frame</source>
-        <translation>Image précédente</translation>
+        <translation type="vanished">Image précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="401" />
         <source>Seek to the previous frame</source>
-        <translation>Aller à l'image précédente</translation>
+        <translation type="vanished">Aller à l&apos;image précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="410" />
-        <location filename="../src/command/video.cpp" line="411" />
         <source>Previous Boundary</source>
-        <translation>Délimitation précédente</translation>
+        <translation type="vanished">Délimitation précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="412" />
         <source>Seek to the previous beginning or end of a subtitle</source>
-        <translation>Aller au début ou la fin du sous-titre précédent</translation>
+        <translation type="vanished">Aller au début ou la fin du sous-titre précédent</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="439" />
-        <location filename="../src/command/video.cpp" line="440" />
         <source>Previous Keyframe</source>
-        <translation>Image clé précédente</translation>
+        <translation type="vanished">Image clé précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="441" />
         <source>Seek to the previous keyframe</source>
-        <translation>Aller à l'image clé précédente</translation>
+        <translation type="vanished">Aller à l&apos;image clé précédente</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="461" />
-        <location filename="../src/command/video.cpp" line="462" />
-        <location filename="../src/command/video.cpp" line="463" />
         <source>Fast jump backwards</source>
-        <translation>Saut rapide en arrière</translation>
+        <translation type="vanished">Saut rapide en arrière</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="512" />
-        <location filename="../src/command/video.cpp" line="513" />
         <source>Save PNG snapshot</source>
-        <translation>Enregistrer une capture d'écran PNG</translation>
+        <translation type="vanished">Enregistrer une capture d&apos;écran PNG</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="514" />
-        <source>Save the currently displayed frame to a PNG file in the video's directory</source>
-        <translation>Enregistrer l'image affichée en fichier PNG dans le répertoire de la vidéo</translation>
+        <source>Save the currently displayed frame to a PNG file in the video&apos;s directory</source>
+        <translation type="vanished">Enregistrer l&apos;image affichée en fichier PNG dans le répertoire de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="523" />
-        <location filename="../src/command/video.cpp" line="524" />
         <source>Save PNG snapshot (no subtitles)</source>
-        <translation>Enregistrer une capture d'écran PNG (sans sous-titres)</translation>
+        <translation type="vanished">Enregistrer une capture d&apos;écran PNG (sans sous-titres)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="525" />
-        <source>Save the currently displayed frame without the subtitles to a PNG file in the video's directory</source>
-        <translation>Enregistrer l'image affichée sans les sous-titres en fichier PNG dans le répertoire de la vidéo</translation>
+        <source>Save the currently displayed frame without the subtitles to a PNG file in the video&apos;s directory</source>
+        <translation type="vanished">Enregistrer l&apos;image affichée sans les sous-titres en fichier PNG dans le répertoire de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="534" />
-        <location filename="../src/command/video.cpp" line="535" />
         <source>Save PNG snapshot (only subtitles)</source>
-        <translation>Enregistrer une capture PNG (sous-titres uniquement)</translation>
+        <translation type="vanished">Enregistrer une capture PNG (sous-titres uniquement)</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="536" />
-        <source>Save the currently displayed subtitles with transparent background to a PNG file in the video's directory</source>
-        <translation>Enregistrer les sous-titres actuellement affichés avec un arrière-plan transparent dans un fichier PNG, dans le dossier de la vidéo</translation>
+        <source>Save the currently displayed subtitles with transparent background to a PNG file in the video&apos;s directory</source>
+        <translation type="vanished">Enregistrer les sous-titres actuellement affichés avec un arrière-plan transparent dans un fichier PNG, dans le dossier de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="546" />
         <source>&amp;Jump to...</source>
-        <translation>&amp;Aller à...</translation>
+        <translation type="vanished">&amp;Aller à...</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="547" />
-        <location filename="../src/dialog_jumpto.cpp" line="67" />
         <source>Jump to</source>
-        <translation>Aller à</translation>
+        <translation type="vanished">Aller à</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="548" />
         <source>Jump to frame or time</source>
-        <translation>Aller à l'image ou au temps</translation>
+        <translation type="vanished">Aller à l&apos;image ou au temps</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="560" />
         <source>Jump Video to &amp;End</source>
-        <translation>Aller à la fin d&amp;e la vidéo</translation>
+        <translation type="vanished">Aller à la fin d&amp;e la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="561" />
         <source>Jump Video to End</source>
-        <translation>Aller à la fin de la vidéo</translation>
+        <translation type="vanished">Aller à la fin de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="562" />
         <source>Jump the video to the end frame of current subtitle</source>
-        <translation>Aller à l'image de fin de la vidéo du sous-titre courant</translation>
+        <translation type="vanished">Aller à l&apos;image de fin de la vidéo du sous-titre courant</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="573" />
         <source>Jump Video to &amp;Start</source>
-        <translation>Aller au début de la vidéo</translation>
+        <translation type="vanished">Aller au début de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="574" />
         <source>Jump Video to Start</source>
-        <translation>Aller au début de la vidéo</translation>
+        <translation type="vanished">Aller au début de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="575" />
         <source>Jump the video to the start frame of current subtitle</source>
-        <translation>Aller à l'image de début de la vidéo du sous-titre courant</translation>
+        <translation type="vanished">Aller à l&apos;image de début de la vidéo du sous-titre courant</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="586" />
         <source>&amp;Open Video...</source>
-        <translation>&amp;Ouvrir une vidéo...</translation>
+        <translation type="vanished">&amp;Ouvrir une vidéo...</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="587" />
         <source>Open Video</source>
-        <translation>Ouvrir une vidéo</translation>
+        <translation type="vanished">Ouvrir une vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="588" />
         <source>Open a video file</source>
-        <translation>Ouvrir un fichier vidéo</translation>
+        <translation type="vanished">Ouvrir un fichier vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="593" />
         <source>Open Video File</source>
-        <translation>Ouvrir un fichier vidéo</translation>
+        <translation type="vanished">Ouvrir un fichier vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="602" />
         <source>&amp;Use Dummy Video...</source>
-        <translation>&amp;Utiliser une fausse vidéo...</translation>
+        <translation type="vanished">&amp;Utiliser une fausse vidéo...</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="603" />
         <source>Use Dummy Video</source>
-        <translation>Utiliser une fausse vidéo</translation>
+        <translation type="vanished">Utiliser une fausse vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="604" />
         <source>Open a placeholder video clip with solid color</source>
-        <translation>Ouvrir un clip vidéo de l'espace réservé avec une couleur unie</translation>
+        <translation type="vanished">Ouvrir un clip vidéo de l&apos;espace réservé avec une couleur unie</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="616" />
-        <location filename="../src/command/video.cpp" line="617" />
         <source>Toggle autoscroll of video</source>
-        <translation>Alterner le mode de défilement de la vidéo</translation>
+        <translation type="vanished">Alterner le mode de défilement de la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="618" />
         <source>Toggle automatically seeking video to the start time of selected lines</source>
-        <translation>Alterner automatiquement le signal vidéo de recherche du temps de début des lignes sélectionnées</translation>
+        <translation type="vanished">Alterner automatiquement le signal vidéo de recherche du temps de début des lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="633" />
-        <location filename="../src/command/video.cpp" line="634" />
         <source>Play</source>
-        <translation>Lire</translation>
+        <translation type="vanished">Lire</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="635" />
         <source>Play the video starting on this position</source>
-        <translation>Lire la vidéo depuis cette position</translation>
+        <translation type="vanished">Lire la vidéo depuis cette position</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="645" />
-        <location filename="../src/command/video.cpp" line="646" />
         <source>Play line</source>
-        <translation>Lire la ligne</translation>
+        <translation type="vanished">Lire la ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="647" />
         <source>Play the video for the current line</source>
-        <translation>Lire la vidéo de la ligne actuelle</translation>
+        <translation type="vanished">Lire la vidéo de la ligne actuelle</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="656" />
         <source>Show &amp;Overscan Mask</source>
-        <translation>Afficher le masque d'&amp;overscan</translation>
+        <translation type="vanished">Afficher le masque d&apos;&amp;overscan</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="657" />
         <source>Show Overscan Mask</source>
-        <translation>Afficher le masque d'overscan</translation>
+        <translation type="vanished">Afficher le masque d&apos;overscan</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="658" />
         <source>Show a mask over the video, indicating areas that might get cropped off by overscan on televisions</source>
-        <translation>Afficher un masque sur la vidéo indiquant les zones qui seront coupées par l'overscan sur les téléviseurs</translation>
+        <translation type="vanished">Afficher un masque sur la vidéo indiquant les zones qui seront coupées par l&apos;overscan sur les téléviseurs</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="673" />
         <source>Reset Video &amp;Pan</source>
-        <translation>Recentrer &amp;la vidéo</translation>
+        <translation type="vanished">Recentrer &amp;la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="674" />
         <source>Reset Video Pan</source>
-        <translation>Recentrer la vidéo</translation>
+        <translation type="vanished">Recentrer la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="675" />
-        <source>Reset the video's position in the video display</source>
-        <translation>Recentrer la vidéo dans l'affichage</translation>
+        <source>Reset the video&apos;s position in the video display</source>
+        <translation type="vanished">Recentrer la vidéo dans l&apos;affichage</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="685" />
         <source>&amp;100%</source>
-        <translation>&amp;100 %</translation>
+        <translation type="vanished">&amp;100 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="686" />
         <source>100%</source>
-        <translation>100 %</translation>
+        <translation type="vanished">100 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="687" />
         <source>Set zoom to 100%</source>
-        <translation>Régler le zoom à 100 %</translation>
+        <translation type="vanished">Régler le zoom à 100 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="704" />
-        <location filename="../src/command/video.cpp" line="705" />
         <source>Stop video</source>
-        <translation>Arrêter la vidéo</translation>
+        <translation type="vanished">Arrêter la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="706" />
         <source>Stop video playback</source>
-        <translation>Arrêter la lecture vidéo</translation>
+        <translation type="vanished">Arrêter la lecture vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="716" />
         <source>&amp;200%</source>
-        <translation>&amp;200 %</translation>
+        <translation type="vanished">&amp;200 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="717" />
         <source>200%</source>
-        <translation>200 %</translation>
+        <translation type="vanished">200 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="718" />
         <source>Set zoom to 200%</source>
-        <translation>Régler le zoom à 200 %</translation>
+        <translation type="vanished">Régler le zoom à 200 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="734" />
         <source>&amp;50%</source>
-        <translation>&amp;50 %</translation>
+        <translation type="vanished">&amp;50 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="735" />
         <source>50%</source>
-        <translation>50 %</translation>
+        <translation type="vanished">50 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="736" />
         <source>Set zoom to 50%</source>
-        <translation>Régler le zoom à 50 %</translation>
+        <translation type="vanished">Régler le zoom à 50 %</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="752" />
-        <location filename="../src/command/video.cpp" line="753" />
         <source>Zoom In</source>
-        <translation>Agrandir</translation>
+        <translation type="vanished">Agrandir</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="754" />
         <source>Zoom video in</source>
-        <translation>Agrandir la vidéo</translation>
+        <translation type="vanished">Agrandir la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="764" />
-        <location filename="../src/command/video.cpp" line="765" />
         <source>Zoom Out</source>
-        <translation>Rétrécir</translation>
+        <translation type="vanished">Rétrécir</translation>
     </message>
     <message>
-        <location filename="../src/command/video.cpp" line="766" />
         <source>Zoom video out</source>
-        <translation>Rétrécir la vidéo</translation>
+        <translation type="vanished">Rétrécir la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="73" />
-        <location filename="../src/command/vis_tool.cpp" line="74" />
         <source>Standard</source>
-        <translation>Standard</translation>
+        <translation type="vanished">Standard</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="75" />
         <source>Standard mode, double click sets position</source>
-        <translation>Mode standard, le double-clic définit la position</translation>
+        <translation type="vanished">Mode standard, le double-clic définit la position</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="81" />
-        <location filename="../src/command/vis_tool.cpp" line="82" />
-        <location filename="../src/command/vis_tool.cpp" line="131" />
-        <location filename="../src/command/vis_tool.cpp" line="132" />
         <source>Drag</source>
-        <translation>Glisser</translation>
+        <translation type="vanished">Glisser</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="83" />
         <source>Drag subtitles</source>
-        <translation>Glisser les sous-titres</translation>
+        <translation type="vanished">Glisser les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="89" />
-        <location filename="../src/command/vis_tool.cpp" line="90" />
         <source>Rotate Z</source>
-        <translation>Rotation Z</translation>
+        <translation type="vanished">Rotation Z</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="91" />
         <source>Rotate subtitles on their Z axis</source>
-        <translation>Pivoter les sous-titres sur l'axe Z</translation>
+        <translation type="vanished">Pivoter les sous-titres sur l&apos;axe Z</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="97" />
-        <location filename="../src/command/vis_tool.cpp" line="98" />
         <source>Rotate XY</source>
-        <translation>Rotation XY</translation>
+        <translation type="vanished">Rotation XY</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="99" />
         <source>Rotate subtitles on their X and Y axes</source>
-        <translation>Pivoter les sous-titres selon les axes X et Y</translation>
+        <translation type="vanished">Pivoter les sous-titres selon les axes X et Y</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="105" />
-        <location filename="../src/command/vis_tool.cpp" line="106" />
         <source>Scale</source>
-        <translation>Ajuster taille</translation>
+        <translation type="vanished">Ajuster taille</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="107" />
         <source>Scale subtitles on X and Y axes</source>
-        <translation>Ajuster la taille les sous-titres selon les axes X et Y</translation>
+        <translation type="vanished">Ajuster la taille les sous-titres selon les axes X et Y</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="113" />
-        <location filename="../src/command/vis_tool.cpp" line="114" />
         <source>Clip</source>
-        <translation>Contraindre</translation>
+        <translation type="vanished">Contraindre</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="115" />
         <source>Clip subtitles to a rectangle</source>
-        <translation>Contraindre les sous-titres dans un rectangle</translation>
+        <translation type="vanished">Contraindre les sous-titres dans un rectangle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="121" />
-        <location filename="../src/command/vis_tool.cpp" line="122" />
         <source>Vector Clip</source>
-        <translation>Zone vectorielle</translation>
+        <translation type="vanished">Zone vectorielle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="123" />
         <source>Clip subtitles to a vectorial area</source>
-        <translation>Contraindre les sous-titres dans une zone vectorielle</translation>
+        <translation type="vanished">Contraindre les sous-titres dans une zone vectorielle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="133" />
         <source>Drag control points</source>
-        <translation>Glisser les points de contrôle</translation>
+        <translation type="vanished">Glisser les points de contrôle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="139" />
-        <location filename="../src/command/vis_tool.cpp" line="140" />
         <source>Line</source>
-        <translation>Ligne</translation>
+        <translation type="vanished">Ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="141" />
         <source>Append a line</source>
-        <translation>Ajoute une ligne</translation>
+        <translation type="vanished">Ajoute une ligne</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="146" />
-        <location filename="../src/command/vis_tool.cpp" line="147" />
         <source>Bicubic</source>
-        <translation>Cubique</translation>
+        <translation type="vanished">Cubique</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="148" />
         <source>Append a bezier bicubic curve</source>
-        <translation>Ajoute une courbe de Bézier cubique</translation>
+        <translation type="vanished">Ajoute une courbe de Bézier cubique</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="153" />
-        <location filename="../src/command/vis_tool.cpp" line="154" />
         <source>Convert</source>
-        <translation>Convertir</translation>
+        <translation type="vanished">Convertir</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="155" />
         <source>Convert a segment between line and bicubic</source>
-        <translation>Convertit un segment ligne et cubique</translation>
+        <translation type="vanished">Convertit un segment ligne et cubique</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="160" />
-        <location filename="../src/command/vis_tool.cpp" line="161" />
         <source>Insert</source>
-        <translation>Insérer</translation>
+        <translation type="vanished">Insérer</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="162" />
         <source>Insert a control point</source>
-        <translation>Insère un point de contrôle</translation>
+        <translation type="vanished">Insère un point de contrôle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="167" />
-        <location filename="../src/command/vis_tool.cpp" line="168" />
         <source>Remove</source>
-        <translation>Retirer</translation>
+        <translation type="vanished">Retirer</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="169" />
         <source>Remove a control point</source>
-        <translation>Retire un point de contrôle</translation>
+        <translation type="vanished">Retire un point de contrôle</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="174" />
-        <location filename="../src/command/vis_tool.cpp" line="175" />
         <source>Freehand</source>
-        <translation>Forme libre</translation>
+        <translation type="vanished">Forme libre</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="176" />
         <source>Draw a freehand shape</source>
-        <translation>Dessine une forme libre</translation>
+        <translation type="vanished">Dessine une forme libre</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="181" />
-        <location filename="../src/command/vis_tool.cpp" line="182" />
         <source>Freehand smooth</source>
-        <translation>Forme libre adoucie</translation>
+        <translation type="vanished">Forme libre adoucie</translation>
     </message>
     <message>
-        <location filename="../src/command/vis_tool.cpp" line="183" />
         <source>Draw a smoothed freehand shape</source>
-        <translation>Dessine une forme libre adoucie</translation>
+        <translation type="vanished">Dessine une forme libre adoucie</translation>
     </message>
     <message>
-        <location filename="../src/dialog_about.cpp" line="46" />
         <source>Translated into LANGUAGE by PERSON
 </source>
-        <translation>Traduction originelle en français par Céréales Killer, corrigée par Vardë, GundamGuy
+        <translation type="vanished">Traduction originelle en français par Céréales Killer, corrigée par Vardë, GundamGuy
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_about.cpp" line="131" />
         <source>
 See the help file for full credits.
 </source>
-        <translation>
-Voir le fichier d'aide pour les crédits complets.
+        <translation type="vanished">
+Voir le fichier d&apos;aide pour les crédits complets.
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_about.cpp" line="133" />
         <source>Built by %s on %s.</source>
-        <translation>Compilé par %s le %s.</translation>
+        <translation type="vanished">Compilé par %s le %s.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="68" />
         <source>Attachment List</source>
-        <translation>Liste des pièces jointes</translation>
+        <translation type="vanished">Liste des pièces jointes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="76" />
         <source>Attach &amp;Font</source>
-        <translation>&amp;Ajouter une police</translation>
+        <translation type="vanished">&amp;Ajouter une police</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="77" />
         <source>Attach &amp;Graphics</source>
-        <translation>&amp;Ajouter une image</translation>
+        <translation type="vanished">&amp;Ajouter une image</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="78" />
         <source>E&amp;xtract</source>
-        <translation>E&amp;xtraire</translation>
+        <translation type="vanished">E&amp;xtraire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="79" />
-        <location filename="../src/dialog_style_manager.cpp" line="205" />
-        <location filename="../src/preferences.cpp" line="668" />
         <source>&amp;Delete</source>
-        <translation>&amp;Supprimer</translation>
+        <translation type="vanished">&amp;Supprimer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="89" />
-        <location filename="../src/dialog_automation.cpp" line="122" />
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="425" />
-        <location filename="../src/dialog_version_check.cpp" line="122" />
         <source>&amp;Close</source>
-        <translation>&amp;Fermer</translation>
+        <translation type="vanished">&amp;Fermer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="110" />
         <source>Attachment name</source>
-        <translation>Nom de la pièce jointe</translation>
+        <translation type="vanished">Nom de la pièce jointe</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="111" />
         <source>Size</source>
-        <translation>Taille</translation>
+        <translation type="vanished">Taille</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="112" />
         <source>Group</source>
-        <translation>Groupe</translation>
+        <translation type="vanished">Groupe</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="138" />
-        <location filename="../src/dialog_attachments.cpp" line="147" />
         <source>Choose file to be attached</source>
-        <translation>Choix du fichier à joindre</translation>
+        <translation type="vanished">Choix du fichier à joindre</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="139" />
-        <location filename="../src/dialog_attachments.cpp" line="170" />
         <source>Font Files</source>
-        <translation>Police d'écriture</translation>
+        <translation type="vanished">Police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="142" />
         <source>attach font file</source>
-        <translation>ajout de police d'écriture</translation>
+        <translation type="vanished">ajout de police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="149" />
-        <location filename="../src/dialog_attachments.cpp" line="170" />
         <source>Graphic Files</source>
-        <translation>Ajout d'image</translation>
+        <translation type="vanished">Ajout d&apos;image</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="152" />
         <source>attach graphics file</source>
-        <translation>ajout d'image</translation>
+        <translation type="vanished">ajout d&apos;image</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="164" />
         <source>Select the path to save the files to:</source>
-        <translation>Choix du chemin d'enregistrement des fichiers :</translation>
+        <translation type="vanished">Choix du chemin d&apos;enregistrement des fichiers :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="167" />
         <source>Select the path to save the file to:</source>
-        <translation>Choix du chemin d'enregistrement du fichier :</translation>
+        <translation type="vanished">Choix du chemin d&apos;enregistrement du fichier :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_attachments.cpp" line="189" />
         <source>remove attachment</source>
-        <translation>enlever fichier joint</translation>
+        <translation type="vanished">enlever fichier joint</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="106" />
         <source>Automation Manager</source>
-        <translation>Gestionnaire d'automatismes</translation>
+        <translation type="vanished">Gestionnaire d&apos;automatismes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="117" />
         <source>&amp;Add</source>
-        <translation>&amp;Ajouter</translation>
+        <translation type="vanished">&amp;Ajouter</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="118" />
         <source>&amp;Remove</source>
-        <translation>&amp;Retirer</translation>
+        <translation type="vanished">&amp;Retirer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="119" />
         <source>Re&amp;load</source>
-        <translation>Re&amp;charger</translation>
+        <translation type="vanished">Re&amp;charger</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="120" />
         <source>Show &amp;Info</source>
-        <translation>&amp;Informations</translation>
+        <translation type="vanished">&amp;Informations</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="121" />
         <source>Re&amp;scan Autoload Dir</source>
-        <translation>Re&amp;scanner le répertoire auto</translation>
+        <translation type="vanished">Re&amp;scanner le répertoire auto</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="134" />
         <source>Name</source>
-        <translation>Nom</translation>
+        <translation type="vanished">Nom</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="135" />
         <source>Filename</source>
-        <translation>Nom du fichier</translation>
+        <translation type="vanished">Nom du fichier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="136" />
-        <location filename="../src/preferences.cpp" line="688" />
         <source>Description</source>
-        <translation>Description</translation>
+        <translation type="vanished">Description</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="224" />
         <source>Add Automation script</source>
-        <translation>Ajout d'un script d'automatisme</translation>
+        <translation type="vanished">Ajout d&apos;un script d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="240" />
-        <source>Script '%s' is already loaded</source>
-        <translation>Le script « %s » est déjà chargé</translation>
+        <source>Script &apos;%s&apos; is already loaded</source>
+        <translation type="vanished">Le script « %s » est déjà chargé</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="279" />
         <source>Total scripts loaded: %d
 Global scripts loaded: %d
 Local scripts loaded: %d
 </source>
-        <translation>Total des scripts chargés : %d
+        <translation type="vanished">Total des scripts chargés : %d
 Scripts globaux chargés : %d
 Scripts locaux chargés : %d
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="284" />
         <source>Scripting engines installed:</source>
-        <translation>Moteurs de script installés :</translation>
+        <translation type="vanished">Moteurs de script installés :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="291" />
         <source>
 Script info:
 Name: %s
@@ -3874,7 +2895,7 @@ Version: %s
 Full path: %s
 State: %s
 </source>
-        <translation>
+        <translation type="vanished">
 Info script :
 Nom : %s
 Description : %s
@@ -3886,741 +2907,590 @@ Chemin complet : %s
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="297" />
         <source>Correctly loaded</source>
-        <translation>Chargement correct</translation>
+        <translation type="vanished">Chargement correct</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="297" />
         <source>Failed to load</source>
-        <translation>Échec du chargement</translation>
+        <translation type="vanished">Échec du chargement</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="297" />
         <source>Loaded with warnings</source>
-        <translation>Chargé avec des avertissements</translation>
+        <translation type="vanished">Chargé avec des avertissements</translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="300" />
         <source>Warning: %s
 </source>
-        <translation>Avertissement : %s
+        <translation type="vanished">Avertissement : %s
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="303" />
         <source>Features provided by script:
 </source>
-        <translation>Fonctionnalités fournies par le script :
+        <translation type="vanished">Fonctionnalités fournies par le script :
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="306" />
         <source>    Macro: %s (%s)</source>
-        <translation>    Macro : %s (%s)</translation>
+        <translation type="vanished">    Macro : %s (%s)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="309" />
         <source>    Export filter: %s</source>
-        <translation>    Filtre d'export : %s</translation>
+        <translation type="vanished">    Filtre d&apos;export : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_automation.cpp" line="313" />
         <source>Automation Script Info</source>
-        <translation>Info du script d'automatisme</translation>
+        <translation type="vanished">Info du script d&apos;automatisme</translation>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="67" />
         <source>Open autosave file</source>
-        <translation>Ouvrir un fichier d'enregistrement automatique</translation>
+        <translation type="vanished">Ouvrir un fichier d&apos;enregistrement automatique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="71" />
-        <location filename="../src/preferences.cpp" line="113" />
         <source>Files</source>
-        <translation>Fichiers</translation>
+        <translation type="vanished">Fichiers</translation>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="76" />
         <source>Versions</source>
-        <translation>Versions</translation>
+        <translation type="vanished">Versions</translation>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="86" />
         <source>Open</source>
-        <translation>Ouvrir</translation>
+        <translation type="vanished">Ouvrir</translation>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="95" />
         <source>%s [ORIGINAL BACKUP]</source>
-        <translation>%s [SAUVEGARDE D'ORIGINE]</translation>
+        <translation type="vanished">%s [SAUVEGARDE D&apos;ORIGINE]</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_autosave.cpp" line="96" />
         <source>%s [RECOVERED]</source>
-        <translation>%s [RÉCUPÉRÉ]</translation>
+        <translation type="vanished">%s [RÉCUPÉRÉ]</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="527" />
         <source>Select Color</source>
-        <translation>Choix couleur</translation>
+        <translation type="vanished">Choix couleur</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="541" />
         <source>Color spectrum</source>
-        <translation>Couleur du spectrogramme</translation>
+        <translation type="vanished">Couleur du spectrogramme</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="547" />
         <source>HSL/L</source>
-        <translation>HSL/L</translation>
+        <translation type="vanished">HSL/L</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="547" />
         <source>HSV/H</source>
-        <translation>HSV/H</translation>
+        <translation type="vanished">HSV/H</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="547" />
         <source>RGB/B</source>
-        <translation>RGB/B</translation>
+        <translation type="vanished">RGB/B</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="547" />
         <source>RGB/G</source>
-        <translation>RGB/G</translation>
+        <translation type="vanished">RGB/G</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="547" />
         <source>RGB/R</source>
-        <translation>RGB/R</translation>
+        <translation type="vanished">RGB/R</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="550" />
         <source>RGB color</source>
-        <translation>Couleur RGB</translation>
+        <translation type="vanished">Couleur RGB</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="551" />
         <source>HSL color</source>
-        <translation>Couleur HSL</translation>
+        <translation type="vanished">Couleur HSL</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="552" />
         <source>HSV color</source>
-        <translation>Couleur HSV</translation>
+        <translation type="vanished">Couleur HSV</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="589" />
         <source>Spectrum mode:</source>
-        <translation>Mode spectral :</translation>
+        <translation type="vanished">Mode spectral :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="606" />
         <source>Blue:</source>
-        <translation>Bleu :</translation>
+        <translation type="vanished">Bleu :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="606" />
         <source>Green:</source>
-        <translation>Vert :</translation>
+        <translation type="vanished">Vert :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="606" />
         <source>Red:</source>
-        <translation>Rouge :</translation>
+        <translation type="vanished">Rouge :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="609" />
         <source>Alpha:</source>
-        <translation>Alpha :</translation>
+        <translation type="vanished">Alpha :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="616" />
-        <location filename="../src/dialog_colorpicker.cpp" line="619" />
         <source>Hue:</source>
-        <translation>Teinte :</translation>
+        <translation type="vanished">Teinte :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="616" />
         <source>Lum.:</source>
-        <translation>Lum. :</translation>
+        <translation type="vanished">Lum. :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="616" />
-        <location filename="../src/dialog_colorpicker.cpp" line="619" />
         <source>Sat.:</source>
-        <translation>Sat. :</translation>
+        <translation type="vanished">Sat. :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_colorpicker.cpp" line="619" />
         <source>Value:</source>
-        <translation>Valeur :</translation>
+        <translation type="vanished">Valeur :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_detached_video.cpp" line="63" />
-        <location filename="../src/dialog_detached_video.cpp" line="149" />
         <source>Video: %s</source>
-        <translation>Vidéo : %s</translation>
+        <translation type="vanished">Vidéo : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="71" />
         <source>640×480 (SD fullscreen)</source>
-        <translation>640×480 (SD plein écran)</translation>
+        <translation type="vanished">640×480 (SD plein écran)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="72" />
         <source>704×480 (SD anamorphic)</source>
-        <translation>704×480 (SD anamorphique)</translation>
+        <translation type="vanished">704×480 (SD anamorphique)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="73" />
         <source>640×360 (SD widescreen)</source>
-        <translation>640×360 (SD écran large)</translation>
+        <translation type="vanished">640×360 (SD écran large)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="74" />
         <source>704×396 (SD widescreen)</source>
-        <translation>704×396 (SD écran large)</translation>
+        <translation type="vanished">704×396 (SD écran large)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="75" />
         <source>640×352 (SD widescreen MOD16)</source>
-        <translation>640×352 (SD écran large MOD16)</translation>
+        <translation type="vanished">640×352 (SD écran large MOD16)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="76" />
         <source>704×400 (SD widescreen MOD16)</source>
-        <translation>704×400 (SD écran large MOD16)</translation>
+        <translation type="vanished">704×400 (SD écran large MOD16)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="77" />
         <source>1024×576 (SuperPAL widescreen)</source>
-        <translation>1024×576 (SuperPAL écran large)</translation>
+        <translation type="vanished">1024×576 (SuperPAL écran large)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="78" />
         <source>1280×720 (HD 720p)</source>
-        <translation>1280×720 (HD 720p)</translation>
+        <translation type="vanished">1280×720 (HD 720p)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="79" />
         <source>1920×1080 (FHD 1080p)</source>
-        <translation>1920×1080 (FHD 1080p)</translation>
+        <translation type="vanished">1920×1080 (FHD 1080p)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="80" />
         <source>2560×1440 (QHD 1440p)</source>
-        <translation>2560×1440 (QHD 1440p)</translation>
+        <translation type="vanished">2560×1440 (QHD 1440p)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="81" />
         <source>3840×2160 (4K UHD 2160p)</source>
-        <translation>3840×2160 (4K UHD 2160p)</translation>
+        <translation type="vanished">3840×2160 (4K UHD 2160p)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="82" />
         <source>1080×1920 (FHD vertical)</source>
-        <translation>1080×1920 (FHD vertical)</translation>
+        <translation type="vanished">1080×1920 (FHD vertical)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="104" />
         <source>Dummy video options</source>
-        <translation>Options de la fausse vidéo</translation>
+        <translation type="vanished">Options de la fausse vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="110" />
-        <location filename="../src/dialog_properties.cpp" line="136" />
-        <location filename="../src/dialog_resample.cpp" line="175" />
-        <location filename="../src/dialog_resample.cpp" line="188" />
         <source>×</source>
-        <translation>×</translation>
+        <translation type="vanished">×</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="116" />
         <source>Checkerboard &amp;pattern</source>
-        <translation>Motif en damier (&amp;P)</translation>
+        <translation type="vanished">Motif en damier (&amp;P)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="119" />
         <source>Video resolution:</source>
-        <translation>Définition vidéo :</translation>
+        <translation type="vanished">Définition vidéo :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="121" />
         <source>Color:</source>
-        <translation>Couleur :</translation>
+        <translation type="vanished">Couleur :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="124" />
         <source>Frame rate (fps):</source>
-        <translation>Images par seconde (ips) :</translation>
+        <translation type="vanished">Images par seconde (ips) :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="125" />
         <source>Duration (frames):</source>
-        <translation>Durée (en images) :</translation>
+        <translation type="vanished">Durée (en images) :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_dummy_video.cpp" line="180" />
         <source>Resulting duration: %s</source>
-        <translation>Durée : %s</translation>
+        <translation type="vanished">Durée : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="102" />
         <source>Export</source>
-        <translation>Export</translation>
+        <translation type="vanished">Export</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="109" />
         <source>Filters</source>
-        <translation>Filtres</translation>
+        <translation type="vanished">Filtres</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="125" />
         <source>Move &amp;Up</source>
-        <translation>Monter (&amp;U)</translation>
+        <translation type="vanished">Monter (&amp;U)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="126" />
         <source>Move &amp;Down</source>
-        <translation>Descendre (&amp;D)</translation>
+        <translation type="vanished">Descendre (&amp;D)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="128" />
-        <location filename="../src/dialog_selected_choices.cpp" line="33" />
         <source>Select &amp;None</source>
-        <translation>Ne rien sélectionner (&amp;N)</translation>
+        <translation type="vanished">Ne rien sélectionner (&amp;N)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="144" />
         <source>Text encoding:</source>
-        <translation>Encodage texte :</translation>
+        <translation type="vanished">Encodage texte :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="158" />
         <source>Export...</source>
-        <translation>Export...</translation>
+        <translation type="vanished">Export...</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="190" />
         <source>Export Subtitles File</source>
-        <translation>Exporter le fichier de sous-titres</translation>
+        <translation type="vanished">Exporter le fichier de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export.cpp" line="205" />
-        <location filename="../src/dialog_export.cpp" line="208" />
-        <location filename="../src/dialog_export.cpp" line="211" />
         <source>Error exporting subtitles</source>
-        <translation>Erreur lors de l'exportation des sous-titres</translation>
+        <translation type="vanished">Erreur lors de l&apos;exportation des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="83" />
         <source>EBU STL export</source>
-        <translation>Export EBU STL</translation>
+        <translation type="vanished">Export EBU STL</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="83" />
         <source>Time code offset in incorrect format. Ensure it is entered as four groups of two digits separated by colons.</source>
-        <translation>Le format du décalage du code temporel est incorrect. Assurez-vous qu'il est saisi sous la forme de quatre groupes de deux chiffres séparés par des deux-points.</translation>
+        <translation type="vanished">Le format du décalage du code temporel est incorrect. Assurez-vous qu&apos;il est saisi sous la forme de quatre groupes de deux chiffres séparés par des deux-points.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="99" />
         <source>Export to EBU STL format</source>
-        <translation>Exporter au format EBU STL</translation>
+        <translation type="vanished">Exporter au format EBU STL</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="101" />
         <source>Text formatting</source>
-        <translation>Formatage du texte</translation>
+        <translation type="vanished">Formatage du texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="102" />
         <source>Time codes</source>
-        <translation>Codes temporels</translation>
+        <translation type="vanished">Codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="103" />
         <source>Display standard</source>
-        <translation>Affichage standard</translation>
+        <translation type="vanished">Affichage standard</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="110" />
         <source>23.976 fps (non-standard, STL24.01)</source>
-        <translation>23,976 IPS (non standard, STL24.01)</translation>
+        <translation type="vanished">23,976 IPS (non standard, STL24.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="111" />
         <source>24 fps (non-standard, STL24.01)</source>
-        <translation>24 IPS (non standard, STL24.01)</translation>
+        <translation type="vanished">24 IPS (non standard, STL24.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="112" />
         <source>25 fps (STL25.01)</source>
-        <translation>25 IPS (STL25.01)</translation>
+        <translation type="vanished">25 IPS (STL25.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="113" />
         <source>29.97 fps (non-dropframe, STL30.01)</source>
-        <translation>29,97 IPS (sans dépôt d'image, STL30.01)</translation>
+        <translation type="vanished">29,97 IPS (sans dépôt d&apos;image, STL30.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="114" />
         <source>29.97 fps (dropframe, STL30.01)</source>
-        <translation>29,97 IPS (dépôt d'image, STL30.01)</translation>
+        <translation type="vanished">29,97 IPS (dépôt d&apos;image, STL30.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="115" />
         <source>30 fps (STL30.01)</source>
-        <translation>30 IPS (STL30.01)</translation>
+        <translation type="vanished">30 IPS (STL30.01)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="117" />
         <source>TV standard</source>
-        <translation>Standard TV</translation>
+        <translation type="vanished">Standard TV</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="121" />
         <source>Out-times are inclusive</source>
-        <translation>Les dépassements de temps sont inclusifs</translation>
+        <translation type="vanished">Les dépassements de temps sont inclusifs</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="124" />
         <source>ISO 6937-2 (Latin/Western Europe)</source>
-        <translation>ISO 6937-2 (Latin/Europe de l'Ouest)</translation>
+        <translation type="vanished">ISO 6937-2 (Latin/Europe de l&apos;Ouest)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="125" />
         <source>ISO 8859-5 (Cyrillic)</source>
-        <translation>ISO 8859-5 (Cyrillique)</translation>
+        <translation type="vanished">ISO 8859-5 (Cyrillique)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="126" />
         <source>ISO 8859-6 (Arabic)</source>
-        <translation>ISO 8859-6 (Arabe)</translation>
+        <translation type="vanished">ISO 8859-6 (Arabe)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="127" />
         <source>ISO 8859-7 (Greek)</source>
-        <translation>ISO 8859-7 (Grec)</translation>
+        <translation type="vanished">ISO 8859-7 (Grec)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="128" />
         <source>ISO 8859-8 (Hebrew)</source>
-        <translation>ISO 8859-8 (Hébreu)</translation>
+        <translation type="vanished">ISO 8859-8 (Hébreu)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="129" />
         <source>UTF-8 Unicode (non-standard)</source>
-        <translation>UTF-8 Unicode (non standard)</translation>
+        <translation type="vanished">UTF-8 Unicode (non standard)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="131" />
         <source>Text encoding</source>
-        <translation>Encodage texte</translation>
+        <translation type="vanished">Encodage texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="134" />
         <source>Automatically wrap long lines (ASS)</source>
-        <translation>Césure automatique des longues lignes (ASS)</translation>
+        <translation type="vanished">Césure automatique des longues lignes (ASS)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="135" />
         <source>Automatically wrap long lines (Balanced)</source>
-        <translation>Césure automatique des longues lignes (équilibré)</translation>
+        <translation type="vanished">Césure automatique des longues lignes (équilibré)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="136" />
         <source>Abort if any lines are too long</source>
-        <translation>Annuler si des lignes sont trop longues</translation>
+        <translation type="vanished">Annuler si des lignes sont trop longues</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="137" />
         <source>Skip lines that are too long</source>
-        <translation>Ignorer les lignes trop longues</translation>
+        <translation type="vanished">Ignorer les lignes trop longues</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="142" />
         <source>Translate alignments</source>
-        <translation>Alignements de traduction</translation>
+        <translation type="vanished">Alignements de traduction</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="145" />
         <source>Open subtitles</source>
-        <translation>Ouvrir les sous-titres</translation>
+        <translation type="vanished">Ouvrir les sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="146" />
         <source>Level-1 teletext</source>
-        <translation>Télétext niveau 1</translation>
+        <translation type="vanished">Télétext niveau 1</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="147" />
         <source>Level-2 teletext</source>
-        <translation>Télétext niveau 2</translation>
+        <translation type="vanished">Télétext niveau 2</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="153" />
         <source>Max. line length:</source>
-        <translation>Longueur maximale des lignes :</translation>
+        <translation type="vanished">Longueur maximale des lignes :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_export_ebu3264.cpp" line="157" />
         <source>Time code offset:</source>
-        <translation>Dépassement du code temps :</translation>
+        <translation type="vanished">Dépassement du code temps :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="101" />
         <source>* An error occurred when enumerating the used fonts: %s.
 </source>
-        <translation>* Erreur lors de la détection des polices utilisées : %s.
+        <translation type="vanished">* Erreur lors de la détection des polices utilisées : %s.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="115" />
         <source>Symlinking fonts to folder...
 </source>
-        <translation>Liaison symbolique des polices d'écriture vers le dossier...
+        <translation type="vanished">Liaison symbolique des polices d&apos;écriture vers le dossier...
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="119" />
         <source>Copying fonts to folder...
 </source>
-        <translation>Copie des polices d'écriture vers le dossier...
+        <translation type="vanished">Copie des polices d&apos;écriture vers le dossier...
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="122" />
         <source>Copying fonts to archive...
 </source>
-        <translation>Copie des polices d'écriture dans l'archive...
+        <translation type="vanished">Copie des polices d&apos;écriture dans l&apos;archive...
 </translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="134" />
-        <source>* Failed to create directory '%s': %s.
+        <source>* Failed to create directory &apos;%s&apos;: %s.
 </source>
-        <translation>* Impossible de créer le répertoire « %s »:%s.
+        <translation type="vanished">* Impossible de créer le répertoire « %s »:%s.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="145" />
         <source>* Failed to open %s.
 </source>
-        <translation>* Impossible d'ouvrir %s.
+        <translation type="vanished">* Impossible d&apos;ouvrir %s.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="200" />
         <source>* Copied %s.
 </source>
-        <translation>* %s copié.
+        <translation type="vanished">* %s copié.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="202" />
         <source>* %s already exists on destination.
 </source>
-        <translation>* %s existe déjà.
+        <translation type="vanished">* %s existe déjà.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="204" />
         <source>* Symlinked %s.
 </source>
-        <translation>* %s lié.
+        <translation type="vanished">* %s lié.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="206" />
         <source>* Failed to copy %s.
 </source>
-        <translation>* Échec copie %s.
+        <translation type="vanished">* Échec copie %s.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="212" />
         <source>Done. All fonts copied.</source>
-        <translation>Terminé. Toutes les polices d'écriture ont été copiées.</translation>
+        <translation type="vanished">Terminé. Toutes les polices d&apos;écriture ont été copiées.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="214" />
         <source>Done. Some fonts could not be copied.</source>
-        <translation>Terminé. Certaines polices d'écriture n'ont pas été copiées.</translation>
+        <translation type="vanished">Terminé. Certaines polices d&apos;écriture n&apos;ont pas été copiées.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="217" />
         <source>
 Over 32 MB of fonts were copied. Some of the fonts may not be loaded by the player if they are all attached to a Matroska file.</source>
-        <translation>
-Plus de 32 Mo de polices d'écriture ont été copiés. Certaines polices ne seront pas chargées par le lecteur si elles ont toutes été attachées au fichier Matroska.</translation>
+        <translation type="vanished">
+Plus de 32 Mo de polices d&apos;écriture ont été copiés. Certaines polices ne seront pas chargées par le lecteur si elles ont toutes été attachées au fichier Matroska.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="233" />
         <source>Check fonts for availability</source>
-        <translation>Vérifier la disponibilité des polices</translation>
+        <translation type="vanished">Vérifier la disponibilité des polices</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="234" />
         <source>Copy fonts to folder</source>
-        <translation>Copier les polices dans un dossier</translation>
+        <translation type="vanished">Copier les polices dans un dossier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="235" />
-        <source>Copy fonts to subtitle file's folder</source>
-        <translation>Copier dans le dossier du sous-titre</translation>
+        <source>Copy fonts to subtitle file&apos;s folder</source>
+        <translation type="vanished">Copier dans le dossier du sous-titre</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="236" />
         <source>Copy fonts to zipped archive</source>
-        <translation>Créer une archive ZIP avec les polices</translation>
+        <translation type="vanished">Créer une archive ZIP avec les polices</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="238" />
         <source>Symlink fonts to folder</source>
-        <translation>Liaison des polices d'écriture dans le dossier</translation>
+        <translation type="vanished">Liaison des polices d&apos;écriture dans le dossier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="243" />
-        <location filename="../src/dialog_selection.cpp" line="153" />
         <source>Action</source>
-        <translation>Action</translation>
+        <translation type="vanished">Action</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="249" />
         <source>Destination</source>
-        <translation>Destination</translation>
+        <translation type="vanished">Destination</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="254" />
         <source>&amp;Browse...</source>
-        <translation>Parcourir (&amp;B)…</translation>
+        <translation type="vanished">Parcourir (&amp;B)…</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="263" />
         <source>Log</source>
-        <translation>Historique</translation>
+        <translation type="vanished">Historique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="277" />
         <source>&amp;Start!</source>
-        <translation>Démarrer (&amp;S) !</translation>
+        <translation type="vanished">Démarrer (&amp;S) !</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="312" />
         <source>Invalid destination.</source>
-        <translation>Destination invalide.</translation>
+        <translation type="vanished">Destination invalide.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="317" />
         <source>Could not create destination folder.</source>
-        <translation>Impossible de créer le dossier de destination.</translation>
+        <translation type="vanished">Impossible de créer le dossier de destination.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="322" />
         <source>Invalid path for .zip file.</source>
-        <translation>Chemin du fichier .zip invalide.</translation>
+        <translation type="vanished">Chemin du fichier .zip invalide.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="345" />
         <source>Select archive file name</source>
-        <translation>Choisir le nom de l'archive</translation>
+        <translation type="vanished">Choisir le nom de l&apos;archive</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="348" />
         <source>Zip Archives</source>
-        <translation>Archives ZIP</translation>
+        <translation type="vanished">Archives ZIP</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="352" />
         <source>Select folder to save fonts on</source>
-        <translation>Choisir le dossier pour les polices</translation>
+        <translation type="vanished">Choisir le dossier pour les polices</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="371" />
         <source>N/A</source>
-        <translation>N/D</translation>
+        <translation type="vanished">N/D</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="379" />
-        <source>Choose the folder where the fonts will be collected to. It will be created if it doesn't exist.</source>
-        <translation>Dossier de destination des polices d'écriture collectées. S'il est absent, il sera créé.</translation>
+        <source>Choose the folder where the fonts will be collected to. It will be created if it doesn&apos;t exist.</source>
+        <translation type="vanished">Dossier de destination des polices d&apos;écriture collectées. S&apos;il est absent, il sera créé.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_fonts_collector.cpp" line="386" />
         <source>Enter the name of the destination zip file to collect the fonts to. If a folder is entered, a default name will be used.</source>
-        <translation>Nom du fichier zip qui doit recevoir les polices. Si un dossier est choisi, un nom par défaut sera utilisé.</translation>
+        <translation type="vanished">Nom du fichier zip qui doit recevoir les polices. Si un dossier est choisi, un nom par défaut sera utilisé.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_jumpto.cpp" line="73" />
         <source>Frame: </source>
-        <translation>Image : </translation>
+        <translation type="vanished">Image : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_jumpto.cpp" line="74" />
         <source>Time: </source>
-        <translation>Temps : </translation>
+        <translation type="vanished">Temps : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="59" />
         <source>Source: </source>
-        <translation>Source : </translation>
+        <translation type="vanished">Source : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="60" />
         <source>Dest: </source>
-        <translation>Cible : </translation>
+        <translation type="vanished">Cible : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="386" />
         <source>Kanji timer</source>
-        <translation>Minutage kanji</translation>
+        <translation type="vanished">Minutage kanji</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="391" />
-        <location filename="../src/dialog_paste_over.cpp" line="75" />
-        <location filename="../src/grid_column.cpp" line="364" />
-        <location filename="../src/grid_column.cpp" line="365" />
         <source>Text</source>
-        <translation>Texte</translation>
+        <translation type="vanished">Texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="392" />
         <source>Styles</source>
-        <translation>Styles</translation>
+        <translation type="vanished">Styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="394" />
         <source>Shortcut Keys</source>
-        <translation>Raccourcis clavier</translation>
+        <translation type="vanished">Raccourcis clavier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="395" />
         <source>Commands</source>
-        <translation>Commandes</translation>
+        <translation type="vanished">Commandes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="408" />
         <source>Attempt to &amp;interpolate kanji</source>
-        <translation>Tenter d'&amp;interpoler kanji</translation>
+        <translation type="vanished">Tenter d&apos;&amp;interpoler kanji</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="415" />
         <source>When the destination textbox has focus, use the following keys:
 
 Right Arrow: Increase dest. selection length
@@ -4629,7 +3499,7 @@ Up Arrow: Increase source selection length
 Down Arrow: Decrease source selection length
 Enter: Link, accept line when done
 Backspace: Unlink last</source>
-        <translation>Lorsque la cible de saisie est la boîte texte cible, utiliser les touches suivantes :
+        <translation type="vanished">Lorsque la cible de saisie est la boîte texte cible, utiliser les touches suivantes :
 
 Flèche droite : agrandit la longueur de sélection cible
 Flèche gauche : réduit la longueur de sélection cible
@@ -4639,491 +3509,380 @@ Entrée : lie, accepte la ligne lorsque terminé
 Retour arrière : délie dernière</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="418" />
         <source>S&amp;tart!</source>
-        <translation>C'est par&amp;ti !</translation>
+        <translation type="vanished">C&apos;est par&amp;ti !</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="419" />
         <source>&amp;Link</source>
-        <translation>&amp;Lier</translation>
+        <translation type="vanished">&amp;Lier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="420" />
         <source>&amp;Unlink</source>
-        <translation>&amp;Délier</translation>
+        <translation type="vanished">&amp;Délier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="421" />
         <source>Skip &amp;Source Line</source>
-        <translation>Omettre ligne &amp;source</translation>
+        <translation type="vanished">Omettre ligne &amp;source</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="422" />
         <source>Skip &amp;Dest Line</source>
-        <translation>Omettre ligne &amp;cible</translation>
+        <translation type="vanished">Omettre ligne &amp;cible</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="423" />
         <source>&amp;Go Back a Line</source>
-        <translation>Revenir d'une li&amp;gne</translation>
+        <translation type="vanished">Revenir d&apos;une li&amp;gne</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="424" />
         <source>&amp;Accept Line</source>
-        <translation>V&amp;alider la ligne</translation>
+        <translation type="vanished">V&amp;alider la ligne</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="487" />
         <source>kanji timing</source>
-        <translation>synchronisation kanji</translation>
+        <translation type="vanished">synchronisation kanji</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="495" />
         <source>Select source and destination styles first.</source>
-        <translation>Choisir d'abord les styles source et cible.</translation>
+        <translation type="vanished">Choisir d&apos;abord les styles source et cible.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="497" />
         <source>The source and destination styles must be different.</source>
-        <translation>Les styles source et cible doivent être différents.</translation>
+        <translation type="vanished">Les styles source et cible doivent être différents.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_kara_timing_copy.cpp" line="547" />
         <source>Group all of the source text.</source>
-        <translation>Grouper tout le texte source.</translation>
+        <translation type="vanished">Grouper tout le texte source.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="56" />
         <source>Select Fields to Paste Over</source>
-        <translation>Sélectionner les champs à coller</translation>
+        <translation type="vanished">Sélectionner les champs à coller</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="59" />
         <source>Fields</source>
-        <translation>Champs</translation>
+        <translation type="vanished">Champs</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="61" />
         <source>Please select the fields that you want to paste over:</source>
-        <translation>Veuillez sélectionner les champs que vous souhaitez écraser :</translation>
+        <translation type="vanished">Veuillez sélectionner les champs que vous souhaitez écraser :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="65" />
         <source>Comment</source>
-        <translation>Commentaire</translation>
+        <translation type="vanished">Commentaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="69" />
-        <location filename="../src/grid_column.cpp" line="202" />
-        <location filename="../src/grid_column.cpp" line="203" />
         <source>Style</source>
-        <translation>Style</translation>
+        <translation type="vanished">Style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="70" />
-        <location filename="../src/grid_column.cpp" line="230" />
-        <location filename="../src/grid_column.cpp" line="231" />
-        <location filename="../src/subs_edit_box.cpp" line="135" />
         <source>Actor</source>
-        <translation>Acteur</translation>
+        <translation type="vanished">Acteur</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="71" />
         <source>Margin Left</source>
-        <translation>Marge gauche</translation>
+        <translation type="vanished">Marge gauche</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="72" />
         <source>Margin Right</source>
-        <translation>Marge droite</translation>
+        <translation type="vanished">Marge droite</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="73" />
         <source>Margin Vertical</source>
-        <translation>Marge verticale</translation>
+        <translation type="vanished">Marge verticale</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="90" />
-        <location filename="../src/dialog_timing_processor.cpp" line="162" />
         <source>&amp;All</source>
-        <translation>&amp;Tout</translation>
+        <translation type="vanished">&amp;Tout</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="92" />
-        <location filename="../src/dialog_timing_processor.cpp" line="165" />
         <source>&amp;None</source>
-        <translation>Aucu&amp;n</translation>
+        <translation type="vanished">Aucu&amp;n</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="94" />
         <source>&amp;Times</source>
-        <translation>&amp;Temps</translation>
+        <translation type="vanished">&amp;Temps</translation>
     </message>
     <message>
-        <location filename="../src/dialog_paste_over.cpp" line="96" />
         <source>T&amp;ext</source>
-        <translation>T&amp;exte</translation>
+        <translation type="vanished">T&amp;exte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_progress.cpp" line="193" />
         <source>Cancel</source>
-        <translation>Annuler</translation>
+        <translation type="vanished">Annuler</translation>
     </message>
     <message>
-        <location filename="../src/dialog_progress.cpp" line="241" />
         <source>Cancelling...</source>
-        <translation>Annulation...</translation>
+        <translation type="vanished">Annulation...</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="91" />
         <source>Script Properties</source>
-        <translation>Propriétés du script</translation>
+        <translation type="vanished">Propriétés du script</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="105" />
         <source>Script</source>
-        <translation>Script</translation>
+        <translation type="vanished">Script</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="109" />
         <source>Title:</source>
-        <translation>Titre :</translation>
+        <translation type="vanished">Titre :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="110" />
         <source>Original script:</source>
-        <translation>Script original :</translation>
+        <translation type="vanished">Script original :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="111" />
         <source>Translation:</source>
-        <translation>Traduction :</translation>
+        <translation type="vanished">Traduction :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="112" />
         <source>Editing:</source>
-        <translation>Adaptation :</translation>
+        <translation type="vanished">Adaptation :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="113" />
         <source>Timing:</source>
-        <translation>Synchronisation :</translation>
+        <translation type="vanished">Synchronisation :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="114" />
         <source>Synch point:</source>
-        <translation>Point de synchronisation :</translation>
+        <translation type="vanished">Point de synchronisation :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="115" />
         <source>Updated by:</source>
-        <translation>Mis à jour par :</translation>
+        <translation type="vanished">Mis à jour par :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="116" />
         <source>Update details:</source>
-        <translation>Détails de mise à jour :</translation>
+        <translation type="vanished">Détails de mise à jour :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="122" />
         <source>Resolution</source>
-        <translation>Définition vidéo</translation>
+        <translation type="vanished">Définition vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="128" />
-        <location filename="../src/dialog_resample.cpp" line="150" />
-        <location filename="../src/export_framerate.cpp" line="70" />
         <source>From &amp;video</source>
-        <translation>De la &amp;vidéo</translation>
+        <translation type="vanished">De la &amp;vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="144" />
-        <location filename="../src/dialog_resample.cpp" line="180" />
-        <location filename="../src/dialog_resample.cpp" line="193" />
         <source>YCbCr Matrix:</source>
-        <translation>Matrice YCbCr :</translation>
+        <translation type="vanished">Matrice YCbCr :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="155" />
         <source>0: Smart wrapping, top line is wider</source>
-        <translation>0 : répartition intelligente, ligne supérieure plus grande</translation>
+        <translation type="vanished">0 : répartition intelligente, ligne supérieure plus grande</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="156" />
         <source>1: End-of-line word wrapping, only \N breaks</source>
-        <translation>1 : répartition fin de ligne, césure uniquement sur \N</translation>
+        <translation type="vanished">1 : répartition fin de ligne, césure uniquement sur \N</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="157" />
         <source>2: No word wrapping, both \n and \N break</source>
-        <translation>2 : pas de répartition, césures sur \n et \N</translation>
+        <translation type="vanished">2 : pas de répartition, césures sur \n et \N</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="158" />
         <source>3: Smart wrapping, bottom line is wider</source>
-        <translation>3 : répartition intelligente, ligne inférieure plus grande</translation>
+        <translation type="vanished">3 : répartition intelligente, ligne inférieure plus grande</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="162" />
         <source>Wrap Style: </source>
-        <translation>Style de répartition : </translation>
+        <translation type="vanished">Style de répartition : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="165" />
         <source>Scale Border and Shadow</source>
-        <translation>Adapter taille bord et ombre</translation>
+        <translation type="vanished">Adapter taille bord et ombre</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="166" />
         <source>Scale border and shadow together with script/render resolution. If this is unchecked, relative border and shadow size will depend on renderer.</source>
-        <translation>Adapter le bord et l'ombre selon la définition vidéo du script. Si l'option n'est pas cochée, la taille relative du bord et de l'ombre dépendront du rendu.</translation>
+        <translation type="vanished">Adapter le bord et l&apos;ombre selon la définition vidéo du script. Si l&apos;option n&apos;est pas cochée, la taille relative du bord et de l&apos;ombre dépendront du rendu.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_properties.cpp" line="202" />
         <source>property changes</source>
-        <translation>modifications des propriétés</translation>
+        <translation type="vanished">modifications des propriétés</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="114" />
         <source>Source Resolution</source>
-        <translation>Définition vidéo source</translation>
+        <translation type="vanished">Définition vidéo source</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="115" />
         <source>Destination Resolution</source>
-        <translation>Définition vidéo destination</translation>
+        <translation type="vanished">Définition vidéo destination</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="116" />
         <source>Margin offset</source>
-        <translation>Décalage marge</translation>
+        <translation type="vanished">Décalage marge</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="128" />
         <source>&amp;Symmetrical</source>
-        <translation>&amp;Symétrique</translation>
+        <translation type="vanished">&amp;Symétrique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="152" />
         <source>From s&amp;cript</source>
-        <translation>Depuis le s&amp;cript</translation>
+        <translation type="vanished">Depuis le s&amp;cript</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="155" />
         <source>Add borders</source>
-        <translation>Ajouter des bandes</translation>
+        <translation type="vanished">Ajouter des bandes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="155" />
         <source>Manual</source>
-        <translation>Manuel</translation>
+        <translation type="vanished">Manuel</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="155" />
         <source>Remove borders</source>
-        <translation>Supprimer les bordures</translation>
+        <translation type="vanished">Supprimer les bordures</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="155" />
         <source>Stretch</source>
-        <translation>Étirer</translation>
+        <translation type="vanished">Étirer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_resample.cpp" line="156" />
         <source>Aspect Ratio Handling</source>
-        <translation>Gestion du rapport de forme</translation>
+        <translation type="vanished">Gestion du rapport de forme</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="47" />
         <source>Replace</source>
-        <translation>Remplacer</translation>
+        <translation type="vanished">Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="67" />
         <source>Find what:</source>
-        <translation>Chercher :</translation>
+        <translation type="vanished">Chercher :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="73" />
-        <location filename="../src/dialog_spellchecker.cpp" line="127" />
         <source>Replace with:</source>
-        <translation>Remplacer par :</translation>
+        <translation type="vanished">Remplacer par :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="78" />
         <source>&amp;Match case</source>
-        <translation>&amp;Même casse</translation>
+        <translation type="vanished">&amp;Même casse</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="79" />
         <source>&amp;Use regular expressions</source>
-        <translation>&amp;Utiliser des expressions régulières</translation>
+        <translation type="vanished">&amp;Utiliser des expressions régulières</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="80" />
-        <location filename="../src/dialog_spellchecker.cpp" line="182" />
         <source>&amp;Skip Comments</source>
-        <translation>Ignorer les commentaires (&amp;S)</translation>
+        <translation type="vanished">Ignorer les commentaires (&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="81" />
         <source>S&amp;kip Override Tags</source>
-        <translation>Passer les remplacements de Tags</translation>
+        <translation type="vanished">Passer les remplacements de Tags</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="87" />
-        <location filename="../src/dialog_selection.cpp" line="139" />
         <source>&amp;Text</source>
-        <translation>&amp;Texte</translation>
+        <translation type="vanished">&amp;Texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="87" />
         <source>A&amp;ctor</source>
-        <translation>A&amp;cteur</translation>
+        <translation type="vanished">A&amp;cteur</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="87" />
         <source>St&amp;yle</source>
-        <translation>St&amp;yle</translation>
+        <translation type="vanished">St&amp;yle</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="88" />
         <source>A&amp;ll rows</source>
-        <translation>Toutes les lignes</translation>
+        <translation type="vanished">Toutes les lignes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="88" />
-        <location filename="../src/dialog_shift_times.cpp" line="170" />
         <source>Selected &amp;rows</source>
-        <translation>Lignes sélectionnées (&amp;R)</translation>
+        <translation type="vanished">Lignes sélectionnées (&amp;R)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="90" />
-        <location filename="../src/dialog_selection.cpp" line="140" />
         <source>In Field</source>
-        <translation>Dans le champ</translation>
+        <translation type="vanished">Dans le champ</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="91" />
         <source>Limit to</source>
-        <translation>Limiter à</translation>
+        <translation type="vanished">Limiter à</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="93" />
         <source>&amp;Find next</source>
-        <translation>Rechercher suivant (&amp;F)</translation>
+        <translation type="vanished">Rechercher suivant (&amp;F)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="94" />
         <source>Replace &amp;next</source>
-        <translation>&amp;Remplacer suivant</translation>
+        <translation type="vanished">&amp;Remplacer suivant</translation>
     </message>
     <message>
-        <location filename="../src/dialog_search_replace.cpp" line="95" />
-        <location filename="../src/dialog_spellchecker.cpp" line="190" />
         <source>Replace &amp;all</source>
-        <translation>Tout rempl&amp;acer</translation>
+        <translation type="vanished">Tout rempl&amp;acer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="107" />
         <source>Select</source>
-        <translation>Sélectionner</translation>
+        <translation type="vanished">Sélectionner</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="118" />
         <source>Match</source>
-        <translation>Correspondance</translation>
+        <translation type="vanished">Correspondance</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="123" />
         <source>&amp;Matches</source>
-        <translation>Correspond (&amp;M)</translation>
+        <translation type="vanished">Correspond (&amp;M)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="124" />
-        <source>&amp;Doesn't Match</source>
-        <translation>Ne correspond pas (&amp;D)</translation>
+        <source>&amp;Doesn&apos;t Match</source>
+        <translation type="vanished">Ne correspond pas (&amp;D)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="125" />
         <source>Match c&amp;ase</source>
-        <translation>C&amp;asse identique</translation>
+        <translation type="vanished">C&amp;asse identique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="134" />
         <source>&amp;Contains</source>
-        <translation>Contient (&amp;C)</translation>
+        <translation type="vanished">Contient (&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="134" />
         <source>&amp;Exact match</source>
-        <translation>Correspondance exacte (&amp;E)</translation>
+        <translation type="vanished">Correspondance exacte (&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="134" />
         <source>&amp;Regular Expression match</source>
-        <translation>Correspond à l'expression &amp;régulière</translation>
+        <translation type="vanished">Correspond à l&apos;expression &amp;régulière</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="135" />
         <source>Mode</source>
-        <translation>Mode</translation>
+        <translation type="vanished">Mode</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="139" />
         <source>&amp;Style</source>
-        <translation>&amp;Style</translation>
+        <translation type="vanished">&amp;Style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="139" />
         <source>Act&amp;or</source>
-        <translation>Acteur</translation>
+        <translation type="vanished">Acteur</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="139" />
         <source>E&amp;ffect</source>
-        <translation>E&amp;ffet</translation>
+        <translation type="vanished">E&amp;ffet</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="144" />
         <source>Match dialogues/comments</source>
-        <translation>Correspondance dialogues/commentaires</translation>
+        <translation type="vanished">Correspondance dialogues/commentaires</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="146" />
         <source>D&amp;ialogues</source>
-        <translation>D&amp;ialogues</translation>
+        <translation type="vanished">D&amp;ialogues</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="147" />
         <source>Comme&amp;nts</source>
-        <translation>Comme&amp;ntaires</translation>
+        <translation type="vanished">Comme&amp;ntaires</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="152" />
         <source>&amp;Add to selection</source>
-        <translation>&amp;Ajouter à la sélection</translation>
+        <translation type="vanished">&amp;Ajouter à la sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="152" />
         <source>Intersect &amp;with selection</source>
-        <translation>Intersection a&amp;vec la sélection</translation>
+        <translation type="vanished">Intersection a&amp;vec la sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="152" />
         <source>S&amp;ubtract from selection</source>
-        <translation>So&amp;ustraire à la sélection</translation>
+        <translation type="vanished">So&amp;ustraire à la sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="152" />
         <source>Set se&amp;lection</source>
-        <translation>Régler la sé&amp;lection</translation>
+        <translation type="vanished">Régler la sé&amp;lection</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_selection.cpp" line="215" />
         <source>Selection was set to one line</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>La sélection a été fixée à une ligne</numerusform>
             <numerusform>La sélection a été fixée à %u lignes</numerusform>
         </translation>
@@ -5131,14 +3890,12 @@ Retour arrière : délie dernière</translation>
         <extra-po-msgid_plural>Selection was set to %u lines</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="216" />
         <source>Selection was set to no lines</source>
-        <translation>La sélection n'a été fixée à aucune ligne</translation>
+        <translation type="vanished">La sélection n&apos;a été fixée à aucune ligne</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_selection.cpp" line="222" />
         <source>One line was added to selection</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Une ligne a été ajoutée à la sélection</numerusform>
             <numerusform>%u lignes ont été ajoutées à la sélection</numerusform>
         </translation>
@@ -5146,14 +3903,12 @@ Retour arrière : délie dernière</translation>
         <extra-po-msgid_plural>%u lines were added to selection</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="223" />
         <source>No lines were added to selection</source>
-        <translation>Aucune ligne ajoutée à la sélection</translation>
+        <translation type="vanished">Aucune ligne ajoutée à la sélection</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_selection.cpp" line="234" />
         <source>One line was removed from selection</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Une ligne a été retirée de la sélection</numerusform>
             <numerusform>%u lignes ont été retirées de la sélection</numerusform>
         </translation>
@@ -5161,24 +3916,20 @@ Retour arrière : délie dernière</translation>
         <extra-po-msgid_plural>%u lines were removed from selection</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="235" />
         <source>No lines were removed from selection</source>
-        <translation>Aucune ligne retirée de la sélection</translation>
+        <translation type="vanished">Aucune ligne retirée de la sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_selection.cpp" line="240" />
         <source>Selection</source>
-        <translation>Sélection</translation>
+        <translation type="vanished">Sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="92" />
         <source>unsaved</source>
-        <translation>non enregistré</translation>
+        <translation type="vanished">non enregistré</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_shift_times.cpp" line="96" />
         <source>1 frame</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>1 image</numerusform>
             <numerusform>%s images</numerusform>
         </translation>
@@ -5186,566 +3937,443 @@ Retour arrière : délie dernière</translation>
         <extra-po-msgid_plural>%s frames</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="98" />
         <source>backward</source>
-        <translation>en arrière</translation>
+        <translation type="vanished">en arrière</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="98" />
         <source>forward</source>
-        <translation>en avant</translation>
+        <translation type="vanished">en avant</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="102" />
         <source>s+e</source>
-        <translation>s+e</translation>
+        <translation type="vanished">s+e</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="103" />
         <source>s</source>
-        <translation>s</translation>
+        <translation type="vanished">s</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="104" />
         <source>e</source>
-        <translation>e</translation>
+        <translation type="vanished">e</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="111" />
         <source>all</source>
-        <translation>tout</translation>
+        <translation type="vanished">tout</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="114" />
         <source>from %d onward</source>
-        <translation>depuis %d vers</translation>
+        <translation type="vanished">depuis %d vers</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="117" />
         <source>sel </source>
-        <translation>sél. </translation>
+        <translation type="vanished">sél. </translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="144" />
         <source>Shift by</source>
-        <translation>Décaler de</translation>
+        <translation type="vanished">Décaler de</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="145" />
         <source>Load from history</source>
-        <translation>Charger depuis l'historique</translation>
+        <translation type="vanished">Charger depuis l&apos;historique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="150" />
         <source>&amp;Time: </source>
-        <translation>&amp;Temps : </translation>
+        <translation type="vanished">&amp;Temps : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="151" />
         <source>Shift by time</source>
-        <translation>Décalage temporel</translation>
+        <translation type="vanished">Décalage temporel</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="154" />
         <source>&amp;Frames: </source>
-        <translation>&amp;Images : </translation>
+        <translation type="vanished">&amp;Images : </translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="155" />
         <source>Shift by frames</source>
-        <translation>Décalage d'images</translation>
+        <translation type="vanished">Décalage d&apos;images</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="159" />
         <source>Enter time in h:mm:ss.cs notation</source>
-        <translation>Saisir le temps sur le modèle h:mm:ss.cs</translation>
+        <translation type="vanished">Saisir le temps sur le modèle h:mm:ss.cs</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="162" />
         <source>Enter number of frames to shift by</source>
-        <translation>Saisir le nombre d'images à décaler</translation>
+        <translation type="vanished">Saisir le nombre d&apos;images à décaler</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="164" />
         <source>For&amp;ward</source>
-        <translation>En a&amp;vant</translation>
+        <translation type="vanished">En a&amp;vant</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="165" />
         <source>Shifts subs forward, making them appear later. Use if they are appearing too soon.</source>
-        <translation>Sous-titres décalés vers l'avant, apparition plus tardive. À utiliser s'ils arrivent trop tôt.</translation>
+        <translation type="vanished">Sous-titres décalés vers l&apos;avant, apparition plus tardive. À utiliser s&apos;ils arrivent trop tôt.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="167" />
         <source>&amp;Backward</source>
-        <translation>En arrière (&amp;B)</translation>
+        <translation type="vanished">En arrière (&amp;B)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="168" />
         <source>Shifts subs backward, making them appear earlier. Use if they are appearing too late.</source>
-        <translation>Sous-titres décalés vers l'arrière, appartion plus tôt. À utiliser s'ils arrivent trop tard.</translation>
+        <translation type="vanished">Sous-titres décalés vers l&apos;arrière, appartion plus tôt. À utiliser s&apos;ils arrivent trop tard.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="170" />
         <source>&amp;All rows</source>
-        <translation>Toutes les &amp;colonnes</translation>
+        <translation type="vanished">Toutes les &amp;colonnes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="170" />
         <source>Selection &amp;onward</source>
-        <translation>Sélection &amp;en avant</translation>
+        <translation type="vanished">Sélection &amp;en avant</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="171" />
         <source>Affect</source>
-        <translation>Affecter</translation>
+        <translation type="vanished">Affecter</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="173" />
         <source>&amp;End times only</source>
-        <translation>Heures de fin seulement (&amp;E)</translation>
+        <translation type="vanished">Heures de fin seulement (&amp;E)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="173" />
         <source>&amp;Start times only</source>
-        <translation>Heures de début seulement (&amp;S)</translation>
+        <translation type="vanished">Heures de début seulement (&amp;S)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="173" />
         <source>Start a&amp;nd End times</source>
-        <translation>Temps de d&amp;ébut et de fin</translation>
+        <translation type="vanished">Temps de d&amp;ébut et de fin</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="174" />
         <source>Times</source>
-        <translation>Temps</translation>
+        <translation type="vanished">Temps</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="178" />
         <source>&amp;Clear</source>
-        <translation>E&amp;ffacer</translation>
+        <translation type="vanished">E&amp;ffacer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_shift_times.cpp" line="415" />
         <source>shifting</source>
-        <translation>décalage</translation>
+        <translation type="vanished">décalage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="125" />
         <source>Misspelled word:</source>
-        <translation>Mot erroné :</translation>
+        <translation type="vanished">Mot erroné :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="143" />
         <source>No spellchecker available.</source>
-        <translation>Aucun correcteur orthographique disponible.</translation>
+        <translation type="vanished">Aucun correcteur orthographique disponible.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="149" />
         <source>No spellchecker dictionaries available.</source>
-        <translation>Aucun dictionnaire de correcteur orthographique disponible.</translation>
+        <translation type="vanished">Aucun dictionnaire de correcteur orthographique disponible.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="183" />
         <source>Ignore &amp;UPPERCASE words</source>
-        <translation>Ignorer les mots en majuscule</translation>
+        <translation type="vanished">Ignorer les mots en majuscule</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="187" />
         <source>&amp;Replace</source>
-        <translation>&amp;Remplacer</translation>
+        <translation type="vanished">&amp;Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="197" />
         <source>&amp;Ignore</source>
-        <translation>&amp;Ignorer</translation>
+        <translation type="vanished">&amp;Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="200" />
         <source>Ignore a&amp;ll</source>
-        <translation>Tout i&amp;gnorer</translation>
+        <translation type="vanished">Tout i&amp;gnorer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="206" />
         <source>Add to &amp;dictionary</source>
-        <translation>Ajouter au &amp;dictionnaire</translation>
+        <translation type="vanished">Ajouter au &amp;dictionnaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="212" />
         <source>Remove fro&amp;m dictionary</source>
-        <translation>Retirer du dictionnaire</translation>
+        <translation type="vanished">Retirer du dictionnaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="279" />
         <source>Aegisub has finished checking spelling of this script.</source>
-        <translation>Aegisub a fini la vérification de ce script.</translation>
+        <translation type="vanished">Aegisub a fini la vérification de ce script.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="279" />
-        <location filename="../src/dialog_spellchecker.cpp" line="283" />
         <source>Spell checking complete.</source>
-        <translation>Vérification orthographique terminée.</translation>
+        <translation type="vanished">Vérification orthographique terminée.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="283" />
         <source>Aegisub has found no spelling mistakes in this script.</source>
-        <translation>Aegisub n'a trouvé aucune erreur orthographique dans ce script.</translation>
+        <translation type="vanished">Aegisub n&apos;a trouvé aucune erreur orthographique dans ce script.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_spellchecker.cpp" line="329" />
-        <location filename="../src/dialog_spellchecker.cpp" line="343" />
         <source>spell check replace</source>
-        <translation>remplacement proposé</translation>
+        <translation type="vanished">remplacement proposé</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="128" />
         <source>Style Editor</source>
-        <translation>Éditeur de style</translation>
+        <translation type="vanished">Éditeur de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="173" />
         <source>Border boxes</source>
-        <translation>Texte</translation>
+        <translation type="vanished">Texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="173" />
-        <location filename="../src/dialog_style_editor.cpp" line="184" />
-        <location filename="../src/dialog_style_editor.cpp" line="295" />
         <source>Outline</source>
-        <translation>Bordure</translation>
+        <translation type="vanished">Bordure</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="173" />
         <source>Shadow box (libass only)</source>
-        <translation>Entier (libass only)</translation>
+        <translation type="vanished">Entier (libass only)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="181" />
         <source>Font</source>
-        <translation>Police d'écriture</translation>
+        <translation type="vanished">Police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="182" />
-        <location filename="../src/preferences.cpp" line="280" />
         <source>Colors</source>
-        <translation>Couleurs</translation>
+        <translation type="vanished">Couleurs</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="183" />
         <source>Margins</source>
-        <translation>Marges</translation>
+        <translation type="vanished">Marges</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="185" />
         <source>Miscellaneous</source>
-        <translation>Divers</translation>
+        <translation type="vanished">Divers</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="186" />
         <source>Preview</source>
-        <translation>Aperçu</translation>
+        <translation type="vanished">Aperçu</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="200" />
         <source>&amp;Bold</source>
-        <translation>&amp;Gras</translation>
+        <translation type="vanished">&amp;Gras</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="201" />
         <source>&amp;Italic</source>
-        <translation>&amp;Italique</translation>
+        <translation type="vanished">&amp;Italique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="202" />
         <source>&amp;Underline</source>
-        <translation>&amp;Souligné</translation>
+        <translation type="vanished">&amp;Souligné</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="203" />
         <source>&amp;Strikeout</source>
-        <translation>&amp;Barré</translation>
+        <translation type="vanished">&amp;Barré</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="215" />
         <source>Alignment</source>
-        <translation>Alignement</translation>
+        <translation type="vanished">Alignement</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="226" />
         <source>Style name</source>
-        <translation>Nom du style</translation>
+        <translation type="vanished">Nom du style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="227" />
         <source>Font face</source>
-        <translation>Police</translation>
+        <translation type="vanished">Police</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="228" />
         <source>Font size</source>
-        <translation>Taille du caractère</translation>
+        <translation type="vanished">Taille du caractère</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="229" />
         <source>Choose primary color</source>
-        <translation>Choix de la couleur principale</translation>
+        <translation type="vanished">Choix de la couleur principale</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="230" />
         <source>Choose secondary color</source>
-        <translation>Choix de la couleur secondaire</translation>
+        <translation type="vanished">Choix de la couleur secondaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="231" />
         <source>Choose outline color</source>
-        <translation>Choix de la couleur du contour</translation>
+        <translation type="vanished">Choix de la couleur du contour</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="232" />
         <source>Choose shadow color</source>
-        <translation>Choix de la couleur d'ombre</translation>
+        <translation type="vanished">Choix de la couleur d&apos;ombre</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="233" />
         <source>Distance from left edge, in pixels</source>
-        <translation>Distance du bord gauche, en pixels</translation>
+        <translation type="vanished">Distance du bord gauche, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="234" />
         <source>Distance from right edge, in pixels</source>
-        <translation>Distance du bord droit, en pixels</translation>
+        <translation type="vanished">Distance du bord droit, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="235" />
         <source>Distance from top/bottom edge, in pixels</source>
-        <translation>Distance des bords haut et bas, en pixels</translation>
+        <translation type="vanished">Distance des bords haut et bas, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="236" />
         <source>Whether to draw a normal outline or opaque boxes around the text</source>
-        <translation>Choisir d'afficher un contour normal ou des fonds opaques autour du texte</translation>
+        <translation type="vanished">Choisir d&apos;afficher un contour normal ou des fonds opaques autour du texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="237" />
         <source>Outline width, in pixels</source>
-        <translation>Épaisseur du contour, en pixels</translation>
+        <translation type="vanished">Épaisseur du contour, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="238" />
         <source>Shadow distance, in pixels</source>
-        <translation>Décalage de l'ombre, en pixels</translation>
+        <translation type="vanished">Décalage de l&apos;ombre, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="239" />
         <source>Scale X, in percentage</source>
-        <translation>Échelle X, en pourcentage</translation>
+        <translation type="vanished">Échelle X, en pourcentage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="240" />
         <source>Scale Y, in percentage</source>
-        <translation>Échelle Y, en pourcentage</translation>
+        <translation type="vanished">Échelle Y, en pourcentage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="241" />
         <source>Angle to rotate in Z axis, in degrees</source>
-        <translation>Angle de rotation de l'axe Z, en degrés</translation>
+        <translation type="vanished">Angle de rotation de l&apos;axe Z, en degrés</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="242" />
-        <source>Encoding, only useful in unicode if the font doesn't have the proper unicode mapping</source>
-        <translation>Encodage, utile en Unicode si la police n'a pas son propre codage Unicode</translation>
+        <source>Encoding, only useful in unicode if the font doesn&apos;t have the proper unicode mapping</source>
+        <translation type="vanished">Encodage, utile en Unicode si la police n&apos;a pas son propre codage Unicode</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="243" />
         <source>Character spacing, in pixels</source>
-        <translation>Espacement des caractères, en pixels</translation>
+        <translation type="vanished">Espacement des caractères, en pixels</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="244" />
         <source>Alignment in screen, in numpad style</source>
-        <translation>Alignement à l'écran, comme sur un pavé numérique</translation>
+        <translation type="vanished">Alignement à l&apos;écran, comme sur un pavé numérique</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="295" />
         <source>Primary</source>
-        <translation>Primaire</translation>
+        <translation type="vanished">Primaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="295" />
         <source>Secondary</source>
-        <translation>Secondaire</translation>
+        <translation type="vanished">Secondaire</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="295" />
         <source>Shadow</source>
-        <translation>Ombre</translation>
+        <translation type="vanished">Ombre</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="306" />
-        <location filename="../src/grid_column.cpp" line="265" />
         <source>Left</source>
-        <translation>Gauche</translation>
+        <translation type="vanished">Gauche</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="306" />
-        <location filename="../src/grid_column.cpp" line="271" />
         <source>Right</source>
-        <translation>Droite</translation>
+        <translation type="vanished">Droite</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="306" />
-        <location filename="../src/grid_column.cpp" line="277" />
         <source>Vert</source>
-        <translation>Vert</translation>
+        <translation type="vanished">Vert</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="324" />
         <source>Outline:</source>
-        <translation>Contour :</translation>
+        <translation type="vanished">Contour :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="325" />
         <source>Shadow:</source>
-        <translation>Ombre :</translation>
+        <translation type="vanished">Ombre :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="326" />
         <source>Border style:</source>
-        <translation>Tri des styles :</translation>
+        <translation type="vanished">Tri des styles :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="330" />
         <source>Scale X%:</source>
-        <translation>Échelle X% :</translation>
+        <translation type="vanished">Échelle X% :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="331" />
         <source>Scale Y%:</source>
-        <translation>Échelle Y% :</translation>
+        <translation type="vanished">Échelle Y% :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="332" />
         <source>Rotation:</source>
-        <translation>Rotation :</translation>
+        <translation type="vanished">Rotation :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="333" />
         <source>Spacing:</source>
-        <translation>Espacement :</translation>
+        <translation type="vanished">Espacement :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="336" />
         <source>Encoding:</source>
-        <translation>Encodage :</translation>
+        <translation type="vanished">Encodage :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="346" />
         <source>Preview of current style</source>
-        <translation>Aperçu du style courant</translation>
+        <translation type="vanished">Aperçu du style courant</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="349" />
         <source>Text to be used for the preview</source>
-        <translation>Texte à utililser dans l'aperçu</translation>
+        <translation type="vanished">Texte à utililser dans l&apos;aperçu</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="350" />
         <source>Color of preview background</source>
-        <translation>Couleur de l'arrière-plan de l'aperçu</translation>
+        <translation type="vanished">Couleur de l&apos;arrière-plan de l&apos;aperçu</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="431" />
         <source>Style name conflict</source>
-        <translation>Conflit de nom de style</translation>
+        <translation type="vanished">Conflit de nom de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="431" />
         <source>There is already a style with this name. Please choose another name.</source>
-        <translation>Il y a déjà un style portant ce nom. Veuillez choisir un autre nom.</translation>
+        <translation type="vanished">Il y a déjà un style portant ce nom. Veuillez choisir un autre nom.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="443" />
         <source>Do you want to change all instances of this style in the script to this new name?</source>
-        <translation>Voulez-vous remplacer toutes les occurrences de ce style par ce nouveau nom ?</translation>
+        <translation type="vanished">Voulez-vous remplacer toutes les occurrences de ce style par ce nouveau nom ?</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="444" />
         <source>Update script?</source>
-        <translation>Mettre à jour le script ?</translation>
+        <translation type="vanished">Mettre à jour le script ?</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_editor.cpp" line="471" />
-        <location filename="../src/subs_edit_box.cpp" line="605" />
         <source>style change</source>
-        <translation>modification de style</translation>
+        <translation type="vanished">modification de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="188" />
         <source>Move style up</source>
-        <translation>Monter le style</translation>
+        <translation type="vanished">Monter le style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="189" />
         <source>Move style down</source>
-        <translation>Descendre le style</translation>
+        <translation type="vanished">Descendre le style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="190" />
         <source>Move style to top</source>
-        <translation>Mettre le style en haut</translation>
+        <translation type="vanished">Mettre le style en haut</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="191" />
         <source>Move style to bottom</source>
-        <translation>Mettre le style en bas</translation>
+        <translation type="vanished">Mettre le style en bas</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="192" />
         <source>Sort styles alphabetically</source>
-        <translation>Trier les styles alphabétiquement</translation>
+        <translation type="vanished">Trier les styles alphabétiquement</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="202" />
-        <location filename="../src/preferences.cpp" line="666" />
         <source>&amp;New</source>
-        <translation>&amp;Nouveau</translation>
+        <translation type="vanished">&amp;Nouveau</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="203" />
-        <location filename="../src/preferences.cpp" line="667" />
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Edit</source>
-        <translation>&amp;Modifier</translation>
+        <translation type="vanished">&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="204" />
-        <location filename="../src/subs_edit_ctrl.cpp" line="408" />
-        <location filename="../src/timeedit_ctrl.cpp" line="209" />
         <source>&amp;Copy</source>
-        <translation>&amp;Copier</translation>
+        <translation type="vanished">&amp;Copier</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="218" />
         <source>%s - Copy</source>
-        <translation>%s - Copier</translation>
+        <translation type="vanished">%s - Copier</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="220" />
         <source>%s - Copy (%d)</source>
-        <translation>%s - Copier (%d)</translation>
+        <translation type="vanished">%s - Copier (%d)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="243" />
         <source>Could not parse style</source>
-        <translation>Impossible de valider le style</translation>
+        <translation type="vanished">Impossible de valider le style</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_style_manager.cpp" line="248" />
         <source>Are you sure you want to delete this style?</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Êtes-vous sûr de vouloir supprimer ce style ?</numerusform>
             <numerusform>Êtes-vous sûr de vouloir supprimer ces %d styles ?</numerusform>
         </translation>
@@ -5753,598 +4381,468 @@ Retour arrière : délie dernière</translation>
         <extra-po-msgid_plural>Are you sure you want to delete these %d styles?</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="273" />
         <source>Catalog of available storages</source>
-        <translation>Catalogue des stockages disponibles</translation>
+        <translation type="vanished">Catalogue des stockages disponibles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="274" />
         <source>Storage</source>
-        <translation>Stockage</translation>
+        <translation type="vanished">Stockage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="275" />
         <source>Current script</source>
-        <translation>Script actif</translation>
+        <translation type="vanished">Script actif</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="283" />
-        <location filename="default_menu.json" line="0" />
         <source>New</source>
-        <translation>Nouveau</translation>
+        <translation type="vanished">Nouveau</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="284" />
         <source>Delete</source>
-        <translation>Supprimer</translation>
+        <translation type="vanished">Supprimer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="290" />
         <source>Copy to &amp;current script -&gt;</source>
-        <translation>&amp;Copier dans le script actif -&gt;</translation>
+        <translation type="vanished">&amp;Copier dans le script actif -&gt;</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="302" />
         <source>&amp;Import from script...</source>
-        <translation>&amp;Importer depuis un script...</translation>
+        <translation type="vanished">&amp;Importer depuis un script...</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="303" />
         <source>&lt;- Copy to &amp;storage</source>
-        <translation>&lt;- Copier dan&amp;s le stockage</translation>
+        <translation type="vanished">&lt;- Copier dan&amp;s le stockage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="460" />
         <source>New catalog entry</source>
-        <translation>Nouvelle entrée de stockage</translation>
+        <translation type="vanished">Nouvelle entrée de stockage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="460" />
         <source>New storage name:</source>
-        <translation>Nouveau nom de stockage :</translation>
+        <translation type="vanished">Nouveau nom de stockage :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="475" />
         <source>A catalog with that name already exists.</source>
-        <translation>Un stockage avec ce nom existe déjà.</translation>
+        <translation type="vanished">Un stockage avec ce nom existe déjà.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="475" />
         <source>Catalog name conflict</source>
-        <translation>Conflit de nom de stockage</translation>
+        <translation type="vanished">Conflit de nom de stockage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="482" />
         <source>The specified catalog name contains one or more illegal characters. They have been replaced with underscores instead.
-The catalog has been renamed to "%s".</source>
-        <translation>Le nom de stockage spécifié contient au moins un caractère interdit. Ils ont été remplacés par des tirets bas.
+The catalog has been renamed to &quot;%s&quot;.</source>
+        <translation type="vanished">Le nom de stockage spécifié contient au moins un caractère interdit. Ils ont été remplacés par des tirets bas.
 Le stockage a été renommé en « %s ».</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="483" />
         <source>Invalid characters</source>
-        <translation>Caractères interdits</translation>
+        <translation type="vanished">Caractères interdits</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="496" />
-        <source>Are you sure you want to delete the storage "%s" from the catalog?</source>
-        <translation>Êtes-vous sûr de vouloir supprimer le stockage « %s » du catalogue ?</translation>
+        <source>Are you sure you want to delete the storage &quot;%s&quot; from the catalog?</source>
+        <translation type="vanished">Êtes-vous sûr de vouloir supprimer le stockage « %s » du catalogue ?</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="497" />
         <source>Confirm delete</source>
-        <translation>Confirmer la suppression</translation>
+        <translation type="vanished">Confirmer la suppression</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="515" />
-        <location filename="../src/dialog_style_manager.cpp" line="542" />
-        <location filename="../src/dialog_style_manager.cpp" line="721" />
         <source>Style name collision</source>
-        <translation>Conflit de nom de style</translation>
+        <translation type="vanished">Conflit de nom de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="515" />
-        <source>There is already a style with the name "%s" in the current storage. Overwrite?</source>
-        <translation>Il existe déjà un style « %s » dans le stockage courant. Le remplacer ?</translation>
+        <source>There is already a style with the name &quot;%s&quot; in the current storage. Overwrite?</source>
+        <translation type="vanished">Il existe déjà un style « %s » dans le stockage courant. Le remplacer ?</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="542" />
-        <location filename="../src/dialog_style_manager.cpp" line="720" />
-        <source>There is already a style with the name "%s" in the current script. Overwrite?</source>
-        <translation>Il existe déjà un style « %s » dans le script actif. Le remplacer ?</translation>
+        <source>There is already a style with the name &quot;%s&quot; in the current script. Overwrite?</source>
+        <translation type="vanished">Il existe déjà un style « %s » dans le script actif. Le remplacer ?</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="553" />
         <source>style copy</source>
-        <translation>copie de style</translation>
+        <translation type="vanished">copie de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="582" />
         <source>style paste</source>
-        <translation>collage de style</translation>
+        <translation type="vanished">collage de style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="626" />
         <source>Confirm delete from storage</source>
-        <translation>Confirmer suppression du stockage</translation>
+        <translation type="vanished">Confirmer suppression du stockage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="665" />
         <source>Confirm delete from current</source>
-        <translation>Confirmer suppression de l'actif</translation>
+        <translation type="vanished">Confirmer suppression de l&apos;actif</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="669" />
         <source>style delete</source>
-        <translation>suppression style</translation>
+        <translation type="vanished">suppression style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="689" />
         <source>Unsupported subtitle format</source>
-        <translation>Format de sous-titres non pris en charge</translation>
+        <translation type="vanished">Format de sous-titres non pris en charge</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="705" />
         <source>Error Importing Styles</source>
-        <translation>Erreur à l'importation de styles</translation>
+        <translation type="vanished">Erreur à l&apos;importation de styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="705" />
         <source>The selected file has no available styles.</source>
-        <translation>Le fichier sélectionné n'a pas de style valide.</translation>
+        <translation type="vanished">Le fichier sélectionné n&apos;a pas de style valide.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="711" />
         <source>Choose styles to import:</source>
-        <translation>Choix des styles à importer :</translation>
+        <translation type="vanished">Choix des styles à importer :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="711" />
         <source>Import Styles</source>
-        <translation>Importer des styles</translation>
+        <translation type="vanished">Importer des styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="737" />
         <source>style import</source>
-        <translation>importation de styles</translation>
+        <translation type="vanished">importation de styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="846" />
         <source>Are you sure? This cannot be undone!</source>
-        <translation>Êtes-vous sûr ? Cette action ne peut être annulée !</translation>
+        <translation type="vanished">Êtes-vous sûr ? Cette action ne peut être annulée !</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="846" />
         <source>Sort styles</source>
-        <translation>Tri des styles</translation>
+        <translation type="vanished">Tri des styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_style_manager.cpp" line="887" />
         <source>style move</source>
-        <translation>déplacement d'un style</translation>
+        <translation type="vanished">déplacement d&apos;un style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="64" />
-        <location filename="../src/dialog_styling_assistant.cpp" line="65" />
         <source>Current line</source>
-        <translation>Ligne actuelle</translation>
+        <translation type="vanished">Ligne actuelle</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="71" />
         <source>Styles available</source>
-        <translation>Styles disponibles</translation>
+        <translation type="vanished">Styles disponibles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="79" />
         <source>Set style</source>
-        <translation>Définir le style</translation>
+        <translation type="vanished">Définir le style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="86" />
-        <location filename="../src/dialog_translation.cpp" line="110" />
         <source>Keys</source>
-        <translation>Touches</translation>
+        <translation type="vanished">Touches</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="92" />
-        <location filename="../src/dialog_translation.cpp" line="116" />
         <source>Previous line</source>
-        <translation>Ligne précédente</translation>
+        <translation type="vanished">Ligne précédente</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="93" />
-        <location filename="../src/dialog_translation.cpp" line="117" />
         <source>Next line</source>
-        <translation>Ligne suivante</translation>
+        <translation type="vanished">Ligne suivante</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="94" />
-        <location filename="../src/dialog_translation.cpp" line="119" />
         <source>Play video</source>
-        <translation>Lire la vidéo</translation>
+        <translation type="vanished">Lire la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="95" />
-        <location filename="../src/dialog_translation.cpp" line="120" />
         <source>Play audio</source>
-        <translation>Lecture audio</translation>
+        <translation type="vanished">Lecture audio</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="96" />
         <source>Click on list</source>
-        <translation>Clic sur la liste</translation>
+        <translation type="vanished">Clic sur la liste</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="97" />
         <source>Select style</source>
-        <translation>Choisit le style</translation>
+        <translation type="vanished">Choisit le style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="101" />
         <source>&amp;Seek video to line start time</source>
-        <translation>Chercher dans la vidéo la ligne de temps de début</translation>
+        <translation type="vanished">Chercher dans la vidéo la ligne de temps de début</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="110" />
-        <location filename="../src/dialog_translation.cpp" line="132" />
         <source>Actions</source>
-        <translation>Actions</translation>
+        <translation type="vanished">Actions</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="113" />
-        <location filename="../src/dialog_translation.cpp" line="134" />
         <source>Play &amp;Audio</source>
-        <translation>Lecture &amp;audio</translation>
+        <translation type="vanished">Lecture &amp;audio</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="117" />
-        <location filename="../src/dialog_translation.cpp" line="139" />
         <source>Play &amp;Video</source>
-        <translation>Lire la vidéo (&amp;V)</translation>
+        <translation type="vanished">Lire la vidéo (&amp;V)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_styling_assistant.cpp" line="175" />
         <source>styling assistant</source>
-        <translation>assistant au style</translation>
+        <translation type="vanished">assistant au style</translation>
     </message>
     <message>
-        <location filename="../src/dialog_text_import.cpp" line="47" />
         <source>Text import options</source>
-        <translation>Options d'import texte</translation>
+        <translation type="vanished">Options d&apos;import texte</translation>
     </message>
     <message>
-        <location filename="../src/dialog_text_import.cpp" line="54" />
         <source>Actor separator:</source>
-        <translation>Séparateur acteur :</translation>
+        <translation type="vanished">Séparateur acteur :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_text_import.cpp" line="56" />
         <source>Comment starter:</source>
-        <translation>Démarrage commentaire :</translation>
+        <translation type="vanished">Démarrage commentaire :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_text_import.cpp" line="61" />
         <source>Include blank lines</source>
-        <translation>Inclure les lignes vides</translation>
+        <translation type="vanished">Inclure les lignes vides</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="157" />
         <source>Apply to styles</source>
-        <translation>Appliquer aux styles</translation>
+        <translation type="vanished">Appliquer aux styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="160" />
         <source>Select styles to process. Unchecked ones will be ignored.</source>
-        <translation>Choix des styles à appliquer. Ceux non-cochés seront ignorés.</translation>
+        <translation type="vanished">Choix des styles à appliquer. Ceux non-cochés seront ignorés.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="163" />
         <source>Select all styles</source>
-        <translation>Choisir tous les styles</translation>
+        <translation type="vanished">Choisir tous les styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="166" />
         <source>Deselect all styles</source>
-        <translation>Désélectionner tous les styles</translation>
+        <translation type="vanished">Désélectionner tous les styles</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="170" />
         <source>Affect &amp;selection only</source>
-        <translation>N'affecter que la &amp;sélection</translation>
+        <translation type="vanished">N&apos;affecter que la &amp;sélection</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="175" />
         <source>Lead-in/Lead-out</source>
-        <translation>Début/fin</translation>
+        <translation type="vanished">Début/fin</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="177" />
         <source>Add lead &amp;in:</source>
-        <translation>Ajout blanc de début :</translation>
+        <translation type="vanished">Ajout blanc de début :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="179" />
         <source>Enable adding of lead-ins to lines</source>
-        <translation>Permettre l'ajout de blancs de début aux lignes</translation>
+        <translation type="vanished">Permettre l&apos;ajout de blancs de début aux lignes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="180" />
         <source>Lead in to be added, in milliseconds</source>
-        <translation>Blanc de début à ajouter, en millisecondes</translation>
+        <translation type="vanished">Blanc de début à ajouter, en millisecondes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="182" />
         <source>Add lead &amp;out:</source>
-        <translation>Aj&amp;out blanc de fin :</translation>
+        <translation type="vanished">Aj&amp;out blanc de fin :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="184" />
         <source>Enable adding of lead-outs to lines</source>
-        <translation>Permettre l'ajout de blancs de fin aux lignes</translation>
+        <translation type="vanished">Permettre l&apos;ajout de blancs de fin aux lignes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="185" />
         <source>Lead out to be added, in milliseconds</source>
-        <translation>Blanc de fin à ajouter, en millisecondes</translation>
+        <translation type="vanished">Blanc de fin à ajouter, en millisecondes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="190" />
         <source>Make adjacent subtitles continuous</source>
-        <translation>Rendre les sous-titres adjacents continus</translation>
+        <translation type="vanished">Rendre les sous-titres adjacents continus</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="192" />
         <source>&amp;Enable</source>
-        <translation>Activ&amp;er</translation>
+        <translation type="vanished">Activ&amp;er</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="194" />
         <source>Enable snapping of subtitles together if they are within a certain distance of each other</source>
-        <translation>Activer le collage des sous-titres s'ils sont à moins d'une certaine distance</translation>
+        <translation type="vanished">Activer le collage des sous-titres s&apos;ils sont à moins d&apos;une certaine distance</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="197" />
         <source>Max gap:</source>
-        <translation>Écart maximum :</translation>
+        <translation type="vanished">Écart maximum :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="198" />
         <source>Maximum difference between start and end time for two subtitles to be made continuous, in milliseconds</source>
-        <translation>Différence maximale entre le début et la fin pour rendre deux sous-titres continus, en millisecondes</translation>
+        <translation type="vanished">Différence maximale entre le début et la fin pour rendre deux sous-titres continus, en millisecondes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="199" />
         <source>Max overlap:</source>
-        <translation>Chevauchement maximum :</translation>
+        <translation type="vanished">Chevauchement maximum :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="200" />
         <source>Maximum overlap between the end and start time for two subtitles to be made continuous, in milliseconds</source>
-        <translation>Recouvrement maximal entre le début et la fin pour rendre deux sous-titres continus, en millisecondes</translation>
+        <translation type="vanished">Recouvrement maximal entre le début et la fin pour rendre deux sous-titres continus, en millisecondes</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="203" />
         <source>Sets how to set the adjoining of lines. If set totally to left, it will extend or shrink start time of the second line; if totally to right, it will extend or shrink the end time of the first line.</source>
-        <translation>Gère la façon de joindre des lignes. Si réglé tout à gauche, cela étendra ou réduira le temps de départ de la deuxième ligne ; tout à droite, cela étendra ou réduira le temps de fin de la première ligne.</translation>
+        <translation type="vanished">Gère la façon de joindre des lignes. Si réglé tout à gauche, cela étendra ou réduira le temps de départ de la deuxième ligne ; tout à droite, cela étendra ou réduira le temps de fin de la première ligne.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="206" />
         <source>Bias: Start &lt;- </source>
-        <translation>Biais : Début &lt;- </translation>
+        <translation type="vanished">Biais : Début &lt;- </translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="208" />
         <source> -&gt; End</source>
-        <translation> -&gt; Fin</translation>
+        <translation type="vanished"> -&gt; Fin</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="216" />
         <source>Keyframe snapping</source>
-        <translation>Magnétisme aux images-clés</translation>
+        <translation type="vanished">Magnétisme aux images-clés</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="220" />
         <source>E&amp;nable</source>
-        <translation>Activer</translation>
+        <translation type="vanished">Activer</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="221" />
         <source>Enable snapping of subtitles to nearest keyframe, if distance is within threshold</source>
-        <translation>Permet le collage des sous-titres sur l'image clé la plus proche, si le seuil n'est pas dépassé</translation>
+        <translation type="vanished">Permet le collage des sous-titres sur l&apos;image clé la plus proche, si le seuil n&apos;est pas dépassé</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="232" />
         <source>Starts before thres.:</source>
-        <translation>Démarre avant seuil :</translation>
+        <translation type="vanished">Démarre avant seuil :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="233" />
-        <source>Threshold for 'before start' distance, that is, how many milliseconds a subtitle must start before a keyframe to snap to it</source>
-        <translation>Seuil de distance « avant début » définissant combien de millisecondes un sous-titre doit démarrer avant l'image clé pour s'y coller</translation>
+        <source>Threshold for &apos;before start&apos; distance, that is, how many milliseconds a subtitle must start before a keyframe to snap to it</source>
+        <translation type="vanished">Seuil de distance « avant début » définissant combien de millisecondes un sous-titre doit démarrer avant l&apos;image clé pour s&apos;y coller</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="235" />
         <source>Starts after thres.:</source>
-        <translation>Après le début :</translation>
+        <translation type="vanished">Après le début :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="236" />
-        <source>Threshold for 'after start' distance, that is, how many milliseconds a subtitle must start after a keyframe to snap to it</source>
-        <translation>Seuil de distance « après début » définissant combien de millisecondes un sous-titre doit démarrer après l'image clé pour s'y coller</translation>
+        <source>Threshold for &apos;after start&apos; distance, that is, how many milliseconds a subtitle must start after a keyframe to snap to it</source>
+        <translation type="vanished">Seuil de distance « après début » définissant combien de millisecondes un sous-titre doit démarrer après l&apos;image clé pour s&apos;y coller</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="240" />
         <source>Ends before thres.:</source>
-        <translation>Avant la fin :</translation>
+        <translation type="vanished">Avant la fin :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="241" />
-        <source>Threshold for 'before end' distance, that is, how many milliseconds a subtitle must end before a keyframe to snap to it</source>
-        <translation>Seuil de distance « avant fin » définissant combien de millisecondes un sous-titre doit finir avant l'image clé pour s'y coller</translation>
+        <source>Threshold for &apos;before end&apos; distance, that is, how many milliseconds a subtitle must end before a keyframe to snap to it</source>
+        <translation type="vanished">Seuil de distance « avant fin » définissant combien de millisecondes un sous-titre doit finir avant l&apos;image clé pour s&apos;y coller</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="243" />
         <source>Ends after thres.:</source>
-        <translation>Après la fin :</translation>
+        <translation type="vanished">Après la fin :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="244" />
-        <source>Threshold for 'after end' distance, that is, how many milliseconds a subtitle must end after a keyframe to snap to it</source>
-        <translation>Seuil de distance « après fin » définissant combien de millisecondes un sous-titre doit finir après l'image clé pour s'y coller</translation>
+        <source>Threshold for &apos;after end&apos; distance, that is, how many milliseconds a subtitle must end after a keyframe to snap to it</source>
+        <translation type="vanished">Seuil de distance « après fin » définissant combien de millisecondes un sous-titre doit finir après l&apos;image clé pour s&apos;y coller</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="352" />
         <source>One of the lines in the file (%i) has negative duration. Aborting.</source>
-        <translation>Une des lignes du fichier (%i) a une durée négative. Annulation.</translation>
+        <translation type="vanished">Une des lignes du fichier (%i) a une durée négative. Annulation.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="353" />
         <source>Invalid script</source>
-        <translation>Script invalide</translation>
+        <translation type="vanished">Script invalide</translation>
     </message>
     <message>
-        <location filename="../src/dialog_timing_processor.cpp" line="448" />
         <source>timing processor</source>
-        <translation>processeur minutage</translation>
+        <translation type="vanished">processeur minutage</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="78" />
         <source>Original</source>
-        <translation>Original</translation>
+        <translation type="vanished">Original</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="94" />
         <source>Translation</source>
-        <translation>Traduction</translation>
+        <translation type="vanished">Traduction</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="118" />
         <source>Insert original</source>
-        <translation>Insérer original</translation>
+        <translation type="vanished">Insérer original</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="121" />
         <source>Delete line</source>
-        <translation>Suppression de ligne</translation>
+        <translation type="vanished">Suppression de ligne</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="124" />
         <source>Enable &amp;preview</source>
-        <translation>Activer l'aperçu (&amp;P)</translation>
+        <translation type="vanished">Activer l&apos;aperçu (&amp;P)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="181" />
-        <location filename="../src/dialog_translation.cpp" line="281" />
         <source>No more lines to translate.</source>
-        <translation>Plus de ligne à traduire.</translation>
+        <translation type="vanished">Plus de ligne à traduire.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="189" />
-        <location filename="../src/dialog_translation.cpp" line="239" />
         <source>Current line: %d/%d</source>
-        <translation>Ligne active : %d/%d</translation>
+        <translation type="vanished">Ligne active : %d/%d</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_translation.cpp" line="276" />
         <source>translation assistant</source>
-        <translation>assistant à la traduction</translation>
+        <translation type="vanished">assistant à la traduction</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="90" />
         <source>Version Checker</source>
-        <translation>Testeur de version</translation>
+        <translation type="vanished">Testeur de version</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="115" />
         <source>&amp;Auto Check for Updates</source>
-        <translation>Vérification &amp;automatique des mises à jour</translation>
+        <translation type="vanished">Vérification &amp;automatique des mises à jour</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="120" />
         <source>Remind me again in a &amp;week</source>
-        <translation>Rappelez-moi dans une &amp;semaine</translation>
+        <translation type="vanished">Rappelez-moi dans une &amp;semaine</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="295" />
         <source>Curl could not be initialized.</source>
-        <translation>Curl n'a pas pu être initialisé.</translation>
+        <translation type="vanished">Curl n&apos;a pas pu être initialisé.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="317" />
         <source>Checking for updates failed: %s.</source>
-        <translation>La vérification des mises à jour a échoué : %s.</translation>
+        <translation type="vanished">La vérification des mises à jour a échoué : %s.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="345" />
         <source>An update to Aegisub was found.</source>
-        <translation>Une mise à jour d'Aegisub est disponible.</translation>
+        <translation type="vanished">Une mise à jour d&apos;Aegisub est disponible.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="347" />
         <source>Several possible updates to Aegisub were found.</source>
-        <translation>Plusieurs mises à jour possibles d'Aegisub sont disponibles.</translation>
+        <translation type="vanished">Plusieurs mises à jour possibles d&apos;Aegisub sont disponibles.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="349" />
         <source>There are no updates to Aegisub.</source>
-        <translation>Aucune mise à jour d'Aegisub.</translation>
+        <translation type="vanished">Aucune mise à jour d&apos;Aegisub.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="377" />
         <source>There was an error checking for updates to Aegisub:
 %s
 
 If other applications can access the Internet fine, this is probably a temporary server problem on our end.</source>
-        <translation>Une erreur s'est produite lors de la vérification des mises à jour d'Aegisub :
+        <translation type="vanished">Une erreur s&apos;est produite lors de la vérification des mises à jour d&apos;Aegisub :
 %s
 
-Si d'autres applications accèdent à internet sans problème, c'est probablement dû à un problème ponctuel de notre serveur.</translation>
+Si d&apos;autres applications accèdent à internet sans problème, c&apos;est probablement dû à un problème ponctuel de notre serveur.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_version_check.cpp" line="381" />
         <source>An unknown error occurred while checking for updates to Aegisub.</source>
-        <translation>Une erreur inconnue s'est produite lors de la vérification des mises à jour d'Aegisub.</translation>
+        <translation type="vanished">Une erreur inconnue s&apos;est produite lors de la vérification des mises à jour d&apos;Aegisub.</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="46" />
         <source>Video Details</source>
-        <translation>Détails vidéo</translation>
+        <translation type="vanished">Détails vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="55" />
-        <location filename="../src/preferences.cpp" line="204" />
-        <location filename="../src/preferences.cpp" line="481" />
-        <location filename="default_hotkey.json" line="315" />
         <source>Video</source>
-        <translation>Vidéo</translation>
+        <translation type="vanished">Vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="63" />
         <source>File name:</source>
-        <translation>Nom du fichier :</translation>
+        <translation type="vanished">Nom du fichier :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="64" />
         <source>FPS:</source>
-        <translation>FPS :</translation>
+        <translation type="vanished">FPS :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="65" />
         <source>Resolution:</source>
-        <translation>Résolution :</translation>
+        <translation type="vanished">Résolution :</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/dialog_video_details.cpp" line="66" />
         <source>%d frame (%s)</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>%d images (%s)</numerusform>
             <numerusform>%d images (%s)</numerusform>
         </translation>
@@ -6352,29 +4850,25 @@ Si d'autres applications accèdent à internet sans problème, c'est probablemen
         <extra-po-msgid_plural>%d frames (%s)</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="66" />
         <source>Length:</source>
-        <translation>Durée :</translation>
+        <translation type="vanished">Durée :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_details.cpp" line="68" />
         <source>Decoder:</source>
-        <translation>Décodeur :</translation>
+        <translation type="vanished">Décodeur :</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="44" />
         <source>Resolution mismatch</source>
-        <translation>Résolution incompatible</translation>
+        <translation type="vanished">Résolution incompatible</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="47" />
-        <source>The resolution of the loaded video and the resolution specified for the subtitles don't match.
+        <source>The resolution of the loaded video and the resolution specified for the subtitles don&apos;t match.
 
 Video resolution:	%d × %d
 Script resolution:	%d × %d
 
 Change subtitles resolution to match video?</source>
-        <translation>La définition de la vidéo chargée et des sous-titres ne correspondent pas.
+        <translation type="vanished">La définition de la vidéo chargée et des sous-titres ne correspondent pas.
 
 Définition vidéo : 	%d × %d
 Définition script : 	%d × %d
@@ -6383,234 +4877,196 @@ Changer la définition des sous-titres pour correspondre à la vidéo ?</transla
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="58" />
-        <location filename="../src/dialog_video_properties.cpp" line="67" />
         <source>Set to video resolution</source>
-        <translation>Définir la définition vidéo</translation>
+        <translation type="vanished">Définir la définition vidéo</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="59" />
         <source>Resample script (stretch to new aspect ratio)</source>
-        <translation>Rééchantillonner script (étirer au nouveau format d'image)</translation>
+        <translation type="vanished">Rééchantillonner script (étirer au nouveau format d&apos;image)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="60" />
         <source>Resample script (add borders)</source>
-        <translation>Rééchantillonner le script (ajouter des bordures)</translation>
+        <translation type="vanished">Rééchantillonner le script (ajouter des bordures)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="61" />
         <source>Resample script (remove borders)</source>
-        <translation>Rééchantillonner le script (supprimer les bordures)</translation>
+        <translation type="vanished">Rééchantillonner le script (supprimer les bordures)</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="68" />
         <source>Resample script</source>
-        <translation>Rééchantillonner le script</translation>
+        <translation type="vanished">Rééchantillonner le script</translation>
     </message>
     <message>
-        <location filename="../src/dialog_video_properties.cpp" line="168" />
         <source>change script resolution</source>
-        <translation>changer la définition vidéo du script</translation>
+        <translation type="vanished">changer la définition vidéo du script</translation>
     </message>
     <message>
-        <location filename="../src/export_fixstyle.cpp" line="46" />
         <source>Fix Styles</source>
-        <translation>Réparation de styles</translation>
+        <translation type="vanished">Réparation de styles</translation>
     </message>
     <message>
-        <location filename="../src/export_fixstyle.cpp" line="46" />
-        <source>Fixes styles by replacing any style that isn't available on file with Default.</source>
-        <translation>Répare les styles en remplaçant tout style absent dans le fichier par Default.</translation>
+        <source>Fixes styles by replacing any style that isn&apos;t available on file with Default.</source>
+        <translation type="vanished">Répare les styles en remplaçant tout style absent dans le fichier par Default.</translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="52" />
         <source>Transform Framerate</source>
-        <translation>Modifier fréquence d'image</translation>
+        <translation type="vanished">Modifier fréquence d&apos;image</translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="53" />
         <source>Transform subtitle times, including those in override tags, from an input framerate to an output framerate.
 
 This is useful for converting regular time subtitles to VFRaC time subtitles for hardsubbing.
 It can also be used to convert subtitles to a different speed video, such as NTSC to PAL speedup.</source>
-        <translation>Transforme les données temporelles, même celles qui sont dans les balises prioritaires, depuis une fréquence d'image vers une nouvelle fréquence d'image.
+        <translation type="vanished">Transforme les données temporelles, même celles qui sont dans les balises prioritaires, depuis une fréquence d&apos;image vers une nouvelle fréquence d&apos;image.
 
-Très pratique pour convertir les temps réguliers en VFRaC pour l'incrustation.
+Très pratique pour convertir les temps réguliers en VFRaC pour l&apos;incrustation.
 Peut également être utile pour convertir la vitesse des sous-titres, comme de NTSC vers PAL.</translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="92" />
         <source>V&amp;ariable</source>
-        <translation>V&amp;ariable</translation>
+        <translation type="vanished">V&amp;ariable</translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="96" />
         <source>&amp;Constant: </source>
-        <translation>&amp;Constante : </translation>
+        <translation type="vanished">&amp;Constante : </translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="108" />
         <source>&amp;Reverse transformation</source>
-        <translation>Transformation inve&amp;rse</translation>
+        <translation type="vanished">Transformation inve&amp;rse</translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="116" />
         <source>Input framerate: </source>
-        <translation>Fréquence d'image d'entrée : </translation>
+        <translation type="vanished">Fréquence d&apos;image d&apos;entrée : </translation>
     </message>
     <message>
-        <location filename="../src/export_framerate.cpp" line="118" />
         <source>Output: </source>
-        <translation>Sortie : </translation>
+        <translation type="vanished">Sortie : </translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="77" />
         <source>Indexing</source>
-        <translation>Indexation</translation>
+        <translation type="vanished">Indexation</translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="78" />
         <source>Reading timecodes and frame/sample data</source>
-        <translation>Lecture des données temporelles et d'image/échantillon</translation>
+        <translation type="vanished">Lecture des données temporelles et d&apos;image/échantillon</translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="126" />
         <source>Track %02d: %s</source>
-        <translation>Piste %02d : %s</translation>
+        <translation type="vanished">Piste %02d : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="131" />
         <source>Multiple audio tracks detected, please choose the one you wish to load:</source>
-        <translation>Plusieurs pistes audio détectées, choisir celle à charger :</translation>
+        <translation type="vanished">Plusieurs pistes audio détectées, choisir celle à charger :</translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="131" />
         <source>Multiple video tracks detected, please choose the one you wish to load:</source>
-        <translation>Plusieurs pistes vidéo détectées, choisir celle à charger :</translation>
+        <translation type="vanished">Plusieurs pistes vidéo détectées, choisir celle à charger :</translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="132" />
         <source>Choose audio track</source>
-        <translation>Choisir la piste audio</translation>
+        <translation type="vanished">Choisir la piste audio</translation>
     </message>
     <message>
-        <location filename="../src/ffmpegsource_common.cpp" line="132" />
         <source>Choose video track</source>
-        <translation>Choisir la piste vidéo</translation>
+        <translation type="vanished">Choisir la piste vidéo</translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="67" />
-        <source>Style '%s' does not exist
+        <source>Style &apos;%s&apos; does not exist
 </source>
-        <translation>Le style « %s » n'existe pas
+        <translation type="vanished">Le style « %s » n&apos;existe pas
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="154" />
-        <source>Font '%s' is used in a drawing, but not in any text.
+        <source>Font &apos;%s&apos; is used in a drawing, but not in any text.
 </source>
-        <translation>La police « %s » est utilisée dans un dessin, mais pas dans un texte.
+        <translation type="vanished">La police « %s » est utilisée dans un dessin, mais pas dans un texte.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="160" />
-        <source>Could not find font '%s'
+        <source>Could not find font &apos;%s&apos;
 </source>
-        <translation>Police « %s » introuvable
+        <translation type="vanished">Police « %s » introuvable
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="168" />
-        <source>Found '%s' at '%s'
+        <source>Found &apos;%s&apos; at &apos;%s&apos;
 </source>
-        <translation>« %s » trouvé à « %s »
+        <translation type="vanished">« %s » trouvé à « %s »
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="174" />
-        <source>'%s' does not have a bold variant.
+        <source>&apos;%s&apos; does not have a bold variant.
 </source>
-        <translation>« %s » n'a pas une variante gras.
+        <translation type="vanished">« %s » n&apos;a pas une variante gras.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="176" />
-        <source>'%s' does not have an italic variant.
+        <source>&apos;%s&apos; does not have an italic variant.
 </source>
-        <translation>« %s » ne possède pas de variante italique.
+        <translation type="vanished">« %s » ne possède pas de variante italique.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="180" />
-        <source>'%s' is missing %d glyphs used.
+        <source>&apos;%s&apos; is missing %d glyphs used.
 </source>
-        <translation>« %s » est absent, glyphes %d utilisés.
+        <translation type="vanished">« %s » est absent, glyphes %d utilisés.
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="182" />
-        <source>'%s' is missing the following glyphs used: %s
+        <source>&apos;%s&apos; is missing the following glyphs used: %s
 </source>
-        <translation>« %s » est absent, les glyphes suivants sont utilisés : %s
+        <translation type="vanished">« %s » est absent, les glyphes suivants sont utilisés : %s
 </translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="193" />
         <source>Used in styles:
 </source>
-        <translation>Utilisé dans les styles :
+        <translation type="vanished">Utilisé dans les styles :
 </translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="199" />
         <source>Used on lines:</source>
-        <translation>Utilisé dans les lignes :</translation>
+        <translation type="vanished">Utilisé dans les lignes :</translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="211" />
         <source>Parsing file
 </source>
-        <translation>Analyse du fichier
+        <translation type="vanished">Analyse du fichier
 </translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="225" />
         <source>Searching for font files
 </source>
-        <translation>Recherche de polices d'écriture
+        <translation type="vanished">Recherche de polices d&apos;écriture
 </translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="227" />
         <source>Done
 
 </source>
-        <translation>Terminé.
+        <translation type="vanished">Terminé.
 
 </translation>
     </message>
     <message>
-        <location filename="../src/font_file_lister.cpp" line="234" />
         <source>All fonts found.
 </source>
-        <translation>Toutes les polices ont été trouvées.
+        <translation type="vanished">Toutes les polices ont été trouvées.
 </translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/font_file_lister.cpp" line="236" />
         <source>One font could not be found
 </source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Une police est introuvable
 </numerusform>
             <numerusform>%d polices sont introuvables
@@ -6621,10 +5077,9 @@ Peut également être utile pour convertir la vitesse des sous-titres, comme de 
 </extra-po-msgid_plural>
     </message>
     <message numerus="yes">
-        <location filename="../src/font_file_lister.cpp" line="239" />
         <source>One font was found, but was missing glyphs used in the script.
 </source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Une police a été trouvée, mais était absente des glyphes utilisés dans le script.
 </numerusform>
             <numerusform>%d polices ont été trouvées, mais étaient absentes des glyphes utilisés dans le script.
@@ -6635,77 +5090,63 @@ Peut également être utile pour convertir la vitesse des sous-titres, comme de 
 </extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/font_file_lister_fontconfig.cpp" line="55" />
         <source>Updating font cache
 </source>
-        <translation>Mise à jour du tampon polices
+        <translation type="vanished">Mise à jour du tampon polices
 </translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="105" />
         <source>#</source>
-        <translation>#</translation>
+        <translation type="vanished">#</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="106" />
         <source>Line Number</source>
-        <translation>Ligne numéro</translation>
+        <translation type="vanished">Ligne numéro</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="131" />
         <source>L</source>
-        <translation>L</translation>
+        <translation type="vanished">L</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="153" />
         <source>Start</source>
-        <translation>Début</translation>
+        <translation type="vanished">Début</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="171" />
         <source>End</source>
-        <translation>Fin</translation>
+        <translation type="vanished">Fin</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="266" />
         <source>Left Margin</source>
-        <translation>Marge de gauche</translation>
+        <translation type="vanished">Marge de gauche</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="272" />
         <source>Right Margin</source>
-        <translation>Marge de droite</translation>
+        <translation type="vanished">Marge de droite</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="278" />
         <source>Vertical Margin</source>
-        <translation>Marge Vertical</translation>
+        <translation type="vanished">Marge Vertical</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="296" />
         <source>CPS</source>
-        <translation>CPS</translation>
+        <translation type="vanished">CPS</translation>
     </message>
     <message>
-        <location filename="../src/grid_column.cpp" line="297" />
         <source>Characters Per Second</source>
-        <translation>Caractères Par Seconde</translation>
+        <translation type="vanished">Caractères Par Seconde</translation>
     </message>
     <message>
-        <location filename="../src/hotkey.cpp" line="261" />
         <source>Invalid command name for hotkey</source>
-        <translation>Nom de la commande non valide pour la touche de raccourci</translation>
+        <translation type="vanished">Nom de la commande non valide pour la touche de raccourci</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="202" />
         <source>Configuration file is invalid. Error reported:
 %s</source>
-        <translation>Le fichier de configuration n'est pas valide. Erreur signalée :
+        <translation type="vanished">Le fichier de configuration n&apos;est pas valide. Erreur signalée :
 %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="266" />
         <source>Oops, Aegisub has crashed!
 
 An attempt has been made to save a copy of your file to:
@@ -6713,7 +5154,7 @@ An attempt has been made to save a copy of your file to:
 %s
 
 Aegisub will now close.</source>
-        <translation>Oups... Aegisub a planté !
+        <translation type="vanished">Oups... Aegisub a planté !
 
 Une tentative de sauvegarde de votre fichier a été faite dans :
 
@@ -6723,1324 +5164,1048 @@ Aegisub va maintenant se fermer.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="295" />
         <source>Check for updates?</source>
-        <translation>Vérifier les mises à jour ?</translation>
+        <translation type="vanished">Vérifier les mises à jour ?</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="295" />
         <source>Do you want Aegisub to check for updates whenever it starts? You can still do it manually via the Help menu.</source>
-        <translation>Voulez-vous qu'Aegisub recherche les mises à jour au démarrage ? Vous pourrez toujours le faire manuellement par le menu « aide ».</translation>
+        <translation type="vanished">Voulez-vous qu&apos;Aegisub recherche les mises à jour au démarrage ? Vous pourrez toujours le faire manuellement par le menu « aide ».</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="301" />
         <source>Error saving config file</source>
-        <translation>Erreur lors de l'enregistrement du fichier de configuration</translation>
+        <translation type="vanished">Erreur lors de l&apos;enregistrement du fichier de configuration</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="317" />
-        <location filename="../src/main.cpp" line="321" />
-        <location filename="../src/main.cpp" line="326" />
         <source>Fatal error while initializing</source>
-        <translation>Erreur fatale lors de l'initialisation</translation>
+        <translation type="vanished">Erreur fatale lors de l&apos;initialisation</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="326" />
         <source>Unhandled exception</source>
-        <translation>Exception non gérée</translation>
+        <translation type="vanished">Exception non gérée</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="414" />
-        <location filename="../src/main.cpp" line="417" />
         <source>Program error</source>
-        <translation>Erreur de programme</translation>
+        <translation type="vanished">Erreur de programme</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="417" />
         <source>Aegisub has crashed while starting up!
 
 The last startup step attempted was: %s.</source>
-        <translation>Aegisub a planté au démarrage !
+        <translation type="vanished">Aegisub a planté au démarrage !
 
 La dernière étape de démarrage tentée était : %s.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="431" />
         <source>An unexpected error has occurred. Please save your work and restart Aegisub.
 
 Error Message: %s</source>
-        <translation>Une erreur inattendue s'est produite. Veuillez enregistrer votre travail et redémarrez Aegisub.
+        <translation type="vanished">Une erreur inattendue s&apos;est produite. Veuillez enregistrer votre travail et redémarrez Aegisub.
 
-Message d'erreur : %s</translation>
+Message d&apos;erreur : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="432" />
         <source>Exception in event handler</source>
-        <translation>Exception dans le gestionnaire d'événements</translation>
+        <translation type="vanished">Exception dans le gestionnaire d&apos;événements</translation>
     </message>
     <message>
-        <location filename="../src/menu.cpp" line="96" />
         <source>Empty</source>
-        <translation>Vide</translation>
+        <translation type="vanished">Vide</translation>
     </message>
     <message>
-        <location filename="../src/menu.cpp" line="235" />
         <source>&amp;Recent</source>
-        <translation>&amp;Récent</translation>
+        <translation type="vanished">&amp;Récent</translation>
     </message>
     <message>
-        <location filename="../src/menu.cpp" line="467" />
         <source>No Automation macros loaded</source>
-        <translation>Aucune macro d'automatisme chargée</translation>
+        <translation type="vanished">Aucune macro d&apos;automatisme chargée</translation>
     </message>
     <message>
-        <location filename="../src/mkv_wrap.cpp" line="246" />
         <source>Choose which track to read:</source>
-        <translation>Choisir la piste à lire :</translation>
+        <translation type="vanished">Choisir la piste à lire :</translation>
     </message>
     <message>
-        <location filename="../src/mkv_wrap.cpp" line="246" />
         <source>Multiple subtitle tracks found</source>
-        <translation>Plusieurs pistes de sous-titres trouvées</translation>
+        <translation type="vanished">Plusieurs pistes de sous-titres trouvées</translation>
     </message>
     <message>
-        <location filename="../src/mkv_wrap.cpp" line="291" />
         <source>Parsing Matroska</source>
-        <translation>Analyse Matroska</translation>
+        <translation type="vanished">Analyse Matroska</translation>
     </message>
     <message>
-        <location filename="../src/mkv_wrap.cpp" line="291" />
         <source>Reading subtitles from Matroska file.</source>
-        <translation>Lecture des sous-titres d'un fichier Matroska.</translation>
+        <translation type="vanished">Lecture des sous-titres d&apos;un fichier Matroska.</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="98" />
-        <location filename="../src/preferences.cpp" line="100" />
-        <location filename="../src/preferences.cpp" line="378" />
-        <location filename="../src/preferences.cpp" line="399" />
         <source>General</source>
-        <translation>Général</translation>
+        <translation type="vanished">Général</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="101" />
         <source>Check for updates on startup</source>
-        <translation>Vérifier les mises à jour au démarrage</translation>
+        <translation type="vanished">Vérifier les mises à jour au démarrage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="102" />
         <source>Show main toolbar</source>
-        <translation>Afficher la barre d'outils principale</translation>
+        <translation type="vanished">Afficher la barre d&apos;outils principale</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="103" />
         <source>Save UI state in subtitles files</source>
-        <translation>Enregistrer l'état de l'interface utilisateur dans les fichiers de sous-titres</translation>
+        <translation type="vanished">Enregistrer l&apos;état de l&apos;interface utilisateur dans les fichiers de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="106" />
         <source>Toolbar Icon Size</source>
-        <translation>Taille des icônes de la barre d'outils</translation>
+        <translation type="vanished">Taille des icônes de la barre d&apos;outils</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="107" />
-        <location filename="default_hotkey.json" line="2" />
         <source>Always</source>
-        <translation>Toujours</translation>
+        <translation type="vanished">Toujours</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="107" />
-        <location filename="../src/preferences.cpp" line="240" />
         <source>Ask</source>
-        <translation>Demander</translation>
+        <translation type="vanished">Demander</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="107" />
-        <location filename="../src/preferences.cpp" line="240" />
         <source>Never</source>
-        <translation>Jamais</translation>
+        <translation type="vanished">Jamais</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="109" />
         <source>Automatically load linked files</source>
-        <translation>Charger automatiquement les fichiers liés</translation>
+        <translation type="vanished">Charger automatiquement les fichiers liés</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="110" />
         <source>Undo Levels</source>
-        <translation>Niveaux d'annulation</translation>
+        <translation type="vanished">Niveaux d&apos;annulation</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="112" />
         <source>Recently Used Lists</source>
-        <translation>Listes récentes</translation>
+        <translation type="vanished">Listes récentes</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="114" />
         <source>Find/Replace</source>
-        <translation>Chercher/Remplacer</translation>
+        <translation type="vanished">Chercher/Remplacer</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="120" />
         <source>Default styles</source>
-        <translation>Styles par défaut</translation>
+        <translation type="vanished">Styles par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="122" />
         <source>Default style catalogs</source>
-        <translation>Catalogues de styles par défaut</translation>
+        <translation type="vanished">Catalogues de styles par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="126" />
         <source>The chosen style catalogs will be loaded when you start a new file or import files in the various formats.
 
 You can set up style catalogs in the Style Manager.</source>
-        <translation>Les catalogues de styles choisis seront chargés lorsque vous démarrez un nouveau fichier ou importez des fichiers dans les différents formats.
+        <translation type="vanished">Les catalogues de styles choisis seront chargés lorsque vous démarrez un nouveau fichier ou importez des fichiers dans les différents formats.
 
 Vous pouvez configurer les catalogues de styles dans le gestionnaire de styles.</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="153" />
         <source>New files</source>
-        <translation>Nouveaux fichiers</translation>
+        <translation type="vanished">Nouveaux fichiers</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="154" />
         <source>MicroDVD import</source>
-        <translation>Importation de MicroDVD</translation>
+        <translation type="vanished">Importation de MicroDVD</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="155" />
         <source>SRT import</source>
-        <translation>Importation de SRT</translation>
+        <translation type="vanished">Importation de SRT</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="156" />
         <source>TTXT import</source>
-        <translation>Importation de TTXT</translation>
+        <translation type="vanished">Importation de TTXT</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="157" />
         <source>Plain text import</source>
-        <translation>Importation de texte</translation>
+        <translation type="vanished">Importation de texte</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="164" />
-        <location filename="../src/preferences.cpp" line="414" />
-        <location filename="default_hotkey.json" line="37" />
         <source>Audio</source>
-        <translation>Audio</translation>
+        <translation type="vanished">Audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="167" />
         <source>Default mouse wheel to zoom</source>
-        <translation>Zoom par défaut de la molette de souris</translation>
+        <translation type="vanished">Zoom par défaut de la molette de souris</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="168" />
         <source>Lock scroll on cursor</source>
-        <translation>Verrouiller le défilement sur le curseur</translation>
+        <translation type="vanished">Verrouiller le défilement sur le curseur</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="169" />
         <source>Snap markers by default</source>
-        <translation>Coller aux marqueurs par défaut</translation>
+        <translation type="vanished">Coller aux marqueurs par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="170" />
         <source>Auto-focus on mouse over</source>
-        <translation>Autofocus sur survol de la souris</translation>
+        <translation type="vanished">Autofocus sur survol de la souris</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="171" />
         <source>Play audio when stepping in video</source>
-        <translation>Jouer l'audio lors de pas vidéo</translation>
+        <translation type="vanished">Jouer l&apos;audio lors de pas vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="172" />
         <source>Left-click-drag moves end marker</source>
-        <translation>Le clic gauche glissé déplace le marqueur de fin</translation>
+        <translation type="vanished">Le clic gauche glissé déplace le marqueur de fin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="173" />
         <source>Default timing length (ms)</source>
-        <translation>Durée par défaut (en ms)</translation>
+        <translation type="vanished">Durée par défaut (en ms)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="174" />
         <source>Default lead-in length (ms)</source>
-        <translation>Durée du blanc de début par défaut (en ms)</translation>
+        <translation type="vanished">Durée du blanc de début par défaut (en ms)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="175" />
         <source>Default lead-out length (ms)</source>
-        <translation>Durée du blanc de fin par défaut (en ms)</translation>
+        <translation type="vanished">Durée du blanc de fin par défaut (en ms)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="177" />
         <source>Marker drag-start sensitivity (px)</source>
-        <translation>Sensibilité du départ du glissé du marqueur (en px)</translation>
+        <translation type="vanished">Sensibilité du départ du glissé du marqueur (en px)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="178" />
         <source>Line boundary thickness (px)</source>
-        <translation>Épaisseur de la ligne de limite (en px)</translation>
+        <translation type="vanished">Épaisseur de la ligne de limite (en px)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="179" />
         <source>Maximum snap distance (px)</source>
-        <translation>Distance maximale de collage (en px)</translation>
+        <translation type="vanished">Distance maximale de collage (en px)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="181" />
-        <source>Don't show</source>
-        <translation>Ne pas afficher</translation>
+        <source>Don&apos;t show</source>
+        <translation type="vanished">Ne pas afficher</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="181" />
         <source>Show all</source>
-        <translation>Tout afficher</translation>
+        <translation type="vanished">Tout afficher</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="181" />
         <source>Show previous</source>
-        <translation>Afficher précédente</translation>
+        <translation type="vanished">Afficher précédente</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="181" />
         <source>Show previous and next</source>
-        <translation>Afficher précédente et suivante</translation>
+        <translation type="vanished">Afficher précédente et suivante</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="183" />
         <source>Show inactive lines</source>
-        <translation>Afficher les lignes inactives</translation>
+        <translation type="vanished">Afficher les lignes inactives</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="185" />
         <source>Include commented inactive lines</source>
-        <translation>Inclure les lignes inactives commentées</translation>
+        <translation type="vanished">Inclure les lignes inactives commentées</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="187" />
         <source>Display Visual Options</source>
-        <translation>Option d'affichage</translation>
+        <translation type="vanished">Option d&apos;affichage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="188" />
         <source>Keyframes in dialogue mode</source>
-        <translation>Images clés en mode dialogue</translation>
+        <translation type="vanished">Images clés en mode dialogue</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="189" />
         <source>Keyframes in karaoke mode</source>
-        <translation>Images clés en mode karaoké</translation>
+        <translation type="vanished">Images clés en mode karaoké</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="190" />
         <source>Cursor time</source>
-        <translation>Curseur temps</translation>
+        <translation type="vanished">Curseur temps</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="191" />
         <source>Video position</source>
-        <translation>Position vidéo</translation>
+        <translation type="vanished">Position vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="192" />
-        <location filename="../src/preferences.cpp" line="294" />
         <source>Seconds boundaries</source>
-        <translation>Limites secondes</translation>
+        <translation type="vanished">Limites secondes</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="194" />
         <source>Waveform Style</source>
-        <translation>Style forme d'onde</translation>
+        <translation type="vanished">Style forme d&apos;onde</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="196" />
         <source>Audio labels</source>
-        <translation>Étiquettes audio</translation>
+        <translation type="vanished">Étiquettes audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="207" />
         <source>Show keyframes in slider</source>
-        <translation>Afficher les images clés dans le champ</translation>
+        <translation type="vanished">Afficher les images clés dans le champ</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="209" />
         <source>Only show visual tools when mouse is over video</source>
-        <translation>N'afficher les outils vidéo que lorsque la souris est sur la vidéo</translation>
+        <translation type="vanished">N&apos;afficher les outils vidéo que lorsque la souris est sur la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="211" />
         <source>Seek video to line start on selection change</source>
-        <translation>Sauter au début de ligne quand changement de sélection</translation>
+        <translation type="vanished">Sauter au début de ligne quand changement de sélection</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="213" />
         <source>Automatically open audio when opening video</source>
-        <translation>Ouvrir automatiquement l'audio lors de l'ouverture d'une vidéo</translation>
+        <translation type="vanished">Ouvrir automatiquement l&apos;audio lors de l&apos;ouverture d&apos;une vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Does nothing</source>
-        <translation>Ne fait rien</translation>
+        <translation type="vanished">Ne fait rien</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Pans the video</source>
-        <translation>Déplace la vidéo</translation>
+        <translation type="vanished">Déplace la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Pans the video (X/Y swapped)</source>
-        <translation>Déplace la vidéo (axes X/Y inversés)</translation>
+        <translation type="vanished">Déplace la vidéo (axes X/Y inversés)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Resizes the video box</source>
-        <translation>Redimensionne le cadre vidéo</translation>
+        <translation type="vanished">Redimensionne le cadre vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Resizes the video box (reversed)</source>
-        <translation>Redimensionne le cadre vidéo (sens inversé)</translation>
+        <translation type="vanished">Redimensionne le cadre vidéo (sens inversé)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Zooms the video</source>
-        <translation>Agrandir la vidéo</translation>
+        <translation type="vanished">Agrandir la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="216" />
         <source>Zooms the video (reversed)</source>
-        <translation>Agrandir la vidéo (sens inversé)</translation>
+        <translation type="vanished">Agrandir la vidéo (sens inversé)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="218" />
         <source>Scrolling on the video display</source>
-        <translation>Défilement sur l'affichage vidéo</translation>
+        <translation type="vanished">Défilement sur l&apos;affichage vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="219" />
         <source>Ctrl+Scrolling on the video display</source>
-        <translation>Ctrl + défilement sur l'affichage vidéo</translation>
+        <translation type="vanished">Ctrl + défilement sur l&apos;affichage vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="220" />
         <source>Shift+Scrolling on the video display</source>
-        <translation>Maj + défilement sur l'affichage vidéo</translation>
+        <translation type="vanished">Maj + défilement sur l&apos;affichage vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="224" />
         <source>Default Zoom</source>
-        <translation>Zoom par défaut</translation>
+        <translation type="vanished">Zoom par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="226" />
         <source>Fast jump step in frames</source>
-        <translation>Pas du saut rapide en images</translation>
+        <translation type="vanished">Pas du saut rapide en images</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="230" />
         <source>Screenshot save path</source>
-        <translation>Chemin d'enregistrement des captures d'écran</translation>
+        <translation type="vanished">Chemin d&apos;enregistrement des captures d&apos;écran</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="232" />
         <source>Script Resolution</source>
-        <translation>Définition vidéo du script</translation>
+        <translation type="vanished">Définition vidéo du script</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="233" />
         <source>Use resolution of first video opened</source>
-        <translation>Utiliser la définition vidéo de la première vidéo ouverte</translation>
+        <translation type="vanished">Utiliser la définition vidéo de la première vidéo ouverte</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="236" />
         <source>Default width</source>
-        <translation>Largeur par défaut</translation>
+        <translation type="vanished">Largeur par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="238" />
         <source>Default height</source>
-        <translation>Hauteur par défaut</translation>
+        <translation type="vanished">Hauteur par défaut</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="240" />
         <source>Always resample</source>
-        <translation>Toujours ré-échantillonner</translation>
+        <translation type="vanished">Toujours ré-échantillonner</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="240" />
         <source>Always set</source>
-        <translation>Toujours activer</translation>
+        <translation type="vanished">Toujours activer</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="242" />
         <source>Match video resolution on open</source>
-        <translation>Faire correspondre à la définition vidéo à l'ouverture</translation>
+        <translation type="vanished">Faire correspondre à la définition vidéo à l&apos;ouverture</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="249" />
         <source>Interface</source>
-        <translation>Interface</translation>
+        <translation type="vanished">Interface</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="251" />
         <source>Edit Box</source>
-        <translation>Boîte d'édition</translation>
+        <translation type="vanished">Boîte d&apos;édition</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="252" />
         <source>Enable call tips</source>
-        <translation>Activer les actuces</translation>
+        <translation type="vanished">Activer les actuces</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="253" />
         <source>Overwrite in time boxes</source>
-        <translation>Remplacement dans cases temps</translation>
+        <translation type="vanished">Remplacement dans cases temps</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="254" />
         <source>Shift+Enter adds \n</source>
-        <translation>Maj + Entrée ajoute \n</translation>
+        <translation type="vanished">Maj + Entrée ajoute \n</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="255" />
         <source>Enable syntax highlighting</source>
-        <translation>Activer la surbrillance syntaxique</translation>
+        <translation type="vanished">Activer la surbrillance syntaxique</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="256" />
         <source>Dictionaries path</source>
-        <translation>Chemin des dictionnaires</translation>
+        <translation type="vanished">Chemin des dictionnaires</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="259" />
         <source>Character Counter</source>
-        <translation>Compteur de caractères</translation>
+        <translation type="vanished">Compteur de caractères</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="260" />
         <source>Maximum characters per line</source>
-        <translation>Nombre maximum de caractères par ligne</translation>
+        <translation type="vanished">Nombre maximum de caractères par ligne</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="261" />
         <source>Characters Per Second Warning Threshold</source>
-        <translation>Seuil d'avertissement des caractères par seconde</translation>
+        <translation type="vanished">Seuil d&apos;avertissement des caractères par seconde</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="262" />
         <source>Characters Per Second Error Threshold</source>
-        <translation>Seuil d'erreur des caractères par seconde</translation>
+        <translation type="vanished">Seuil d&apos;erreur des caractères par seconde</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="263" />
         <source>Ignore whitespace</source>
-        <translation>Ignorer les espaces</translation>
+        <translation type="vanished">Ignorer les espaces</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="264" />
         <source>Ignore punctuation</source>
-        <translation>Ignorer la ponctuation</translation>
+        <translation type="vanished">Ignorer la ponctuation</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="266" />
         <source>Grid</source>
-        <translation>Grille</translation>
+        <translation type="vanished">Grille</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="267" />
         <source>Focus grid on click</source>
-        <translation>La grille devient la cible de saisie par un clic</translation>
+        <translation type="vanished">La grille devient la cible de saisie par un clic</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="268" />
         <source>Highlight visible subtitles</source>
-        <translation>Surbriller les sous-titres visibles</translation>
+        <translation type="vanished">Surbriller les sous-titres visibles</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="269" />
         <source>Hide overrides symbol</source>
-        <translation>Caractère de masquage des balises</translation>
+        <translation type="vanished">Caractère de masquage des balises</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="273" />
         <source>Skip over whitespace</source>
-        <translation>Ignorer les espaces</translation>
+        <translation type="vanished">Ignorer les espaces</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="288" />
         <source>Audio Display</source>
-        <translation>Affichage audio</translation>
+        <translation type="vanished">Affichage audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="289" />
         <source>Play cursor</source>
-        <translation>Curseur du lecteur</translation>
+        <translation type="vanished">Curseur du lecteur</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="290" />
         <source>Line boundary start</source>
-        <translation>Début ligne de limite</translation>
+        <translation type="vanished">Début ligne de limite</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="291" />
         <source>Line boundary end</source>
-        <translation>Fin de ligne de limite</translation>
+        <translation type="vanished">Fin de ligne de limite</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="292" />
         <source>Line boundary inactive line</source>
-        <translation>Ligne de limite inactive</translation>
+        <translation type="vanished">Ligne de limite inactive</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="293" />
         <source>Syllable boundaries</source>
-        <translation>Limite des syllabes</translation>
+        <translation type="vanished">Limite des syllabes</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="296" />
         <source>Syntax Highlighting</source>
-        <translation>Surbrillance syntaxique</translation>
+        <translation type="vanished">Surbrillance syntaxique</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="297" />
         <source>Background</source>
-        <translation>Arrière-plan</translation>
+        <translation type="vanished">Arrière-plan</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="298" />
         <source>Normal</source>
-        <translation>Normal</translation>
+        <translation type="vanished">Normal</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="299" />
         <source>Comments</source>
-        <translation>Commentaires</translation>
+        <translation type="vanished">Commentaires</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="300" />
         <source>Drawing Commands</source>
-        <translation>Commandes de dessin</translation>
+        <translation type="vanished">Commandes de dessin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="301" />
         <source>Drawing X Coords</source>
-        <translation>Coordonnées X du dessin</translation>
+        <translation type="vanished">Coordonnées X du dessin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="302" />
         <source>Drawing Y Coords</source>
-        <translation>Coordonnées Y du dessin</translation>
+        <translation type="vanished">Coordonnées Y du dessin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="303" />
         <source>Underline Spline Endpoints</source>
-        <translation>Souligner les extrémités des splines</translation>
+        <translation type="vanished">Souligner les extrémités des splines</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="305" />
         <source>Brackets</source>
-        <translation>Crochets</translation>
+        <translation type="vanished">Crochets</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="306" />
         <source>Slashes and Parentheses</source>
-        <translation>Barres et parenthèses</translation>
+        <translation type="vanished">Barres et parenthèses</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="307" />
         <source>Tags</source>
-        <translation>Balises</translation>
+        <translation type="vanished">Balises</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="308" />
         <source>Parameters</source>
-        <translation>Paramètres</translation>
+        <translation type="vanished">Paramètres</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="310" />
         <source>Error Background</source>
-        <translation>Erreur arrière-plan</translation>
+        <translation type="vanished">Erreur arrière-plan</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="311" />
         <source>Line Break</source>
-        <translation>Rupture de ligne</translation>
+        <translation type="vanished">Rupture de ligne</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="312" />
         <source>Karaoke templates</source>
-        <translation>Modèles karaoké</translation>
+        <translation type="vanished">Modèles karaoké</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="313" />
         <source>Karaoke variables</source>
-        <translation>Variables de karaoké</translation>
+        <translation type="vanished">Variables de karaoké</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="319" />
         <source>Audio Color Schemes</source>
-        <translation>Couleurs d'affichage audio</translation>
+        <translation type="vanished">Couleurs d&apos;affichage audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="321" />
-        <location filename="../src/preferences.cpp" line="430" />
         <source>Spectrum</source>
-        <translation>Spectrogramme</translation>
+        <translation type="vanished">Spectrogramme</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="322" />
         <source>Waveform</source>
-        <translation>Forme d'onde</translation>
+        <translation type="vanished">Forme d&apos;onde</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="324" />
-        <location filename="default_hotkey.json" line="262" />
         <source>Subtitle Grid</source>
-        <translation>Grille des sous-titres</translation>
+        <translation type="vanished">Grille des sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="325" />
         <source>Standard foreground</source>
-        <translation>Avant-plan standard</translation>
+        <translation type="vanished">Avant-plan standard</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="326" />
         <source>Standard background</source>
-        <translation>Arrière-plan standard</translation>
+        <translation type="vanished">Arrière-plan standard</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="327" />
         <source>Selection foreground</source>
-        <translation>Avant-plan sélection</translation>
+        <translation type="vanished">Avant-plan sélection</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="328" />
         <source>Selection background</source>
-        <translation>Arrière-plan sélection</translation>
+        <translation type="vanished">Arrière-plan sélection</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="329" />
         <source>Collision foreground</source>
-        <translation>Avant-plan collision</translation>
+        <translation type="vanished">Avant-plan collision</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="330" />
         <source>In frame background</source>
-        <translation>Arrière-plan d'image</translation>
+        <translation type="vanished">Arrière-plan d&apos;image</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="331" />
         <source>Comment background</source>
-        <translation>Arrière-plan commentaire</translation>
+        <translation type="vanished">Arrière-plan commentaire</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="332" />
         <source>Selected comment background</source>
-        <translation>Choix arrière-plan commentaire</translation>
+        <translation type="vanished">Choix arrière-plan commentaire</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="333" />
         <source>Header background</source>
-        <translation>Arrière-plan d'en-tête</translation>
+        <translation type="vanished">Arrière-plan d&apos;en-tête</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="334" />
         <source>Left Column</source>
-        <translation>Colonne de gauche</translation>
+        <translation type="vanished">Colonne de gauche</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="335" />
         <source>Active Line Border</source>
-        <translation>Bord ligne active</translation>
+        <translation type="vanished">Bord ligne active</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="336" />
         <source>Lines</source>
-        <translation>Lignes</translation>
+        <translation type="vanished">Lignes</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="337" />
         <source>CPS Error</source>
-        <translation>Erreur de CPS</translation>
+        <translation type="vanished">Erreur de CPS</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="339" />
         <source>Visual Typesetting Tools</source>
-        <translation>Outils des éditions vidéo</translation>
+        <translation type="vanished">Outils des éditions vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="340" />
         <source>Primary Lines</source>
-        <translation>Lignes principales</translation>
+        <translation type="vanished">Lignes principales</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="341" />
         <source>Secondary Lines</source>
-        <translation>Lignes secondaires</translation>
+        <translation type="vanished">Lignes secondaires</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="342" />
         <source>Primary Highlight</source>
-        <translation>Surbrillance principale</translation>
+        <translation type="vanished">Surbrillance principale</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="343" />
         <source>Secondary Highlight</source>
-        <translation>Surbrillance secondaire</translation>
+        <translation type="vanished">Surbrillance secondaire</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="346" />
         <source>Visual Typesetting Tools Alpha</source>
-        <translation>Transparence des outils des éditions vidéo</translation>
+        <translation type="vanished">Transparence des outils des éditions vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="347" />
         <source>Shaded Area</source>
-        <translation>Zone grisée</translation>
+        <translation type="vanished">Zone grisée</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="356" />
         <source>Backup</source>
-        <translation>Sauvegarde</translation>
+        <translation type="vanished">Sauvegarde</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="358" />
         <source>Automatic Save</source>
-        <translation>Enregistrement automatique</translation>
+        <translation type="vanished">Enregistrement automatique</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="359" />
-        <location filename="../src/preferences.cpp" line="367" />
         <source>Enable</source>
-        <translation>Disponible</translation>
+        <translation type="vanished">Disponible</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="362" />
         <source>Interval in seconds</source>
-        <translation>Intervale en secondes</translation>
+        <translation type="vanished">Intervale en secondes</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="363" />
-        <location filename="../src/preferences.cpp" line="369" />
-        <location filename="../src/preferences.cpp" line="428" />
         <source>Path</source>
-        <translation>Chemin</translation>
+        <translation type="vanished">Chemin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="364" />
         <source>Autosave after every change</source>
-        <translation>Enregistrement automatique après une modification</translation>
+        <translation type="vanished">Enregistrement automatique après une modification</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="366" />
         <source>Automatic Backup</source>
-        <translation>Sauvegarde automatique</translation>
+        <translation type="vanished">Sauvegarde automatique</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="380" />
         <source>Base path</source>
-        <translation>Chemin</translation>
+        <translation type="vanished">Chemin</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="381" />
         <source>Include path</source>
-        <translation>Chemin « include »</translation>
+        <translation type="vanished">Chemin « include »</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="382" />
         <source>Auto-load path</source>
-        <translation>Chemin « auto-load »</translation>
+        <translation type="vanished">Chemin « auto-load »</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>0: Fatal</source>
-        <translation>0 : Fatal</translation>
+        <translation type="vanished">0 : Fatal</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>1: Error</source>
-        <translation>1 : Erreur</translation>
+        <translation type="vanished">1 : Erreur</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>2: Warning</source>
-        <translation>2 : Avertissement</translation>
+        <translation type="vanished">2 : Avertissement</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>3: Hint</source>
-        <translation>3 : Conseil</translation>
+        <translation type="vanished">3 : Conseil</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>4: Debug</source>
-        <translation>4 : Débogage</translation>
+        <translation type="vanished">4 : Débogage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="384" />
         <source>5: Trace</source>
-        <translation>5 : Trace</translation>
+        <translation type="vanished">5 : Trace</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="386" />
         <source>Trace level</source>
-        <translation>Niveau traçage</translation>
+        <translation type="vanished">Niveau traçage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="388" />
         <source>All scripts</source>
-        <translation>Tous les scripts</translation>
+        <translation type="vanished">Tous les scripts</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="388" />
         <source>Global autoload scripts</source>
-        <translation>Chargement auto scripts globaux</translation>
+        <translation type="vanished">Chargement auto scripts globaux</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="388" />
         <source>No scripts</source>
-        <translation>Aucun script</translation>
+        <translation type="vanished">Aucun script</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="388" />
         <source>Subtitle-local scripts</source>
-        <translation>Scripts du fichier de sous-titre</translation>
+        <translation type="vanished">Scripts du fichier de sous-titre</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="390" />
         <source>Autoreload on Export</source>
-        <translation>Rechargement auto à l'export</translation>
+        <translation type="vanished">Rechargement auto à l&apos;export</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="397" />
         <source>Advanced</source>
-        <translation>Avancé</translation>
+        <translation type="vanished">Avancé</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="401" />
-        <source>Changing these settings might result in bugs and/or crashes. Do not touch these unless you know what you're doing.</source>
-        <translation>La modification de ces paramètres peut entraîner des bogues et/ou des plantages. N'y touchez pas à moins de savoir ce que vous faites.</translation>
+        <source>Changing these settings might result in bugs and/or crashes. Do not touch these unless you know what you&apos;re doing.</source>
+        <translation type="vanished">La modification de ces paramètres peut entraîner des bogues et/ou des plantages. N&apos;y touchez pas à moins de savoir ce que vous faites.</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="416" />
-        <location filename="../src/preferences.cpp" line="483" />
         <source>Expert</source>
-        <translation>Expert</translation>
+        <translation type="vanished">Expert</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="419" />
         <source>Audio provider</source>
-        <translation>Fournisseur audio</translation>
+        <translation type="vanished">Fournisseur audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="422" />
         <source>Audio player</source>
-        <translation>Lecteur audio</translation>
+        <translation type="vanished">Lecteur audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="424" />
         <source>Cache</source>
-        <translation>Cache</translation>
+        <translation type="vanished">Cache</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="425" />
         <source>Hard Disk</source>
-        <translation>Disque dur</translation>
+        <translation type="vanished">Disque dur</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="425" />
         <source>None (NOT RECOMMENDED)</source>
-        <translation>Aucun (DÉCONSEILLÉ)</translation>
+        <translation type="vanished">Aucun (DÉCONSEILLÉ)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="425" />
         <source>RAM</source>
-        <translation>RAM</translation>
+        <translation type="vanished">RAM</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="427" />
         <source>Cache type</source>
-        <translation>Type cache</translation>
+        <translation type="vanished">Type cache</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="432" />
         <source>Better quality</source>
-        <translation>Qualité supérieure</translation>
+        <translation type="vanished">Qualité supérieure</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="432" />
         <source>High quality</source>
-        <translation>Haute qualité</translation>
+        <translation type="vanished">Haute qualité</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="432" />
         <source>Insane quality</source>
-        <translation>Qualité démente</translation>
+        <translation type="vanished">Qualité démente</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="432" />
         <source>Regular quality</source>
-        <translation>Qualité standard</translation>
+        <translation type="vanished">Qualité standard</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="434" />
         <source>Quality</source>
-        <translation>Qualité</translation>
+        <translation type="vanished">Qualité</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="436" />
         <source>Compressed</source>
-        <translation>Compressé</translation>
+        <translation type="vanished">Compressé</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="436" />
         <source>Extended</source>
-        <translation>Étendu</translation>
+        <translation type="vanished">Étendu</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="436" />
         <source>Linear</source>
-        <translation>Linéaire</translation>
+        <translation type="vanished">Linéaire</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="436" />
         <source>Logarithmic</source>
-        <translation>Logarithmique</translation>
+        <translation type="vanished">Logarithmique</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="436" />
         <source>Medium</source>
-        <translation>Moyen</translation>
+        <translation type="vanished">Moyen</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="438" />
         <source>Frequency mapping</source>
-        <translation>Répartition des fréquences</translation>
+        <translation type="vanished">Répartition des fréquences</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="440" />
         <source>Cache memory max (MB)</source>
-        <translation>Mémoire cache maxi (Mo)</translation>
+        <translation type="vanished">Mémoire cache maxi (Mo)</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="446" />
         <source>Avisynth down-mixer</source>
-        <translation>Mélangeur Avisynth</translation>
+        <translation type="vanished">Mélangeur Avisynth</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="447" />
         <source>Force sample rate</source>
-        <translation>Forcer le taux d'échantillonnage</translation>
+        <translation type="vanished">Forcer le taux d&apos;échantillonnage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="453" />
         <source>Abort</source>
-        <translation>Annuler</translation>
+        <translation type="vanished">Annuler</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="453" />
         <source>Ignore</source>
-        <translation>Ignorer</translation>
+        <translation type="vanished">Ignorer</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="453" />
         <source>Stop</source>
-        <translation>Arrêt</translation>
+        <translation type="vanished">Arrêt</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="455" />
         <source>Audio indexing error handling mode</source>
-        <translation>Mode d'indexation audio avec gestion d'erreurs</translation>
+        <translation type="vanished">Mode d&apos;indexation audio avec gestion d&apos;erreurs</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="457" />
         <source>Always index all audio tracks</source>
-        <translation>Toujours indexer toutes les pistes audio</translation>
+        <translation type="vanished">Toujours indexer toutes les pistes audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="462" />
         <source>Portaudio device</source>
-        <translation>Dispositif post-audio</translation>
+        <translation type="vanished">Dispositif post-audio</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="467" />
         <source>OSS Device</source>
-        <translation>Dispositif OSS</translation>
+        <translation type="vanished">Dispositif OSS</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="472" />
         <source>Buffer latency</source>
-        <translation>Latence du tampon</translation>
+        <translation type="vanished">Latence du tampon</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="473" />
         <source>Buffer length</source>
-        <translation>Longueur du tampon</translation>
+        <translation type="vanished">Longueur du tampon</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="486" />
         <source>Video provider</source>
-        <translation>Fournisseur vidéo</translation>
+        <translation type="vanished">Fournisseur vidéo</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="489" />
         <source>Subtitles provider</source>
-        <translation>Fournisseur sous-titres</translation>
+        <translation type="vanished">Fournisseur sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="493" />
         <source>Allow pre-2.56a Avisynth</source>
-        <translation>Permettre Avisynth pre-2.56a</translation>
+        <translation type="vanished">Permettre Avisynth pre-2.56a</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="495" />
         <source>Avisynth memory limit</source>
-        <translation>Limite mémoire Avisynth</translation>
+        <translation type="vanished">Limite mémoire Avisynth</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Debug</source>
-        <translation>Débogage</translation>
+        <translation type="vanished">Débogage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Fatal</source>
-        <translation>Fatale</translation>
+        <translation type="vanished">Fatale</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Info</source>
-        <translation>Info</translation>
+        <translation type="vanished">Info</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Panic</source>
-        <translation>Erreur fatale</translation>
+        <translation type="vanished">Erreur fatale</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Quiet</source>
-        <translation>Silencieux</translation>
+        <translation type="vanished">Silencieux</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
         <source>Verbose</source>
-        <translation>Détaillé</translation>
+        <translation type="vanished">Détaillé</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="501" />
-        <location filename="../src/project.cpp" line="331" />
         <source>Warning</source>
-        <translation>Avertissement</translation>
+        <translation type="vanished">Avertissement</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="503" />
         <source>Debug log verbosity</source>
-        <translation>Historique de débogage détaillé</translation>
+        <translation type="vanished">Historique de débogage détaillé</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="505" />
         <source>Decoding threads</source>
-        <translation>Fils de décodage</translation>
+        <translation type="vanished">Fils de décodage</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="506" />
         <source>Enable unsafe seeking</source>
-        <translation>Permettre la recherche non sécurisée</translation>
+        <translation type="vanished">Permettre la recherche non sécurisée</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="660" />
         <source>Hotkeys</source>
-        <translation>Raccourcis</translation>
+        <translation type="vanished">Raccourcis</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="664" />
         <source>Search</source>
-        <translation>Recherche</translation>
+        <translation type="vanished">Recherche</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="680" />
-        <location filename="../src/preferences.cpp" line="683" />
         <source>Hotkey</source>
-        <translation>Raccourci clavier</translation>
+        <translation type="vanished">Raccourci clavier</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="681" />
-        <location filename="../src/preferences.cpp" line="686" />
         <source>Command</source>
-        <translation>Commande</translation>
+        <translation type="vanished">Commande</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="760" />
         <source>Are you sure that you want to restore the defaults? All your settings will be overridden.</source>
-        <translation>Êtes-vous sûr de vouloir rétablir les réglages par défaut ? Tous vos réglages seront perdus.</translation>
+        <translation type="vanished">Êtes-vous sûr de vouloir rétablir les réglages par défaut ? Tous vos réglages seront perdus.</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="760" />
         <source>Restore defaults?</source>
-        <translation>Rétablir la configuration ?</translation>
+        <translation type="vanished">Rétablir la configuration ?</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="778" />
         <source>Preferences</source>
-        <translation>Préférences</translation>
+        <translation type="vanished">Préférences</translation>
     </message>
     <message>
-        <location filename="../src/preferences.cpp" line="806" />
         <source>&amp;Restore Defaults</source>
-        <translation>&amp;Réinitialiser</translation>
+        <translation type="vanished">&amp;Réinitialiser</translation>
     </message>
     <message>
-        <location filename="../src/preferences_base.cpp" line="78" />
         <source>Please choose the folder:</source>
-        <translation>Choisir le répertoire :</translation>
+        <translation type="vanished">Choisir le répertoire :</translation>
     </message>
     <message>
-        <location filename="../src/preferences_base.cpp" line="234" />
         <source>Browse...</source>
-        <translation>Naviguer...</translation>
+        <translation type="vanished">Naviguer...</translation>
     </message>
     <message>
-        <location filename="../src/preferences_base.cpp" line="270" />
         <source>Choose...</source>
-        <translation>Choisir...</translation>
+        <translation type="vanished">Choisir...</translation>
     </message>
     <message>
-        <location filename="../src/preferences_base.cpp" line="278" />
         <source>Font Size</source>
-        <translation>Taille de la police d'écriture</translation>
+        <translation type="vanished">Taille de la police d&apos;écriture</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="85" />
         <source>Error loading file</source>
-        <translation>Erreur lors du chargement du fichier</translation>
+        <translation type="vanished">Erreur lors du chargement du fichier</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="111" />
-        <location filename="../src/project.cpp" line="130" />
         <source>%s not found.</source>
-        <translation>%s introuvable.</translation>
+        <translation type="vanished">%s introuvable.</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="199" />
         <source>Do you want to load/unload the associated files?</source>
-        <translation>Voulez-vous charger/décharger les fichiers associés ?</translation>
+        <translation type="vanished">Voulez-vous charger/décharger les fichiers associés ?</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="210" />
         <source>Load audio file: %s</source>
-        <translation>Charger le fichier audio : %s</translation>
+        <translation type="vanished">Charger le fichier audio : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="210" />
         <source>Unload audio</source>
-        <translation>Fermer l'audio</translation>
+        <translation type="vanished">Fermer l&apos;audio</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="212" />
         <source>Load video file: %s</source>
-        <translation>Charger le fichier vidéo : %s</translation>
+        <translation type="vanished">Charger le fichier vidéo : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="212" />
         <source>Unload video</source>
-        <translation>Fermer la vidéo</translation>
+        <translation type="vanished">Fermer la vidéo</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="214" />
         <source>Load timecodes file: %s</source>
-        <translation>Charger le fichier codes temporels : %s</translation>
+        <translation type="vanished">Charger le fichier codes temporels : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="214" />
         <source>Unload timecodes</source>
-        <translation>Fermer les codes temporels</translation>
+        <translation type="vanished">Fermer les codes temporels</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="216" />
         <source>Load keyframes file: %s</source>
-        <translation>Charger le fichier d'images clés : %s</translation>
+        <translation type="vanished">Charger le fichier d&apos;images clés : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="216" />
         <source>Unload keyframes</source>
-        <translation>Fermer les images clés</translation>
+        <translation type="vanished">Fermer les images clés</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="218" />
         <source>(Un)Load files?</source>
-        <translation>(Dé)charger les fichiers ?</translation>
+        <translation type="vanished">(Dé)charger les fichiers ?</translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="267" />
         <source>The audio file was not found: </source>
-        <translation>Le fichier audio n'a pas été trouvé : </translation>
+        <translation type="vanished">Le fichier audio n&apos;a pas été trouvé : </translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="275" />
         <source>None of the available audio providers recognised the selected file as containing audio data.
 
 The following providers were tried:
 </source>
-        <translation>Aucun des fournisseurs audios disponibles n'a identifié le fichier sélectionné pouvant contenir des données audio.
+        <translation type="vanished">Aucun des fournisseurs audios disponibles n&apos;a identifié le fichier sélectionné pouvant contenir des données audio.
 
 Les fournisseurs audios suivants ont été essayés :
 </translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="278" />
         <source>None of the available audio providers have a codec available to handle the selected file.
 
 The following providers were tried:
 </source>
-        <translation>Aucun des fournisseurs audios disponibles n'a un codec disponible pour gérer le fichier sélectionné.
+        <translation type="vanished">Aucun des fournisseurs audios disponibles n&apos;a un codec disponible pour gérer le fichier sélectionné.
 
 Les fournisseurs audios suivants ont été essayés :
 
 </translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="381" />
         <source>Failed to parse timecodes file: </source>
-        <translation>Impossible d'analyser le fichier des codes temporels : </translation>
+        <translation type="vanished">Impossible d&apos;analyser le fichier des codes temporels : </translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="407" />
         <source>Failed to parse keyframes file: </source>
-        <translation>Impossible d'analyser le fichier des images clés : </translation>
+        <translation type="vanished">Impossible d&apos;analyser le fichier des images clés : </translation>
     </message>
     <message>
-        <location filename="../src/project.cpp" line="411" />
         <source>Keyframes file in unknown format: </source>
-        <translation>Fichier d'images clés dans un format inconnu : </translation>
+        <translation type="vanished">Fichier d&apos;images clés dans un format inconnu : </translation>
     </message>
     <message>
-        <location filename="../src/resolution_resampler.cpp" line="301" />
         <source>resolution resampling</source>
-        <translation>rééchantillonnage de la résolution</translation>
+        <translation type="vanished">rééchantillonnage de la résolution</translation>
     </message>
     <message>
-        <location filename="../src/search_replace_engine.cpp" line="189" />
-        <location filename="../src/search_replace_engine.cpp" line="273" />
         <source>replace</source>
-        <translation>remplacer</translation>
+        <translation type="vanished">remplacer</translation>
     </message>
     <message numerus="yes">
-        <location filename="../src/search_replace_engine.cpp" line="274" />
         <source>One match was replaced.</source>
-        <translation>
+        <translation type="vanished">
             <numerusform>Une correspondance a été remplacée.</numerusform>
             <numerusform>%d correspondances ont été remplacées.</numerusform>
         </translation>
@@ -8048,896 +6213,720 @@ Les fournisseurs audios suivants ont été essayés :
         <extra-po-msgid_plural>%d matches were replaced.</extra-po-msgid_plural>
     </message>
     <message>
-        <location filename="../src/search_replace_engine.cpp" line="277" />
         <source>No matches found.</source>
-        <translation>Aucune correspondance.</translation>
+        <translation type="vanished">Aucune correspondance.</translation>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="246" />
         <source>Do you want to save changes to %s?</source>
-        <translation>Voulez-vous enregistrer les modifications de %s ?</translation>
+        <translation type="vanished">Voulez-vous enregistrer les modifications de %s ?</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="246" />
         <source>Unsaved changes</source>
-        <translation>Modifications non enregistrées</translation>
+        <translation type="vanished">Modifications non enregistrées</translation>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="265" />
-        <location filename="../src/subs_controller.cpp" line="404" />
         <source>Untitled</source>
-        <translation>Sans titre</translation>
+        <translation type="vanished">Sans titre</translation>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="279" />
-        <source>File backup saved as "%s".</source>
-        <translation>Fichier sauvegardé sous « %s ».</translation>
+        <source>File backup saved as &quot;%s&quot;.</source>
+        <translation type="vanished">Fichier sauvegardé sous « %s ».</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="282" />
         <source>Exception when attempting to autosave file: </source>
-        <translation>Exception lors de la tentative d'enregistrement automatique du fichier : </translation>
+        <translation type="vanished">Exception lors de la tentative d&apos;enregistrement automatique du fichier : </translation>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="285" />
         <source>Unhandled exception when attempting to autosave file.</source>
-        <translation>Exception non gérée lors de la tentative d'enregistrement automatique du fichier.</translation>
+        <translation type="vanished">Exception non gérée lors de la tentative d&apos;enregistrement automatique du fichier.</translation>
     </message>
     <message>
-        <location filename="../src/subs_controller.cpp" line="406" />
         <source>untitled</source>
-        <translation>sans titre</translation>
+        <translation type="vanished">sans titre</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="114" />
         <source>&amp;Comment</source>
-        <translation>&amp;Commentaire</translation>
+        <translation type="vanished">&amp;Commentaire</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="115" />
-        <source>Comment this line out. Commented lines don't show up on screen.</source>
-        <translation>Commenter cette ligne. Les lignes de commentaires ne sont pas affichées à l'écran.</translation>
+        <source>Comment this line out. Commented lines don&apos;t show up on screen.</source>
+        <translation type="vanished">Commenter cette ligne. Les lignes de commentaires ne sont pas affichées à l&apos;écran.</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="122" />
         <source>Style for this line</source>
-        <translation>Style pour cette ligne</translation>
+        <translation type="vanished">Style pour cette ligne</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="124" />
-        <location filename="../src/subs_edit_box.cpp" line="125" />
         <source>Edit</source>
-        <translation>Éditer</translation>
+        <translation type="vanished">Éditer</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="135" />
         <source>Actor name for this speech. This is only for reference, and is mainly useless.</source>
-        <translation>Nom de l'acteur pour ce dialogue. Cela ne sert que de référence, donc inutile.</translation>
+        <translation type="vanished">Nom de l&apos;acteur pour ce dialogue. Cela ne sert que de référence, donc inutile.</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="140" />
         <source>Effect for this line. This can be used to store extra information for karaoke scripts, or for the effects supported by the renderer.</source>
-        <translation>Effet pour cette ligne. Peut être utilisé pour stocker des informations supplémentaires pour des scripts karaoké ou pour des effets supportés par le moteur de rendu.</translation>
+        <translation type="vanished">Effet pour cette ligne. Peut être utilisé pour stocker des informations supplémentaires pour des scripts karaoké ou pour des effets supportés par le moteur de rendu.</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="147" />
         <source>Number of characters in the longest line of this subtitle.</source>
-        <translation>Nombre de caractères dans la ligne la plus longue de ce sous-titre.</translation>
+        <translation type="vanished">Nombre de caractères dans la ligne la plus longue de ce sous-titre.</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="154" />
         <source>Layer number</source>
-        <translation>Calque numéro</translation>
+        <translation type="vanished">Calque numéro</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="158" />
         <source>Start time</source>
-        <translation>Temps de début</translation>
+        <translation type="vanished">Temps de début</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="159" />
         <source>End time</source>
-        <translation>Temps de fin</translation>
+        <translation type="vanished">Temps de fin</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="161" />
         <source>Line duration</source>
-        <translation>Durée de la ligne</translation>
+        <translation type="vanished">Durée de la ligne</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="164" />
         <source>Left Margin (0 = default from style)</source>
-        <translation>Marge de gauche (0 = par défaut du style)</translation>
+        <translation type="vanished">Marge de gauche (0 = par défaut du style)</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="164" />
         <source>left margin change</source>
-        <translation>changement de la marge de gauche</translation>
+        <translation type="vanished">changement de la marge de gauche</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="165" />
         <source>Right Margin (0 = default from style)</source>
-        <translation>Marge de droite (0 = par défaut du style)</translation>
+        <translation type="vanished">Marge de droite (0 = par défaut du style)</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="165" />
         <source>right margin change</source>
-        <translation>changement de la marge de droite</translation>
+        <translation type="vanished">changement de la marge de droite</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="166" />
         <source>Vertical Margin (0 = default from style)</source>
-        <translation>Marge verticale (0 = par défaut du style)</translation>
+        <translation type="vanished">Marge verticale (0 = par défaut du style)</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="166" />
         <source>vertical margin change</source>
-        <translation>changement de la marge verticale</translation>
+        <translation type="vanished">changement de la marge verticale</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="185" />
         <source>T&amp;ime</source>
-        <translation>Temps</translation>
+        <translation type="vanished">Temps</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="185" />
         <source>Time by h:mm:ss.cs</source>
-        <translation>Temps en h:mm:ss.cs</translation>
+        <translation type="vanished">Temps en h:mm:ss.cs</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="186" />
         <source>F&amp;rame</source>
-        <translation>I&amp;mage</translation>
+        <translation type="vanished">I&amp;mage</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="186" />
         <source>Time by frame number</source>
-        <translation>Temps en nombre d'images</translation>
+        <translation type="vanished">Temps en nombre d&apos;images</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="189" />
         <source>Show Original</source>
-        <translation>Afficher l'original</translation>
+        <translation type="vanished">Afficher l&apos;original</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="190" />
         <source>Show the contents of the subtitle line when it was first selected above the edit box. This is sometimes useful when editing subtitles or translating subtitles into another language.</source>
-        <translation>Afficher le contenu de la ligne de sous-titre lorsqu'elle a été sélectionné pour la première fois au-dessus de la zone d'édition. Cela peut être utile lors de la modification de sous-titres ou de traduction des sous-titres dans une autre langue.</translation>
+        <translation type="vanished">Afficher le contenu de la ligne de sous-titre lorsqu&apos;elle a été sélectionné pour la première fois au-dessus de la zone d&apos;édition. Cela peut être utile lors de la modification de sous-titres ou de traduction des sous-titres dans une autre langue.</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="446" />
         <source>modify text</source>
-        <translation>modification du texte</translation>
+        <translation type="vanished">modification du texte</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="524" />
         <source>modify times</source>
-        <translation>modification de durées</translation>
+        <translation type="vanished">modification de durées</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="611" />
         <source>actor change</source>
-        <translation>changement d'acteur</translation>
+        <translation type="vanished">changement d&apos;acteur</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="616" />
         <source>layer change</source>
-        <translation>changement de calque</translation>
+        <translation type="vanished">changement de calque</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="621" />
         <source>effect change</source>
-        <translation>modification d'effet</translation>
+        <translation type="vanished">modification d&apos;effet</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_box.cpp" line="626" />
         <source>comment change</source>
-        <translation>modification de commentaire</translation>
+        <translation type="vanished">modification de commentaire</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="397" />
         <source>Spell checker language</source>
-        <translation>Langue du correcteur</translation>
+        <translation type="vanished">Langue du correcteur</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="407" />
         <source>Cu&amp;t</source>
-        <translation>Coupe&amp;r</translation>
+        <translation type="vanished">Coupe&amp;r</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="409" />
-        <location filename="../src/timeedit_ctrl.cpp" line="210" />
         <source>&amp;Paste</source>
-        <translation>Co&amp;ller</translation>
+        <translation type="vanished">Co&amp;ller</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="444" />
-        <source>Remove "%s" from dictionary</source>
-        <translation>Supprimer « %s » du dictionnaire</translation>
+        <source>Remove &quot;%s&quot; from dictionary</source>
+        <translation type="vanished">Supprimer « %s » du dictionnaire</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="449" />
         <source>No spell checker suggestions</source>
-        <translation>Aucune suggestion du correcteur</translation>
+        <translation type="vanished">Aucune suggestion du correcteur</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="455" />
-        <source>Spell checker suggestions for "%s"</source>
-        <translation>Suggestions du correcteur pour « %s ».</translation>
+        <source>Spell checker suggestions for &quot;%s&quot;</source>
+        <translation type="vanished">Suggestions du correcteur pour « %s ».</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="460" />
         <source>No correction suggestions</source>
-        <translation>Aucune correction suggérée</translation>
+        <translation type="vanished">Aucune correction suggérée</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="466" />
-        <source>Add "%s" to dictionary</source>
-        <translation>Ajouter « %s » au dictionnaire</translation>
+        <source>Add &quot;%s&quot; to dictionary</source>
+        <translation type="vanished">Ajouter « %s » au dictionnaire</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="501" />
-        <source>Thesaurus suggestions for "%s"</source>
-        <translation>Suggestion lexicale pour « %s ».</translation>
+        <source>Thesaurus suggestions for &quot;%s&quot;</source>
+        <translation type="vanished">Suggestion lexicale pour « %s ».</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="504" />
         <source>No thesaurus suggestions</source>
-        <translation>Aucun suggestion lexicale</translation>
+        <translation type="vanished">Aucun suggestion lexicale</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="507" />
         <source>Thesaurus language</source>
-        <translation>Langue du lexique</translation>
+        <translation type="vanished">Langue du lexique</translation>
     </message>
     <message>
-        <location filename="../src/subs_edit_ctrl.cpp" line="516" />
         <source>Disable</source>
-        <translation>Désactiver</translation>
+        <translation type="vanished">Désactiver</translation>
     </message>
     <message>
-        <location filename="../src/subs_preview.cpp" line="142" />
         <source>Could not get any subtitles provider for the preview box. Make sure that you have a provider installed.</source>
-        <translation>Impossible d'obtenir un fournisseur de sous-titres pour la zone d'aperçu. Assurez-vous qu'un fournisseur est installé.</translation>
+        <translation type="vanished">Impossible d&apos;obtenir un fournisseur de sous-titres pour la zone d&apos;aperçu. Assurez-vous qu&apos;un fournisseur est installé.</translation>
     </message>
     <message>
-        <location filename="../src/subs_preview.cpp" line="143" />
         <source>No subtitles provider</source>
-        <translation>Aucun fournisseur de sous-titres</translation>
+        <translation type="vanished">Aucun fournisseur de sous-titres</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="102" />
         <source>From video (%g)</source>
-        <translation>Depuis la vidéo (%g)</translation>
+        <translation type="vanished">Depuis la vidéo (%g)</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="104" />
         <source>From video (VFR)</source>
-        <translation>Depuis la vidéo (VFR)</translation>
+        <translation type="vanished">Depuis la vidéo (VFR)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="110" />
         <source>15.000 FPS</source>
-        <translation>15,000 IPS</translation>
+        <translation type="vanished">15,000 IPS</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="111" />
         <source>23.976 FPS (Decimated NTSC)</source>
-        <translation>23,976 IPS (NTSC décimal)</translation>
+        <translation type="vanished">23,976 IPS (NTSC décimal)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="112" />
         <source>24.000 FPS (FILM)</source>
-        <translation>24,000 IPS (Film)</translation>
+        <translation type="vanished">24,000 IPS (Film)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="113" />
         <source>25.000 FPS (PAL)</source>
-        <translation>25,000 IPS (PAL)</translation>
+        <translation type="vanished">25,000 IPS (PAL)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="114" />
         <source>29.970 FPS (NTSC)</source>
-        <translation>29,970 IPS (NTSC)</translation>
+        <translation type="vanished">29,970 IPS (NTSC)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="116" />
         <source>29.970 FPS (NTSC with SMPTE dropframe)</source>
-        <translation>29,970 i/s (NTSC avec SMPTE dropframe)</translation>
+        <translation type="vanished">29,970 i/s (NTSC avec SMPTE dropframe)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="117" />
         <source>30.000 FPS</source>
-        <translation>30,000 IPS</translation>
+        <translation type="vanished">30,000 IPS</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="118" />
         <source>50.000 FPS (PAL x2)</source>
-        <translation>50,000 i/s (PAL x2)</translation>
+        <translation type="vanished">50,000 i/s (PAL x2)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="119" />
         <source>59.940 FPS (NTSC x2)</source>
-        <translation>59,940 IPS (NTSC x 2)</translation>
+        <translation type="vanished">59,940 IPS (NTSC x 2)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="120" />
         <source>60.000 FPS</source>
-        <translation>60,000 IPS</translation>
+        <translation type="vanished">60,000 IPS</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="121" />
         <source>119.880 FPS (NTSC x4)</source>
-        <translation>119,880 IPS (NTSC x 4)</translation>
+        <translation type="vanished">119,880 IPS (NTSC x 4)</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="122" />
         <source>120.000 FPS</source>
-        <translation>120,000 IPS</translation>
+        <translation type="vanished">120,000 IPS</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="126" />
         <source>FPS</source>
-        <translation>IPS</translation>
+        <translation type="vanished">IPS</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format.cpp" line="126" />
         <source>Please choose the appropriate FPS for the subtitles:</source>
-        <translation>Choisir la fréquence d'image (IPS) approprié aux sous-titres :</translation>
+        <translation type="vanished">Choisir la fréquence d&apos;image (IPS) approprié aux sous-titres :</translation>
     </message>
     <message>
-        <location filename="../src/subtitle_format_ebu3264.cpp" line="396" />
         <source>Line over maximum length: %s</source>
-        <translation>Longueur maximale de la ligne : %s</translation>
+        <translation type="vanished">Longueur maximale de la ligne : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/subtitles_provider_libass.cpp" line="102" />
         <source>Updating font index</source>
-        <translation>Mise à jour des index de polices</translation>
+        <translation type="vanished">Mise à jour des index de polices</translation>
     </message>
     <message>
-        <location filename="../src/subtitles_provider_libass.cpp" line="103" />
         <source>This may take several minutes</source>
-        <translation>Cela peut prendre plusieurs minutes</translation>
+        <translation type="vanished">Cela peut prendre plusieurs minutes</translation>
     </message>
     <message>
-        <location filename="../src/video_box.cpp" line="57" />
         <source>Seek video</source>
-        <translation>Recherche vidéo</translation>
+        <translation type="vanished">Recherche vidéo</translation>
     </message>
     <message>
-        <location filename="../src/video_box.cpp" line="62" />
         <source>Current frame time and number</source>
-        <translation>Temps et numéro de l'image courante</translation>
+        <translation type="vanished">Temps et numéro de l&apos;image courante</translation>
     </message>
     <message>
-        <location filename="../src/video_box.cpp" line="65" />
         <source>Time of this frame relative to start and end of current subs</source>
-        <translation>Temps de cette image relatif au début et à la fin du sous-titre courant</translation>
+        <translation type="vanished">Temps de cette image relatif au début et à la fin du sous-titre courant</translation>
     </message>
     <message>
-        <location filename="../src/video_controller.cpp" line="228" />
         <source>Failed seeking video. The video file may be corrupt or incomplete.
 Error message reported: %s</source>
-        <translation>Échec de la recherche dans la vidéo. Le fichier vidéo est peut-être corrompu ou incomplet.
+        <translation type="vanished">Échec de la recherche dans la vidéo. Le fichier vidéo est peut-être corrompu ou incomplet.
 Erreur renvoyée : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/video_controller.cpp" line="234" />
         <source>Failed rendering subtitles.
 Error message reported: %s</source>
-        <translation>Échec du rendu des sous-titres.
-Détails de l'erreur : %s</translation>
+        <translation type="vanished">Échec du rendu des sous-titres.
+Détails de l&apos;erreur : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/video_display.cpp" line="203" />
         <source>Failed to initialize video display. Closing other running programs and updating your video card drivers may fix this.
 Error message reported: %s</source>
-        <translation>Échec de l'initialisation de l'affichage vidéo. Fermez les autres programmes en cours d'exécution et mettez à jour les pilotes de votre carte graphique pour résoudre le problème.
-Détails de l'erreur : %s</translation>
+        <translation type="vanished">Échec de l&apos;initialisation de l&apos;affichage vidéo. Fermez les autres programmes en cours d&apos;exécution et mettez à jour les pilotes de votre carte graphique pour résoudre le problème.
+Détails de l&apos;erreur : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/video_display.cpp" line="210" />
         <source>Could not upload video frame to graphics card.
 Error message reported: %s</source>
-        <translation>Impossible de transférer l'image vidéo vers la carte graphique.
-Détails de l'erreur : %s</translation>
+        <translation type="vanished">Impossible de transférer l&apos;image vidéo vers la carte graphique.
+Détails de l&apos;erreur : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/video_display.cpp" line="252" />
         <source>An error occurred trying to render the video frame on the screen.
 Error message reported: %s</source>
-        <translation>Une erreur est survenue lors de l'affichage de l'image vidéo à l'écran.
-Détails de l'erreur : %s</translation>
+        <translation type="vanished">Une erreur est survenue lors de l&apos;affichage de l&apos;image vidéo à l&apos;écran.
+Détails de l&apos;erreur : %s</translation>
         <extra-po-flags>c-format</extra-po-flags>
     </message>
     <message>
-        <location filename="../src/video_provider_manager.cpp" line="78" />
         <source>file not found.</source>
-        <translation>fichier introuvable.</translation>
+        <translation type="vanished">fichier introuvable.</translation>
     </message>
     <message>
-        <location filename="../src/video_provider_manager.cpp" line="84" />
         <source>video is not in a supported format.</source>
-        <translation>la vidéo n'est pas dans un format pris en charge.</translation>
+        <translation type="vanished">la vidéo n&apos;est pas dans un format pris en charge.</translation>
     </message>
     <message>
-        <location filename="../src/video_provider_manager.cpp" line="101" />
         <source>Could not open </source>
-        <translation>Impossible d'ouvrir </translation>
+        <translation type="vanished">Impossible d&apos;ouvrir </translation>
     </message>
     <message>
-        <location filename="../src/visual_tool.cpp" line="119" />
         <source>visual typesetting</source>
-        <translation>édition vidéo</translation>
+        <translation type="vanished">édition vidéo</translation>
     </message>
     <message>
-        <location filename="../src/visual_tool_cross.cpp" line="61" />
-        <location filename="../src/visual_tool_drag.cpp" line="329" />
         <source>positioning</source>
-        <translation>positionnement</translation>
+        <translation type="vanished">positionnement</translation>
     </message>
     <message>
-        <location filename="../src/visual_tool_drag.cpp" line="55" />
         <source>Toggle between \move and \pos</source>
-        <translation>Basculer entre \move et \pos</translation>
+        <translation type="vanished">Basculer entre \move et \pos</translation>
     </message>
     <message>
-        <location filename="../src/visual_tool_vector_clip.cpp" line="272" />
         <source>delete control point</source>
-        <translation>supprime un point de contrôle</translation>
+        <translation type="vanished">supprime un point de contrôle</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Insert (before)</source>
-        <translation>&amp;Insérer (avant)</translation>
+        <translation type="vanished">&amp;Insérer (avant)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Insert (after)</source>
-        <translation>Insérer (après)</translation>
+        <translation type="vanished">Insérer (après)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Insert at video time (before)</source>
-        <translation>Insérer au point vidéo (avant)</translation>
+        <translation type="vanished">Insérer au point vidéo (avant)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Insert at video time (after)</source>
-        <translation>Insérer au point vidéo (après)</translation>
+        <translation type="vanished">Insérer au point vidéo (après)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Join (concatenate)</source>
-        <translation>&amp;Joindre (enchaîner)</translation>
+        <translation type="vanished">&amp;Joindre (enchaîner)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Join (keep first)</source>
-        <translation>Joindre (conserver première)</translation>
+        <translation type="vanished">Joindre (conserver première)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Join (as Karaoke)</source>
-        <translation>Joindre (en karaoké)</translation>
+        <translation type="vanished">Joindre (en karaoké)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Make times continuous (change start)</source>
-        <translation>&amp;Mettre en temps continu (début modifié)</translation>
+        <translation type="vanished">&amp;Mettre en temps continu (début modifié)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Make times continuous (change end)</source>
-        <translation>&amp;Mettre en temps continu (fin modifiée)</translation>
+        <translation type="vanished">&amp;Mettre en temps continu (fin modifiée)</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Make Times Continuous</source>
-        <translation>Rendre les temps continus</translation>
+        <translation type="vanished">Rendre les temps continus</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Set &amp;Zoom</source>
-        <translation>Réglage du &amp;zoom</translation>
+        <translation type="vanished">Réglage du &amp;zoom</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Override &amp;AR</source>
-        <translation>Outrep&amp;asser le rapport de forme</translation>
+        <translation type="vanished">Outrep&amp;asser le rapport de forme</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;File</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Fichier</translation>
+        <translation type="vanished">&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Edit</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Modifier</translation>
+        <translation type="vanished">&amp;Modifier</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Subtitle</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Sous-titre</translation>
+        <translation type="vanished">&amp;Sous-titre</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Timing</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Synchronisation</translation>
+        <translation type="vanished">&amp;Synchronisation</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Video</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Vidéo</translation>
+        <translation type="vanished">&amp;Vidéo</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Audio</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Audio</translation>
+        <translation type="vanished">&amp;Audio</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>A&amp;utomation</source>
         <comment>Menu bar</comment>
-        <translation>A&amp;utomatisme</translation>
+        <translation type="vanished">A&amp;utomatisme</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Vie&amp;w</source>
         <comment>Menu bar</comment>
-        <translation>A&amp;ffichage</translation>
+        <translation type="vanished">A&amp;ffichage</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Help</source>
         <comment>Menu bar</comment>
-        <translation>&amp;Aide</translation>
+        <translation type="vanished">&amp;Aide</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Insert Lines</source>
-        <translation>&amp;Insertion de lignes</translation>
+        <translation type="vanished">&amp;Insertion de lignes</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Join Lines</source>
-        <translation>Jonction de lignes</translation>
+        <translation type="vanished">Jonction de lignes</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Sort All Lines</source>
-        <translation>Trier toutes les styles</translation>
+        <translation type="vanished">Trier toutes les styles</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Sort Selected Lines</source>
-        <translation>Trier les lignes sélectionnées</translation>
+        <translation type="vanished">Trier les lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;File</source>
-        <translation>&amp;Fichier</translation>
+        <translation type="vanished">&amp;Fichier</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Vie&amp;w</source>
-        <translation>A&amp;ffichage</translation>
+        <translation type="vanished">A&amp;ffichage</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Subtitle</source>
-        <translation>&amp;Sous-titre</translation>
+        <translation type="vanished">&amp;Sous-titre</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Timing</source>
-        <translation>&amp;Synchronisation</translation>
+        <translation type="vanished">&amp;Synchronisation</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Video</source>
-        <translation>&amp;Vidéo</translation>
+        <translation type="vanished">&amp;Vidéo</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Audio</source>
-        <translation>&amp;Audio</translation>
+        <translation type="vanished">&amp;Audio</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>A&amp;utomation</source>
-        <translation>A&amp;utomatisme</translation>
+        <translation type="vanished">A&amp;utomatisme</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Window</source>
-        <translation>Fenêtre</translation>
+        <translation type="vanished">Fenêtre</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>&amp;Help</source>
-        <translation>&amp;Aide</translation>
+        <translation type="vanished">&amp;Aide</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Open...</source>
-        <translation>Ouvrir...</translation>
+        <translation type="vanished">Ouvrir...</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Open Recent</source>
-        <translation>Ouvrir un fichier récent</translation>
+        <translation type="vanished">Ouvrir un fichier récent</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Save</source>
-        <translation>Enregistrer</translation>
+        <translation type="vanished">Enregistrer</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Save As...</source>
-        <translation>Enregistrer sous...</translation>
+        <translation type="vanished">Enregistrer sous...</translation>
     </message>
     <message>
-        <location filename="default_menu.json" line="0" />
         <source>Export As...</source>
-        <translation>Exporter sous...</translation>
+        <translation type="vanished">Exporter sous...</translation>
     </message>
     <message>
-        <location filename="default_hotkey.json" line="244" />
         <source>Subtitle Edit Box</source>
-        <translation>Boîte d'édition des sous-titres</translation>
+        <translation type="vanished">Boîte d&apos;édition des sous-titres</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/cleantags-autoload.lua" line="31" />
         <source>Clean Tags</source>
-        <translation>Nettoyage des balises</translation>
+        <translation type="vanished">Nettoyage des balises</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/cleantags-autoload.lua" line="32" />
         <source>Clean subtitle lines by re-arranging ASS tags and override blocks within the lines</source>
-        <translation>Nettoyage des lignes de sous-titres en réarrangeant les balises ASS et en écrasant les blocs dans les lignes</translation>
+        <translation type="vanished">Nettoyage des lignes de sous-titres en réarrangeant les balises ASS et en écrasant les blocs dans les lignes</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="36" />
         <source>Karaoke Templater</source>
-        <translation>Création modèle karaoké</translation>
+        <translation type="vanished">Création modèle karaoké</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="37" />
         <source>Macro and export filter to apply karaoke effects using the template language</source>
-        <translation>Macro et filtres d'export pour appliquer les effets karaoké en utilisant le modèle de langue</translation>
+        <translation type="vanished">Macro et filtres d&apos;export pour appliquer les effets karaoké en utilisant le modèle de langue</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="860" />
         <source>Apply karaoke template</source>
-        <translation>Appliquer le modèle karaoké</translation>
+        <translation type="vanished">Appliquer le modèle karaoké</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="860" />
         <source>Applies karaoke effects from templates</source>
-        <translation>Appliquer les effets karaoké depuis les modèles</translation>
+        <translation type="vanished">Appliquer les effets karaoké depuis les modèles</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="861" />
         <source>Karaoke template</source>
-        <translation>Modèle karaoké</translation>
+        <translation type="vanished">Modèle karaoké</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/kara-templater.lua" line="861" />
         <source>Apply karaoke effect templates to the subtitles.
 
 See the help file for information on how to use this.</source>
-        <translation>Applique les modèles d'effets karaoké aux sous-titres.
+        <translation type="vanished">Applique les modèles d&apos;effets karaoké aux sous-titres.
 
-Voir le fichier d'aide pour plus d'informations sur la procédure.</translation>
+Voir le fichier d&apos;aide pour plus d&apos;informations sur la procédure.</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/karaoke-auto-leadin.lua" line="32" />
         <source>Automatic karaoke lead-in</source>
-        <translation>Introduction karaoké automatique</translation>
+        <translation type="vanished">Introduction karaoké automatique</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/karaoke-auto-leadin.lua" line="33" />
         <source>Join up the ends of selected lines and add \k tags to shift karaoke</source>
-        <translation>Joindre la fin des lignes sélectionnées et ajouter des balises \k pour décalage en karaoké</translation>
+        <translation type="vanished">Joindre la fin des lignes sélectionnées et ajouter des balises \k pour décalage en karaoké</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-1-edgeblur.lua" line="6" />
         <source>Add edgeblur</source>
-        <translation>Ajouter flou de contour</translation>
+        <translation type="vanished">Ajouter flou de contour</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-1-edgeblur.lua" line="7" />
         <source>A demo macro showing how to do simple line modification in Automation 4</source>
-        <translation>Macro de démo montrant comment faire une modification simple de ligne en Automation 4</translation>
+        <translation type="vanished">Macro de démo montrant comment faire une modification simple de ligne en Automation 4</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-1-edgeblur.lua" line="21" />
         <source>Adds \be1 tags to all selected lines</source>
-        <translation>Ajoute les balises \be1 aux lignes sélectionnées</translation>
+        <translation type="vanished">Ajoute les balises \be1 aux lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-2-mkfullwitdh.lua" line="6" />
         <source>Make text fullwidth</source>
-        <translation>Mettre le texte en pleine largeur</translation>
+        <translation type="vanished">Mettre le texte en pleine largeur</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-2-mkfullwitdh.lua" line="7" />
         <source>Shows how to use the unicode include to iterate over characters and a lookup table to convert those characters to something else.</source>
-        <translation>Montre comment utiliser l'inclusion Unicode pour parcourir les caractères et une table de correspondance pour les convertir en autre chose.</translation>
+        <translation type="vanished">Montre comment utiliser l&apos;inclusion Unicode pour parcourir les caractères et une table de correspondance pour les convertir en autre chose.</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-2-mkfullwitdh.lua" line="77" />
-        <location filename="../automation/autoload/macro-2-mkfullwitdh.lua" line="80" />
         <source>Make fullwidth</source>
-        <translation>Mettre en pleine largeur</translation>
+        <translation type="vanished">Mettre en pleine largeur</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/macro-2-mkfullwitdh.lua" line="80" />
         <source>Convert Latin letters to SJIS fullwidth letters</source>
-        <translation>Convertir les caractères latins en caractères SJIS pleine chasse</translation>
+        <translation type="vanished">Convertir les caractères latins en caractères SJIS pleine chasse</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/select-overlaps.moon" line="17" />
         <source>Select overlaps</source>
-        <translation>Sélectionner les chevauchements</translation>
+        <translation type="vanished">Sélectionner les chevauchements</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/select-overlaps.moon" line="18" />
         <source>Select lines which begin while another non-comment line is active</source>
-        <translation>Sélectionner les lignes qui commencent alors qu'une autre ligne non commentée est active</translation>
+        <translation type="vanished">Sélectionner les lignes qui commencent alors qu&apos;une autre ligne non commentée est active</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/strip-tags.lua" line="17" />
         <source>Strip tags</source>
-        <translation>Retirer les balises</translation>
+        <translation type="vanished">Retirer les balises</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/strip-tags.lua" line="18" />
         <source>Remove all override tags from selected lines</source>
-        <translation>Enlève toutes les balises de recouvrement des lignes sélectionnées</translation>
+        <translation type="vanished">Enlève toutes les balises de recouvrement des lignes sélectionnées</translation>
     </message>
     <message>
-        <location filename="../automation/autoload/strip-tags.lua" line="28" />
         <source>strip tags</source>
-        <translation>retirer les balises</translation>
+        <translation type="vanished">retirer les balises</translation>
     </message>
     <message>
-        <location filename="packages/win_installer/fragment_strings.iss" line="1" />
         <source>Installing runtime libraries...</source>
-        <translation>Installation des bibliothèques d'exécution...</translation>
+        <translation type="vanished">Installation des bibliothèques d&apos;exécution...</translation>
     </message>
     <message>
-        <location filename="packages/win_installer/fragment_strings.iss" line="1" />
         <source>Create a start menu icon</source>
-        <translation>Créer une icône de menu démarrer</translation>
+        <translation type="vanished">Créer une icône de menu démarrer</translation>
     </message>
     <message>
-        <location filename="packages/win_installer/fragment_strings.iss" line="1" />
         <source>Automatically check for new versions of Aegisub</source>
-        <translation>Vérifier automatiquement les nouvelles versions de Aegisub</translation>
+        <translation type="vanished">Vérifier automatiquement les nouvelles versions de Aegisub</translation>
     </message>
     <message>
-        <location filename="packages/win_installer/fragment_strings.iss" line="1" />
         <source>Update Checker:</source>
-        <translation>Contrôle de la mise à jour :</translation>
+        <translation type="vanished">Contrôle de la mise à jour :</translation>
     </message>
     <message>
-        <location filename="packages/win_installer/fragment_strings.iss" line="1" />
         <source>This will install Aegisub {#BUILD_GIT_VERSION_STRING} on your computer.%n%nAegisub is covered by the GNU General Public License version 2. This means you may use the application for any purpose without charge, but that no warranties of any kind are given either.%n%nSee the Aegisub website for information on obtaining the source code.</source>
-        <translation>Ceci installera Aegisub {#BUILD_GIT_VERSION_STRING} sur votre ordinateur.%n%nAegisub est couvert par la GNU General Public License version 2. Cela signifie que vous pouvez utiliser l'application pour n'importe quel but, sans frais, mais qu'aucune garantie n'est donnée.%n%Veuillez visiter le site d'Aegisub pour l'obtention du code source.</translation>
+        <translation type="vanished">Ceci installera Aegisub {#BUILD_GIT_VERSION_STRING} sur votre ordinateur.%n%nAegisub est couvert par la GNU General Public License version 2. Cela signifie que vous pouvez utiliser l&apos;application pour n&apos;importe quel but, sans frais, mais qu&apos;aucune garantie n&apos;est donnée.%n%Veuillez visiter le site d&apos;Aegisub pour l&apos;obtention du code source.</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.desktop.in.in" line="4" />
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="6" />
         <source>Aegisub</source>
-        <translation>Aegisub</translation>
+        <translation type="vanished">Aegisub</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.desktop.in.in" line="5" />
         <source>Subtitle Editor</source>
-        <translation>Éditeur de sous-titres</translation>
+        <translation type="vanished">Éditeur de sous-titres</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.desktop.in.in" line="6" />
         <source>Create and edit subtitles for film and videos.</source>
-        <translation>Crée et modifie des sous-titres pour contenu vidéo.</translation>
+        <translation type="vanished">Crée et modifie des sous-titres pour contenu vidéo.</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.desktop.in.in" line="12" />
         <source>subtitles;subtitle;captions;captioning;video;audio;</source>
-        <translation>sous-titres;sous-titre;SME;malentendants;vidéo;audio;</translation>
+        <translation type="vanished">sous-titres;sous-titre;SME;malentendants;vidéo;audio;</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="7" />
         <source>Create and modify subtitles</source>
-        <translation>Créer et modifier des sous-titres</translation>
+        <translation type="vanished">Créer et modifier des sous-titres</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="9" />
         <source>Aegisub is a free, cross-platform open source tool for creating and modifying subtitles. Aegisub makes it quick and easy to time subtitles to audio, and features many powerful tools for styling them, including a built-in real-time video preview.</source>
-        <translation>Aegisub est un outil open source, gratuit et multiplateforme permettant de créer et de modifier des sous-titres. Aegisub permet de synchroniser rapidement et facilement les sous-titres avec l'audio, et propose de nombreux outils puissants pour leur mise en forme, dont un aperçu vidéo intégré en temps réel.</translation>
+        <translation type="vanished">Aegisub est un outil open source, gratuit et multiplateforme permettant de créer et de modifier des sous-titres. Aegisub permet de synchroniser rapidement et facilement les sous-titres avec l&apos;audio, et propose de nombreux outils puissants pour leur mise en forme, dont un aperçu vidéo intégré en temps réel.</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="10" />
         <source>Aegisub was originally created as a tool to make typesetting, particularly in anime fansubs, a less painful experience. At the time of the start of the project, many other programs that supported the Advanced Substation Alpha format lacked (and in many cases, still lack; development on several competing programs have since been dropped for various reasons completely unrelated to Aegisub) many vital functions, or were too buggy and/or unreliable to be really useful.</source>
-        <translation>Aegisub a été créé à l'origine comme un outil visant à rendre l'édition typographique (typesetting), en particulier dans les fansubs d'animes, moins pénible. Au lancement du projet, de nombreux autres programmes prenant en charge le format Advanced Substation Alpha manquaient de nombreuses fonctions essentielles (et c'est souvent encore le cas aujourd'hui ; le développement de plusieurs programmes concurrents ayant depuis été abandonné pour des raisons totalement indépendantes d'Aegisub), ou étaient trop instables et/ou peu fiables pour être réellement utiles.</translation>
+        <translation type="vanished">Aegisub a été créé à l&apos;origine comme un outil visant à rendre l&apos;édition typographique (typesetting), en particulier dans les fansubs d&apos;animes, moins pénible. Au lancement du projet, de nombreux autres programmes prenant en charge le format Advanced Substation Alpha manquaient de nombreuses fonctions essentielles (et c&apos;est souvent encore le cas aujourd&apos;hui ; le développement de plusieurs programmes concurrents ayant depuis été abandonné pour des raisons totalement indépendantes d&apos;Aegisub), ou étaient trop instables et/ou peu fiables pour être réellement utiles.</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="11" />
         <source>Since then, Aegisub has grown into a fully fledged, highly customizable subtitle editor. It features a lot of convenient tools to help you with timing, typesetting, editing and translating subtitles, as well as a powerful scripting environment called Automation (originally mostly intended for creating karaoke effects, Automation can now be used much else, including creating macros and various other convenient tools).</source>
-        <translation>Depuis, Aegisub est devenu un éditeur de sous-titres à part entière et hautement personnalisable. Il intègre de nombreux outils pratiques pour vous aider dans la synchronisation, l'édition typographique, la modification et la traduction des sous-titres, ainsi qu'un puissant environnement de script appelé Automatisme (initialement conçu en grande partie pour créer des effets de karaoké, Automatisme peut désormais servir à bien d'autres choses, notamment à la création de macros et d'autres outils pratiques).</translation>
+        <translation type="vanished">Depuis, Aegisub est devenu un éditeur de sous-titres à part entière et hautement personnalisable. Il intègre de nombreux outils pratiques pour vous aider dans la synchronisation, l&apos;édition typographique, la modification et la traduction des sous-titres, ainsi qu&apos;un puissant environnement de script appelé Automatisme (initialement conçu en grande partie pour créer des effets de karaoké, Automatisme peut désormais servir à bien d&apos;autres choses, notamment à la création de macros et d&apos;autres outils pratiques).</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="12" />
         <source>Some highlights of Aegisub:</source>
-        <translation>Quelques points forts d'Aegisub :</translation>
+        <translation type="vanished">Quelques points forts d&apos;Aegisub :</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="14" />
         <source>Simple and intuitive yet powerful interface for editing subtitles</source>
-        <translation>Interface d'édition de sous-titres simple et intuitive, mais puissante</translation>
+        <translation type="vanished">Interface d&apos;édition de sous-titres simple et intuitive, mais puissante</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="15" />
         <source>Support for many formats and character sets</source>
-        <translation>Prise en charge de nombreux formats et jeux de caractères</translation>
+        <translation type="vanished">Prise en charge de nombreux formats et jeux de caractères</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="16" />
         <source>Powerful video mode</source>
-        <translation>Module vidéo puissant</translation>
+        <translation type="vanished">Module vidéo puissant</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="17" />
         <source>Visual typesetting tools</source>
-        <translation>Outils d'édition visuelle</translation>
+        <translation type="vanished">Outils d&apos;édition visuelle</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="18" />
         <source>Intuitive and customizable audio timing mode</source>
-        <translation>Module de synchronisation audio intuitif et personnalisable</translation>
+        <translation type="vanished">Module de synchronisation audio intuitif et personnalisable</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="19" />
         <source>Fully scriptable through the Automation module</source>
-        <translation>Entièrement scriptable grâce au module Automatisme</translation>
+        <translation type="vanished">Entièrement scriptable grâce au module Automatisme</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="43" />
         <source>Typesetting</source>
-        <translation>Édition</translation>
+        <translation type="vanished">Édition</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="47" />
         <source>Audio video</source>
-        <translation>Audio et vidéo</translation>
+        <translation type="vanished">Audio et vidéo</translation>
     </message>
     <message>
-        <location filename="../packages/desktop/aegisub.metainfo.xml.in.in" line="51" />
         <source>Audio timing</source>
-        <translation>Synchronisation audio</translation>
+        <translation type="vanished">Synchronisation audio</translation>
     </message>
     <message>
         <source>Kanji timing</source>
@@ -8955,15 +6944,6520 @@ Voir le fichier d'aide pour plus d'informations sur la procédure.</translation>
         <source>Drawings</source>
         <translation type="vanished">Dessins</translation>
     </message>
-<message><source>&amp;2.35</source><translation>2.35:1 (&amp;2)</translation></message><message><source>&amp;4:3</source><translation>4:3 (&amp;4)</translation></message><message><source>&amp;About Aegisub...</source><translation>À propos d'Aegisub</translation></message><message><source>&amp;Accept</source><translation>Accepter (&amp;A)</translation></message><message><source>&amp;Add to Selection</source><translation>&amp;Ajouter à la sélection</translation></message><message><source>&amp;Add...</source><translation>&amp;Ajouter</translation></message><message><source>&amp;Attachments...</source><translation>Pièces jointes</translation></message><message><source>&amp;Auto match</source><translation>Alignement auto (&amp;A)</translation></message><message><source>&amp;Automation</source><translation>&amp;Automatisme</translation></message><message><source>&amp;Delete Lines</source><translation>supprimer les lignes</translation></message><message><source>&amp;Dialogue</source><translation>Dialogue (&amp;D)</translation></message><message><source>&amp;Export...</source><translation>Exporter (&amp;E)…</translation></message><message><source>&amp;Forward</source><translation>En avant (&amp;F)</translation></message><message><source>&amp;Frames:</source><translation>Images (&amp;F) :</translation></message><message><source>&amp;IRC Channel...</source><translation>Canal IRC (&amp;I)…</translation></message><message><source>&amp;Info...</source><translation>Info</translation></message><message><source>&amp;Insert original</source><translation>Insérer l'original (&amp;I)</translation></message><message><source>&amp;Log Window...</source><translation>Fenêtre d'historique</translation></message><message><source>&amp;Play Audio</source><translation>Lire l'audio (&amp;A)</translation></message><message><source>&amp;Preferences...</source><translation>Préférences</translation></message><message><source>&amp;Redo</source><translation>Rétablir (&amp;R)</translation></message><message><source>&amp;Regular Expression matches</source><translation>Expression régulière (&amp;R)</translation></message><message><source>&amp;Reload</source><translation>Re&amp;charger</translation></message><message><source>&amp;Reload Automation Scripts</source><translation>Recharger les scripts d'automatisme</translation></message><message><source>&amp;Replace Next</source><translation>Remplacer suivant (&amp;R)</translation></message><message><source>&amp;Replace...</source><translation>remplacer</translation></message><message><source>&amp;Shift Times...</source><translation>Décalage temps</translation></message><message><source>&amp;Sort styles</source><translation>Trier les styles (&amp;S)</translation></message><message><source>&amp;Spell Checker...</source><translation>Correcteur orthographique</translation></message><message><source>&amp;Start</source><translation>Démarrer (&amp;S)</translation></message><message><source>&amp;Start and End times</source><translation>Début et fin (&amp;S)</translation></message><message><source>&amp;Time:</source><translation>Temps (&amp;T) :</translation></message><message><source>&amp;Undo</source><translation>Annuler (&amp;U)</translation></message><message><source>&amp;View</source><translation>&amp;Affichage</translation></message><message><source>-&gt; End</source><translation> -&gt; Fin</translation></message><message><source>0: Header-heavy smart wrapping</source><translation>0: Ajustement automatique intelligent (ligne supérieure plus longue)</translation></message><message><source>16:&amp;9</source><translation>16:9 (&amp;9)</translation></message><message><source>1: End-of-line word wrapping</source><translation>1: Fin de ligne (mots complets)</translation></message><message><source>2: No word wrapping, \n or \N to break</source><translation>2: Pas d'ajustement automatique (\n ou \N)</translation></message><message><source>3: Lower-heavy smart wrapping</source><translation>3: Ajustement automatique intelligent (ligne inférieure plus longue)</translation></message><message><source>3D rotate subtitles on XY axes (\frx, \fry)</source><translation>Rotation 3D sur les axes XY (\frx, \fry)</translation></message><message><source>ASS</source><translation>ASS</translation></message><message><source>Accept changes:</source><translation>Accepter les modifications :</translation></message><message><source>Add lead in:</source><translation>Ajout blanc de début :</translation></message><message><source>Add lead out:</source><translation>Aj&amp;out blanc de fin :</translation></message><message><source>Add to &amp;Dictionary</source><translation>Ajouter au &amp;dictionnaire</translation></message><message><source>Aegisub Core modernized with AstraCore high performance engine and Qt Quick architecture.
+    <message>
+        <source>&amp;2.35</source>
+        <translation type="vanished">2.35:1 (&amp;2)</translation>
+    </message>
+    <message>
+        <source>&amp;4:3</source>
+        <translation type="vanished">4:3 (&amp;4)</translation>
+    </message>
+    <message>
+        <source>&amp;About Aegisub...</source>
+        <translation type="vanished">À propos d&apos;Aegisub</translation>
+    </message>
+    <message>
+        <source>&amp;Accept</source>
+        <translation type="vanished">Accepter (&amp;A)</translation>
+    </message>
+    <message>
+        <source>&amp;Add to Selection</source>
+        <translation type="vanished">&amp;Ajouter à la sélection</translation>
+    </message>
+    <message>
+        <source>&amp;Add...</source>
+        <translation type="vanished">&amp;Ajouter</translation>
+    </message>
+    <message>
+        <source>&amp;Attachments...</source>
+        <translation type="vanished">Pièces jointes</translation>
+    </message>
+    <message>
+        <source>&amp;Auto match</source>
+        <translation type="vanished">Alignement auto (&amp;A)</translation>
+    </message>
+    <message>
+        <source>&amp;Automation</source>
+        <translation type="vanished">&amp;Automatisme</translation>
+    </message>
+    <message>
+        <source>&amp;Delete Lines</source>
+        <translation type="vanished">supprimer les lignes</translation>
+    </message>
+    <message>
+        <source>&amp;Dialogue</source>
+        <translation type="vanished">Dialogue (&amp;D)</translation>
+    </message>
+    <message>
+        <source>&amp;Export...</source>
+        <translation type="vanished">Exporter (&amp;E)…</translation>
+    </message>
+    <message>
+        <source>&amp;Forward</source>
+        <translation type="vanished">En avant (&amp;F)</translation>
+    </message>
+    <message>
+        <source>&amp;Frames:</source>
+        <translation type="vanished">Images (&amp;F) :</translation>
+    </message>
+    <message>
+        <source>&amp;IRC Channel...</source>
+        <translation type="vanished">Canal IRC (&amp;I)…</translation>
+    </message>
+    <message>
+        <source>&amp;Info...</source>
+        <translation type="vanished">Info</translation>
+    </message>
+    <message>
+        <source>&amp;Insert original</source>
+        <translation type="vanished">Insérer l&apos;original (&amp;I)</translation>
+    </message>
+    <message>
+        <source>&amp;Log Window...</source>
+        <translation type="vanished">Fenêtre d&apos;historique</translation>
+    </message>
+    <message>
+        <source>&amp;Play Audio</source>
+        <translation type="vanished">Lire l&apos;audio (&amp;A)</translation>
+    </message>
+    <message>
+        <source>&amp;Preferences...</source>
+        <translation type="vanished">Préférences</translation>
+    </message>
+    <message>
+        <source>&amp;Redo</source>
+        <translation type="vanished">Rétablir (&amp;R)</translation>
+    </message>
+    <message>
+        <source>&amp;Regular Expression matches</source>
+        <translation type="vanished">Expression régulière (&amp;R)</translation>
+    </message>
+    <message>
+        <source>&amp;Reload</source>
+        <translation type="vanished">Re&amp;charger</translation>
+    </message>
+    <message>
+        <source>&amp;Reload Automation Scripts</source>
+        <translation type="vanished">Recharger les scripts d&apos;automatisme</translation>
+    </message>
+    <message>
+        <source>&amp;Replace Next</source>
+        <translation type="vanished">Remplacer suivant (&amp;R)</translation>
+    </message>
+    <message>
+        <source>&amp;Replace...</source>
+        <translation type="vanished">remplacer</translation>
+    </message>
+    <message>
+        <source>&amp;Shift Times...</source>
+        <translation type="vanished">Décalage temps</translation>
+    </message>
+    <message>
+        <source>&amp;Sort styles</source>
+        <translation type="vanished">Trier les styles (&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Spell Checker...</source>
+        <translation type="vanished">Correcteur orthographique</translation>
+    </message>
+    <message>
+        <source>&amp;Start</source>
+        <translation type="vanished">Démarrer (&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Start and End times</source>
+        <translation type="vanished">Début et fin (&amp;S)</translation>
+    </message>
+    <message>
+        <source>&amp;Time:</source>
+        <translation type="vanished">Temps (&amp;T) :</translation>
+    </message>
+    <message>
+        <source>&amp;Undo</source>
+        <translation type="vanished">Annuler (&amp;U)</translation>
+    </message>
+    <message>
+        <source>&amp;View</source>
+        <translation type="vanished">&amp;Affichage</translation>
+    </message>
+    <message>
+        <source>-&gt; End</source>
+        <translation type="vanished"> -&gt; Fin</translation>
+    </message>
+    <message>
+        <source>0: Header-heavy smart wrapping</source>
+        <translation type="vanished">0: Ajustement automatique intelligent (ligne supérieure plus longue)</translation>
+    </message>
+    <message>
+        <source>16:&amp;9</source>
+        <translation type="vanished">16:9 (&amp;9)</translation>
+    </message>
+    <message>
+        <source>1: End-of-line word wrapping</source>
+        <translation type="vanished">1: Fin de ligne (mots complets)</translation>
+    </message>
+    <message>
+        <source>2: No word wrapping, \n or \N to break</source>
+        <translation type="vanished">2: Pas d&apos;ajustement automatique (\n ou \N)</translation>
+    </message>
+    <message>
+        <source>3: Lower-heavy smart wrapping</source>
+        <translation type="vanished">3: Ajustement automatique intelligent (ligne inférieure plus longue)</translation>
+    </message>
+    <message>
+        <source>3D rotate subtitles on XY axes (\frx, \fry)</source>
+        <translation type="vanished">Rotation 3D sur les axes XY (\frx, \fry)</translation>
+    </message>
+    <message>
+        <source>ASS</source>
+        <translation type="vanished">ASS</translation>
+    </message>
+    <message>
+        <source>Accept changes:</source>
+        <translation type="vanished">Accepter les modifications :</translation>
+    </message>
+    <message>
+        <source>Add lead in:</source>
+        <translation type="vanished">Ajout blanc de début :</translation>
+    </message>
+    <message>
+        <source>Add lead out:</source>
+        <translation type="vanished">Aj&amp;out blanc de fin :</translation>
+    </message>
+    <message>
+        <source>Add to &amp;Dictionary</source>
+        <translation type="vanished">Ajouter au &amp;dictionnaire</translation>
+    </message>
+    <message>
+        <source>Aegisub Core modernized with AstraCore high performance engine and Qt Quick architecture.
 
-Preserving classic desktop interactions and pixel-perfect native workflows.</source><translation>Moteur Aegisub modernisé avec AstraCore haute performance et l'architecture Qt Quick.
+Preserving classic desktop interactions and pixel-perfect native workflows.</source>
+        <translation type="vanished">Moteur Aegisub modernisé avec AstraCore haute performance et l&apos;architecture Qt Quick.
 
-Préservation des flux de travail natifs et des interactions classiques de bureau.</translation></message><message><source>Aegisub Qt Quick</source><translation>Aegisub Qt Quick</translation></message><message><source>Aegisub Style Preview 123</source><translation>Aperçu du style Aegisub 123</translation></message><message><source>All</source><translation>Tous</translation></message><message><source>All &amp;lines</source><translation>Toutes les lignes (&amp;L)</translation></message><message><source>All rows</source><translation>Toutes les lignes</translation></message><message><source>Apply</source><translation>Appliquer</translation></message><message><source>Apply \k tags</source><translation>Appliquer les balises \k</translation></message><message><source>Auto scroll audio display</source><translation>Défilement auto de l'audio</translation></message><message><source>Auto sync video with active line</source><translation>Synchroniser automatiquement la vidéo avec la ligne active</translation></message><message><source>Autoload linked files</source><translation>Charger automatiquement les fichiers liés</translation></message><message><source>Automatically check for new versions on start</source><translation>Vérifier les mises à jour au démarrage</translation></message><message><source>Batch fade-in and fade-out tag generator</source><translation>Générateur de fondus d'entrée et de sortie par lot</translation></message><message><source>Bias: Start &lt;-</source><translation>Biais : Début &lt;- </translation></message><message><source>Blue (B):</source><translation>Bleu (B) :</translation></message><message><source>Bold</source><translation>Gras</translation></message><message><source>Catalog of Available Styles</source><translation>Catalogue des styles disponibles</translation></message><message><source>Change &amp;aspect ratio</source><translation>Modifier les proportions (&amp;A)</translation></message><message><source>Change aspect ratio</source><translation>Modifier les proportions</translation></message><message><source>Character counter</source><translation>Compteur de caractères</translation></message><message><source>Clean unused script headers and metadata</source><translation>Nettoyer les en-têtes et métadonnées inutilisées</translation></message><message><source>Clear all dialogue text</source><translation>Effacer tout le texte du dialogue</translation></message><message><source>Clear text, keeping tags</source><translation>Effacer le texte en conservant les balises</translation></message><message><source>Color matrix:</source><translation>Matrice de couleur :</translation></message><message><source>Color preview</source><translation>Aperçu des couleurs</translation></message><message><source>Color range:</source><translation>Gamme de couleurs :</translation></message><message><source>Colour:</source><translation>Couleur :</translation></message><message><source>Colours</source><translation>Couleurs</translation></message><message><source>Commit and advance (Enter)</source><translation>Valider et passer à la ligne suivante (Entrée)</translation></message><message><source>Copy crosshair coordinates</source><translation>Copier les coordonnées du réticule</translation></message><message><source>Copy current frame to clipboard</source><translation>Copier l'image courante dans le presse-papiers</translation></message><message><source>Copy frame with subtitles</source><translation>Copier l'image avec sous-titres</translation></message><message><source>Copy raw frame</source><translation>Copier l'image brute</translation></message><message><source>Crop</source><translation>Recadrer</translation></message><message><source>Current</source><translation>Actuelle</translation></message><message><source>Current subtitle line text.</source><translation>Texte de la ligne de sous-titre sélectionnée.</translation></message><message><source>Custom...</source><translation>Personnalisation</translation></message><message><source>Default Styles</source><translation>Styles par défaut</translation></message><message><source>Dest +</source><translation>Cible +</translation></message><message><source>Dest -</source><translation>Cible -</translation></message><message><source>Dest style:</source><translation>Style cible (kanji) :</translation></message><message><source>Dest:</source><translation>Cible : </translation></message><message><source>Detach &amp;Video</source><translation>Détacher la vidéo</translation></message><message><source>DirectWrite Text Shaping</source><translation>Mise en forme DirectWrite / HarfBuzz</translation></message><message><source>Drag subtitles (\pos)</source><translation>Déplacer les sous-titres (\pos)</translation></message><message><source>Dropper</source><translation>Pipette</translation></message><message><source>Duration</source><translation>Durée</translation></message><message><source>Duration:</source><translation>Durée :</translation></message><message><source>Duration: </source><translation>Durée : </translation></message><message><source>Enable global hotkeys</source><translation>Activer les raccourcis globaux</translation></message><message><source>Extra Large (48x48)</source><translation>Très grandes icônes (48x48)</translation></message><message><source>File History</source><translation>Historique des fichiers</translation></message><message><source>Fixes missing or invalid styles.</source><translation>Corrige les styles manquants ou invalides.</translation></message><message><source>Font Face Name</source><translation>Nom de police</translation></message><message><source>Fonts Collector ready.
+Préservation des flux de travail natifs et des interactions classiques de bureau.</translation>
+    </message>
+    <message>
+        <source>Aegisub Qt Quick</source>
+        <translation type="vanished">Aegisub Qt Quick</translation>
+    </message>
+    <message>
+        <source>Aegisub Style Preview 123</source>
+        <translation type="vanished">Aperçu du style Aegisub 123</translation>
+    </message>
+    <message>
+        <source>All</source>
+        <translation type="vanished">Tous</translation>
+    </message>
+    <message>
+        <source>All &amp;lines</source>
+        <translation type="vanished">Toutes les lignes (&amp;L)</translation>
+    </message>
+    <message>
+        <source>All rows</source>
+        <translation type="vanished">Toutes les lignes</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation type="vanished">Appliquer</translation>
+    </message>
+    <message>
+        <source>Apply \k tags</source>
+        <translation type="vanished">Appliquer les balises \k</translation>
+    </message>
+    <message>
+        <source>Auto scroll audio display</source>
+        <translation type="vanished">Défilement auto de l&apos;audio</translation>
+    </message>
+    <message>
+        <source>Auto sync video with active line</source>
+        <translation type="vanished">Synchroniser automatiquement la vidéo avec la ligne active</translation>
+    </message>
+    <message>
+        <source>Autoload linked files</source>
+        <translation type="vanished">Charger automatiquement les fichiers liés</translation>
+    </message>
+    <message>
+        <source>Automatically check for new versions on start</source>
+        <translation type="vanished">Vérifier les mises à jour au démarrage</translation>
+    </message>
+    <message>
+        <source>Batch fade-in and fade-out tag generator</source>
+        <translation type="vanished">Générateur de fondus d&apos;entrée et de sortie par lot</translation>
+    </message>
+    <message>
+        <source>Bias: Start &lt;-</source>
+        <translation type="vanished">Biais : Début &lt;- </translation>
+    </message>
+    <message>
+        <source>Blue (B):</source>
+        <translation type="vanished">Bleu (B) :</translation>
+    </message>
+    <message>
+        <source>Bold</source>
+        <translation type="vanished">Gras</translation>
+    </message>
+    <message>
+        <source>Catalog of Available Styles</source>
+        <translation type="vanished">Catalogue des styles disponibles</translation>
+    </message>
+    <message>
+        <source>Change &amp;aspect ratio</source>
+        <translation type="vanished">Modifier les proportions (&amp;A)</translation>
+    </message>
+    <message>
+        <source>Change aspect ratio</source>
+        <translation type="vanished">Modifier les proportions</translation>
+    </message>
+    <message>
+        <source>Character counter</source>
+        <translation type="vanished">Compteur de caractères</translation>
+    </message>
+    <message>
+        <source>Clean unused script headers and metadata</source>
+        <translation type="vanished">Nettoyer les en-têtes et métadonnées inutilisées</translation>
+    </message>
+    <message>
+        <source>Clear all dialogue text</source>
+        <translation type="vanished">Effacer tout le texte du dialogue</translation>
+    </message>
+    <message>
+        <source>Clear text, keeping tags</source>
+        <translation type="vanished">Effacer le texte en conservant les balises</translation>
+    </message>
+    <message>
+        <source>Color matrix:</source>
+        <translation type="vanished">Matrice de couleur :</translation>
+    </message>
+    <message>
+        <source>Color preview</source>
+        <translation type="vanished">Aperçu des couleurs</translation>
+    </message>
+    <message>
+        <source>Color range:</source>
+        <translation type="vanished">Gamme de couleurs :</translation>
+    </message>
+    <message>
+        <source>Colour:</source>
+        <translation type="vanished">Couleur :</translation>
+    </message>
+    <message>
+        <source>Colours</source>
+        <translation type="vanished">Couleurs</translation>
+    </message>
+    <message>
+        <source>Commit and advance (Enter)</source>
+        <translation type="vanished">Valider et passer à la ligne suivante (Entrée)</translation>
+    </message>
+    <message>
+        <source>Copy crosshair coordinates</source>
+        <translation type="vanished">Copier les coordonnées du réticule</translation>
+    </message>
+    <message>
+        <source>Copy current frame to clipboard</source>
+        <translation type="vanished">Copier l&apos;image courante dans le presse-papiers</translation>
+    </message>
+    <message>
+        <source>Copy frame with subtitles</source>
+        <translation type="vanished">Copier l&apos;image avec sous-titres</translation>
+    </message>
+    <message>
+        <source>Copy raw frame</source>
+        <translation type="vanished">Copier l&apos;image brute</translation>
+    </message>
+    <message>
+        <source>Crop</source>
+        <translation type="vanished">Recadrer</translation>
+    </message>
+    <message>
+        <source>Current</source>
+        <translation type="vanished">Actuelle</translation>
+    </message>
+    <message>
+        <source>Current subtitle line text.</source>
+        <translation type="vanished">Texte de la ligne de sous-titre sélectionnée.</translation>
+    </message>
+    <message>
+        <source>Custom...</source>
+        <translation type="vanished">Personnalisation</translation>
+    </message>
+    <message>
+        <source>Default Styles</source>
+        <translation type="vanished">Styles par défaut</translation>
+    </message>
+    <message>
+        <source>Dest +</source>
+        <translation type="vanished">Cible +</translation>
+    </message>
+    <message>
+        <source>Dest -</source>
+        <translation type="vanished">Cible -</translation>
+    </message>
+    <message>
+        <source>Dest style:</source>
+        <translation type="vanished">Style cible (kanji) :</translation>
+    </message>
+    <message>
+        <source>Dest:</source>
+        <translation type="vanished">Cible : </translation>
+    </message>
+    <message>
+        <source>Detach &amp;Video</source>
+        <translation type="vanished">Détacher la vidéo</translation>
+    </message>
+    <message>
+        <source>DirectWrite Text Shaping</source>
+        <translation type="vanished">Mise en forme DirectWrite / HarfBuzz</translation>
+    </message>
+    <message>
+        <source>Drag subtitles (\pos)</source>
+        <translation type="vanished">Déplacer les sous-titres (\pos)</translation>
+    </message>
+    <message>
+        <source>Dropper</source>
+        <translation type="vanished">Pipette</translation>
+    </message>
+    <message>
+        <source>Duration</source>
+        <translation type="vanished">Durée</translation>
+    </message>
+    <message>
+        <source>Duration:</source>
+        <translation type="vanished">Durée :</translation>
+    </message>
+    <message>
+        <source>Duration: </source>
+        <translation type="vanished">Durée : </translation>
+    </message>
+    <message>
+        <source>Enable global hotkeys</source>
+        <translation type="vanished">Activer les raccourcis globaux</translation>
+    </message>
+    <message>
+        <source>Extra Large (48x48)</source>
+        <translation type="vanished">Très grandes icônes (48x48)</translation>
+    </message>
+    <message>
+        <source>File History</source>
+        <translation type="vanished">Historique des fichiers</translation>
+    </message>
+    <message>
+        <source>Fixes missing or invalid styles.</source>
+        <translation type="vanished">Corrige les styles manquants ou invalides.</translation>
+    </message>
+    <message>
+        <source>Font Face Name</source>
+        <translation type="vanished">Nom de police</translation>
+    </message>
+    <message>
+        <source>Fonts Collector ready.
 Select the action and destination, then click Start.
-</source><translation>Collecteur de polices prêt.
-Sélectionnez l'action et la destination, puis cliquez sur Démarrer.
-</translation></message><message><source>Frame:</source><translation>Image : </translation></message><message><source>Frames</source><translation>Images</translation></message><message><source>From &amp;script</source><translation>Depuis le s&amp;cript</translation></message><message><source>Generates karaoke templates.</source><translation>Génère les modèles karaoké.</translation></message><message><source>Go to Selection</source><translation>Aller à la sélection</translation></message><message><source>Graphics Backend</source><translation>Moteur graphique</translation></message><message><source>Green (G):</source><translation>Vert (V) :</translation></message><message><source>Hardware Accelerated Spectrogram</source><translation>Spectrogramme audio accéléré par matériel</translation></message><message><source>Height:</source><translation>Hauteur :</translation></message><message><source>Help</source><translation>Aide</translation></message><message><source>Hide All Tags</source><translation>Masquer toutes les balises</translation></message><message><source>Ignore A&amp;ll</source><translation>Tout i&amp;gnorer</translation></message><message><source>Insert (After)</source><translation>Insérer (après)</translation></message><message><source>Insert (Before)</source><translation>Insérer (avant)</translation></message><message><source>Insert at video time (After)</source><translation>Insérer au temps vidéo (après)</translation></message><message><source>Insert at video time (Before)</source><translation>Insérer au temps vidéo (avant)</translation></message><message><source>Insert original text at cursor</source><translation>Insérer le texte original au curseur</translation></message><message><source>Insert original text:</source><translation>Insérer le texte original :</translation></message><message><source>Intersect &amp;with Selection</source><translation>Intersection a&amp;vec la sélection</translation></message><message><source>Italics</source><translation>Italique</translation></message><message><source>Join (As karaoke)</source><translation>Joindre (comme karaoké)</translation></message><message><source>Join (Concatenate)</source><translation>Joindre (concaténer)</translation></message><message><source>Join (Keep first)</source><translation>Joindre (garder première ligne)</translation></message><message><source>Jump to &amp;End</source><translation>Aller à la fin (&amp;E)</translation></message><message><source>Jump to &amp;Start</source><translation>Aller au début (&amp;S)</translation></message><message><source>Jump to...</source><translation>Aller à</translation></message><message><source>Karaoke syllables:</source><translation>Syllabes de karaoké :</translation></message><message><source>Karaoke templater macro script (Automation 4 Lua)</source><translation>Macro de modèles d'effets karaoké (Automation 4 Lua)</translation></message><message><source>Karaoke timing mode</source><translation>Mode de synchronisation karaoké</translation></message><message><source>Language:</source><translation>Langue :</translation></message><message><source>Large (32x32)</source><translation>Grandes icônes (32x32)</translation></message><message><source>Layout: </source><translation>Disposition : </translation></message><message><source>Lead in</source><translation>Avance (Lead-in)</translation></message><message><source>Lead out</source><translation>Délai (Lead-out)</translation></message><message><source>Left:</source><translation>Gauche :</translation></message><message><source>Line break:</source><translation>Saut de ligne :</translation></message><message><source>Make Times &amp;Continuous</source><translation>Rendre les temps continus</translation></message><message><source>Make times continuous (Change end)</source><translation>Rendre les temps continus (changer la fin)</translation></message><message><source>Make times continuous (Change start)</source><translation>Rendre les temps continus (changer le début)</translation></message><message><source>Match &amp;case</source><translation>C&amp;asse identique</translation></message><message><source>Move to bottom</source><translation>En bas</translation></message><message><source>Move to script</source><translation>Déplacer vers le script</translation></message><message><source>Move to style storage</source><translation>Déplacer vers le stockage</translation></message><message><source>Move to top</source><translation>En haut</translation></message><message><source>Next line on commit</source><translation>Ligne suivante après validation</translation></message><message><source>Next line:</source><translation>Ligne suivante :</translation></message><message><source>No recent files</source><translation>Aucun fichier récent</translation></message><message><source>None</source><translation>Aucun</translation></message><message><source>OK</source><translation>OK</translation></message><message><source>Only affect selected lines</source><translation>Affecter uniquement les lignes sélectionnées</translation></message><message><source>Opaque box</source><translation>Boîte opaque</translation></message><message><source>Open &amp;Autosaved Subtitles...</source><translation>Ouvrir un fichier de sous-titres auto-sauvegardé</translation></message><message><source>Open Autosave File</source><translation>Ouvrir un fichier d'enregistrement automatique</translation></message><message><source>Open Subtitles...</source><translation>Ouvrir des sous-titres</translation></message><message><source>Outline &amp; Shadow</source><translation>Bordure et ombre</translation></message><message><source>Override &amp;Aspect Ratio</source><translation>Forcer le format d'image (&amp;A)</translation></message><message><source>Override matrix:</source><translation>Remplacer la matrice :</translation></message><message><source>Paste &amp;Over...</source><translation>Collage spécial (&amp;O)…</translation></message><message><source>Paste Lines Over...</source><translation>Coller par-dessus...</translation></message><message><source>Paste Over</source><translation>Collage spécial</translation></message><message><source>Pause video</source><translation>Mettre la vidéo en pause</translation></message><message><source>Play 500ms after end</source><translation>Lire 500 ms après la fin</translation></message><message><source>Play 500ms after start</source><translation>Lire 500 ms après le début</translation></message><message><source>Play 500ms before end</source><translation>Lire 500 ms avant la fin</translation></message><message><source>Play 500ms before start</source><translation>Lire 500 ms avant le début</translation></message><message><source>Play Current Line</source><translation>Lire la ligne active</translation></message><message><source>Play Selection</source><translation>Lire la sélection</translation></message><message><source>Play audio:</source><translation>Lire l'audio :</translation></message><message><source>Play selection</source><translation>Lire la sélection</translation></message><message><source>Play to end</source><translation>Lire jusqu'à la fin</translation></message><message><source>Play video:</source><translation>Lire la vidéo :</translation></message><message><source>Play/Pause video</source><translation>Lire/Pause la vidéo</translation></message><message><source>Predefined:</source><translation>Prédéfini :</translation></message><message><source>Previous line:</source><translation>Ligne précédente :</translation></message><message><source>QRHI Direct3D 11</source><translation>QRHI Direct3D 11 (recommandé)</translation></message><message><source>QRHI Metal</source><translation>QRHI Metal</translation></message><message><source>QRHI OpenGL</source><translation>QRHI OpenGL</translation></message><message><source>QRHI Vulkan</source><translation>QRHI Vulkan</translation></message><message><source>Recent &amp;Subtitles</source><translation>Sous-titres récents (&amp;S)</translation></message><message><source>Recombine lines</source><translation>Recombiner les lignes</translation></message><message><source>Rectangular clip (\clip)</source><translation>Masque rectangulaire (\clip)</translation></message><message><source>Red (R):</source><translation>Rouge (R) :</translation></message><message><source>Redo</source><translation>Rétablir</translation></message><message><source>Remove from &amp;Dictionary</source><translation>Retirer du dictionnaire</translation></message><message><source>Removes unused script info.</source><translation>Supprime les informations inutilisées du script.</translation></message><message><source>Replace &amp;All</source><translation>Tout remplacer (&amp;A)</translation></message><message><source>Rescan &amp;Autoload Dir</source><translation>Analyser à nouveau le dossier de chargement automatique (&amp;S)</translation></message><message><source>Reset columns</source><translation>Réinitialiser les colonnes</translation></message><message><source>Reset to Defaults</source><translation>Rétablir les valeurs par défaut</translation></message><message><source>Reset zoom and pan</source><translation>Réinitialiser le zoom et le panoramique</translation></message><message><source>Revert current line to original text</source><translation>Rétablir le texte original de la ligne</translation></message><message><source>Right:</source><translation>Droite :</translation></message><message><source>Rotate subtitles on Z axis (\frz)</source><translation>Rotation sur l'axe Z (\frz)</translation></message><message><source>S&amp;ubtract from Selection</source><translation>So&amp;ustraire à la sélection</translation></message><message><source>Save UI state</source><translation>Enregistrer l'état de l'interface</translation></message><message><source>Save current frame</source><translation>Enregistrer l'image courante</translation></message><message><source>Save frame with subtitles</source><translation>Enregistrer l'image avec sous-titres</translation></message><message><source>Save raw frame</source><translation>Enregistrer l'image brute</translation></message><message><source>Save subtitles</source><translation>Enregistrer les sous-titres</translation></message><message><source>Scale X %</source><translation>Échelle X %</translation></message><message><source>Scale X %:</source><translation>Échelle X % :</translation></message><message><source>Scale Y %</source><translation>Échelle Y %</translation></message><message><source>Scale Y %:</source><translation>Échelle Y % :</translation></message><message><source>Scale border and shadow</source><translation>Adapter taille bord et ombre</translation></message><message><source>Scale subtitles (\fscx, \fscy)</source><translation>Mettre les sous-titres à l'échelle (\fscx, \fscy)</translation></message><message><source>Script: </source><translation>Script : </translation></message><message><source>Scroll to current line</source><translation>Faire défiler jusqu'à la ligne active</translation></message><message><source>Search...</source><translation>Recherche</translation></message><message><source>Select &amp;Lines...</source><translation>Choix de lignes</translation></message><message><source>Select visible</source><translation>Sélection visible</translation></message><message><source>Selection onwards</source><translation>Sélection et suivantes</translation></message><message><source>Set &amp;Selection</source><translation>Régler la sé&amp;lection</translation></message><message><source>Shift times</source><translation>Décaler le temps</translation></message><message><source>Shift+Enter adds \</source><translation>Maj + Entrée ajoute \
-</translation></message><message><source>Show &amp;Video Details...</source><translation>Afficher les détails vidéo</translation></message><message><source>Show All Tags</source><translation>Afficher toutes les balises</translation></message><message><source>Show Simplified Tags</source><translation>Balises simplifiées</translation></message><message><source>Show original</source><translation>Afficher l'original</translation></message><message><source>Skip &amp;tags</source><translation>Ignorer les balises (&amp;T)</translation></message><message><source>Snap End to &amp;Video</source><translation>Coller la fin à la vidéo</translation></message><message><source>Snap Start to &amp;Video</source><translation>Coller le début à la vidéo</translation></message><message><source>Snap to &amp;Scene</source><translation>coller à la scène</translation></message><message><source>Source +</source><translation>Source +</translation></message><message><source>Source -</source><translation>Source -</translation></message><message><source>Source style:</source><translation>Style source (rōmaji) :</translation></message><message><source>Source:</source><translation>Source : </translation></message><message><source>Spectrogram</source><translation>Spectrogramme</translation></message><message><source>Split Line (after frame)</source><translation>Scinder la ligne (après l'image)</translation></message><message><source>Split Line (before frame)</source><translation>Scinder la ligne (avant l'image)</translation></message><message><source>Split by Karaoke</source><translation>Scinder par karaoké</translation></message><message><source>Split line after current frame</source><translation>Couper la ligne après l'image courante</translation></message><message><source>Split line before current frame</source><translation>Couper la ligne avant l'image courante</translation></message><message><source>Standard (16x16)</source><translation>Standard (16x16)</translation></message><message><source>Standard (24x24)</source><translation>Standard (24x24)</translation></message><message><source>Standard mode</source><translation>Mode standard</translation></message><message><source>Strikeout</source><translation>Barré</translation></message><message><source>Style Manager</source><translation>Gestionnaire de styles</translation></message><message><source>Styles available for current script</source><translation>Styles disponibles pour le script actuel</translation></message><message><source>Stylin&amp;g Assistant...</source><translation>assistant au style</translation></message><message><source>Syllable matching</source><translation>Correspondance des syllabes</translation></message><message><source>System Default</source><translation>Par défaut du système</translation></message><message><source>Threshold:</source><translation>Seuil :</translation></message><message><source>Time</source><translation>Temps</translation></message><message><source>Time:</source><translation>&amp;Temps : </translation></message><message><source>Toggle spectrum/waveform mode</source><translation>Basculer entre le mode spectrogramme et forme d'onde</translation></message><message><source>Transform subtitle times to a different framerate.</source><translation>Transformer le débit d'images des sous-titres.</translation></message><message><source>Type</source><translation>Type</translation></message><message><source>Underline</source><translation>Souligné</translation></message><message><source>Undo</source><translation>Annuler</translation></message><message><source>Use &amp;Dummy Video...</source><translation>Utiliser une fausse vidéo</translation></message><message><source>Use &amp;regular expressions</source><translation>&amp;Utiliser des expressions régulières</translation></message><message><source>Vectorial clip (\clip)</source><translation>Masque vectoriel (\clip)</translation></message><message><source>Vertical:</source><translation>Vertical :</translation></message><message><source>Video Help</source><translation>Aide vidéo</translation></message><message><source>View</source><translation>Affichage</translation></message><message><source>Width:</source><translation>Largeur :</translation></message><message><source>Wrap style:</source><translation>Style de répartition : </translation></message><message><source>frames</source><translation>images</translation></message><message><source>&amp;Save</source><translation>&amp;Enregistrer</translation></message><message><source>&amp;Don't Save</source><translation>Ne &amp;pas enregistrer</translation></message><message><source>&amp;Cancel</source><translation>&amp;Annuler</translation></message>
+</source>
+        <translation type="vanished">Collecteur de polices prêt.
+Sélectionnez l&apos;action et la destination, puis cliquez sur Démarrer.
+</translation>
+    </message>
+    <message>
+        <source>Frame:</source>
+        <translation type="vanished">Image : </translation>
+    </message>
+    <message>
+        <source>Frames</source>
+        <translation type="vanished">Images</translation>
+    </message>
+    <message>
+        <source>From &amp;script</source>
+        <translation type="vanished">Depuis le s&amp;cript</translation>
+    </message>
+    <message>
+        <source>Generates karaoke templates.</source>
+        <translation type="vanished">Génère les modèles karaoké.</translation>
+    </message>
+    <message>
+        <source>Go to Selection</source>
+        <translation type="vanished">Aller à la sélection</translation>
+    </message>
+    <message>
+        <source>Graphics Backend</source>
+        <translation type="vanished">Moteur graphique</translation>
+    </message>
+    <message>
+        <source>Green (G):</source>
+        <translation type="vanished">Vert (V) :</translation>
+    </message>
+    <message>
+        <source>Hardware Accelerated Spectrogram</source>
+        <translation type="vanished">Spectrogramme audio accéléré par matériel</translation>
+    </message>
+    <message>
+        <source>Height:</source>
+        <translation type="vanished">Hauteur :</translation>
+    </message>
+    <message>
+        <source>Help</source>
+        <translation type="vanished">Aide</translation>
+    </message>
+    <message>
+        <source>Hide All Tags</source>
+        <translation type="vanished">Masquer toutes les balises</translation>
+    </message>
+    <message>
+        <source>Ignore A&amp;ll</source>
+        <translation type="vanished">Tout i&amp;gnorer</translation>
+    </message>
+    <message>
+        <source>Insert (After)</source>
+        <translation type="vanished">Insérer (après)</translation>
+    </message>
+    <message>
+        <source>Insert (Before)</source>
+        <translation type="vanished">Insérer (avant)</translation>
+    </message>
+    <message>
+        <source>Insert at video time (After)</source>
+        <translation type="vanished">Insérer au temps vidéo (après)</translation>
+    </message>
+    <message>
+        <source>Insert at video time (Before)</source>
+        <translation type="vanished">Insérer au temps vidéo (avant)</translation>
+    </message>
+    <message>
+        <source>Insert original text at cursor</source>
+        <translation type="vanished">Insérer le texte original au curseur</translation>
+    </message>
+    <message>
+        <source>Insert original text:</source>
+        <translation type="vanished">Insérer le texte original :</translation>
+    </message>
+    <message>
+        <source>Intersect &amp;with Selection</source>
+        <translation type="vanished">Intersection a&amp;vec la sélection</translation>
+    </message>
+    <message>
+        <source>Italics</source>
+        <translation type="vanished">Italique</translation>
+    </message>
+    <message>
+        <source>Join (As karaoke)</source>
+        <translation type="vanished">Joindre (comme karaoké)</translation>
+    </message>
+    <message>
+        <source>Join (Concatenate)</source>
+        <translation type="vanished">Joindre (concaténer)</translation>
+    </message>
+    <message>
+        <source>Join (Keep first)</source>
+        <translation type="vanished">Joindre (garder première ligne)</translation>
+    </message>
+    <message>
+        <source>Jump to &amp;End</source>
+        <translation type="vanished">Aller à la fin (&amp;E)</translation>
+    </message>
+    <message>
+        <source>Jump to &amp;Start</source>
+        <translation type="vanished">Aller au début (&amp;S)</translation>
+    </message>
+    <message>
+        <source>Jump to...</source>
+        <translation type="vanished">Aller à</translation>
+    </message>
+    <message>
+        <source>Karaoke syllables:</source>
+        <translation type="vanished">Syllabes de karaoké :</translation>
+    </message>
+    <message>
+        <source>Karaoke templater macro script (Automation 4 Lua)</source>
+        <translation type="vanished">Macro de modèles d&apos;effets karaoké (Automation 4 Lua)</translation>
+    </message>
+    <message>
+        <source>Karaoke timing mode</source>
+        <translation type="vanished">Mode de synchronisation karaoké</translation>
+    </message>
+    <message>
+        <source>Language:</source>
+        <translation type="vanished">Langue :</translation>
+    </message>
+    <message>
+        <source>Large (32x32)</source>
+        <translation type="vanished">Grandes icônes (32x32)</translation>
+    </message>
+    <message>
+        <source>Layout: </source>
+        <translation type="vanished">Disposition : </translation>
+    </message>
+    <message>
+        <source>Lead in</source>
+        <translation type="vanished">Avance (Lead-in)</translation>
+    </message>
+    <message>
+        <source>Lead out</source>
+        <translation type="vanished">Délai (Lead-out)</translation>
+    </message>
+    <message>
+        <source>Left:</source>
+        <translation type="vanished">Gauche :</translation>
+    </message>
+    <message>
+        <source>Line break:</source>
+        <translation type="vanished">Saut de ligne :</translation>
+    </message>
+    <message>
+        <source>Make Times &amp;Continuous</source>
+        <translation type="vanished">Rendre les temps continus</translation>
+    </message>
+    <message>
+        <source>Make times continuous (Change end)</source>
+        <translation type="vanished">Rendre les temps continus (changer la fin)</translation>
+    </message>
+    <message>
+        <source>Make times continuous (Change start)</source>
+        <translation type="vanished">Rendre les temps continus (changer le début)</translation>
+    </message>
+    <message>
+        <source>Match &amp;case</source>
+        <translation type="vanished">C&amp;asse identique</translation>
+    </message>
+    <message>
+        <source>Move to bottom</source>
+        <translation type="vanished">En bas</translation>
+    </message>
+    <message>
+        <source>Move to script</source>
+        <translation type="vanished">Déplacer vers le script</translation>
+    </message>
+    <message>
+        <source>Move to style storage</source>
+        <translation type="vanished">Déplacer vers le stockage</translation>
+    </message>
+    <message>
+        <source>Move to top</source>
+        <translation type="vanished">En haut</translation>
+    </message>
+    <message>
+        <source>Next line on commit</source>
+        <translation type="vanished">Ligne suivante après validation</translation>
+    </message>
+    <message>
+        <source>Next line:</source>
+        <translation type="vanished">Ligne suivante :</translation>
+    </message>
+    <message>
+        <source>No recent files</source>
+        <translation type="vanished">Aucun fichier récent</translation>
+    </message>
+    <message>
+        <source>None</source>
+        <translation type="vanished">Aucun</translation>
+    </message>
+    <message>
+        <source>OK</source>
+        <translation type="vanished">OK</translation>
+    </message>
+    <message>
+        <source>Only affect selected lines</source>
+        <translation type="vanished">Affecter uniquement les lignes sélectionnées</translation>
+    </message>
+    <message>
+        <source>Opaque box</source>
+        <translation type="vanished">Boîte opaque</translation>
+    </message>
+    <message>
+        <source>Open &amp;Autosaved Subtitles...</source>
+        <translation type="vanished">Ouvrir un fichier de sous-titres auto-sauvegardé</translation>
+    </message>
+    <message>
+        <source>Open Autosave File</source>
+        <translation type="vanished">Ouvrir un fichier d&apos;enregistrement automatique</translation>
+    </message>
+    <message>
+        <source>Open Subtitles...</source>
+        <translation type="vanished">Ouvrir des sous-titres</translation>
+    </message>
+    <message>
+        <source>Outline &amp; Shadow</source>
+        <translation type="vanished">Bordure et ombre</translation>
+    </message>
+    <message>
+        <source>Override &amp;Aspect Ratio</source>
+        <translation type="vanished">Forcer le format d&apos;image (&amp;A)</translation>
+    </message>
+    <message>
+        <source>Override matrix:</source>
+        <translation type="vanished">Remplacer la matrice :</translation>
+    </message>
+    <message>
+        <source>Paste &amp;Over...</source>
+        <translation type="vanished">Collage spécial (&amp;O)…</translation>
+    </message>
+    <message>
+        <source>Paste Lines Over...</source>
+        <translation type="vanished">Coller par-dessus...</translation>
+    </message>
+    <message>
+        <source>Paste Over</source>
+        <translation type="vanished">Collage spécial</translation>
+    </message>
+    <message>
+        <source>Pause video</source>
+        <translation type="vanished">Mettre la vidéo en pause</translation>
+    </message>
+    <message>
+        <source>Play 500ms after end</source>
+        <translation type="vanished">Lire 500 ms après la fin</translation>
+    </message>
+    <message>
+        <source>Play 500ms after start</source>
+        <translation type="vanished">Lire 500 ms après le début</translation>
+    </message>
+    <message>
+        <source>Play 500ms before end</source>
+        <translation type="vanished">Lire 500 ms avant la fin</translation>
+    </message>
+    <message>
+        <source>Play 500ms before start</source>
+        <translation type="vanished">Lire 500 ms avant le début</translation>
+    </message>
+    <message>
+        <source>Play Current Line</source>
+        <translation type="vanished">Lire la ligne active</translation>
+    </message>
+    <message>
+        <source>Play Selection</source>
+        <translation type="vanished">Lire la sélection</translation>
+    </message>
+    <message>
+        <source>Play audio:</source>
+        <translation type="vanished">Lire l&apos;audio :</translation>
+    </message>
+    <message>
+        <source>Play selection</source>
+        <translation type="vanished">Lire la sélection</translation>
+    </message>
+    <message>
+        <source>Play to end</source>
+        <translation type="vanished">Lire jusqu&apos;à la fin</translation>
+    </message>
+    <message>
+        <source>Play video:</source>
+        <translation type="vanished">Lire la vidéo :</translation>
+    </message>
+    <message>
+        <source>Play/Pause video</source>
+        <translation type="vanished">Lire/Pause la vidéo</translation>
+    </message>
+    <message>
+        <source>Predefined:</source>
+        <translation type="vanished">Prédéfini :</translation>
+    </message>
+    <message>
+        <source>Previous line:</source>
+        <translation type="vanished">Ligne précédente :</translation>
+    </message>
+    <message>
+        <source>QRHI Direct3D 11</source>
+        <translation type="vanished">QRHI Direct3D 11 (recommandé)</translation>
+    </message>
+    <message>
+        <source>QRHI Metal</source>
+        <translation type="vanished">QRHI Metal</translation>
+    </message>
+    <message>
+        <source>QRHI OpenGL</source>
+        <translation type="vanished">QRHI OpenGL</translation>
+    </message>
+    <message>
+        <source>QRHI Vulkan</source>
+        <translation type="vanished">QRHI Vulkan</translation>
+    </message>
+    <message>
+        <source>Recent &amp;Subtitles</source>
+        <translation type="vanished">Sous-titres récents (&amp;S)</translation>
+    </message>
+    <message>
+        <source>Recombine lines</source>
+        <translation type="vanished">Recombiner les lignes</translation>
+    </message>
+    <message>
+        <source>Rectangular clip (\clip)</source>
+        <translation type="vanished">Masque rectangulaire (\clip)</translation>
+    </message>
+    <message>
+        <source>Red (R):</source>
+        <translation type="vanished">Rouge (R) :</translation>
+    </message>
+    <message>
+        <source>Redo</source>
+        <translation type="vanished">Rétablir</translation>
+    </message>
+    <message>
+        <source>Remove from &amp;Dictionary</source>
+        <translation type="vanished">Retirer du dictionnaire</translation>
+    </message>
+    <message>
+        <source>Removes unused script info.</source>
+        <translation type="vanished">Supprime les informations inutilisées du script.</translation>
+    </message>
+    <message>
+        <source>Replace &amp;All</source>
+        <translation type="vanished">Tout remplacer (&amp;A)</translation>
+    </message>
+    <message>
+        <source>Rescan &amp;Autoload Dir</source>
+        <translation type="vanished">Analyser à nouveau le dossier de chargement automatique (&amp;S)</translation>
+    </message>
+    <message>
+        <source>Reset columns</source>
+        <translation type="vanished">Réinitialiser les colonnes</translation>
+    </message>
+    <message>
+        <source>Reset to Defaults</source>
+        <translation type="vanished">Rétablir les valeurs par défaut</translation>
+    </message>
+    <message>
+        <source>Reset zoom and pan</source>
+        <translation type="vanished">Réinitialiser le zoom et le panoramique</translation>
+    </message>
+    <message>
+        <source>Revert current line to original text</source>
+        <translation type="vanished">Rétablir le texte original de la ligne</translation>
+    </message>
+    <message>
+        <source>Right:</source>
+        <translation type="vanished">Droite :</translation>
+    </message>
+    <message>
+        <source>Rotate subtitles on Z axis (\frz)</source>
+        <translation type="vanished">Rotation sur l&apos;axe Z (\frz)</translation>
+    </message>
+    <message>
+        <source>S&amp;ubtract from Selection</source>
+        <translation type="vanished">So&amp;ustraire à la sélection</translation>
+    </message>
+    <message>
+        <source>Save UI state</source>
+        <translation type="vanished">Enregistrer l&apos;état de l&apos;interface</translation>
+    </message>
+    <message>
+        <source>Save current frame</source>
+        <translation type="vanished">Enregistrer l&apos;image courante</translation>
+    </message>
+    <message>
+        <source>Save frame with subtitles</source>
+        <translation type="vanished">Enregistrer l&apos;image avec sous-titres</translation>
+    </message>
+    <message>
+        <source>Save raw frame</source>
+        <translation type="vanished">Enregistrer l&apos;image brute</translation>
+    </message>
+    <message>
+        <source>Save subtitles</source>
+        <translation type="vanished">Enregistrer les sous-titres</translation>
+    </message>
+    <message>
+        <source>Scale X %</source>
+        <translation type="vanished">Échelle X %</translation>
+    </message>
+    <message>
+        <source>Scale X %:</source>
+        <translation type="vanished">Échelle X % :</translation>
+    </message>
+    <message>
+        <source>Scale Y %</source>
+        <translation type="vanished">Échelle Y %</translation>
+    </message>
+    <message>
+        <source>Scale Y %:</source>
+        <translation type="vanished">Échelle Y % :</translation>
+    </message>
+    <message>
+        <source>Scale border and shadow</source>
+        <translation type="vanished">Adapter taille bord et ombre</translation>
+    </message>
+    <message>
+        <source>Scale subtitles (\fscx, \fscy)</source>
+        <translation type="vanished">Mettre les sous-titres à l&apos;échelle (\fscx, \fscy)</translation>
+    </message>
+    <message>
+        <source>Script: </source>
+        <translation type="vanished">Script : </translation>
+    </message>
+    <message>
+        <source>Scroll to current line</source>
+        <translation type="vanished">Faire défiler jusqu&apos;à la ligne active</translation>
+    </message>
+    <message>
+        <source>Search...</source>
+        <translation type="vanished">Recherche</translation>
+    </message>
+    <message>
+        <source>Select &amp;Lines...</source>
+        <translation type="vanished">Choix de lignes</translation>
+    </message>
+    <message>
+        <source>Select visible</source>
+        <translation type="vanished">Sélection visible</translation>
+    </message>
+    <message>
+        <source>Selection onwards</source>
+        <translation type="vanished">Sélection et suivantes</translation>
+    </message>
+    <message>
+        <source>Set &amp;Selection</source>
+        <translation type="vanished">Régler la sé&amp;lection</translation>
+    </message>
+    <message>
+        <source>Shift times</source>
+        <translation type="vanished">Décaler le temps</translation>
+    </message>
+    <message>
+        <source>Shift+Enter adds \</source>
+        <translation type="vanished">Maj + Entrée ajoute \
+</translation>
+    </message>
+    <message>
+        <source>Show &amp;Video Details...</source>
+        <translation type="vanished">Afficher les détails vidéo</translation>
+    </message>
+    <message>
+        <source>Show All Tags</source>
+        <translation type="vanished">Afficher toutes les balises</translation>
+    </message>
+    <message>
+        <source>Show Simplified Tags</source>
+        <translation type="vanished">Balises simplifiées</translation>
+    </message>
+    <message>
+        <source>Show original</source>
+        <translation type="vanished">Afficher l&apos;original</translation>
+    </message>
+    <message>
+        <source>Skip &amp;tags</source>
+        <translation type="vanished">Ignorer les balises (&amp;T)</translation>
+    </message>
+    <message>
+        <source>Snap End to &amp;Video</source>
+        <translation type="vanished">Coller la fin à la vidéo</translation>
+    </message>
+    <message>
+        <source>Snap Start to &amp;Video</source>
+        <translation type="vanished">Coller le début à la vidéo</translation>
+    </message>
+    <message>
+        <source>Snap to &amp;Scene</source>
+        <translation type="vanished">coller à la scène</translation>
+    </message>
+    <message>
+        <source>Source +</source>
+        <translation type="vanished">Source +</translation>
+    </message>
+    <message>
+        <source>Source -</source>
+        <translation type="vanished">Source -</translation>
+    </message>
+    <message>
+        <source>Source style:</source>
+        <translation type="vanished">Style source (rōmaji) :</translation>
+    </message>
+    <message>
+        <source>Source:</source>
+        <translation type="vanished">Source : </translation>
+    </message>
+    <message>
+        <source>Spectrogram</source>
+        <translation type="vanished">Spectrogramme</translation>
+    </message>
+    <message>
+        <source>Split Line (after frame)</source>
+        <translation type="vanished">Scinder la ligne (après l&apos;image)</translation>
+    </message>
+    <message>
+        <source>Split Line (before frame)</source>
+        <translation type="vanished">Scinder la ligne (avant l&apos;image)</translation>
+    </message>
+    <message>
+        <source>Split by Karaoke</source>
+        <translation type="vanished">Scinder par karaoké</translation>
+    </message>
+    <message>
+        <source>Split line after current frame</source>
+        <translation type="vanished">Couper la ligne après l&apos;image courante</translation>
+    </message>
+    <message>
+        <source>Split line before current frame</source>
+        <translation type="vanished">Couper la ligne avant l&apos;image courante</translation>
+    </message>
+    <message>
+        <source>Standard (16x16)</source>
+        <translation type="vanished">Standard (16x16)</translation>
+    </message>
+    <message>
+        <source>Standard (24x24)</source>
+        <translation type="vanished">Standard (24x24)</translation>
+    </message>
+    <message>
+        <source>Standard mode</source>
+        <translation type="vanished">Mode standard</translation>
+    </message>
+    <message>
+        <source>Strikeout</source>
+        <translation type="vanished">Barré</translation>
+    </message>
+    <message>
+        <source>Style Manager</source>
+        <translation type="vanished">Gestionnaire de styles</translation>
+    </message>
+    <message>
+        <source>Styles available for current script</source>
+        <translation type="vanished">Styles disponibles pour le script actuel</translation>
+    </message>
+    <message>
+        <source>Stylin&amp;g Assistant...</source>
+        <translation type="vanished">assistant au style</translation>
+    </message>
+    <message>
+        <source>Syllable matching</source>
+        <translation type="vanished">Correspondance des syllabes</translation>
+    </message>
+    <message>
+        <source>System Default</source>
+        <translation type="vanished">Par défaut du système</translation>
+    </message>
+    <message>
+        <source>Threshold:</source>
+        <translation type="vanished">Seuil :</translation>
+    </message>
+    <message>
+        <source>Time</source>
+        <translation type="vanished">Temps</translation>
+    </message>
+    <message>
+        <source>Time:</source>
+        <translation type="vanished">&amp;Temps : </translation>
+    </message>
+    <message>
+        <source>Toggle spectrum/waveform mode</source>
+        <translation type="vanished">Basculer entre le mode spectrogramme et forme d&apos;onde</translation>
+    </message>
+    <message>
+        <source>Transform subtitle times to a different framerate.</source>
+        <translation type="vanished">Transformer le débit d&apos;images des sous-titres.</translation>
+    </message>
+    <message>
+        <source>Type</source>
+        <translation type="vanished">Type</translation>
+    </message>
+    <message>
+        <source>Underline</source>
+        <translation type="vanished">Souligné</translation>
+    </message>
+    <message>
+        <source>Undo</source>
+        <translation type="vanished">Annuler</translation>
+    </message>
+    <message>
+        <source>Use &amp;Dummy Video...</source>
+        <translation type="vanished">Utiliser une fausse vidéo</translation>
+    </message>
+    <message>
+        <source>Use &amp;regular expressions</source>
+        <translation type="vanished">&amp;Utiliser des expressions régulières</translation>
+    </message>
+    <message>
+        <source>Vectorial clip (\clip)</source>
+        <translation type="vanished">Masque vectoriel (\clip)</translation>
+    </message>
+    <message>
+        <source>Vertical:</source>
+        <translation type="vanished">Vertical :</translation>
+    </message>
+    <message>
+        <source>Video Help</source>
+        <translation type="vanished">Aide vidéo</translation>
+    </message>
+    <message>
+        <source>View</source>
+        <translation type="vanished">Affichage</translation>
+    </message>
+    <message>
+        <source>Width:</source>
+        <translation type="vanished">Largeur :</translation>
+    </message>
+    <message>
+        <source>Wrap style:</source>
+        <translation type="vanished">Style de répartition : </translation>
+    </message>
+    <message>
+        <source>frames</source>
+        <translation type="vanished">images</translation>
+    </message>
+    <message>
+        <source>&amp;Save</source>
+        <translation type="vanished">&amp;Enregistrer</translation>
+    </message>
+    <message>
+        <source>&amp;Don&apos;t Save</source>
+        <translation type="vanished">Ne &amp;pas enregistrer</translation>
+    </message>
+    <message>
+        <source>&amp;Cancel</source>
+        <translation type="vanished">&amp;Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>AudioBox</name>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="212"/>
+        <source>Horizontal zoom</source>
+        <translation type="unfinished">Zoom horizontal</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="282"/>
+        <source>Vertical zoom</source>
+        <translation type="unfinished">Zoom vertical</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="338"/>
+        <source>Audio Volume</source>
+        <translation type="unfinished">Volume audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="388"/>
+        <source>Link vertical zoom and volume sliders</source>
+        <translation type="unfinished">Lier les curseurs de zoom vertical et de volume</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="464"/>
+        <source>Karaoke syllables:</source>
+        <translation type="unfinished">Syllabes de karaoké :</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="519"/>
+        <source>Syllable: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="528"/>
+        <source>Apply k tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="552"/>
+        <source>Created karaoke %1 tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="597"/>
+        <source>Previous line or syllable</source>
+        <translation type="unfinished">Ligne ou syllabe précédentes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="606"/>
+        <source>Next line or syllable</source>
+        <translation type="unfinished">Ligne ou syllabe suivantes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="615"/>
+        <source>Play audio until the end of the selection is reached</source>
+        <translation type="unfinished">Lire l&apos;audio jusqu&apos;à la fin de la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="620"/>
+        <source>Play the audio for the current line</source>
+        <translation type="unfinished">Lire l&apos;audio de la ligne actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="625"/>
+        <source>Stop audio and video playback</source>
+        <translation type="unfinished">Arrêtez la lecture audio et vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="635"/>
+        <source>Play 500 ms before selection</source>
+        <translation type="unfinished">Lire 500 ms avant la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="640"/>
+        <source>Play 500 ms after selection</source>
+        <translation type="unfinished">Lire 500 ms après la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="645"/>
+        <source>Play first 500 ms of selection</source>
+        <translation type="unfinished">Lire les premières 500 ms de la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="650"/>
+        <source>Play last 500 ms of selection</source>
+        <translation type="unfinished">Lire les dernières 500 ms de la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="655"/>
+        <source>Play from selection start to end of file</source>
+        <translation type="unfinished">Lire du début de la sélection à la fin du fichier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="665"/>
+        <source>Add the lead in time to the selected lines</source>
+        <translation type="unfinished">Ajouter blanc de début pour les lignes sélectionnées</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="670"/>
+        <source>Add the lead out time to the selected lines</source>
+        <translation type="unfinished">Ajouter un blanc de fin pour les lignes sélectionnées</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="681"/>
+        <source>Commit any pending audio timing changes</source>
+        <translation type="unfinished">Valider tous les changements de temps audio en attente</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="688"/>
+        <source>Scroll the audio display to center on the current audio selection</source>
+        <translation type="unfinished">Faire défiler l&apos;affichage audio pour le centrer sur la sélection audio actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="702"/>
+        <source>Automatically commit all changes</source>
+        <translation type="unfinished">Valider automatiquement toutes les modifications</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="709"/>
+        <source>Automatically go to next line on commit</source>
+        <translation type="unfinished">Passer automatiquement à la ligne suivante après validation</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="716"/>
+        <source>Auto scroll audio display to selected line</source>
+        <translation type="unfinished">Auto-défilement de l&apos;affichage audio vers la ligne sélectionnée</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="723"/>
+        <source>Spectrum analyzer mode</source>
+        <translation type="unfinished">Mode analyse de spectre</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="730"/>
+        <source>Toggle global hotkey overrides (Medusa Mode)</source>
+        <translation type="unfinished">Alterner entre les touches de raccourcis globales et modifiées (Mode Medusa)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="742"/>
+        <source>Toggle karaoke mode</source>
+        <translation type="unfinished">Alterner mode karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/AudioBox.qml" line="752"/>
+        <source>Speed:</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DetachedVideoWindow</name>
+    <message>
+        <location filename="../qml/views/DetachedVideoWindow.qml" line="15"/>
+        <source>AegisubQT - Detached Video</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DialogAbout</name>
+    <message>
+        <location filename="../qml/dialogs/DialogAbout.qml" line="40"/>
+        <source>About AegisubQT</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAbout.qml" line="158"/>
+        <source>See the help file for full credits.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAbout.qml" line="179"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+</context>
+<context>
+    <name>DialogAttachments</name>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="14"/>
+        <source>Attachment List</source>
+        <translation type="unfinished">Liste des pièces jointes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="27"/>
+        <source>Attach Font</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="28"/>
+        <source>Font files (*.ttf *.otf *.ttc *.woff)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="28"/>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="44"/>
+        <source>All files (*.*)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="37"/>
+        <source>Attached font: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="43"/>
+        <source>Attach Graphics</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="44"/>
+        <source>Graphic files (*.bmp *.png *.jpg *.jpeg *.ico)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="53"/>
+        <source>Attached graphics: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="59"/>
+        <source>Select Folder to Extract Attachment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="64"/>
+        <source>Extracted attachment %1 to %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="109"/>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="132"/>
+        <source>Size</source>
+        <translation type="unfinished">Taille</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="155"/>
+        <source>Group</source>
+        <translation type="unfinished">Groupe</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="262"/>
+        <source>Attach &amp;Font</source>
+        <translation type="unfinished">&amp;Ajouter une police</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="268"/>
+        <source>Attach &amp;Graphics</source>
+        <translation type="unfinished">&amp;Ajouter une image</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="274"/>
+        <source>E&amp;xtract</source>
+        <translation type="unfinished">E&amp;xtraire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="281"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="289"/>
+        <source>Attachment removed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="295"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAttachments.qml" line="303"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>DialogAutomation</name>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="14"/>
+        <source>Automation Manager</source>
+        <translation type="unfinished">Gestionnaire d&apos;automatismes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="23"/>
+        <source>Karaoke templater macro script (Automation 4 Lua)</source>
+        <translation type="unfinished">Macro de modèles d&apos;effets karaoké (Automation 4 Lua)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="24"/>
+        <source>Clean unused script headers and metadata</source>
+        <translation type="unfinished">Nettoyer les en-têtes et métadonnées inutilisées</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="25"/>
+        <source>Batch fade-in and fade-out tag generator</source>
+        <translation type="unfinished">Générateur de fondus d&apos;entrée et de sortie par lot</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="32"/>
+        <source>Add Automation Script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="77"/>
+        <source>Type</source>
+        <translation type="unfinished">Type</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="78"/>
+        <source>Name</source>
+        <translation type="unfinished">Nom</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="79"/>
+        <source>Filename</source>
+        <translation type="unfinished">Nom du fichier</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="80"/>
+        <source>Description</source>
+        <translation type="unfinished">Description</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="149"/>
+        <source>&amp;Add...</source>
+        <translation type="unfinished">&amp;Ajouter</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="154"/>
+        <source>&amp;Remove</source>
+        <translation type="unfinished">&amp;Retirer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="165"/>
+        <source>&amp;Reload</source>
+        <translation type="unfinished">Re&amp;charger</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="170"/>
+        <source>Reloaded script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="175"/>
+        <source>&amp;Info...</source>
+        <translation type="unfinished">Info</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="185"/>
+        <source>Rescan &amp;Autoload Dir</source>
+        <translation type="unfinished">Analyser à nouveau le dossier de chargement automatique (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="190"/>
+        <source>Rescanned autoload folder</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="196"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutomation.qml" line="202"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogAutosave</name>
+    <message>
+        <location filename="../qml/dialogs/DialogAutosave.qml" line="13"/>
+        <source>Open Autosave File</source>
+        <translation type="unfinished">Ouvrir un fichier d&apos;enregistrement automatique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutosave.qml" line="86"/>
+        <source>Files</source>
+        <translation type="unfinished">Fichiers</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutosave.qml" line="135"/>
+        <source>Versions</source>
+        <translation type="unfinished">Versions</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutosave.qml" line="192"/>
+        <source>Open</source>
+        <translation type="unfinished">Ouvrir</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogAutosave.qml" line="199"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogColorPicker</name>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="14"/>
+        <source>Select Color</source>
+        <translation type="unfinished">Choix couleur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="111"/>
+        <source>Color preview</source>
+        <translation type="unfinished">Aperçu des couleurs</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="127"/>
+        <source>Current</source>
+        <translation type="unfinished">Actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="141"/>
+        <source>Original</source>
+        <translation type="unfinished">Original</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="150"/>
+        <source>Dropper</source>
+        <translation type="unfinished">Pipette</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="173"/>
+        <source>Red (R):</source>
+        <translation type="unfinished">Rouge (R) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="180"/>
+        <source>Green (G):</source>
+        <translation type="unfinished">Vert (V) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="187"/>
+        <source>Blue (B):</source>
+        <translation type="unfinished">Bleu (B) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="197"/>
+        <source>ASS</source>
+        <translation type="unfinished">ASS</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="221"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogColorPicker.qml" line="233"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogDummyVideo</name>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="15"/>
+        <source>Dummy video options</source>
+        <translation type="unfinished">Options de la fausse vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="66"/>
+        <source>Resolution:</source>
+        <translation type="unfinished">Résolution :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="96"/>
+        <source>Colour:</source>
+        <translation type="unfinished">Couleur :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="111"/>
+        <source>Checkerboard &amp;pattern</source>
+        <translation type="unfinished">Motif en damier (&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="115"/>
+        <source>Frame rate (fps):</source>
+        <translation type="unfinished">Images par seconde (ips) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="123"/>
+        <source>Duration (frames):</source>
+        <translation type="unfinished">Durée (en images) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="132"/>
+        <source>Duration: </source>
+        <translation type="unfinished">Durée : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="148"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="154"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogDummyVideo.qml" line="159"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogExport</name>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="14"/>
+        <source>Export</source>
+        <translation type="unfinished">Export</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="28"/>
+        <source>Transform subtitle times to a different framerate.</source>
+        <translation type="unfinished">Transformer le débit d&apos;images des sous-titres.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="29"/>
+        <source>Fixes missing or invalid styles.</source>
+        <translation type="unfinished">Corrige les styles manquants ou invalides.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="30"/>
+        <source>Removes unused script info.</source>
+        <translation type="unfinished">Supprime les informations inutilisées du script.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="31"/>
+        <source>Generates karaoke templates.</source>
+        <translation type="unfinished">Génère les modèles karaoké.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="58"/>
+        <source>Filters</source>
+        <translation type="unfinished">Filtres</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="120"/>
+        <source>Move &amp;Up</source>
+        <translation type="unfinished">Monter (&amp;U)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="134"/>
+        <source>Move &amp;Down</source>
+        <translation type="unfinished">Descendre (&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="147"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished">Tout sélectionner (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="148"/>
+        <source>Select &amp;None</source>
+        <translation type="unfinished">Ne rien sélectionner (&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="174"/>
+        <source>Text encoding:</source>
+        <translation type="unfinished">Encodage texte :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="199"/>
+        <source>&amp;Export...</source>
+        <translation type="unfinished">Exporter (&amp;E)…</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="206"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogExport.qml" line="211"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogFontsCollector</name>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="13"/>
+        <source>Fonts Collector</source>
+        <translation type="unfinished">Collecteur de polices</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="23"/>
+        <source>Fonts Collector ready.
+Select the action and destination, then click Start.
+</source>
+        <translation type="unfinished">Collecteur de polices prêt.
+Sélectionnez l&apos;action et la destination, puis cliquez sur Démarrer.
+</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="31"/>
+        <source>* Scanning script for fonts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="32"/>
+        <source>* Checking style fonts...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="35"/>
+        <source>* Font check completed. All fonts are present.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="37"/>
+        <source>* Collecting font files to: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="38"/>
+        <source>* Copying font files...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="40"/>
+        <source>Done. All fonts copied.</source>
+        <translation type="unfinished">Terminé. Toutes les polices d&apos;écriture ont été copiées.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="52"/>
+        <source>Action</source>
+        <translation type="unfinished">Action</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="62"/>
+        <source>Check fonts for availability</source>
+        <translation type="unfinished">Vérifier la disponibilité des polices</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="67"/>
+        <source>Copy fonts to folder</source>
+        <translation type="unfinished">Copier les polices dans un dossier</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="71"/>
+        <source>Copy fonts to subtitle file&apos;s folder</source>
+        <translation type="unfinished">Copier dans le dossier du sous-titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="75"/>
+        <source>Copy fonts to zipped archive</source>
+        <translation type="unfinished">Créer une archive ZIP avec les polices</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="82"/>
+        <source>Destination</source>
+        <translation type="unfinished">Destination</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="98"/>
+        <source>&amp;Browse...</source>
+        <translation type="unfinished">Parcourir (&amp;B)…</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="108"/>
+        <source>Log</source>
+        <translation type="unfinished">Historique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="143"/>
+        <source>&amp;Start</source>
+        <translation type="unfinished">Démarrer (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="152"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogFontsCollector.qml" line="157"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogJumpTo</name>
+    <message>
+        <location filename="../qml/dialogs/DialogJumpTo.qml" line="14"/>
+        <source>Jump to</source>
+        <translation type="unfinished">Aller à</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogJumpTo.qml" line="62"/>
+        <source>Frame: </source>
+        <translation type="unfinished">Image : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogJumpTo.qml" line="80"/>
+        <source>Time: </source>
+        <translation type="unfinished">Temps : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogJumpTo.qml" line="107"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogJumpTo.qml" line="113"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogKanjiTimer</name>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="14"/>
+        <source>Kanji Timer</source>
+        <translation type="unfinished">Minuteur de kanji</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="40"/>
+        <source>Styles</source>
+        <translation type="unfinished">Styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="48"/>
+        <source>Source style:</source>
+        <translation type="unfinished">Style source (rōmaji) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="56"/>
+        <source>Dest style:</source>
+        <translation type="unfinished">Style cible (kanji) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="68"/>
+        <source>Syllable matching</source>
+        <translation type="unfinished">Correspondance des syllabes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="89"/>
+        <source>Source: </source>
+        <translation type="unfinished">Source : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="96"/>
+        <source>Dest: </source>
+        <translation type="unfinished">Cible : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="108"/>
+        <source>Source +</source>
+        <translation type="unfinished">Source +</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="110"/>
+        <source>Increased source syllable group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="113"/>
+        <source>Source -</source>
+        <translation type="unfinished">Source -</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="115"/>
+        <source>Decreased source syllable group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="118"/>
+        <source>Dest +</source>
+        <translation type="unfinished">Cible +</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="120"/>
+        <source>Increased destination character group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="123"/>
+        <source>Dest -</source>
+        <translation type="unfinished">Cible -</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="125"/>
+        <source>Decreased destination character group</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="128"/>
+        <source>&amp;Auto match</source>
+        <translation type="unfinished">Alignement auto (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="130"/>
+        <source>Auto-matched Romaji syllables to Kanji characters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="133"/>
+        <source>&amp;Accept</source>
+        <translation type="unfinished">Accepter (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="135"/>
+        <source>Accepted syllable match</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="149"/>
+        <source>&amp;Start!</source>
+        <translation type="unfinished">Démarrer (&amp;S) !</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="156"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogKanjiTimer.qml" line="161"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogLanguage</name>
+    <message>
+        <location filename="../qml/dialogs/DialogLanguage.qml" line="14"/>
+        <source>Language</source>
+        <translation type="unfinished">Langue</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogLanguage.qml" line="83"/>
+        <source>Please choose a language:</source>
+        <translation type="unfinished">Veuillez choisir une langue :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogLanguage.qml" line="168"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogLanguage.qml" line="175"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogLog</name>
+    <message>
+        <location filename="../qml/dialogs/DialogLog.qml" line="15"/>
+        <source>Log Window</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogLog.qml" line="59"/>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogLog.qml" line="68"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+</context>
+<context>
+    <name>DialogManager</name>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="129"/>
+        <source>Created dummy video (</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="189"/>
+        <source>Style [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="189"/>
+        <source>] updated</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="230"/>
+        <source>Applied style to line #%1: %2</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="268"/>
+        <source>Colour picker activated (click anywhere on the video to pick a colour)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="319"/>
+        <source>Resolution resampled: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="333"/>
+        <source>Script properties updated (PlayRes: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="376"/>
+        <source>Translation committed for line #%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="406"/>
+        <source>Jumped to frame #</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="418"/>
+        <source>Choose a folder to export fonts to...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="442"/>
+        <source>Preferences saved</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="462"/>
+        <source>Language switched: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="510"/>
+        <source>Ignored word: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="513"/>
+        <source>Added word [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="513"/>
+        <source>] to the user dictionary</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogManager.qml" line="561"/>
+        <source>Restored project snapshot: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>DialogPasteOver</name>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="13"/>
+        <source>Paste Over</source>
+        <translation type="unfinished">Collage spécial</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="21"/>
+        <source>Comment</source>
+        <translation type="unfinished">Commentaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="22"/>
+        <source>Layer</source>
+        <translation type="unfinished">Calque</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="23"/>
+        <source>Start Time</source>
+        <translation type="unfinished">Temps début</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="24"/>
+        <source>End Time</source>
+        <translation type="unfinished">Temps fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="25"/>
+        <source>Style</source>
+        <translation type="unfinished">Style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="26"/>
+        <source>Actor</source>
+        <translation type="unfinished">Acteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="27"/>
+        <source>Margin Left</source>
+        <translation type="unfinished">Marge gauche</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="28"/>
+        <source>Margin Right</source>
+        <translation type="unfinished">Marge droite</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="29"/>
+        <source>Margin Vertical</source>
+        <translation type="unfinished">Marge verticale</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="30"/>
+        <source>Effect</source>
+        <translation type="unfinished">Effet</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="31"/>
+        <source>Text</source>
+        <translation type="unfinished">Texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="70"/>
+        <source>Fields</source>
+        <translation type="unfinished">Champs</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="79"/>
+        <source>Please select the fields that you want to paste over:</source>
+        <translation type="unfinished">Veuillez sélectionner les champs que vous souhaitez écraser :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="130"/>
+        <source>All</source>
+        <translation type="unfinished">Tous</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="134"/>
+        <source>None</source>
+        <translation type="unfinished">Aucun</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="138"/>
+        <source>&amp;Times</source>
+        <translation type="unfinished">&amp;Temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="142"/>
+        <source>&amp;Text</source>
+        <translation type="unfinished">&amp;Texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="155"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="161"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPasteOver.qml" line="166"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogPreferences</name>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="15"/>
+        <source>Preferences</source>
+        <translation type="unfinished">Préférences</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="194"/>
+        <source>Reset to Defaults</source>
+        <translation type="unfinished">Rétablir les valeurs par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="202"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="212"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="219"/>
+        <source>Apply</source>
+        <translation type="unfinished">Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogPreferences.qml" line="229"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogProperties</name>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="14"/>
+        <source>Script Properties</source>
+        <translation type="unfinished">Propriétés du script</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="29"/>
+        <source>Untitled</source>
+        <translation type="unfinished">Sans titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="79"/>
+        <source>Script</source>
+        <translation type="unfinished">Script</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="89"/>
+        <source>Title:</source>
+        <translation type="unfinished">Titre :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="92"/>
+        <source>Original script:</source>
+        <translation type="unfinished">Script original :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="95"/>
+        <source>Translation:</source>
+        <translation type="unfinished">Traduction :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="98"/>
+        <source>Editing:</source>
+        <translation type="unfinished">Adaptation :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="101"/>
+        <source>Timing:</source>
+        <translation type="unfinished">Synchronisation :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="104"/>
+        <source>Synch point:</source>
+        <translation type="unfinished">Point de synchronisation :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="107"/>
+        <source>Updated by:</source>
+        <translation type="unfinished">Mis à jour par :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="110"/>
+        <source>Update details:</source>
+        <translation type="unfinished">Détails de mise à jour :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="117"/>
+        <source>Resolution</source>
+        <translation type="unfinished">Définition vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="128"/>
+        <source>Script: </source>
+        <translation type="unfinished">Script : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="146"/>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="175"/>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="195"/>
+        <source>From &amp;video</source>
+        <translation type="unfinished">De la &amp;vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="157"/>
+        <source>Layout: </source>
+        <translation type="unfinished">Disposition : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="187"/>
+        <source>YCbCr Matrix:</source>
+        <translation type="unfinished">Matrice YCbCr :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="211"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="223"/>
+        <source>Wrap style:</source>
+        <translation type="unfinished">Style de répartition : </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="232"/>
+        <source>0: Header-heavy smart wrapping</source>
+        <translation type="unfinished">0: Ajustement automatique intelligent (ligne supérieure plus longue)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="233"/>
+        <source>1: End-of-line word wrapping</source>
+        <translation type="unfinished">1: Fin de ligne (mots complets)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="234"/>
+        <source>2: No word wrapping, 
+ or N to break</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="235"/>
+        <source>3: Lower-heavy smart wrapping</source>
+        <translation type="unfinished">3: Ajustement automatique intelligent (ligne inférieure plus longue)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="246"/>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="249"/>
+        <source>Scale border and shadow</source>
+        <translation type="unfinished">Adapter taille bord et ombre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="265"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="271"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogProperties.qml" line="276"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogResample</name>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="14"/>
+        <source>Resample Resolution</source>
+        <translation type="unfinished">Rééchantillonnage de la résolution</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="32"/>
+        <source>Source Resolution</source>
+        <translation type="unfinished">Définition vidéo source</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="40"/>
+        <location filename="../qml/dialogs/DialogResample.qml" line="77"/>
+        <source>Width:</source>
+        <translation type="unfinished">Largeur :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="43"/>
+        <location filename="../qml/dialogs/DialogResample.qml" line="80"/>
+        <source>Height:</source>
+        <translation type="unfinished">Hauteur :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="49"/>
+        <source>From &amp;script</source>
+        <translation type="unfinished">Depuis le s&amp;cript</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="65"/>
+        <source>Destination Resolution</source>
+        <translation type="unfinished">Définition vidéo destination</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="86"/>
+        <source>From &amp;video</source>
+        <translation type="unfinished">De la &amp;vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="100"/>
+        <source>Predefined:</source>
+        <translation type="unfinished">Prédéfini :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="117"/>
+        <source>Change aspect ratio</source>
+        <translation type="unfinished">Modifier les proportions</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="124"/>
+        <source>Stretch</source>
+        <translation type="unfinished">Étirer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="125"/>
+        <source>Add borders</source>
+        <translation type="unfinished">Ajouter des bandes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="126"/>
+        <source>Crop</source>
+        <translation type="unfinished">Recadrer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="140"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="149"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogResample.qml" line="154"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogSaveConfirmation</name>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="15"/>
+        <source>Unsaved changes</source>
+        <translation type="unfinished">Modifications non enregistrées</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="25"/>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="34"/>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="34"/>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="36"/>
+        <source>Untitled</source>
+        <translation type="unfinished">Sans titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="73"/>
+        <source>Do you want to save changes to %s?</source>
+        <translation type="unfinished">Voulez-vous enregistrer les modifications de %s ?</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="89"/>
+        <source>&amp;Save</source>
+        <translation type="unfinished">&amp;Enregistrer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="97"/>
+        <source>&amp;Don&apos;t Save</source>
+        <translation type="unfinished">Ne &amp;pas enregistrer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSaveConfirmation.qml" line="103"/>
+        <source>&amp;Cancel</source>
+        <translation type="unfinished">&amp;Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogSearchReplace</name>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="14"/>
+        <source>Replace</source>
+        <translation type="unfinished">Remplacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="14"/>
+        <source>Find</source>
+        <translation type="unfinished">Trouver</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="61"/>
+        <source>Find what:</source>
+        <translation type="unfinished">Chercher :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="69"/>
+        <source>Replace with:</source>
+        <translation type="unfinished">Remplacer par :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="83"/>
+        <source>Match &amp;case</source>
+        <translation type="unfinished">C&amp;asse identique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="84"/>
+        <source>Use &amp;regular expressions</source>
+        <translation type="unfinished">&amp;Utiliser des expressions régulières</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="85"/>
+        <source>&amp;Skip Comments</source>
+        <translation type="unfinished">Ignorer les commentaires (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="86"/>
+        <source>Skip &amp;tags</source>
+        <translation type="unfinished">Ignorer les balises (&amp;T)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="96"/>
+        <source>&amp;Find next</source>
+        <translation type="unfinished">Rechercher suivant (&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="103"/>
+        <source>&amp;Replace Next</source>
+        <translation type="unfinished">Remplacer suivant (&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="110"/>
+        <source>Replace &amp;All</source>
+        <translation type="unfinished">Tout remplacer (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="117"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="129"/>
+        <source>In Field</source>
+        <translation type="unfinished">Dans le champ</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="138"/>
+        <source>&amp;Text</source>
+        <translation type="unfinished">&amp;Texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="139"/>
+        <source>&amp;Style</source>
+        <translation type="unfinished">&amp;Style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="140"/>
+        <source>Act&amp;or</source>
+        <translation type="unfinished">Acteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="141"/>
+        <source>E&amp;ffect</source>
+        <translation type="unfinished">E&amp;ffet</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="146"/>
+        <source>Limit to</source>
+        <translation type="unfinished">Limiter à</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="154"/>
+        <source>All &amp;lines</source>
+        <translation type="unfinished">Toutes les lignes (&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSearchReplace.qml" line="155"/>
+        <source>Selected &amp;rows</source>
+        <translation type="unfinished">Lignes sélectionnées (&amp;R)</translation>
+    </message>
+</context>
+<context>
+    <name>DialogSelectLines</name>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="13"/>
+        <source>Select</source>
+        <translation type="unfinished">Sélectionner</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="52"/>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="87"/>
+        <source>Match</source>
+        <translation type="unfinished">Correspondance</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="66"/>
+        <source>&amp;Matches</source>
+        <translation type="unfinished">Correspond (&amp;M)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="70"/>
+        <source>&amp;Doesn&apos;t Match</source>
+        <translation type="unfinished">Ne correspond pas (&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="74"/>
+        <source>Match c&amp;ase</source>
+        <translation type="unfinished">C&amp;asse identique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="97"/>
+        <source>&amp;Exact match</source>
+        <translation type="unfinished">Correspondance exacte (&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="101"/>
+        <source>&amp;Contains</source>
+        <translation type="unfinished">Contient (&amp;C)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="105"/>
+        <source>&amp;Regular Expression matches</source>
+        <translation type="unfinished">Expression régulière (&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="112"/>
+        <source>In Field</source>
+        <translation type="unfinished">Dans le champ</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="122"/>
+        <source>&amp;Text</source>
+        <translation type="unfinished">&amp;Texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="127"/>
+        <source>&amp;Style</source>
+        <translation type="unfinished">&amp;Style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="131"/>
+        <source>Act&amp;or</source>
+        <translation type="unfinished">Acteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="135"/>
+        <source>E&amp;ffect</source>
+        <translation type="unfinished">E&amp;ffet</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="142"/>
+        <source>Match dialogues/comments</source>
+        <translation type="unfinished">Correspondance dialogues/commentaires</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="152"/>
+        <source>&amp;Dialogue</source>
+        <translation type="unfinished">Dialogue (&amp;D)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="162"/>
+        <source>Comme&amp;nts</source>
+        <translation type="unfinished">Comme&amp;ntaires</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="175"/>
+        <source>Action</source>
+        <translation type="unfinished">Action</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="185"/>
+        <source>Set &amp;Selection</source>
+        <translation type="unfinished">Régler la sé&amp;lection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="189"/>
+        <source>&amp;Add to Selection</source>
+        <translation type="unfinished">&amp;Ajouter à la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="193"/>
+        <source>S&amp;ubtract from Selection</source>
+        <translation type="unfinished">So&amp;ustraire à la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="197"/>
+        <source>Intersect &amp;with Selection</source>
+        <translation type="unfinished">Intersection a&amp;vec la sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="212"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="218"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="223"/>
+        <source>Apply</source>
+        <translation type="unfinished">Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSelectLines.qml" line="228"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogShiftTimes</name>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="13"/>
+        <source>Shift Times</source>
+        <translation type="unfinished">Décalage temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="115"/>
+        <source>Shift by</source>
+        <translation type="unfinished">Décaler de</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="130"/>
+        <source>&amp;Time:</source>
+        <translation type="unfinished">Temps (&amp;T) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="141"/>
+        <source>&amp;Frames:</source>
+        <translation type="unfinished">Images (&amp;F) :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="156"/>
+        <source>&amp;Forward</source>
+        <translation type="unfinished">En avant (&amp;F)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="161"/>
+        <source>&amp;Backward</source>
+        <translation type="unfinished">En arrière (&amp;B)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="169"/>
+        <source>Affect</source>
+        <translation type="unfinished">Affecter</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="179"/>
+        <source>All rows</source>
+        <translation type="unfinished">Toutes les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="183"/>
+        <source>Selected &amp;rows</source>
+        <translation type="unfinished">Lignes sélectionnées (&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="187"/>
+        <source>Selection onwards</source>
+        <translation type="unfinished">Sélection et suivantes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="194"/>
+        <source>Times</source>
+        <translation type="unfinished">Temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="204"/>
+        <source>&amp;Start and End times</source>
+        <translation type="unfinished">Début et fin (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="209"/>
+        <source>&amp;Start times only</source>
+        <translation type="unfinished">Heures de début seulement (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="213"/>
+        <source>&amp;End times only</source>
+        <translation type="unfinished">Heures de fin seulement (&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="221"/>
+        <source>Load from history</source>
+        <translation type="unfinished">Charger depuis l&apos;historique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="279"/>
+        <source>&amp;Clear</source>
+        <translation type="unfinished">E&amp;ffacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="295"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="301"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogShiftTimes.qml" line="306"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogSpellChecker</name>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="13"/>
+        <source>Spell Checker</source>
+        <translation type="unfinished">Correcteur orthographique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="58"/>
+        <source>Misspelled word:</source>
+        <translation type="unfinished">Mot erroné :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="66"/>
+        <source>Replace with:</source>
+        <translation type="unfinished">Remplacer par :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="138"/>
+        <source>Language:</source>
+        <translation type="unfinished">Langue :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="154"/>
+        <source>&amp;Replace</source>
+        <translation type="unfinished">&amp;Remplacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="159"/>
+        <source>Replace &amp;All</source>
+        <translation type="unfinished">Tout remplacer (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="163"/>
+        <source>&amp;Ignore</source>
+        <translation type="unfinished">&amp;Ignorer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="167"/>
+        <source>Ignore A&amp;ll</source>
+        <translation type="unfinished">Tout i&amp;gnorer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="171"/>
+        <source>Add to &amp;Dictionary</source>
+        <translation type="unfinished">Ajouter au &amp;dictionnaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="175"/>
+        <source>Remove from &amp;Dictionary</source>
+        <translation type="unfinished">Retirer du dictionnaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogSpellChecker.qml" line="181"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>DialogStyleEditor</name>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="14"/>
+        <source>Style Editor</source>
+        <translation type="unfinished">Éditeur de style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="168"/>
+        <source>Style name</source>
+        <translation type="unfinished">Nom du style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="183"/>
+        <source>Font</source>
+        <translation type="unfinished">Police d&apos;écriture</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="219"/>
+        <source>Colors</source>
+        <translation type="unfinished">Couleurs</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="229"/>
+        <source>Primary</source>
+        <translation type="unfinished">Primaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="239"/>
+        <source>Secondary</source>
+        <translation type="unfinished">Secondaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="249"/>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="333"/>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="338"/>
+        <source>Outline</source>
+        <translation type="unfinished">Bordure</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="259"/>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="343"/>
+        <source>Shadow</source>
+        <translation type="unfinished">Ombre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="273"/>
+        <source>Margins</source>
+        <translation type="unfinished">Marges</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="281"/>
+        <source>Left:</source>
+        <translation type="unfinished">Gauche :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="284"/>
+        <source>Right:</source>
+        <translation type="unfinished">Droite :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="287"/>
+        <source>Vertical:</source>
+        <translation type="unfinished">Vertical :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="300"/>
+        <source>Alignment</source>
+        <translation type="unfinished">Alignement</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="324"/>
+        <source>Outline &amp; Shadow</source>
+        <translation type="unfinished">Bordure et ombre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="334"/>
+        <source>Opaque box</source>
+        <translation type="unfinished">Boîte opaque</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="351"/>
+        <source>Miscellaneous</source>
+        <translation type="unfinished">Divers</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="361"/>
+        <source>Scale X %:</source>
+        <translation type="unfinished">Échelle X % :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="364"/>
+        <source>Scale Y %:</source>
+        <translation type="unfinished">Échelle Y % :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="367"/>
+        <source>Rotation:</source>
+        <translation type="unfinished">Rotation :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="370"/>
+        <source>Spacing:</source>
+        <translation type="unfinished">Espacement :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="373"/>
+        <source>Encoding:</source>
+        <translation type="unfinished">Encodage :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="387"/>
+        <source>Preview</source>
+        <translation type="unfinished">Aperçu</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="399"/>
+        <source>Aegisub Style Preview 123</source>
+        <translation type="unfinished">Aperçu du style Aegisub 123</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="421"/>
+        <source>Apply</source>
+        <translation type="unfinished">Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="426"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="432"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleEditor.qml" line="437"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogStyleManager</name>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="15"/>
+        <source>Styles Manager</source>
+        <translation type="unfinished">Gestionnaire de styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="43"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="52"/>
+        <source>Copied style [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="43"/>
+        <source>] to the current script</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="52"/>
+        <source>] to storage [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="82"/>
+        <source>Created style: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="151"/>
+        <source>Created script style: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="206"/>
+        <source>Catalog of Available Styles</source>
+        <translation type="unfinished">Catalogue des styles disponibles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="232"/>
+        <source>New</source>
+        <translation type="unfinished">Nouveau</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="235"/>
+        <source>Catalog </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="238"/>
+        <source>Created catalog: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="244"/>
+        <source>Delete</source>
+        <translation type="unfinished">Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="250"/>
+        <source>Deleted catalog</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="310"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="460"/>
+        <source>&amp;New</source>
+        <translation type="unfinished">&amp;Nouveau</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="315"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="465"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Modifier</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="324"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="474"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished">&amp;Copier</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="329"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="479"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="357"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="507"/>
+        <source>Move to top</source>
+        <translation type="unfinished">En haut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="362"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="512"/>
+        <source>Move to bottom</source>
+        <translation type="unfinished">En bas</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="367"/>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="517"/>
+        <source>&amp;Sort styles</source>
+        <translation type="unfinished">Trier les styles (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="384"/>
+        <source>Move to script</source>
+        <translation type="unfinished">Déplacer vers le script</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="391"/>
+        <source>Move to style storage</source>
+        <translation type="unfinished">Déplacer vers le stockage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="399"/>
+        <source>Styles available for current script</source>
+        <translation type="unfinished">Styles disponibles pour le script actuel</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="536"/>
+        <source>Close</source>
+        <translation type="unfinished">Fermer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStyleManager.qml" line="542"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogStylingAssistant</name>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="13"/>
+        <source>Styling Assistant</source>
+        <translation type="unfinished">Assistant de styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="21"/>
+        <source>Current subtitle line text.</source>
+        <translation type="unfinished">Texte de la ligne de sous-titre sélectionnée.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="46"/>
+        <source>Current line</source>
+        <translation type="unfinished">Ligne actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="80"/>
+        <source>Styles available</source>
+        <translation type="unfinished">Styles disponibles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="135"/>
+        <source>Set style</source>
+        <translation type="unfinished">Définir le style</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="151"/>
+        <source>Keys</source>
+        <translation type="unfinished">Touches</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="165"/>
+        <source>Accept changes:</source>
+        <translation type="unfinished">Accepter les modifications :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="168"/>
+        <source>Previous line:</source>
+        <translation type="unfinished">Ligne précédente :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="171"/>
+        <source>Next line:</source>
+        <translation type="unfinished">Ligne suivante :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="174"/>
+        <source>Play audio:</source>
+        <translation type="unfinished">Lire l&apos;audio :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="177"/>
+        <source>Play video:</source>
+        <translation type="unfinished">Lire la vidéo :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="184"/>
+        <source>Scroll to current line</source>
+        <translation type="unfinished">Faire défiler jusqu&apos;à la ligne active</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="191"/>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="200"/>
+        <source>&amp;Play Audio</source>
+        <translation type="unfinished">Lire l&apos;audio (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="205"/>
+        <source>Play &amp;Video</source>
+        <translation type="unfinished">Lire la vidéo (&amp;V)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="222"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="228"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogStylingAssistant.qml" line="233"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogTimingProcessor</name>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="14"/>
+        <source>Timing Post-Processor</source>
+        <translation type="unfinished">Post-processeur de synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="84"/>
+        <source>Apply to styles</source>
+        <translation type="unfinished">Appliquer aux styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="135"/>
+        <source>All</source>
+        <translation type="unfinished">Tous</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="140"/>
+        <source>None</source>
+        <translation type="unfinished">Aucun</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="155"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="163"/>
+        <source>Only affect selected lines</source>
+        <translation type="unfinished">Affecter uniquement les lignes sélectionnées</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="170"/>
+        <source>Lead-in/Lead-out</source>
+        <translation type="unfinished">Début/fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="182"/>
+        <source>Add lead in:</source>
+        <translation type="unfinished">Ajout blanc de début :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="193"/>
+        <source>Add lead out:</source>
+        <translation type="unfinished">Aj&amp;out blanc de fin :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="206"/>
+        <source>Make adjacent subtitles continuous</source>
+        <translation type="unfinished">Rendre les sous-titres adjacents continus</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="216"/>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="268"/>
+        <source>Enable</source>
+        <translation type="unfinished">Disponible</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="223"/>
+        <source>Max gap:</source>
+        <translation type="unfinished">Écart maximum :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="231"/>
+        <source>Max overlap:</source>
+        <translation type="unfinished">Chevauchement maximum :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="244"/>
+        <source>Bias: Start &lt;- </source>
+        <translation type="unfinished">Biais : Début &lt;- </translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="251"/>
+        <source> -&gt; End</source>
+        <translation type="unfinished"> -&gt; Fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="258"/>
+        <source>Keyframe snapping</source>
+        <translation type="unfinished">Magnétisme aux images-clés</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="277"/>
+        <source>Threshold:</source>
+        <translation type="unfinished">Seuil :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="280"/>
+        <source>Starts after thres.:</source>
+        <translation type="unfinished">Après le début :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="283"/>
+        <source>Ends before thres.:</source>
+        <translation type="unfinished">Avant la fin :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="286"/>
+        <source>Ends after thres.:</source>
+        <translation type="unfinished">Après la fin :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="300"/>
+        <source>Apply</source>
+        <translation type="unfinished">Appliquer</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="307"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="313"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTimingProcessor.qml" line="318"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogTranslation</name>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="14"/>
+        <source>Translation Assistant</source>
+        <translation type="unfinished">Assistant de traduction</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="53"/>
+        <source>Original</source>
+        <translation type="unfinished">Original</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="81"/>
+        <source>Translation</source>
+        <translation type="unfinished">Traduction</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="124"/>
+        <source>Keys</source>
+        <translation type="unfinished">Touches</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="138"/>
+        <source>Accept changes:</source>
+        <translation type="unfinished">Accepter les modifications :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="141"/>
+        <source>Line break:</source>
+        <translation type="unfinished">Saut de ligne :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="144"/>
+        <source>Previous line:</source>
+        <translation type="unfinished">Ligne précédente :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="147"/>
+        <source>Next line:</source>
+        <translation type="unfinished">Ligne suivante :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="150"/>
+        <source>Insert original text:</source>
+        <translation type="unfinished">Insérer le texte original :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="157"/>
+        <source>Enable &amp;preview</source>
+        <translation type="unfinished">Activer l&apos;aperçu (&amp;P)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="165"/>
+        <source>Actions</source>
+        <translation type="unfinished">Actions</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="174"/>
+        <source>&amp;Play Audio</source>
+        <translation type="unfinished">Lire l&apos;audio (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="179"/>
+        <source>Play &amp;Video</source>
+        <translation type="unfinished">Lire la vidéo (&amp;V)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="184"/>
+        <source>&amp;Insert original</source>
+        <translation type="unfinished">Insérer l&apos;original (&amp;I)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="200"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="206"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogTranslation.qml" line="211"/>
+        <source>Help</source>
+        <translation type="unfinished">Aide</translation>
+    </message>
+</context>
+<context>
+    <name>DialogVideoDetails</name>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="14"/>
+        <source>Video Details</source>
+        <translation type="unfinished">Détails vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="36"/>
+        <source>Video</source>
+        <translation type="unfinished">Vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="46"/>
+        <source>File name:</source>
+        <translation type="unfinished">Nom du fichier :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="52"/>
+        <source>Resolution:</source>
+        <translation type="unfinished">Résolution :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="55"/>
+        <source>Length:</source>
+        <translation type="unfinished">Durée :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="56"/>
+        <source>frames</source>
+        <translation type="unfinished">images</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="58"/>
+        <source>Color matrix:</source>
+        <translation type="unfinished">Matrice de couleur :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="61"/>
+        <source>Override matrix:</source>
+        <translation type="unfinished">Remplacer la matrice :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="64"/>
+        <source>Color range:</source>
+        <translation type="unfinished">Gamme de couleurs :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="67"/>
+        <source>Decoder:</source>
+        <translation type="unfinished">Décodeur :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/DialogVideoDetails.qml" line="78"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+</context>
+<context>
+    <name>Main</name>
+    <message>
+        <location filename="../qml/Main.qml" line="162"/>
+        <location filename="../qml/Main.qml" line="803"/>
+        <source>Untitled</source>
+        <translation type="unfinished">Sans titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="172"/>
+        <source>Open Subtitles</source>
+        <translation type="unfinished">Ouvrir des sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="182"/>
+        <source>Save Subtitles as</source>
+        <translation type="unfinished">Enregistrer les sous-titres sous</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="204"/>
+        <source>Open Video</source>
+        <translation type="unfinished">Ouvrir une vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="216"/>
+        <source>Open Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="228"/>
+        <source>Open Keyframes</source>
+        <translation type="unfinished">Ouvrir des images clés</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="240"/>
+        <source>Save Keyframes</source>
+        <translation type="unfinished">Enregistrer les images clés</translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="246"/>
+        <source>Saved keyframes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="253"/>
+        <source>Open Timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="265"/>
+        <source>Save Timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="271"/>
+        <source>Saved timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="350"/>
+        <source>Auto-save: safe copy written</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="425"/>
+        <source>Release the mouse to load media or subtitle files</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="433"/>
+        <source>Supports video (MP4, MKV, etc.), audio (WAV, MP3, etc.), subtitles (ASS, SRT, etc.), keyframes and timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="714"/>
+        <source>Visual typesetting committed: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="796"/>
+        <source>Loaded subtitles: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="842"/>
+        <source>Created audio clip for line #%1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="850"/>
+        <source>Jumped to the current line start time: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="858"/>
+        <source>Jumped to the current line end time: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="864"/>
+        <source>Show all ASS tags</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="864"/>
+        <source>Simplify ASS tags (❚)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="864"/>
+        <source>Hide ASS tags completely</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="865"/>
+        <source>ASS tag display mode: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="901"/>
+        <location filename="../qml/Main.qml" line="944"/>
+        <source>Loaded video: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="915"/>
+        <source>Loaded audio: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="925"/>
+        <source>Loaded keyframes: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/Main.qml" line="935"/>
+        <source>Loaded timecodes: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>NativeTreeBook</name>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="29"/>
+        <source>General</source>
+        <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="30"/>
+        <source>Default Styles</source>
+        <translation type="unfinished">Styles par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="31"/>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="39"/>
+        <source>Audio</source>
+        <translation type="unfinished">Audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="32"/>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="40"/>
+        <source>Video</source>
+        <translation type="unfinished">Vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="33"/>
+        <source>Interface</source>
+        <translation type="unfinished">Interface</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="34"/>
+        <source>Colours</source>
+        <translation type="unfinished">Couleurs</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="35"/>
+        <source>Hotkeys</source>
+        <translation type="unfinished">Raccourcis</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="36"/>
+        <source>Backup</source>
+        <translation type="unfinished">Sauvegarde</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="37"/>
+        <source>Automation</source>
+        <translation type="unfinished">Automatisme</translation>
+    </message>
+    <message>
+        <location filename="../qml/controls/NativeTreeBook.qml" line="38"/>
+        <source>Advanced</source>
+        <translation type="unfinished">Avancé</translation>
+    </message>
+</context>
+<context>
+    <name>PrefAdvanced</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvanced.qml" line="31"/>
+        <source>General</source>
+        <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvanced.qml" line="40"/>
+        <source>Changing these settings might result in bugs and/or crashes. Do not touch these unless you know what you&apos;re doing.</source>
+        <translation type="unfinished">La modification de ces paramètres peut entraîner des bogues et/ou des plantages. N&apos;y touchez pas à moins de savoir ce que vous faites.</translation>
+    </message>
+</context>
+<context>
+    <name>PrefAdvancedAudio</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="35"/>
+        <source>Select Cache Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="48"/>
+        <source>Expert</source>
+        <translation type="unfinished">Expert</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="59"/>
+        <source>Audio provider</source>
+        <translation type="unfinished">Fournisseur audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="64"/>
+        <source>Audio player</source>
+        <translation type="unfinished">Lecteur audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="71"/>
+        <source>Cache</source>
+        <translation type="unfinished">Cache</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="82"/>
+        <source>Cache type</source>
+        <translation type="unfinished">Type cache</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="83"/>
+        <source>None (NOT RECOMMENDED)</source>
+        <translation type="unfinished">Aucun (DÉCONSEILLÉ)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="83"/>
+        <source>Hard Disk</source>
+        <translation type="unfinished">Disque dur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="87"/>
+        <source>Path</source>
+        <translation type="unfinished">Chemin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="90"/>
+        <source>Browse...</source>
+        <translation type="unfinished">Naviguer...</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="98"/>
+        <source>Spectrum</source>
+        <translation type="unfinished">Spectrogramme</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="109"/>
+        <source>Quality</source>
+        <translation type="unfinished">Qualité</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="110"/>
+        <source>Regular quality</source>
+        <translation type="unfinished">Qualité standard</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="110"/>
+        <source>Better quality</source>
+        <translation type="unfinished">Qualité supérieure</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="110"/>
+        <source>High quality</source>
+        <translation type="unfinished">Haute qualité</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="110"/>
+        <source>Insane quality</source>
+        <translation type="unfinished">Qualité démente</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="114"/>
+        <source>Frequency mapping</source>
+        <translation type="unfinished">Répartition des fréquences</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="115"/>
+        <source>Linear</source>
+        <translation type="unfinished">Linéaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="115"/>
+        <source>Extended</source>
+        <translation type="unfinished">Étendu</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="115"/>
+        <source>Medium</source>
+        <translation type="unfinished">Moyen</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="115"/>
+        <source>Compressed</source>
+        <translation type="unfinished">Compressé</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="115"/>
+        <source>Logarithmic</source>
+        <translation type="unfinished">Logarithmique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedAudio.qml" line="119"/>
+        <source>Cache memory max (MB)</source>
+        <translation type="unfinished">Mémoire cache maxi (Mo)</translation>
+    </message>
+</context>
+<context>
+    <name>PrefAdvancedVideo</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="36"/>
+        <source>Expert</source>
+        <translation type="unfinished">Expert</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="47"/>
+        <source>Video provider</source>
+        <translation type="unfinished">Fournisseur vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="52"/>
+        <source>Subtitles provider</source>
+        <translation type="unfinished">Fournisseur sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="70"/>
+        <source>Debug log verbosity</source>
+        <translation type="unfinished">Historique de débogage détaillé</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Quiet</source>
+        <translation type="unfinished">Silencieux</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Panic</source>
+        <translation type="unfinished">Erreur fatale</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Fatal</source>
+        <translation type="unfinished">Fatale</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Error</source>
+        <translation type="unfinished">Erreur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Warning</source>
+        <translation type="unfinished">Avertissement</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Info</source>
+        <translation type="unfinished">Info</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Verbose</source>
+        <translation type="unfinished">Détaillé</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="73"/>
+        <source>Debug</source>
+        <translation type="unfinished">Débogage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="81"/>
+        <source>Decoding threads</source>
+        <translation type="unfinished">Fils de décodage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAdvancedVideo.qml" line="91"/>
+        <source>Enable unsafe seeking</source>
+        <translation type="unfinished">Permettre la recherche non sécurisée</translation>
+    </message>
+</context>
+<context>
+    <name>PrefAudio</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="48"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="59"/>
+        <source>Default mouse wheel to zoom</source>
+        <translation type="unfinished">Zoom par défaut de la molette de souris</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="65"/>
+        <source>Lock scroll on cursor</source>
+        <translation type="unfinished">Verrouiller le défilement sur le curseur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="71"/>
+        <source>Snap markers by default</source>
+        <translation type="unfinished">Coller aux marqueurs par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="77"/>
+        <source>Auto-focus on mouse over</source>
+        <translation type="unfinished">Autofocus sur survol de la souris</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="83"/>
+        <source>Play audio when stepping in video</source>
+        <translation type="unfinished">Jouer l&apos;audio lors de pas vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="89"/>
+        <source>Left-click-drag moves end marker</source>
+        <translation type="unfinished">Le clic gauche glissé déplace le marqueur de fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="96"/>
+        <source>Default timing length (ms)</source>
+        <translation type="unfinished">Durée par défaut (en ms)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="101"/>
+        <source>Default lead-in length (ms)</source>
+        <translation type="unfinished">Durée du blanc de début par défaut (en ms)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="111"/>
+        <source>Default lead-out length (ms)</source>
+        <translation type="unfinished">Durée du blanc de fin par défaut (en ms)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="121"/>
+        <source>Show inactive lines</source>
+        <translation type="unfinished">Afficher les lignes inactives</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="124"/>
+        <source>Don&apos;t show</source>
+        <translation type="unfinished">Ne pas afficher</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="124"/>
+        <source>Show previous</source>
+        <translation type="unfinished">Afficher précédente</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="124"/>
+        <source>Show previous and next</source>
+        <translation type="unfinished">Afficher précédente et suivante</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="124"/>
+        <source>Show all</source>
+        <translation type="unfinished">Tout afficher</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="132"/>
+        <source>Line boundary thickness (px)</source>
+        <translation type="unfinished">Épaisseur de la ligne de limite (en px)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="144"/>
+        <source>Display Visual Options</source>
+        <translation type="unfinished">Option d&apos;affichage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="155"/>
+        <source>Keyframes in dialogue mode</source>
+        <translation type="unfinished">Images clés en mode dialogue</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="159"/>
+        <source>Keyframes in karaoke mode</source>
+        <translation type="unfinished">Images clés en mode karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="162"/>
+        <source>Cursor time</source>
+        <translation type="unfinished">Curseur temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="168"/>
+        <source>Video position</source>
+        <translation type="unfinished">Position vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAudio.qml" line="174"/>
+        <source>Seconds boundaries</source>
+        <translation type="unfinished">Limites secondes</translation>
+    </message>
+</context>
+<context>
+    <name>PrefAutomation</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="36"/>
+        <source>General</source>
+        <translation type="unfinished">Général</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="47"/>
+        <source>Base path</source>
+        <translation type="unfinished">Chemin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="53"/>
+        <source>Include path</source>
+        <translation type="unfinished">Chemin « include »</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="59"/>
+        <source>Auto-load path</source>
+        <translation type="unfinished">Chemin « auto-load »</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="65"/>
+        <source>Trace level</source>
+        <translation type="unfinished">Niveau traçage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>0: Fatal</source>
+        <translation type="unfinished">0 : Fatal</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>1: Error</source>
+        <translation type="unfinished">1 : Erreur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>2: Warning</source>
+        <translation type="unfinished">2 : Avertissement</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>3: Hint</source>
+        <translation type="unfinished">3 : Conseil</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>4: Debug</source>
+        <translation type="unfinished">4 : Débogage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="68"/>
+        <source>5: Trace</source>
+        <translation type="unfinished">5 : Trace</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="77"/>
+        <source>Autoreload on Export</source>
+        <translation type="unfinished">Rechargement auto à l&apos;export</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="80"/>
+        <source>No scripts</source>
+        <translation type="unfinished">Aucun script</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="80"/>
+        <source>Subtitle-local scripts</source>
+        <translation type="unfinished">Scripts du fichier de sous-titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="80"/>
+        <source>Global autoload scripts</source>
+        <translation type="unfinished">Chargement auto scripts globaux</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefAutomation.qml" line="80"/>
+        <source>All scripts</source>
+        <translation type="unfinished">Tous les scripts</translation>
+    </message>
+</context>
+<context>
+    <name>PrefBackup</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="53"/>
+        <source>Select Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="68"/>
+        <source>Automatic Save</source>
+        <translation type="unfinished">Enregistrement automatique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="79"/>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="126"/>
+        <source>Enable</source>
+        <translation type="unfinished">Disponible</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="86"/>
+        <source>Interval in seconds</source>
+        <translation type="unfinished">Intervale en secondes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="97"/>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="133"/>
+        <source>Path</source>
+        <translation type="unfinished">Chemin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="100"/>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="136"/>
+        <source>Browse...</source>
+        <translation type="unfinished">Naviguer...</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="107"/>
+        <source>Autosave after every change</source>
+        <translation type="unfinished">Enregistrement automatique après une modification</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefBackup.qml" line="115"/>
+        <source>Automatic Backup</source>
+        <translation type="unfinished">Sauvegarde automatique</translation>
+    </message>
+</context>
+<context>
+    <name>PrefColours</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="22"/>
+        <source>Select Color</source>
+        <translation type="unfinished">Choix couleur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="150"/>
+        <source>Audio Display</source>
+        <translation type="unfinished">Affichage audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="159"/>
+        <source>Play cursor</source>
+        <translation type="unfinished">Curseur du lecteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="160"/>
+        <source>Line boundary start</source>
+        <translation type="unfinished">Début ligne de limite</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="161"/>
+        <source>Line boundary end</source>
+        <translation type="unfinished">Fin de ligne de limite</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="162"/>
+        <source>Line boundary inactive line</source>
+        <translation type="unfinished">Ligne de limite inactive</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="163"/>
+        <source>Syllable boundaries</source>
+        <translation type="unfinished">Limite des syllabes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="164"/>
+        <source>Seconds boundaries</source>
+        <translation type="unfinished">Limites secondes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="169"/>
+        <source>Syntax Highlighting</source>
+        <translation type="unfinished">Surbrillance syntaxique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="178"/>
+        <source>Background</source>
+        <translation type="unfinished">Arrière-plan</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="179"/>
+        <source>Normal</source>
+        <translation type="unfinished">Normal</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="180"/>
+        <source>Comments</source>
+        <translation type="unfinished">Commentaires</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="181"/>
+        <source>Drawing Commands</source>
+        <translation type="unfinished">Commandes de dessin</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="182"/>
+        <source>Brackets</source>
+        <translation type="unfinished">Crochets</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="183"/>
+        <source>Slashes and Parentheses</source>
+        <translation type="unfinished">Barres et parenthèses</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="184"/>
+        <source>Tags</source>
+        <translation type="unfinished">Balises</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="185"/>
+        <source>Parameters</source>
+        <translation type="unfinished">Paramètres</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="186"/>
+        <source>Error</source>
+        <translation type="unfinished">Erreur</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="187"/>
+        <source>Error Background</source>
+        <translation type="unfinished">Erreur arrière-plan</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="188"/>
+        <source>Line Break</source>
+        <translation type="unfinished">Rupture de ligne</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="189"/>
+        <source>Karaoke templates</source>
+        <translation type="unfinished">Modèles karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="190"/>
+        <source>Karaoke variables</source>
+        <translation type="unfinished">Variables de karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="203"/>
+        <source>Audio Color Schemes</source>
+        <translation type="unfinished">Couleurs d&apos;affichage audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="215"/>
+        <source>Spectrum</source>
+        <translation type="unfinished">Spectrogramme</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="234"/>
+        <source>Waveform</source>
+        <translation type="unfinished">Forme d&apos;onde</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="253"/>
+        <source>Subtitle Grid</source>
+        <translation type="unfinished">Grille des sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="262"/>
+        <source>Standard foreground</source>
+        <translation type="unfinished">Avant-plan standard</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="263"/>
+        <source>Standard background</source>
+        <translation type="unfinished">Arrière-plan standard</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="264"/>
+        <source>Selection foreground</source>
+        <translation type="unfinished">Avant-plan sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="265"/>
+        <source>Selection background</source>
+        <translation type="unfinished">Arrière-plan sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="266"/>
+        <source>Collision foreground</source>
+        <translation type="unfinished">Avant-plan collision</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="267"/>
+        <source>In frame background</source>
+        <translation type="unfinished">Arrière-plan d&apos;image</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="268"/>
+        <source>Comment background</source>
+        <translation type="unfinished">Arrière-plan commentaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="269"/>
+        <source>Selected comment background</source>
+        <translation type="unfinished">Choix arrière-plan commentaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="270"/>
+        <source>Header background</source>
+        <translation type="unfinished">Arrière-plan d&apos;en-tête</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="271"/>
+        <source>Left Column</source>
+        <translation type="unfinished">Colonne de gauche</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="272"/>
+        <source>Active Line Border</source>
+        <translation type="unfinished">Bord ligne active</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="273"/>
+        <source>Lines</source>
+        <translation type="unfinished">Lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefColours.qml" line="274"/>
+        <source>CPS Error</source>
+        <translation type="unfinished">Erreur de CPS</translation>
+    </message>
+</context>
+<context>
+    <name>PrefDefaultStyles</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="36"/>
+        <source>Default style catalogs</source>
+        <translation type="unfinished">Catalogues de styles par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="45"/>
+        <source>The chosen style catalogs will be loaded when you start a new file or import files in the various formats.
+
+You can set up style catalogs in the Style Manager.</source>
+        <translation type="unfinished">Les catalogues de styles choisis seront chargés lorsque vous démarrez un nouveau fichier ou importez des fichiers dans les différents formats.
+
+Vous pouvez configurer les catalogues de styles dans le gestionnaire de styles.</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="57"/>
+        <source>New files</source>
+        <translation type="unfinished">Nouveaux fichiers</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="62"/>
+        <source>MicroDVD import</source>
+        <translation type="unfinished">Importation de MicroDVD</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="67"/>
+        <source>SRT import</source>
+        <translation type="unfinished">Importation de SRT</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="72"/>
+        <source>TTXT import</source>
+        <translation type="unfinished">Importation de TTXT</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefDefaultStyles.qml" line="77"/>
+        <source>Plain text import</source>
+        <translation type="unfinished">Importation de texte</translation>
+    </message>
+</context>
+<context>
+    <name>PrefGeneral</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="39"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="50"/>
+        <source>Automatically check for new versions on start</source>
+        <translation type="unfinished">Vérifier les mises à jour au démarrage</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="57"/>
+        <source>Show main toolbar</source>
+        <translation type="unfinished">Afficher la barre d&apos;outils principale</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="64"/>
+        <source>Save UI state</source>
+        <translation type="unfinished">Enregistrer l&apos;état de l&apos;interface</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="72"/>
+        <source>Language:</source>
+        <translation type="unfinished">Langue :</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="122"/>
+        <source>Toolbar Icon Size</source>
+        <translation type="unfinished">Taille des icônes de la barre d&apos;outils</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="126"/>
+        <source>Standard (16x16)</source>
+        <translation type="unfinished">Standard (16x16)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="126"/>
+        <source>Standard (24x24)</source>
+        <translation type="unfinished">Standard (24x24)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="126"/>
+        <source>Large (32x32)</source>
+        <translation type="unfinished">Grandes icônes (32x32)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="126"/>
+        <source>Extra Large (48x48)</source>
+        <translation type="unfinished">Très grandes icônes (48x48)</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="134"/>
+        <source>Automatically load linked files</source>
+        <translation type="unfinished">Charger automatiquement les fichiers liés</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="138"/>
+        <source>Never</source>
+        <translation type="unfinished">Jamais</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="138"/>
+        <source>Always</source>
+        <translation type="unfinished">Toujours</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="138"/>
+        <source>Ask</source>
+        <translation type="unfinished">Demander</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="146"/>
+        <source>Undo Levels</source>
+        <translation type="unfinished">Niveaux d&apos;annulation</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="158"/>
+        <source>Recently Used Lists</source>
+        <translation type="unfinished">Listes récentes</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="168"/>
+        <source>Files</source>
+        <translation type="unfinished">Fichiers</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefGeneral.qml" line="179"/>
+        <source>Find/Replace</source>
+        <translation type="unfinished">Chercher/Remplacer</translation>
+    </message>
+</context>
+<context>
+    <name>PrefHotkeys</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefHotkeys.qml" line="52"/>
+        <source>Search...</source>
+        <translation type="unfinished">Recherche</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefHotkeys.qml" line="56"/>
+        <source>&amp;New</source>
+        <translation type="unfinished">&amp;Nouveau</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefHotkeys.qml" line="59"/>
+        <source>User Shortcut</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefHotkeys.qml" line="65"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Modifier</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefHotkeys.qml" line="71"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Supprimer</translation>
+    </message>
+</context>
+<context>
+    <name>PrefInterface</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="40"/>
+        <source>Select Dictionaries Directory</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="53"/>
+        <source>Edit Box</source>
+        <translation type="unfinished">Boîte d&apos;édition</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="62"/>
+        <source>Enable call tips</source>
+        <translation type="unfinished">Activer les actuces</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="63"/>
+        <source>Overwrite in time boxes</source>
+        <translation type="unfinished">Remplacement dans cases temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="64"/>
+        <source>Shift+Enter adds 
+</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="65"/>
+        <source>Enable syntax highlighting</source>
+        <translation type="unfinished">Activer la surbrillance syntaxique</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="69"/>
+        <source>Dictionaries path</source>
+        <translation type="unfinished">Chemin des dictionnaires</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="72"/>
+        <source>Browse...</source>
+        <translation type="unfinished">Naviguer...</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="80"/>
+        <source>Character Counter</source>
+        <translation type="unfinished">Compteur de caractères</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="91"/>
+        <source>Maximum characters per line</source>
+        <translation type="unfinished">Nombre maximum de caractères par ligne</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="96"/>
+        <source>Characters Per Second Warning Threshold</source>
+        <translation type="unfinished">Seuil d&apos;avertissement des caractères par seconde</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="101"/>
+        <source>Characters Per Second Error Threshold</source>
+        <translation type="unfinished">Seuil d&apos;erreur des caractères par seconde</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="104"/>
+        <source>Ignore whitespace</source>
+        <translation type="unfinished">Ignorer les espaces</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="109"/>
+        <source>Grid</source>
+        <translation type="unfinished">Grille</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="118"/>
+        <source>Focus grid on click</source>
+        <translation type="unfinished">La grille devient la cible de saisie par un clic</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="119"/>
+        <source>Highlight visible subtitles</source>
+        <translation type="unfinished">Surbriller les sous-titres visibles</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefInterface.qml" line="120"/>
+        <source>Hide overrides symbol</source>
+        <translation type="unfinished">Caractère de masquage des balises</translation>
+    </message>
+</context>
+<context>
+    <name>PrefVideo</name>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="42"/>
+        <source>Options</source>
+        <translation type="unfinished">Options</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="53"/>
+        <source>Show keyframes in slider</source>
+        <translation type="unfinished">Afficher les images clés dans le champ</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="59"/>
+        <source>Only show visual tools when mouse is over video</source>
+        <translation type="unfinished">N&apos;afficher les outils vidéo que lorsque la souris est sur la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="65"/>
+        <source>Seek video to line start on selection change</source>
+        <translation type="unfinished">Sauter au début de ligne quand changement de sélection</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="71"/>
+        <source>Automatically open audio when opening video</source>
+        <translation type="unfinished">Ouvrir automatiquement l&apos;audio lors de l&apos;ouverture d&apos;une vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="79"/>
+        <source>Default Zoom</source>
+        <translation type="unfinished">Zoom par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="105"/>
+        <source>Fast jump step in frames</source>
+        <translation type="unfinished">Pas du saut rapide en images</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="121"/>
+        <source>Screenshot save path</source>
+        <translation type="unfinished">Chemin d&apos;enregistrement des captures d&apos;écran</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="138"/>
+        <source>Script Resolution</source>
+        <translation type="unfinished">Définition vidéo du script</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="149"/>
+        <source>Use resolution of first video opened</source>
+        <translation type="unfinished">Utiliser la définition vidéo de la première vidéo ouverte</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="157"/>
+        <source>Default width</source>
+        <translation type="unfinished">Largeur par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="175"/>
+        <source>Default height</source>
+        <translation type="unfinished">Hauteur par défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="193"/>
+        <source>Match video resolution on open</source>
+        <translation type="unfinished">Faire correspondre à la définition vidéo à l&apos;ouverture</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="201"/>
+        <source>Ask</source>
+        <translation type="unfinished">Demander</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="201"/>
+        <source>Never</source>
+        <translation type="unfinished">Jamais</translation>
+    </message>
+    <message>
+        <location filename="../qml/dialogs/preferences/PrefVideo.qml" line="201"/>
+        <source>Always resample</source>
+        <translation type="unfinished">Toujours ré-échantillonner</translation>
+    </message>
+</context>
+<context>
+    <name>SubtitleEditBox</name>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="110"/>
+        <source>Comment</source>
+        <translation type="unfinished">Commentaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="120"/>
+        <source>Comment this line out. Commented lines don&apos;t show up on screen.</source>
+        <translation type="unfinished">Commenter cette ligne. Les lignes de commentaires ne sont pas affichées à l&apos;écran.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="124"/>
+        <source>toggle comment</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="137"/>
+        <source>Style for this line</source>
+        <translation type="unfinished">Style pour cette ligne</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="141"/>
+        <source>change style</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="150"/>
+        <source>Edit</source>
+        <translation type="unfinished">Éditer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="187"/>
+        <source>Actor name for this speech. This is only for reference, and is mainly useless.</source>
+        <translation type="unfinished">Nom de l&apos;acteur pour ce dialogue. Cela ne sert que de référence, donc inutile.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="191"/>
+        <source>change actor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="206"/>
+        <source>Effect for this line. This can be used to store extra information for karaoke scripts, or for the effects supported by the renderer.</source>
+        <translation type="unfinished">Effet pour cette ligne. Peut être utilisé pour stocker des informations supplémentaires pour des scripts karaoké ou pour des effets supportés par le moteur de rendu.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="210"/>
+        <source>change effect</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="235"/>
+        <source>Number of characters in the longest line of this subtitle.</source>
+        <translation type="unfinished">Nombre de caractères dans la ligne la plus longue de ce sous-titre.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="269"/>
+        <source>Layer number</source>
+        <translation type="unfinished">Calque numéro</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="296"/>
+        <source>Start time</source>
+        <translation type="unfinished">Temps de début</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="325"/>
+        <source>End time</source>
+        <translation type="unfinished">Temps de fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="355"/>
+        <source>Line duration</source>
+        <translation type="unfinished">Durée de la ligne</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="384"/>
+        <source>Left Margin (0 = default from style)</source>
+        <translation type="unfinished">Marge de gauche (0 = par défaut du style)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="408"/>
+        <source>Right Margin (0 = default from style)</source>
+        <translation type="unfinished">Marge de droite (0 = par défaut du style)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="432"/>
+        <source>Vertical Margin (0 = default from style)</source>
+        <translation type="unfinished">Marge verticale (0 = par défaut du style)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="472"/>
+        <source>Toggle bold (<byte value="x8"/>) for the current selection or at the current cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="473"/>
+        <source>Toggle italics (i) for the current selection or at the current cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="474"/>
+        <source>Toggle underline (<byte value="x0"/>) for the current selection or at the current cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="475"/>
+        <source>Toggle strikeout (s) for the current selection or at the current cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="477"/>
+        <source>Select a font face and size</source>
+        <translation type="unfinished">Sélectionner police d&apos;écriture et taille</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="482"/>
+        <source>Set the primary fill color (c) at the cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="492"/>
+        <source>Set the secondary (karaoke) fill color (<byte value="x2"/>c) at the cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="502"/>
+        <source>Set the outline color (<byte value="x3"/>c) at the cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="512"/>
+        <source>Set the shadow color (<byte value="x4"/>c) at the cursor position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="541"/>
+        <source>Move to the next subtitle line, creating a new one if needed</source>
+        <translation type="unfinished">Aller à la ligne de sous-titre suivante, en la créant si nécessaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="555"/>
+        <source>T&amp;ime</source>
+        <translation type="unfinished">Temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="556"/>
+        <source>Time by h:mm:ss.cs</source>
+        <translation type="unfinished">Temps en h:mm:ss.cs</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="570"/>
+        <source>F&amp;rame</source>
+        <translation type="unfinished">I&amp;mage</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="571"/>
+        <source>Time by frame number</source>
+        <translation type="unfinished">Temps en nombre d&apos;images</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="586"/>
+        <source>Show Original</source>
+        <translation type="unfinished">Afficher l&apos;original</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="587"/>
+        <source>Show the contents of the subtitle line when it was first selected above the edit box. This is sometimes useful when editing subtitles or translating subtitles into another language.</source>
+        <translation type="unfinished">Afficher le contenu de la ligne de sous-titre lorsqu&apos;elle a été sélectionné pour la première fois au-dessus de la zone d&apos;édition. Cela peut être utile lors de la modification de sous-titres ou de traduction des sous-titres dans une autre langue.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="677"/>
+        <source>Revert</source>
+        <translation type="unfinished">Rétablir</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="677"/>
+        <source>Revert the active line to its initial state (shown in the upper editor)</source>
+        <translation type="unfinished">Restaurer la ligne active à son état initial</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="681"/>
+        <source>Clear</source>
+        <translation type="unfinished">Effacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="681"/>
+        <source>Clear the current line&apos;s text</source>
+        <translation type="unfinished">Effacer le texte de la ligne courante</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="685"/>
+        <source>Clear Text</source>
+        <translation type="unfinished">Effacer le texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="685"/>
+        <source>Clear the current line&apos;s text, leaving override tags</source>
+        <translation type="unfinished">Effacer le texte de la ligne courante, en laissant les balises de remplacement</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="693"/>
+        <source>Insert Original</source>
+        <translation type="unfinished">Insérer l&apos;original</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="693"/>
+        <source>Insert the original line text at the cursor</source>
+        <translation type="unfinished">Insérer la ligne de texte original sur le curseur</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="817"/>
+        <source>&amp;Undo</source>
+        <translation type="unfinished">Annuler (&amp;U)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="823"/>
+        <source>&amp;Redo</source>
+        <translation type="unfinished">Rétablir (&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="830"/>
+        <source>Cu&amp;t</source>
+        <translation type="unfinished">Coupe&amp;r</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="836"/>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="880"/>
+        <source>&amp;Copy</source>
+        <translation type="unfinished">&amp;Copier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="842"/>
+        <source>&amp;Paste</source>
+        <translation type="unfinished">Co&amp;ller</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="848"/>
+        <source>&amp;Delete</source>
+        <translation type="unfinished">&amp;Supprimer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="855"/>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="886"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished">Tout sélectionner (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="861"/>
+        <source>Split at cursor (preserve times)</source>
+        <translation type="unfinished">Couper au curseur (durée préservée)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="866"/>
+        <source>Split at cursor (estimate times)</source>
+        <translation type="unfinished">Couper au curseur (durée estimée)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleEditBox.qml" line="871"/>
+        <source>Split at cursor (at video frame)</source>
+        <translation type="unfinished">Couper au curseur (à l&apos;image de la vidéo)</translation>
+    </message>
+</context>
+<context>
+    <name>SubtitleGridArea</name>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="238"/>
+        <source>L</source>
+        <translation type="unfinished">L</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="247"/>
+        <source>Start</source>
+        <translation type="unfinished">Début</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="256"/>
+        <source>End</source>
+        <translation type="unfinished">Fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="266"/>
+        <source>CPS</source>
+        <translation type="unfinished">CPS</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="275"/>
+        <source>Style</source>
+        <translation type="unfinished">Style</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="285"/>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="789"/>
+        <source>Actor</source>
+        <translation type="unfinished">Acteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="295"/>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="794"/>
+        <source>Effect</source>
+        <translation type="unfinished">Effet</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="305"/>
+        <source>Left</source>
+        <translation type="unfinished">Gauche</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="315"/>
+        <source>Right</source>
+        <translation type="unfinished">Droite</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="325"/>
+        <source>Vert</source>
+        <translation type="unfinished">Vert</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="351"/>
+        <source>Text</source>
+        <translation type="unfinished">Texte</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="779"/>
+        <source>Layer</source>
+        <translation type="unfinished">Calque</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="784"/>
+        <source>Characters Per Second</source>
+        <translation type="unfinished">Caractères Par Seconde</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="799"/>
+        <source>Left Margin</source>
+        <translation type="unfinished">Marge de gauche</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="804"/>
+        <source>Right Margin</source>
+        <translation type="unfinished">Marge de droite</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="809"/>
+        <source>Vertical Margin</source>
+        <translation type="unfinished">Marge Vertical</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="820"/>
+        <source>Reset columns</source>
+        <translation type="unfinished">Réinitialiser les colonnes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="954"/>
+        <source>&amp;Insert (before)</source>
+        <translation type="unfinished">&amp;Insérer (avant)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="962"/>
+        <source>Insert (after)</source>
+        <translation type="unfinished">Insérer (après)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="970"/>
+        <source>Insert at video time (before)</source>
+        <translation type="unfinished">Insérer au point vidéo (avant)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="978"/>
+        <source>Insert at video time (after)</source>
+        <translation type="unfinished">Insérer au point vidéo (après)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="990"/>
+        <source>&amp;Duplicate Lines</source>
+        <translation type="unfinished">&amp;Dupliquer les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="995"/>
+        <source>Split lines before current frame</source>
+        <translation type="unfinished">Scinder les lignes avant l&apos;image actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1004"/>
+        <source>Split lines after current frame</source>
+        <translation type="unfinished">Scinder les lignes après l&apos;image en cours</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1017"/>
+        <source>Swap Lines</source>
+        <translation type="unfinished">Permuter les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1024"/>
+        <source>&amp;Join (concatenate)</source>
+        <translation type="unfinished">&amp;Joindre (enchaîner)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1030"/>
+        <source>Join (keep first)</source>
+        <translation type="unfinished">Joindre (conserver première)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1036"/>
+        <source>Join (as Karaoke)</source>
+        <translation type="unfinished">Joindre (en karaoké)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1045"/>
+        <source>&amp;Make times continuous (change start)</source>
+        <translation type="unfinished">&amp;Mettre en temps continu (début modifié)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1050"/>
+        <source>&amp;Make times continuous (change end)</source>
+        <translation type="unfinished">&amp;Mettre en temps continu (fin modifiée)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1055"/>
+        <source>Recom&amp;bine Lines</source>
+        <translation type="unfinished">Recom&amp;biner les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1064"/>
+        <source>Create audio clip</source>
+        <translation type="unfinished">Créer un clip audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1072"/>
+        <source>Cu&amp;t Lines</source>
+        <translation type="unfinished">Co&amp;uper les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1079"/>
+        <source>&amp;Copy Lines</source>
+        <translation type="unfinished">&amp;Copier des lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1086"/>
+        <source>&amp;Paste Lines</source>
+        <translation type="unfinished">Coller les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1093"/>
+        <source>Paste Lines &amp;Over...</source>
+        <translation type="unfinished">C&amp;oller les lignes sur...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1102"/>
+        <source>De&amp;lete Lines</source>
+        <translation type="unfinished">Supprimer les &amp;lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1112"/>
+        <source>Export &amp;Clip from Video...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1124"/>
+        <source>Clip exported: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/SubtitleGridArea.qml" line="1126"/>
+        <source>Clip export failed.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SubtitleProject</name>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="18"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="74"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="625"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="653"/>
+        <source>Untitled</source>
+        <translation type="unfinished">Sans titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="54"/>
+        <source>Undone: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="68"/>
+        <source>Redone: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="204"/>
+        <source>Selected all </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="204"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="272"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="312"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="344"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="390"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="422"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="501"/>
+        <source> lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="220"/>
+        <source>Selected %1 lines visible in the current video frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="222"/>
+        <source>No lines visible in the current video frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="229"/>
+        <source>insert line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="260"/>
+        <source>Inserted new line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="266"/>
+        <source>duplicate lines</source>
+        <translation type="unfinished">dupliquer les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="272"/>
+        <source>Duplicated </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="279"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="289"/>
+        <source>split line</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="283"/>
+        <source>Split line at current video frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="293"/>
+        <source>Split line at cursor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="299"/>
+        <source>swap lines</source>
+        <translation type="unfinished">inverser les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="302"/>
+        <source>Swapped selected lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="308"/>
+        <source>join lines</source>
+        <translation type="unfinished">fusionner lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="312"/>
+        <source>Merged </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="318"/>
+        <source>delete lines</source>
+        <translation type="unfinished">supprimer les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="321"/>
+        <source>Deleted lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="344"/>
+        <source>Copied </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="350"/>
+        <source>paste over</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="350"/>
+        <source>paste lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="376"/>
+        <source>Pasted over %1 lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="390"/>
+        <source>Pasted </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="396"/>
+        <source>sort lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="399"/>
+        <source>Sorted by %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="405"/>
+        <source>sort column</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="414"/>
+        <source>Sorted by column (</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="414"/>
+        <source>ascending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="414"/>
+        <source>descending</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="420"/>
+        <source>kanji timer</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="422"/>
+        <source>Karaoke timing copy complete: synced </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="430"/>
+        <source>continuous times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="433"/>
+        <source>Made start times continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="433"/>
+        <source>Made end times continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="439"/>
+        <source>snap start</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="443"/>
+        <source>Snapped start time to the current video frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="449"/>
+        <source>snap end</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="453"/>
+        <source>Snapped end time to the current video frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="459"/>
+        <source>recombine lines</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="462"/>
+        <source>Made </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="462"/>
+        <source> line times continuous</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="468"/>
+        <source>shift to current frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="472"/>
+        <source>Shifted </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="472"/>
+        <source> lines to the current frame</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="478"/>
+        <source>timing post-processor</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="487"/>
+        <source>shift times</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="501"/>
+        <source>Selected </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="504"/>
+        <source>No matching lines found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="514"/>
+        <source>replace</source>
+        <translation type="unfinished">remplacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="517"/>
+        <source>Replaced </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="517"/>
+        <source> matches</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="520"/>
+        <source>No matches found</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="522"/>
+        <source>Invalid regular expression</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="530"/>
+        <source>split by karaoke</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="533"/>
+        <source>Split selected lines by karaoke syllables</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="539"/>
+        <source>Subtitles exported: charset [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="539"/>
+        <source>], filters [</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="557"/>
+        <source>Snap to keyframes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="592"/>
+        <source>Snapped to keyframes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="605"/>
+        <location filename="../qml/project/SubtitleProject.qml" line="615"/>
+        <source>Not found: %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="612"/>
+        <source>Found on line %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="627"/>
+        <source>New subtitle project created</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="638"/>
+        <source>Failed to open file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="643"/>
+        <source>Opened subtitles: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="659"/>
+        <source>File saved: </source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/project/SubtitleProject.qml" line="662"/>
+        <source>Failed to save file: </source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>TopMenuBar</name>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="56"/>
+        <source>New version %1 found, opening release page...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="59"/>
+        <source>Already running the latest version (4.0.0)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="66"/>
+        <source>Update check failed: cannot access GitHub Releases</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="107"/>
+        <source>&amp;File</source>
+        <translation type="unfinished">&amp;Fichier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="108"/>
+        <source>&amp;New Subtitles</source>
+        <translation type="unfinished">&amp;Nouveaux sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="109"/>
+        <source>&amp;Open Subtitles...</source>
+        <translation type="unfinished">&amp;Ouvrir des sous-titres...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="110"/>
+        <source>Open Subtitles with &amp;Charset...</source>
+        <translation type="unfinished">Ouvrir sous-titres avec jeu de &amp;caractères...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="112"/>
+        <source>Open Subtitles from &amp;Video</source>
+        <translation type="unfinished">Ouvrir les sous-titres de la &amp;vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="119"/>
+        <source>Failed to extract subtitles from video (requires ffmpeg and a subtitle track in the container)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="123"/>
+        <source>Open &amp;Autosaved Subtitles...</source>
+        <translation type="unfinished">Ouvrir un fichier de sous-titres auto-sauvegardé</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="126"/>
+        <source>Recent &amp;Subtitles</source>
+        <translation type="unfinished">Sous-titres récents (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="133"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="369"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="418"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="453"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="605"/>
+        <source> (missing)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="139"/>
+        <source>&amp;Clear Recent Subtitles</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="145"/>
+        <source>&amp;Save Subtitles</source>
+        <translation type="unfinished">Enregi&amp;strer les sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="150"/>
+        <source>Save Subtitles &amp;as...</source>
+        <translation type="unfinished">Enregistrer les sous-titres &amp;sous...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="151"/>
+        <source>&amp;Export Subtitles...</source>
+        <translation type="unfinished">&amp;Exporter les sous-titres...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="153"/>
+        <source>&amp;Properties...</source>
+        <translation type="unfinished">&amp;Propriétés...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="154"/>
+        <source>&amp;Attachments...</source>
+        <translation type="unfinished">Pièces jointes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="155"/>
+        <source>&amp;Fonts Collector...</source>
+        <translation type="unfinished">Collecte des &amp;polices d&apos;écriture...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="157"/>
+        <source>New &amp;Window</source>
+        <translation type="unfinished">Nou&amp;velle fenêtre</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="158"/>
+        <source>E&amp;xit</source>
+        <translation type="unfinished">&amp;Quitter</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="164"/>
+        <source>&amp;Edit</source>
+        <translation type="unfinished">&amp;Modifier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="167"/>
+        <source>Nothing to &amp;undo</source>
+        <translation type="unfinished">Rien à &amp;annuler</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="168"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="169"/>
+        <source>&amp;Undo %s</source>
+        <translation type="unfinished">Ann&amp;uler %s</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="170"/>
+        <source>&amp;Undo</source>
+        <translation type="unfinished">Annuler (&amp;U)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="177"/>
+        <source>Nothing to &amp;redo</source>
+        <translation type="unfinished">Rien à &amp;restaurer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="178"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="179"/>
+        <source>&amp;Redo %s</source>
+        <translation type="unfinished">&amp;Restaurer %s</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="180"/>
+        <source>&amp;Redo</source>
+        <translation type="unfinished">Rétablir (&amp;R)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="187"/>
+        <source>Cu&amp;t Lines</source>
+        <translation type="unfinished">Co&amp;uper les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="193"/>
+        <source>&amp;Copy Lines</source>
+        <translation type="unfinished">&amp;Copier des lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="198"/>
+        <source>&amp;Paste Lines</source>
+        <translation type="unfinished">Coller les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="200"/>
+        <source>Paste &amp;Over...</source>
+        <translation type="unfinished">Collage spécial (&amp;O)…</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="205"/>
+        <source>&amp;Find...</source>
+        <translation type="unfinished">&amp;Chercher...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="206"/>
+        <source>Find &amp;Next</source>
+        <translation type="unfinished">Rechercher suivant (&amp;N)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="207"/>
+        <source>&amp;Replace...</source>
+        <translation type="unfinished">remplacer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="213"/>
+        <source>&amp;Subtitle</source>
+        <translation type="unfinished">&amp;Sous-titre</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="214"/>
+        <source>&amp;Styles Manager...</source>
+        <translation type="unfinished">Gestionnaire de &amp;styles...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="215"/>
+        <source>Stylin&amp;g Assistant...</source>
+        <translation type="unfinished">assistant au style</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="216"/>
+        <source>&amp;Translation Assistant...</source>
+        <translation type="unfinished">Assistant de traduction (&amp;T)…</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="217"/>
+        <source>&amp;Resample Resolution...</source>
+        <translation type="unfinished">&amp;Rééchantillonnage de la résolution...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="218"/>
+        <source>&amp;Spell Checker...</source>
+        <translation type="unfinished">Correcteur orthographique</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="221"/>
+        <source>&amp;Insert Lines</source>
+        <translation type="unfinished">&amp;Insertion de lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="223"/>
+        <source>&amp;Before Current</source>
+        <translation type="unfinished">&amp;Avant ligne active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="227"/>
+        <source>&amp;After Current</source>
+        <translation type="unfinished">A&amp;près ligne active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="231"/>
+        <source>Before Current, at Video Time</source>
+        <translation type="unfinished">Avant l&apos;active, au point de synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="235"/>
+        <source>After Current, at Video Time</source>
+        <translation type="unfinished">Après l&apos;active, au point de synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="240"/>
+        <source>&amp;Duplicate Lines</source>
+        <translation type="unfinished">&amp;Dupliquer les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="245"/>
+        <source>Split lines before current frame</source>
+        <translation type="unfinished">Scinder les lignes avant l&apos;image actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="249"/>
+        <source>Split lines after current frame</source>
+        <translation type="unfinished">Scinder les lignes après l&apos;image en cours</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="253"/>
+        <source>De&amp;lete Lines</source>
+        <translation type="unfinished">Supprimer les &amp;lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="260"/>
+        <source>Join Lines</source>
+        <translation type="unfinished">Jonction de lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="262"/>
+        <source>&amp;Concatenate</source>
+        <translation type="unfinished">&amp;Concaténer</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="266"/>
+        <source>Keep &amp;First</source>
+        <translation type="unfinished">Garder la &amp;première</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="270"/>
+        <source>As &amp;Karaoke</source>
+        <translation type="unfinished">En &amp;karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="275"/>
+        <source>Recom&amp;bine Lines</source>
+        <translation type="unfinished">Recom&amp;biner les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="279"/>
+        <source>Split by Karaoke</source>
+        <translation type="unfinished">Scinder par karaoké</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="284"/>
+        <source>Sort All Lines</source>
+        <translation type="unfinished">Trier toutes les styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="285"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="295"/>
+        <source>&amp;Start Time</source>
+        <translation type="unfinished">Heure de début (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="286"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="296"/>
+        <source>&amp;End Time</source>
+        <translation type="unfinished">Heure de fin (&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="287"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="297"/>
+        <source>&amp;Style</source>
+        <translation type="unfinished">&amp;Style</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="288"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="298"/>
+        <source>Act&amp;or</source>
+        <translation type="unfinished">Acteur</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="289"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="299"/>
+        <source>E&amp;ffect</source>
+        <translation type="unfinished">E&amp;ffet</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="290"/>
+        <location filename="../qml/views/TopMenuBar.qml" line="300"/>
+        <source>&amp;Layer</source>
+        <translation type="unfinished">Couche (&amp;L)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="293"/>
+        <source>Sort Selected Lines</source>
+        <translation type="unfinished">Trier les lignes sélectionnées</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="303"/>
+        <source>Swap Lines</source>
+        <translation type="unfinished">Permuter les lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="307"/>
+        <source>Select &amp;Lines...</source>
+        <translation type="unfinished">Choix de lignes</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="308"/>
+        <source>Select &amp;All</source>
+        <translation type="unfinished">Tout sélectionner (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="313"/>
+        <source>&amp;Timing</source>
+        <translation type="unfinished">&amp;Synchronisation</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="314"/>
+        <source>&amp;Shift Times...</source>
+        <translation type="unfinished">Décalage temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="315"/>
+        <source>&amp;Timing Post-Processor...</source>
+        <translation type="unfinished">Postprocesseur &amp;de synchronisation...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="316"/>
+        <source>&amp;Kanji Timer...</source>
+        <translation type="unfinished">Minutage &amp;kanji...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="319"/>
+        <source>Snap Start to &amp;Video</source>
+        <translation type="unfinished">Coller le début à la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="325"/>
+        <source>Snap End to &amp;Video</source>
+        <translation type="unfinished">Coller la fin à la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="331"/>
+        <source>Snap to &amp;Scene</source>
+        <translation type="unfinished">coller à la scène</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="337"/>
+        <source>Shift to &amp;Current Frame</source>
+        <translation type="unfinished">Décaler vers l&apos;image a&amp;ctive</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="343"/>
+        <source>Make Times &amp;Continuous</source>
+        <translation type="unfinished">Rendre les temps continus</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="345"/>
+        <source>Change &amp;Start</source>
+        <translation type="unfinished">Modifier le &amp;début</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="349"/>
+        <source>Change &amp;End</source>
+        <translation type="unfinished">Modifier la &amp;fin</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="358"/>
+        <source>&amp;Video</source>
+        <translation type="unfinished">&amp;Vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="359"/>
+        <source>&amp;Open Video...</source>
+        <translation type="unfinished">&amp;Ouvrir une vidéo...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="362"/>
+        <source>Recent &amp;Videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="375"/>
+        <source>&amp;Clear Recent Videos</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="381"/>
+        <source>&amp;Close Video</source>
+        <translation type="unfinished">&amp;Fermer la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="385"/>
+        <source>Video closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="388"/>
+        <source>Use &amp;Dummy Video...</source>
+        <translation type="unfinished">Utiliser une fausse vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="390"/>
+        <source>Show &amp;Video Details</source>
+        <translation type="unfinished">Afficher les détails &amp;vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="395"/>
+        <source>Open Timecodes File...</source>
+        <translation type="unfinished">Ouvrir un fichier de codes temporels...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="397"/>
+        <source>Save Timecodes File...</source>
+        <translation type="unfinished">Enregistrer un fichier de codes temporels...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="402"/>
+        <source>Close Timecodes File</source>
+        <translation type="unfinished">Fermer le fichier de codes temporels</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="406"/>
+        <source>Timecode file closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="411"/>
+        <source>Recent &amp;Timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="424"/>
+        <source>&amp;Clear Recent Timecodes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="430"/>
+        <source>Open Keyframes...</source>
+        <translation type="unfinished">Ouvrir des images clés...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="432"/>
+        <source>Save Keyframes...</source>
+        <translation type="unfinished">Enregistrer les images clés...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="437"/>
+        <source>Close Keyframes</source>
+        <translation type="unfinished">Fermer les images clés</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="441"/>
+        <source>Keyframes closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="446"/>
+        <source>Recent &amp;Keyframes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="459"/>
+        <source>&amp;Clear Recent Keyframes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="466"/>
+        <source>Detach &amp;Video</source>
+        <translation type="unfinished">Détacher la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="473"/>
+        <source>Set &amp;Zoom</source>
+        <translation type="unfinished">Réglage du &amp;zoom</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="502"/>
+        <source>Override &amp;Aspect Ratio</source>
+        <translation type="unfinished">Forcer le format d&apos;image (&amp;A)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="505"/>
+        <source>&amp;Default</source>
+        <translation type="unfinished">&amp;Défaut</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="510"/>
+        <source>&amp;Fullscreen (4:3)</source>
+        <translation type="unfinished">&amp;Plein écran (4:3)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="515"/>
+        <source>&amp;Widescreen (16:9)</source>
+        <translation type="unfinished">&amp;Écran large (16:9)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="520"/>
+        <source>&amp;Cinematic (2.35)</source>
+        <translation type="unfinished">&amp;cinématographique (2.35)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="525"/>
+        <source>C&amp;ustom...</source>
+        <translation type="unfinished">Personnalisation...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="534"/>
+        <source>Show &amp;Overscan Mask</source>
+        <translation type="unfinished">Afficher le masque d&apos;&amp;overscan</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="540"/>
+        <source>Reset Video &amp;Pan</source>
+        <translation type="unfinished">Recentrer &amp;la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="546"/>
+        <source>Reset the video&apos;s position in the video display</source>
+        <translation type="unfinished">Recentrer la vidéo dans l&apos;affichage</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="551"/>
+        <source>&amp;Jump to...</source>
+        <translation type="unfinished">&amp;Aller à...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="557"/>
+        <source>Jump to &amp;Start</source>
+        <translation type="unfinished">Aller au début (&amp;S)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="563"/>
+        <source>Jump to &amp;End</source>
+        <translation type="unfinished">Aller à la fin (&amp;E)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="572"/>
+        <source>&amp;Audio</source>
+        <translation type="unfinished">&amp;Audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="573"/>
+        <source>&amp;Open Audio File...</source>
+        <translation type="unfinished">&amp;Ouvrir un fichier audio...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="575"/>
+        <source>Open Audio from &amp;Video</source>
+        <translation type="unfinished">Ouvrir l&apos;audio de la &amp;vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="581"/>
+        <source>Audio extracted from the current video and loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="583"/>
+        <source>Failed to extract audio from video</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="589"/>
+        <source>&amp;Close Audio</source>
+        <translation type="unfinished">&amp;Fermer l&apos;audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="593"/>
+        <source>Audio closed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="598"/>
+        <source>Recent &amp;Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="611"/>
+        <source>&amp;Clear Recent Audio</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="618"/>
+        <source>&amp;Spectrum Display</source>
+        <translation type="unfinished">Affichage &amp;spectral</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="622"/>
+        <source>Audio view switched to: spectrum</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="627"/>
+        <source>&amp;Waveform Display</source>
+        <translation type="unfinished">Affichage &amp;ondulaire</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="631"/>
+        <source>Audio view switched to: waveform</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="636"/>
+        <source>Open 2h30 Blank Audio</source>
+        <translation type="unfinished">Ouvrir un audio vierge de 2 h 30</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="639"/>
+        <source>Loaded 2h30m blank audio (virtually synthesised)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="644"/>
+        <source>Open 2h30 Noise Audio</source>
+        <translation type="unfinished">Ouvrir 2 h 30 de bruit audio</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="647"/>
+        <source>Loaded 2h30m white noise audio (virtually synthesised)</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="656"/>
+        <source>A&amp;utomation</source>
+        <translation type="unfinished">A&amp;utomatisme</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="657"/>
+        <source>&amp;Automation...</source>
+        <translation type="unfinished">&amp;Automatisme...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="659"/>
+        <source>&amp;Reload Automation Scripts</source>
+        <translation type="unfinished">Recharger les scripts d&apos;automatisme</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="661"/>
+        <source>Reloaded all automation scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="682"/>
+        <source>Vie&amp;w</source>
+        <translation type="unfinished">A&amp;ffichage</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="683"/>
+        <source>&amp;Language...</source>
+        <translation type="unfinished">&amp;Langue...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="684"/>
+        <source>&amp;Options...</source>
+        <translation type="unfinished">&amp;Options...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="687"/>
+        <source>S&amp;ubs Only View</source>
+        <translation type="unfinished">Affichage des so&amp;us-titres seuls</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="692"/>
+        <source>&amp;Video+Subs View</source>
+        <translation type="unfinished">Affichage &amp;vidéo + sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="697"/>
+        <source>&amp;Audio+Subs View</source>
+        <translation type="unfinished">&amp;Affichage audio + sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="702"/>
+        <source>&amp;Full view</source>
+        <translation type="unfinished">A&amp;ffichage complet</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="708"/>
+        <source>Sh&amp;ow Tags</source>
+        <translation type="unfinished">A&amp;fficher les balises</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="713"/>
+        <source>ASS Override Tag mode set to show full tags.</source>
+        <translation type="unfinished">Mode balise ASS réglé sur affichage complet.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="717"/>
+        <source>S&amp;implify Tags</source>
+        <translation type="unfinished">S&amp;implifier les balises</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="722"/>
+        <source>ASS Override Tag mode set to simplify tags.</source>
+        <translation type="unfinished">Mode balise ASS réglé sur affichage simplifié.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="726"/>
+        <source>&amp;Hide Tags</source>
+        <translation type="unfinished">Masquer les balises</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="731"/>
+        <source>ASS Override Tag mode set to hide tags.</source>
+        <translation type="unfinished">Mode balise ASS réglé sur masquage.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="736"/>
+        <source>Toggle &amp;Toolbar</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="745"/>
+        <source>&amp;Help</source>
+        <translation type="unfinished">&amp;Aide</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="746"/>
+        <source>&amp;Contents</source>
+        <translation type="unfinished">&amp;Contenus</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="748"/>
+        <source>&amp;Website</source>
+        <translation type="unfinished">Site &amp;web</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="749"/>
+        <source>&amp;Bug Tracker...</source>
+        <translation type="unfinished">Traqueur de &amp;bogues...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="751"/>
+        <source>&amp;Check for Updates...</source>
+        <translation type="unfinished">&amp;Vérifier les mises à jour...</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="752"/>
+        <source>&amp;About Aegisub...</source>
+        <translation type="unfinished">À propos d&apos;Aegisub</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="753"/>
+        <source>&amp;Log Window...</source>
+        <translation type="unfinished">Fenêtre d&apos;historique</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="776"/>
+        <source>Enter a custom aspect ratio (width/height):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="789"/>
+        <source>OK</source>
+        <translation type="unfinished">OK</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="795"/>
+        <source>Aspect ratio overridden to %1</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopMenuBar.qml" line="801"/>
+        <source>Cancel</source>
+        <translation type="unfinished">Annuler</translation>
+    </message>
+</context>
+<context>
+    <name>TopToolBar</name>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="89"/>
+        <source>New subtitles</source>
+        <translation type="unfinished">Nouveaux sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="95"/>
+        <source>Open a subtitles file</source>
+        <translation type="unfinished">Ouvrir un fichier de sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="100"/>
+        <source>Save the current subtitles</source>
+        <translation type="unfinished">Enregistrer les sous-titres actuels</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="111"/>
+        <source>Jump to frame or time</source>
+        <translation type="unfinished">Aller à l&apos;image ou au temps</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="117"/>
+        <location filename="../qml/views/TopToolBar.qml" line="121"/>
+        <source>Zoom video in</source>
+        <translation type="unfinished">Agrandir la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="126"/>
+        <location filename="../qml/views/TopToolBar.qml" line="130"/>
+        <source>Zoom video out</source>
+        <translation type="unfinished">Rétrécir la vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="135"/>
+        <source>Jump the video to the start frame of current subtitle</source>
+        <translation type="unfinished">Aller à l&apos;image de début de la vidéo du sous-titre courant</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="141"/>
+        <source>Jump the video to the end frame of current subtitle</source>
+        <translation type="unfinished">Aller à l&apos;image de fin de la vidéo du sous-titre courant</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="151"/>
+        <source>Set start of selected subtitles to current video frame</source>
+        <translation type="unfinished">Appliquer le début du sous-titre sélectionné à l&apos;image vidéo active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="161"/>
+        <source>Set end of selected subtitles to current video frame</source>
+        <translation type="unfinished">Appliquer la fin des sous-titres sélectionnés à l&apos;image vidéo active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="171"/>
+        <source>Select all dialogue lines that are visible on the current video frame</source>
+        <translation type="unfinished">Sélectionner toutes les lignes de dialogue visibles sur l&apos;image en cours</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="181"/>
+        <source>Set start and end of subtitles to the keyframes around current video frame</source>
+        <translation type="unfinished">Définir le début et la fin des sous-titre sur les images-clés proche de l&apos;image vidéo active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="191"/>
+        <source>Shift selection so that the active line starts at current frame</source>
+        <translation type="unfinished">Décaler la sélection pour que la première ligne active démarre sur l&apos;image active</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="206"/>
+        <source>Open the styles manager</source>
+        <translation type="unfinished">Ouvrir le gestionnaire de styles</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="211"/>
+        <source>Open script properties window</source>
+        <translation type="unfinished">Ouvrir la fenêtre des propriétés du script</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="216"/>
+        <source>Open the attachment manager dialog</source>
+        <translation type="unfinished">Ouvrir la boîte de dialogue du gestionnaire de pièce jointe</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="221"/>
+        <source>Open fonts collector</source>
+        <translation type="unfinished">Ouvrir le collecteur de polices d&apos;écriture</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="231"/>
+        <source>Open automation manager. Ctrl: Rescan autoload folder. Ctrl+Shift: Rescan autoload folder and reload all automation scripts</source>
+        <translation type="unfinished">Ouvrir le gestionnaire des automatismes. Ctrl: Rescanne le dossier « autoload »chargement. Ctrl+Maj: Rescanner le dossier « autoload » et recharger tous les scripts d&apos;automatisme</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="240"/>
+        <source>Shift subtitles by time or frames</source>
+        <translation type="unfinished">Décaler des sous-titres en temps ou images</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="245"/>
+        <source>Open styling assistant</source>
+        <translation type="unfinished">Ouvre l&apos;assistant de style</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="250"/>
+        <source>Open translation assistant</source>
+        <translation type="unfinished">Ouvrir l&apos;assistant à la traduction</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="255"/>
+        <source>Resample subtitles to maintain their current appearance at a different script resolution</source>
+        <translation type="unfinished">Rééchantillonner les sous-titres pour maintenir leur aspect actuel à une résolution de script différente</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="260"/>
+        <source>Post-process the subtitle timing to add lead-ins and lead-outs, snap timing to scene changes, etc.</source>
+        <translation type="unfinished">Post-traitement de la synchronisation des sous-titres pour ajouter des blancs de fin, de début, synchronisation instantanée aux changements de scène, etc.</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="265"/>
+        <source>Open the Kanji timer copier</source>
+        <translation type="unfinished">Ouvrir le copieur de minutage Kanji</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="270"/>
+        <source>Open spell checker</source>
+        <translation type="unfinished">Ouvrir le correcteur orthographique</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="279"/>
+        <source>Configure Aegisub</source>
+        <translation type="unfinished">Configurer Aegisub</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/TopToolBar.qml" line="284"/>
+        <source>Cycle through tag hiding modes</source>
+        <translation type="unfinished">Défiler les modes d&apos;affichage des balises</translation>
+    </message>
+</context>
+<context>
+    <name>VideoBox</name>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="120"/>
+        <source>Standard mode, double click sets position</source>
+        <translation type="unfinished">Mode standard, le double-clic définit la position</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="125"/>
+        <source>Drag subtitles</source>
+        <translation type="unfinished">Glisser les sous-titres</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="130"/>
+        <source>Rotate subtitles on their Z axis</source>
+        <translation type="unfinished">Pivoter les sous-titres sur l&apos;axe Z</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="135"/>
+        <source>Rotate subtitles on their X and Y axes</source>
+        <translation type="unfinished">Pivoter les sous-titres selon les axes X et Y</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="140"/>
+        <source>Scale subtitles on X and Y axes</source>
+        <translation type="unfinished">Ajuster la taille les sous-titres selon les axes X et Y</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="145"/>
+        <source>Clip subtitles to a rectangle</source>
+        <translation type="unfinished">Contraindre les sous-titres dans un rectangle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="150"/>
+        <source>Clip subtitles to a vectorial area</source>
+        <translation type="unfinished">Contraindre les sous-titres dans une zone vectorielle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="177"/>
+        <source>Open the manual page for Visual Typesetting</source>
+        <translation type="unfinished">Ouvrir la page du manuel des éditions vidéos</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="965"/>
+        <source>Drag control points</source>
+        <translation type="unfinished">Glisser les points de contrôle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="966"/>
+        <source>Append a line</source>
+        <translation type="unfinished">Ajoute une ligne</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="967"/>
+        <source>Append a bezier bicubic curve</source>
+        <translation type="unfinished">Ajoute une courbe de Bézier cubique</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="968"/>
+        <source>Close contour</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="969"/>
+        <source>Remove a control point</source>
+        <translation type="unfinished">Retire un point de contrôle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1436"/>
+        <source>Pause video playback</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1436"/>
+        <source>Play the video starting on this position</source>
+        <translation type="unfinished">Lire la vidéo depuis cette position</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1452"/>
+        <source>Play the video for the current line</source>
+        <translation type="unfinished">Lire la vidéo de la ligne actuelle</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1465"/>
+        <source>Stop video playback</source>
+        <translation type="unfinished">Arrêter la lecture vidéo</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1501"/>
+        <source>Toggle automatically seeking video to the start time of selected lines</source>
+        <translation type="unfinished">Alterner automatiquement le signal vidéo de recherche du temps de début des lignes sélectionnées</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1526"/>
+        <source>Current frame time and number</source>
+        <translation type="unfinished">Temps et numéro de l&apos;image courante</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1558"/>
+        <source>Time of this frame relative to start and end of current subs</source>
+        <translation type="unfinished">Temps de cette image relatif au début et à la fin du sous-titre courant</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1594"/>
+        <source>Video zoom</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1693"/>
+        <source>Save PNG snapshot</source>
+        <translation type="unfinished">Enregistrer une capture d&apos;écran PNG</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1698"/>
+        <source>Copy image to Clipboard</source>
+        <translation type="unfinished">Copier l&apos;image dans le presse-papier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1706"/>
+        <source>Save PNG snapshot (no subtitles)</source>
+        <translation type="unfinished">Enregistrer une capture d&apos;écran PNG (sans sous-titres)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1710"/>
+        <source>Copy image to Clipboard (no subtitles)</source>
+        <translation type="unfinished">Copier l&apos;image dans le presse-papier (sans sous-titres)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1717"/>
+        <source>Save PNG snapshot (only subtitles)</source>
+        <translation type="unfinished">Enregistrer une capture PNG (sous-titres uniquement)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1721"/>
+        <source>Copy image to Clipboard (only subtitles)</source>
+        <translation type="unfinished">Copier l&apos;image dans le presse-papiers (sous-titres uniquement)</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1728"/>
+        <source>Copy coordinates to Clipboard</source>
+        <translation type="unfinished">Copie les coordonnées dans le presse-papier</translation>
+    </message>
+    <message>
+        <location filename="../qml/views/VideoBox.qml" line="1732"/>
+        <source>Reset Video &amp;Pan</source>
+        <translation type="unfinished">Recentrer &amp;la vidéo</translation>
+    </message>
 </context>
 </TS>

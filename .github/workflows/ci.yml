@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-24.04]
+        os: [windows-latest, ubuntu-24.04, macos-14]
 
     steps:
       - name: Checkout
@@ -22,13 +22,17 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.8.*"
-          modules: qtshadertools qtmultimedia
+          modules: qtshadertools qtmultimedia qttools
 
       - name: Setup build tools (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y build-essential ninja-build
+
+      - name: Setup build tools (macOS)
+        if: runner.os == 'macOS'
+        run: brew install ninja
 
       - name: Setup MSVC toolchain (Windows)
         if: runner.os == 'Windows'
@@ -43,3 +47,52 @@ jobs:
 
       - name: Build
         run: cmake --build build --parallel
+
+      # Headless smoke test: the app must stay alive (timeout exit code 124)
+      # after loading QML; a startup failure exits non-zero before the timeout.
+      - name: Smoke test (Linux, offscreen)
+        if: runner.os == 'Linux'
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          export QT_QUICK_BACKEND=software
+          set +e
+          timeout 20s ./build/AegisubQT > smoke.log 2>&1
+          code=$?
+          set -e
+          cat smoke.log
+          if [ "$code" -ne 0 ] && [ "$code" -ne 124 ]; then
+            echo "::error::Smoke test failed with exit code $code"
+            exit "$code"
+          fi
+
+      # Bundle Qt runtime DLLs next to the exe so the artifact runs out of the box.
+      - name: Deploy Qt runtime (Windows)
+        if: runner.os == 'Windows'
+        run: windeployqt --release --qmldir qml build/AegisubQT.exe
+
+      - name: Upload artifact (Windows)
+        if: runner.os == 'Windows'
+        uses: actions/upload-artifact@v4
+        with:
+          name: AegisubQT-windows-x64
+          path: |
+            build/AegisubQT.exe
+            build/*.dll
+            build/qml/
+            build/assets/
+            build/automation/
+            build/locale/
+          if-no-files-found: error
+
+      - name: Upload artifact (Linux)
+        if: runner.os == 'Linux'
+        uses: actions/upload-artifact@v4
+        with:
+          name: AegisubQT-linux-x64
+          path: |
+            build/AegisubQT
+            build/qml/
+            build/assets/
+            build/automation/
+            build/locale/
+          if-no-files-found: error

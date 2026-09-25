@@ -243,7 +243,7 @@ ApplicationWindow {
         onAccepted: {
             if (typeof videoController !== "undefined") {
                 videoController.saveKeyframesFile(selectedFile.toString());
-                root.statusMsgText = qsTr("已保存关键帧");
+                root.statusMsgText = qsTr("Saved keyframes");
             }
         }
     }
@@ -268,7 +268,7 @@ ApplicationWindow {
         onAccepted: {
             if (typeof videoController !== "undefined") {
                 videoController.saveTimecodesFile(selectedFile.toString());
-                root.statusMsgText = qsTr("已保存时间码");
+                root.statusMsgText = qsTr("Saved timecodes");
             }
         }
     }
@@ -347,7 +347,7 @@ ApplicationWindow {
                 }
             }
             if (didSave) {
-                root.statusMsgText = qsTr("自动保存: 已写入安全副本");
+                root.statusMsgText = qsTr("Auto-save: safe copy written");
             }
         }
     }
@@ -422,7 +422,7 @@ ApplicationWindow {
 
                 Text {
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("松开鼠标以加载媒体或字幕文件")
+                    text: qsTr("Release the mouse to load media or subtitle files")
                     font.pixelSize: 16
                     font.bold: true
                     color: "#005bb5"
@@ -430,7 +430,7 @@ ApplicationWindow {
 
                 Text {
                     Layout.alignment: Qt.AlignHCenter
-                    text: qsTr("支持视频 (MP4, MKV等)、音频 (WAV, MP3等)、字幕 (ASS, SRT等)、关键帧与时间码")
+                    text: qsTr("Supports video (MP4, MKV, etc.), audio (WAV, MP3, etc.), subtitles (ASS, SRT, etc.), keyframes and timecodes")
                     font.pixelSize: 11
                     color: "#666666"
                 }
@@ -711,7 +711,7 @@ ApplicationWindow {
             }
         }
         function onCommitRequested(desc) {
-            root.statusMsgText = qsTr("视觉排版提交: ") + desc;
+            root.statusMsgText = qsTr("Visual typesetting committed: ") + desc;
         }
     }
 
@@ -793,7 +793,7 @@ ApplicationWindow {
             if (data) {
                 subProject.openSubtitles(data);
                 var fName = data.split('/').pop().split('\\').pop();
-                root.statusMsgText = qsTr("已加载字幕: ") + fName;
+                root.statusMsgText = qsTr("Loaded subtitles: ") + fName;
             }
         }
     }
@@ -805,7 +805,7 @@ ApplicationWindow {
         if (hasValidFile) {
             subProject.saveSubtitles(subProject.currentFileName);
             // 原版 subs_controller.cpp:250 陷阱语义：
-            // 保存失败（仍 modified）等效于qsTr("取消退出")，字幕绝不丢失
+            // 保存失败（仍 modified）等效于取消退出，字幕绝不丢失
             if (!subProject.isModified) {
                 var act = pendingAction;
                 var dat = pendingActionData;
@@ -817,7 +817,7 @@ ApplicationWindow {
                 pendingActionData = null;
             }
         } else {
-            // 无文件名：弹另存为；用户在另存为对话框中取消同样等效于qsTr("取消退出")
+            // 无文件名：弹另存为；用户在另存为对话框中取消同样等效于取消退出
             fileDialogSubSave.open();
         }
     }
@@ -839,7 +839,7 @@ ApplicationWindow {
     function createAudioClip() {
         if (subProject.subtitleModel.count === 0) return;
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
-        root.statusMsgText = qsTr("已为行 #") + it.lineNumber + qsTr(" 创建音频剪辑");
+        root.statusMsgText = qsTr("Created audio clip for line #%1").arg(it.lineNumber);
     }
 
     function jumpToLineStart() {
@@ -847,7 +847,7 @@ ApplicationWindow {
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
         var sMs = AssUtils.assToMs(it.start);
         videoController.seekTime(sMs / 1000.0);
-        root.statusMsgText = qsTr("已跳转至当前行开始时间: ") + it.start;
+        root.statusMsgText = qsTr("Jumped to the current line start time: ") + it.start;
     }
 
     function jumpToLineEnd() {
@@ -855,14 +855,14 @@ ApplicationWindow {
         var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
         var eMs = AssUtils.assToMs(it.end);
         videoController.seekTime(eMs / 1000.0);
-        root.statusMsgText = qsTr("已跳转至当前行结束时间: ") + it.end;
+        root.statusMsgText = qsTr("Jumped to the current line end time: ") + it.end;
     }
 
     function cycleTagHiding() {
         tagHidingMode = (tagHidingMode + 1) % 3;
         subProject.tagHidingMode = tagHidingMode;
-        var modes = [qsTr("显示全部 ASS 标签"), qsTr("简化 ASS 标签 (❚)"), qsTr("完全隐藏 ASS 标签")];
-        root.statusMsgText = qsTr("ASS 标签显示模式: ") + modes[tagHidingMode];
+        var modes = [qsTr("Show all ASS tags"), qsTr("Simplify ASS tags (❚)"), qsTr("Hide ASS tags completely")];
+        root.statusMsgText = qsTr("ASS tag display mode: ") + modes[tagHidingMode];
     }
 
     // Handles dropped URLs or file paths by routing to corresponding controllers
@@ -898,7 +898,7 @@ ApplicationWindow {
             if (typeof videoController !== "undefined" && videoController) {
                 recentFiles.add("video", localPath);
                 videoController.openVideo(localPath);
-                root.statusMsgText = qsTr("已加载视频: ") + fileName;
+                root.statusMsgText = qsTr("Loaded video: ") + fileName;
                 if (typeof audioController !== "undefined" && audioController) {
                     audioController.openAudioFromVideo(localPath);
                 }
@@ -912,7 +912,7 @@ ApplicationWindow {
             if (typeof audioController !== "undefined" && audioController) {
                 recentFiles.add("audio", localPath);
                 audioController.openAudio(localPath);
-                root.statusMsgText = qsTr("已加载音频: ") + fileName;
+                root.statusMsgText = qsTr("Loaded audio: ") + fileName;
             }
             return;
         }
@@ -922,7 +922,7 @@ ApplicationWindow {
             if (typeof videoController !== "undefined" && videoController) {
                 recentFiles.add("keyframes", localPath);
                 videoController.openKeyframesFile(localPath);
-                root.statusMsgText = qsTr("已加载关键帧: ") + fileName;
+                root.statusMsgText = qsTr("Loaded keyframes: ") + fileName;
             }
             return;
         }
@@ -932,7 +932,7 @@ ApplicationWindow {
             if (typeof videoController !== "undefined" && videoController) {
                 recentFiles.add("timecodes", localPath);
                 videoController.openTimecodesFile(localPath);
-                root.statusMsgText = qsTr("已加载时间码: ") + fileName;
+                root.statusMsgText = qsTr("Loaded timecodes: ") + fileName;
             }
             return;
         }
@@ -941,7 +941,7 @@ ApplicationWindow {
         if (typeof videoController !== "undefined" && videoController) {
             recentFiles.add("video", localPath);
             videoController.openVideo(localPath);
-            root.statusMsgText = qsTr("已加载视频: ") + fileName;
+            root.statusMsgText = qsTr("Loaded video: ") + fileName;
         }
     }
 

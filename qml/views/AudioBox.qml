@@ -516,7 +516,7 @@ Item {
                                     anchors.fill: parent
                                     hoverEnabled: true
                                     ToolTip.visible: hovered
-                                    ToolTip.text: qsTr("音节: ") + modelData.text + " (" + (modelData.dur * 10) + "ms)"
+                                    ToolTip.text: qsTr("Syllable: ") + modelData.text + " (" + (modelData.dur * 10) + "ms)"
                                     ToolTip.delay: 700
                                 }
                             }
@@ -549,7 +549,7 @@ Item {
                         if (audioBox.project && audioBox.project.subtitleModel && audioBox.project.currentSelectedIndex >= 0) {
                             audioBox.project.subtitleModel.setProperty(audioBox.project.currentSelectedIndex, "text", kText);
                             audioBox.project.dataModified();
-                            audioBox.statusMessage(qsTr("已生成卡拉OK \\k 标签"));
+                            audioBox.statusMessage(qsTr("Created karaoke %1 tags").arg("\\k"));
                         }
                     }
                 }

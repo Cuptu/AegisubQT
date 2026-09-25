@@ -40,7 +40,7 @@ NativeDialogFrame {
         var it = styleStorageManager.getStyle(styleStorageManager.currentCatalog, storageSelectedIndex);
         if (it && it.name) {
             nativeSubtitleModel.addStyle(it);
-            dialog.statusMessage(qsTr("已将样式 [") + it.name + qsTr("] 复制到当前脚本"));
+            dialog.statusMessage(qsTr("Copied style [") + it.name + qsTr("] to the current script"));
         }
     }
 
@@ -49,7 +49,7 @@ NativeDialogFrame {
         var it = nativeSubtitleModel.getStyle(currentSelectedIndex);
         if (it && it.name) {
             styleStorageManager.addStyle(styleStorageManager.currentCatalog, it);
-            dialog.statusMessage(qsTr("已将样式 [") + it.name + qsTr("] 复制到存储区 [") + styleStorageManager.currentCatalog + "]");
+            dialog.statusMessage(qsTr("Copied style [") + it.name + qsTr("] to storage [") + styleStorageManager.currentCatalog + "]");
         }
     }
 

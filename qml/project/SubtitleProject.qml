@@ -51,7 +51,7 @@ QtObject {
                 selectedIndices = sel.selectedIndices;
             }
         }
-        statusMessage(qsTr("已撤销: ") + desc);
+        statusMessage(qsTr("Undone: ") + desc);
         dataModified();
     }
 
@@ -65,7 +65,7 @@ QtObject {
                 selectedIndices = sel.selectedIndices;
             }
         }
-        statusMessage(qsTr("已重做: ") + desc);
+        statusMessage(qsTr("Redone: ") + desc);
         dataModified();
     }
 
@@ -201,7 +201,7 @@ QtObject {
         for (var i = 0; i < subtitleModel.count; ++i) all.push(i);
         selectedIndices = all;
         if (subtitleModel.count > 0) currentSelectedIndex = 0;
-        statusMessage(qsTr("已全选 ") + subtitleModel.count + qsTr(" 行字幕"));
+        statusMessage(qsTr("Selected all ") + subtitleModel.count + qsTr(" lines"));
     }
 
     function selectVisibleLines(vTime) {
@@ -217,9 +217,9 @@ QtObject {
             selectedIndices = visible;
             currentSelectedIndex = visible[0];
             selectRow(currentSelectedIndex, false, false);
-            statusMessage(qsTr("已选中当前可见的 ") + visible.length + qsTr(" 行字幕"));
+            statusMessage(qsTr("Selected %1 lines visible in the current video frame").arg(visible.length));
         } else {
-            statusMessage(qsTr("当前视频帧无可见字幕"));
+            statusMessage(qsTr("No lines visible in the current video frame"));
         }
     }
 
@@ -257,7 +257,7 @@ QtObject {
 
         var newIdx = subtitleModel.insertLine(baseIdx, before, startMs, endMs, {});
         selectRow(newIdx, false, false);
-        statusMessage(qsTr("已插入新行"));
+        statusMessage(qsTr("Inserted new line"));
         dataModified();
     }
 
@@ -269,7 +269,7 @@ QtObject {
             selectedIndices = newSel;
             currentSelectedIndex = newSel[0];
             selectRow(newSel[0], false, false);
-            statusMessage(qsTr("已重复 ") + newSel.length + qsTr(" 行"));
+            statusMessage(qsTr("Duplicated ") + newSel.length + qsTr(" lines"));
             dataModified();
         }
     }
@@ -280,7 +280,7 @@ QtObject {
         var frameTime = Math.round((videoTime || 0) * 1000.0);
         subtitleModel.splitLineAtFrame(currentSelectedIndex, shift, frameTime, videoFps || 24.0);
         selectRow(currentSelectedIndex + 1, false, false);
-        statusMessage(qsTr("已在当前帧分割行"));
+        statusMessage(qsTr("Split line at current video frame"));
         dataModified();
     }
 
@@ -290,7 +290,7 @@ QtObject {
         var vMs = Math.round((videoTime || 0) * 1000.0);
         subtitleModel.splitLineAtCursor(currentSelectedIndex, pos, mode, vMs);
         selectRow(currentSelectedIndex + 1, false, false);
-        statusMessage(qsTr("已在光标处分割行"));
+        statusMessage(qsTr("Split line at cursor"));
         dataModified();
     }
 
@@ -299,7 +299,7 @@ QtObject {
         pushUndo(qsTr("swap lines"));
         subtitleModel.swapSelectedLines(selectedIndices);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已互换选中行"));
+        statusMessage(qsTr("Swapped selected lines"));
         dataModified();
     }
 
@@ -309,7 +309,7 @@ QtObject {
         var count = selectedIndices.length;
         subtitleModel.joinSelectedLines(selectedIndices, mode);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已合并 ") + count + qsTr(" 行"));
+        statusMessage(qsTr("Merged ") + count + qsTr(" lines"));
         dataModified();
     }
 
@@ -318,7 +318,7 @@ QtObject {
         pushUndo(qsTr("delete lines"));
         var nextIdx = subtitleModel.deleteSelectedLines(selectedIndices);
         selectRow(nextIdx, false, false);
-        statusMessage(qsTr("已删除行"));
+        statusMessage(qsTr("Deleted lines"));
         dataModified();
     }
 
@@ -341,7 +341,7 @@ QtObject {
         if (copyHelper && typeof copyHelper.copyText === "function") {
             copyHelper.copyText(textLines.join("\n"));
         }
-        statusMessage(qsTr("已复制 ") + copied.length + qsTr(" 行"));
+        statusMessage(qsTr("Copied ") + copied.length + qsTr(" lines"));
     }
 
     function pasteLines(pasteOver, pastedData, allowedFields) {
@@ -387,7 +387,7 @@ QtObject {
         subtitleModel.renumberLines();
         selectedIndices = newSel;
         currentSelectedIndex = newSel[0];
-        statusMessage(qsTr("已粘贴 ") + toPaste.length + qsTr(" 行"));
+        statusMessage(qsTr("Pasted ") + toPaste.length + qsTr(" lines"));
         dataModified();
     }
 
@@ -396,7 +396,7 @@ QtObject {
         pushUndo(qsTr("sort lines"));
         subtitleModel.sortLines(field, selectedOnly ? selectedIndices : [], true);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已按") + field + qsTr("排序"));
+        statusMessage(qsTr("Sorted by %1").arg(field));
         dataModified();
     }
 
@@ -411,7 +411,7 @@ QtObject {
         }
         subtitleModel.sortByColumn(col, sortAscending);
         selectRow(0, false, false);
-        statusMessage(qsTr("已按列排序 (") + (sortAscending ? qsTr("升序") : qsTr("降序")) + ")");
+        statusMessage(qsTr("Sorted by column (") + (sortAscending ? qsTr("ascending") : qsTr("descending")) + ")");
         dataModified();
     }
 
@@ -419,7 +419,7 @@ QtObject {
         if (!subtitleModel || subtitleModel.count === 0) return 0;
         pushUndo(qsTr("kanji timer"));
         var count = subtitleModel.applyKanjiCopy(srcStyle, dstStyle);
-        statusMessage(qsTr("卡拉OK时序复制完成: 成功同步 ") + count + qsTr(" 行时序"));
+        statusMessage(qsTr("Karaoke timing copy complete: synced ") + count + qsTr(" lines"));
         dataModified();
         return count;
     }
@@ -430,7 +430,7 @@ QtObject {
         pushUndo(qsTr("continuous times"));
         subtitleModel.makeTimesContinuous(currentSelectedIndex, changeStart);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(changeStart ? qsTr("已使开始时间连续") : qsTr("已使结束时间连续"));
+        statusMessage(changeStart ? qsTr("Made start times continuous") : qsTr("Made end times continuous"));
         dataModified();
     }
 
@@ -440,7 +440,7 @@ QtObject {
         var vMs = Math.round((vTime || 0) * 1000.0);
         subtitleModel.snapStartTime(currentSelectedIndex, vMs);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已将开始时间对齐至当前视频帧"));
+        statusMessage(qsTr("Snapped start time to the current video frame"));
         dataModified();
     }
 
@@ -450,7 +450,7 @@ QtObject {
         var vMs = Math.round((vTime || 0) * 1000.0);
         subtitleModel.snapEndTime(currentSelectedIndex, vMs);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已将结束时间对齐至当前视频帧"));
+        statusMessage(qsTr("Snapped end time to the current video frame"));
         dataModified();
     }
 
@@ -459,7 +459,7 @@ QtObject {
         pushUndo(qsTr("recombine lines"));
         subtitleModel.recombineSelectedLines(selectedIndices);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已重新拼接 ") + selectedIndices.length + qsTr(" 行时间轴"));
+        statusMessage(qsTr("Made ") + selectedIndices.length + qsTr(" line times continuous"));
         dataModified();
     }
 
@@ -469,7 +469,7 @@ QtObject {
         var vMs = Math.round((vTime || 0) * 1000.0);
         subtitleModel.shiftToCurrentFrame(vMs, selectedIndices);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已将 ") + selectedIndices.length + qsTr(" 行平移至当前帧"));
+        statusMessage(qsTr("Shifted ") + selectedIndices.length + qsTr(" lines to the current frame"));
         dataModified();
     }
 
@@ -498,10 +498,10 @@ QtObject {
             selectedIndices = finalSel;
             currentSelectedIndex = finalSel[0];
             selectRow(finalSel[0], false, false);
-            statusMessage(qsTr("已选择 ") + finalSel.length + qsTr(" 行"));
+            statusMessage(qsTr("Selected ") + finalSel.length + qsTr(" lines"));
         } else {
             selectedIndices = [];
-            statusMessage(qsTr("未找到匹配行"));
+            statusMessage(qsTr("No matching lines found"));
         }
         dataModified();
     }
@@ -514,12 +514,12 @@ QtObject {
         pushUndo(qsTr("replace"));
         var count = subtitleModel.findAndReplace(query, replaceWith, options || {}, replaceAll, currentSelectedIndex);
         if (count > 0) {
-            statusMessage(qsTr("已替换 ") + count + qsTr(" 处匹配项"));
+            statusMessage(qsTr("Replaced ") + count + qsTr(" matches"));
             dataModified();
         } else if (count === 0) {
-            statusMessage(qsTr("未找到匹配项"));
+            statusMessage(qsTr("No matches found"));
         } else {
-            statusMessage(qsTr("正则表达式语法错误"));
+            statusMessage(qsTr("Invalid regular expression"));
         }
         return count;
     }
@@ -530,13 +530,13 @@ QtObject {
         pushUndo(qsTr("split by karaoke"));
         subtitleModel.splitSelectedByKaraoke(selectedIndices);
         selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("已按卡拉OK音节分割选中行"));
+        statusMessage(qsTr("Split selected lines by karaoke syllables"));
         dataModified();
     }
 
     // Subtitle export filter pipeline stub
     function exportFiltered(filters, charset) {
-        statusMessage(qsTr("字幕导出成功: 目标字符集 [") + charset + qsTr("], 激活滤镜 [") + filters.join(", ") + "]");
+        statusMessage(qsTr("Subtitles exported: charset [") + charset + qsTr("], filters [") + filters.join(", ") + "]");
     }
 
     // Serialization interface for C++ backend controllers and automation macro scripts

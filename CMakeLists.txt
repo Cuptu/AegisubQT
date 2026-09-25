@@ -17,7 +17,7 @@ set(CMAKE_AUTOUIC ON)
 #   Windows: cmake -B build -DCMAKE_PREFIX_PATH=C:/Qt
 #   macOS:   cmake -B build -DCMAKE_PREFIX_PATH=~/Qt/6.x.x/macos
 #   Linux:   system packages or -DCMAKE_PREFIX_PATH=/opt/Qt/6.x.x/gcc_64
-find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml QuickControls2 ShaderTools Multimedia)
+find_package(Qt6 REQUIRED COMPONENTS Core Gui Quick Qml QuickControls2 ShaderTools Multimedia LinguistTools)
 
 # Query Qt QML imports directory at configure time as a fallback import path.
 get_target_property(_qt_qmake_executable Qt6::qmake IMPORTED_LOCATION)
@@ -25,6 +25,11 @@ if(_qt_qmake_executable)
     execute_process(
         COMMAND "${_qt_qmake_executable}" -query QT_INSTALL_QML
         OUTPUT_VARIABLE QT_INSTALL_QML_PATH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+    execute_process(
+        COMMAND "${_qt_qmake_executable}" -query QT_INSTALL_LIBS
+        OUTPUT_VARIABLE QT_INSTALL_LIBS_PATH
         OUTPUT_STRIP_TRAILING_WHITESPACE
     )
 endif()
@@ -92,7 +97,7 @@ if(WIN32)
     list(APPEND SOURCES src/aegisub.rc)
 endif()
 
-add_executable(AegisubQT ${SOURCES})
+add_executable(AegisubQT WIN32 ${SOURCES})
 
 # Compile QRHI shaders at build time.
 qt6_add_shaders(AegisubQT "aegisub_shaders"
@@ -123,6 +128,17 @@ if(QT_INSTALL_QML_PATH)
     target_compile_definitions(AegisubQT PRIVATE QT_INSTALL_QML_PATH="${QT_INSTALL_QML_PATH}")
 endif()
 
+# macOS: build a proper .app bundle so macdeployqt can produce a .dmg.
+if(APPLE)
+    set_target_properties(AegisubQT PROPERTIES
+        MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_BUNDLE_NAME "AegisubQT"
+        MACOSX_BUNDLE_GUI_IDENTIFIER "org.aegisub.aegisubqt"
+        MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+    )
+endif()
+
 # LuaJIT: Windows uses in-tree prebuilt lua51.lib;
 # POSIX platforms build static library from source via LuaJIT makefile.
 if(WIN32)
@@ -132,10 +148,18 @@ if(WIN32)
     )
 else()
     include(ExternalProject)
+    # Only forward MACOSX_DEPLOYMENT_TARGET when set: an empty value would
+    # override LuaJIT's own default and trip the clang deployment-target check.
+    if(CMAKE_OSX_DEPLOYMENT_TARGET)
+        set(AEGISUB_LUAJIT_BUILD_COMMAND
+            ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>)
+    else()
+        set(AEGISUB_LUAJIT_BUILD_COMMAND make -C <SOURCE_DIR>)
+    endif()
     ExternalProject_Add(luajit_build
         SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}/luajit"
         CONFIGURE_COMMAND ""
-        BUILD_COMMAND ${CMAKE_COMMAND} -E env "MACOSX_DEPLOYMENT_TARGET=${CMAKE_OSX_DEPLOYMENT_TARGET}" make -C <SOURCE_DIR>
+        BUILD_COMMAND ${AEGISUB_LUAJIT_BUILD_COMMAND}
         BUILD_IN_SOURCE 1
         INSTALL_COMMAND ""
         BUILD_BYPRODUCTS "${CMAKE_CURRENT_SOURCE_DIR}/luajit/src/libluajit.a"
@@ -158,7 +182,23 @@ target_link_libraries(AegisubQT PRIVATE
     libaegisub
 )
 
-# Copy runtime assets, QML, automation scripts, and locale data next to the binary.
+# Compile translations (.ts -> .qm) as part of the build.
+set(AEGISUB_TS_FILES
+    locale/aegisub_zh_CN.ts
+    locale/aegisub_zh_TW.ts
+    locale/aegisub_ja.ts
+    locale/aegisub_ko.ts
+    locale/aegisub_fr_FR.ts
+    locale/aegisub_de.ts
+    locale/aegisub_ru.ts
+    locale/aegisub_es.ts
+)
+qt_add_lrelease(AegisubQT
+    TS_FILES ${AEGISUB_TS_FILES}
+    QM_FILES_OUTPUT_VARIABLE AEGISUB_QM_FILES
+)
+
+# Copy runtime assets, QML, automation scripts, and compiled .qm files next to the binary.
 # Native DLLs are copied if present (AstraCore.Native is an optional runtime component).
 set(AEGISUB_POST_BUILD_COMMANDS
     COMMAND ${CMAKE_COMMAND} -E copy_directory
@@ -170,8 +210,8 @@ set(AEGISUB_POST_BUILD_COMMANDS
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/qml"
         $<TARGET_FILE_DIR:AegisubQT>/qml
-    COMMAND ${CMAKE_COMMAND} -E copy_directory
-        "${CMAKE_CURRENT_SOURCE_DIR}/locale"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+        ${AEGISUB_QM_FILES}
         $<TARGET_FILE_DIR:AegisubQT>/locale
 )
 
@@ -190,10 +230,21 @@ install(TARGETS AegisubQT
     RUNTIME DESTINATION bin
     BUNDLE DESTINATION .
 )
-install(DIRECTORY qml assets automation locale
+
+# Linux: resolve Qt libraries both in the build tree and after `cmake --install`
+# ($ORIGIN-relative for prefix-local lib dirs, absolute fallback for self-built
+# Qt installations outside the default linker search path).
+if(UNIX AND NOT APPLE AND QT_INSTALL_LIBS_PATH)
+    set_target_properties(AegisubQT PROPERTIES
+        BUILD_RPATH "${QT_INSTALL_LIBS_PATH}"
+        INSTALL_RPATH "$ORIGIN/../lib;${QT_INSTALL_LIBS_PATH}"
+    )
+endif()
+
+install(DIRECTORY qml assets automation
     DESTINATION share/AegisubQT
-    PATTERN "*.ts" EXCLUDE
 )
+install(FILES ${AEGISUB_QM_FILES} DESTINATION share/AegisubQT/locale)
 if(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
     install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll" DESTINATION bin)
 endif()

@@ -33,3 +33,21 @@ BEGIN
         VALUE "Translation", 0x0409, 1200
     END
 END
+
+// Indirect string resources referenced by the installer's file association
+// registry entries (e.g. "@{app}\AegisubQT.exe,-10102").
+STRINGTABLE
+BEGIN
+    10000                   "AegisubQT subtitle editor"
+    10001                   "Cross-platform advanced subtitle editor (Qt 6 Quick edition)"
+    10101                   "AegisubQT subtitle file"
+    10102                   "AegisubQT Advanced SSA subtitles"
+    10103                   "AegisubQT SubStation Alpha subtitles"
+    10104                   "AegisubQT SubRip text subtitles"
+    10105                   "AegisubQT MPEG-4 timed text"
+    10106                   "AegisubQT Matroska subtitles"
+    10107                   "AegisubQT raw text file"
+    10108                   "AegisubQT media file"
+    10109                   "AegisubQT audio file"
+    10110                   "AegisubQT video file"
+END

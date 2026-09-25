@@ -32,6 +32,7 @@
 #include <QQmlContext>
 #include <QQuickStyle>
 #include <QFileInfo>
+#include <QSettings>
 #include <QDir>
 #include <QUrl>
 #include <QDebug>
@@ -180,6 +181,38 @@ private:
     AudioDisplayController *m_display = nullptr;
 };
 
+namespace {
+// Recursively copy every key/group from one QSettings store into another,
+// preserving QVariant types (QStringList MRU entries survive round-trips).
+void copySettingsGroup(QSettings &src, QSettings &dst, const QString &prefix)
+{
+    for (const QString &key : src.childKeys())
+        dst.setValue(prefix + key, src.value(key));
+    for (const QString &group : src.childGroups()) {
+        src.beginGroup(group);
+        copySettingsGroup(src, dst, prefix + group + QLatin1Char('/'));
+        src.endGroup();
+    }
+}
+} // namespace
+
+// One-time migration from the legacy NativeFormat store (registry on Windows,
+// a .conf file on Linux) to the unified IniFormat store, so existing users
+// keep their preferences and MRU lists across the upgrade. The marker lives
+// in the new store; portable mode starts from a clean slate and never migrates.
+static void migrateLegacySettings()
+{
+    QSettings ini(QSettings::IniFormat, QSettings::UserScope,
+                  QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    if (ini.value(QStringLiteral("SettingsMigrated"), false).toBool())
+        return;
+
+    QSettings legacy(QSettings::NativeFormat, QSettings::UserScope,
+                     QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
+    copySettingsGroup(legacy, ini, QString());
+    ini.setValue(QStringLiteral("SettingsMigrated"), true);
+}
+
 int main(int argc, char *argv[])
 {
     if (qEnvironmentVariableIsSet("AEGISUB_DEBUG_LOG")) {
@@ -197,6 +230,16 @@ int main(int argc, char *argv[])
     app.setApplicationName("AegisubQT");
     app.setApplicationVersion("4.0.0");
     app.setOrganizationName("AegisubQT");
+
+    // Portable mode: a "portable.txt" marker next to the executable keeps all
+    // settings in an ini file beside the app instead of the platform store.
+    // All QSettings call sites use the explicit IniFormat, which honours the
+    // path set here (matching upstream Aegisub's file-based config).
+    if (QFileInfo::exists(app.applicationDirPath() + "/portable.txt")) {
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, app.applicationDirPath());
+    } else {
+        migrateLegacySettings();
+    }
 
     // Align default system font metrics with platform conventions.
     QFont defaultFont;
@@ -287,6 +330,11 @@ int main(int argc, char *argv[])
             }
         } else if (a == "--lang" || a == "--language") {
             initialLang = value(a.toUtf8().constData());
+        } else if (!a.startsWith("--")) {
+            // Bare path argument: open as subtitle file (shell file association).
+            if (assPath.isEmpty()) {
+                assPath = a;
+            }
         }
     }
 
@@ -363,6 +411,10 @@ int main(int argc, char *argv[])
 
     QStringList candidates = {
         app.applicationDirPath() + "/../qml/Main.qml",
+        // Layout produced by `cmake --install`: exe in <prefix>/bin, QML in <prefix>/share/AegisubQT.
+        app.applicationDirPath() + "/../share/AegisubQT/qml/Main.qml",
+        // macOS .app bundle: resources live in Contents/Resources.
+        app.applicationDirPath() + "/../Resources/qml/Main.qml",
         QDir::current().filePath("qml/Main.qml"),
         app.applicationDirPath() + "/qml/Main.qml",
         QDir::current().filePath("Main.qml"),

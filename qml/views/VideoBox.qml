@@ -1591,7 +1591,7 @@ Item {
                 // 否则会把 Fit 状态顶成显式档位。
 
                 ToolTip.visible: hovered
-                ToolTip.text: qsTr("视频缩放比例")
+                ToolTip.text: qsTr("Video zoom")
                 ToolTip.delay: 700
             }
 
