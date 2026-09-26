@@ -284,6 +284,9 @@ int main(int argc, char *argv[])
     QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
 #endif
     AegisubApplication app(argc, argv);
+#if defined(Q_OS_MACOS)
+    QCoreApplication::addLibraryPath(app.applicationDirPath() + "/../PlugIns");
+#endif
     QCoreApplication::addLibraryPath(app.applicationDirPath() + "/plugins");
     QCoreApplication::addLibraryPath(app.applicationDirPath());
     app.setApplicationName("AegisubQT");

@@ -121,7 +121,7 @@ bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, dou
     font.setItalic(style.italic);
     font.setUnderline(style.underline);
     font.setStrikeOut(style.strikeout);
-    font.setPointSizeF(style.fontsize > 0 ? style.fontsize : 12.0);
+    font.setPixelSize(static_cast<int>(std::round(style.fontsize > 0 ? style.fontsize : 12.0)));
     if (style.spacing != 0.0) {
         font.setLetterSpacing(QFont::AbsoluteSpacing, style.spacing);
     }

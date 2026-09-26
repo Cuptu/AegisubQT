@@ -776,8 +776,10 @@ void VideoController::copyFrame(bool raw, bool withSubs)
 
     if (withSubs && !m_activeSubText.isEmpty()) {
         QPainter p(&img);
-        p.setRenderHint(QPainter::Antialiasing);
-        QFont font("Microsoft YaHei", 32, QFont::Bold);
+        QFont font = QGuiApplication::font();
+        font.setFamilies({"Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "WenQuanYi Micro Hei", "sans-serif"});
+        font.setPointSize(32);
+        font.setBold(true);
         p.setFont(font);
         QString cleanText = m_activeSubText;
         cleanText.remove(QRegularExpression("\\{[^}]*\\}"));
@@ -817,8 +819,10 @@ void VideoController::saveFrame(bool raw, bool withSubs)
 
     if (withSubs && !m_activeSubText.isEmpty()) {
         QPainter p(&img);
-        p.setRenderHint(QPainter::Antialiasing);
-        QFont font("Microsoft YaHei", 32, QFont::Bold);
+        QFont font = QGuiApplication::font();
+        font.setFamilies({"Microsoft YaHei", "PingFang SC", "Noto Sans CJK SC", "WenQuanYi Micro Hei", "sans-serif"});
+        font.setPointSize(32);
+        font.setBold(true);
         p.setFont(font);
         QString cleanText = m_activeSubText;
         cleanText.remove(QRegularExpression("\\{[^}]*\\}"));

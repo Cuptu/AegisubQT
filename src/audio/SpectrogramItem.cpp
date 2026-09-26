@@ -592,6 +592,9 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
         m_rulerKey = rKey;
         renderTimelineRulerImage(w);
         QSGTexture *rulerTex = window()->createTextureFromImage(m_rulerImage);
+        if (rulerNode->texture() && rulerNode->texture() != rulerTex) {
+            delete rulerNode->texture();
+        }
         rulerNode->setTexture(rulerTex);
         rulerNode->setOwnsTexture(true);
         rulerNode->setRect(0, 0, w, 17);
@@ -605,6 +608,9 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
             m_markerKey = mKey;
             renderMarkersOverlayImage(w, h);
             QSGTexture *markerTex = window()->createTextureFromImage(m_markerImage, QQuickWindow::TextureHasAlphaChannel);
+            if (markerNode->texture() && markerNode->texture() != markerTex) {
+                delete markerNode->texture();
+            }
             markerNode->setTexture(markerTex);
             markerNode->setOwnsTexture(true);
             markerNode->setRect(0, 0, w, h);

@@ -123,5 +123,5 @@ void main() {
 
     float palU = clamp(power * amplitudeScale, 0.0, 1.0);
     vec4 col = texture(u_paletteTexture, vec2(palU, styleRow));
-    fragColor = vec4(col.rgb, 1.0);
+    fragColor = vec4(col.rgb * u_selParams.z, u_selParams.z);
 }

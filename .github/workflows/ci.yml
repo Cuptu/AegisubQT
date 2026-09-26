@@ -72,7 +72,7 @@ jobs:
       # Bundle Qt runtime DLLs next to the exe so the artifact runs out of the box.
       - name: Deploy Qt runtime (Windows)
         if: runner.os == 'Windows'
-        run: windeployqt --release --qmldir qml build/AegisubQT.exe
+        run: windeployqt --release --compiler-runtime --qmldir qml build/AegisubQT.exe
 
       - name: Upload artifact (Windows)
         if: runner.os == 'Windows'
@@ -108,12 +108,16 @@ jobs:
           cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
           xattr -cr build/AegisubQT.app
-          chmod +x build/AegisubQT.app/Contents/MacOS/*
-          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec codesign --force --sign - {} + 2>/dev/null || true
-          find build/AegisubQT.app/Contents/Frameworks -name "*.framework" -exec codesign --force --sign - {} + 2>/dev/null || true
-          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --sign - {} + 2>/dev/null || true
-          codesign --force --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app/Contents/MacOS/AegisubQT
-          codesign --force --sign - build/AegisubQT.app
+          chmod 755 build/AegisubQT.app/Contents/MacOS/AegisubQT
+          find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} \;
+          for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
+            if [ -d "$fw" ]; then
+              codesign --force --timestamp=none --sign - "$fw"
+            fi
+          done
+          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} \;
+          codesign --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app/Contents/MacOS/AegisubQT
+          codesign --force --timestamp=none --sign - build/AegisubQT.app
           codesign --verify --deep --strict --verbose=2 build/AegisubQT.app
 
       - name: Upload artifact (macOS)

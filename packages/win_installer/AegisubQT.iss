@@ -28,14 +28,15 @@ AppSupportURL=https://github.com/AegisubQT/AegisubQT/issues
 DefaultDirName={autopf}\AegisubQT
 DefaultGroupName=AegisubQT
 UninstallDisplayName=AegisubQT {#Version}
-UninstallDisplayIcon={app}\AegisubQT.exe
+UninstallDisplayIcon={app}\AegisubQT.exe,0
 LicenseFile={#SourceRoot}\LICENSE
 SetupIconFile={#StagingDir}\assets\icons_native\icon.ico
 OutputDir=..\..\build
 OutputBaseFilename=AegisubQT-{#Version}
 ArchitecturesInstallIn64BitMode=x64compatible
 ArchitecturesAllowed=x64compatible
-PrivilegesRequired=poweruser
+PrivilegesRequired=admin
+ChangesAssociations=yes
 Compression=lzma2/max
 SolidCompression=yes
 WizardStyle=modern
@@ -60,7 +61,7 @@ Name: "{autodesktop}\AegisubQT"; Filename: "{app}\AegisubQT.exe"; Tasks: desktop
 ; Application registration for the Open With dialogue
 Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe"; ValueType: none; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "@{app}\AegisubQT.exe,-10000"; Flags: uninsdeletekey
-Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe"; ValueType: string; ValueName: "ApplicationCompany"; Flags: uninsdeletekey
+Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe"; ValueType: string; ValueName: "ApplicationCompany"; ValueData: "Aegisub"; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe\shell"; ValueType: none; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe\shell\open"; ValueType: none; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\Classes\Applications\AegisubQT.exe\shell\open"; ValueType: string; ValueName: "FriendlyAppName"; ValueData: "@{app}\AegisubQT.exe,-10000"; Flags: uninsdeletekey
@@ -171,6 +172,7 @@ Root: HKLM; Subkey: "SOFTWARE\Classes\AegisubQT.Video.1\shell\open\command"; Val
 ; Default Programs registration
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT"; ValueType: none; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities"; ValueType: none
+Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities"; ValueType: string; ValueName: "ApplicationName"; ValueData: "AegisubQT"
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities"; ValueType: string; ValueName: "ApplicationDescription"; ValueData: "@{app}\AegisubQT.exe,-10001"
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities\FileAssociations"; ValueType: none
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities\FileAssociations"; ValueType: string; ValueName: ".ass"; ValueData: "AegisubQT.ASSA.1"
@@ -180,24 +182,24 @@ Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities\FileAssociations"; ValueTyp
 Root: HKLM; Subkey: "SOFTWARE\AegisubQT\Capabilities\FileAssociations"; ValueType: string; ValueName: ".mks"; ValueData: "AegisubQT.MKS.1"
 Root: HKLM; Subkey: "SOFTWARE\RegisteredApplications"; ValueType: string; ValueName: "AegisubQT"; ValueData: "SOFTWARE\AegisubQT\Capabilities"; Flags: uninsdeletevalue
 ; Default handler for .ass (only claim ownership if the type has no owner yet)
-Root: HKLM; SubKey: "SOFTWARE\Classes\.ass"; ValueType: string; ValueData: "AegisubQT.ASSA.1"; Flags: createvalueifdoesntexist
+Root: HKLM; SubKey: "SOFTWARE\Classes\.ass"; ValueType: string; ValueData: "AegisubQT.ASSA.1"; Flags: createvalueifdoesntexist uninsdeletevalue
 Root: HKLM; SubKey: "SOFTWARE\Classes\.ass"; ValueType: string; ValueName: "PerceivedType"; ValueData: "text"; Flags: createvalueifdoesntexist
 Root: HKLM; Subkey: "SOFTWARE\Classes\.ass\AegisubQT.ASSA.1"; ValueType: none; Flags: uninsdeletekey
 Root: HKLM; Subkey: "SOFTWARE\Classes\.ass\OpenWithProgids"; ValueType: string; ValueName: "AegisubQT.ASSA.1"; Flags: uninsdeletevalue
 ; Default handler for .ssa
-Root: HKLM; SubKey: "SOFTWARE\Classes\.ssa"; ValueType: string; ValueData: "AegisubQT.SSA.1"; Flags: createvalueifdoesntexist
+Root: HKLM; SubKey: "SOFTWARE\Classes\.ssa"; ValueType: string; ValueData: "AegisubQT.SSA.1"; Flags: createvalueifdoesntexist uninsdeletevalue
 Root: HKLM; SubKey: "SOFTWARE\Classes\.ssa"; ValueType: string; ValueName: "PerceivedType"; ValueData: "text"; Flags: createvalueifdoesntexist
 Root: HKLM; Subkey: "SOFTWARE\Classes\.ssa\OpenWithProgids"; ValueType: string; ValueName: "AegisubQT.SSA.1"; Flags: uninsdeletevalue
 ; Default handler for .srt
-Root: HKLM; SubKey: "SOFTWARE\Classes\.srt"; ValueType: string; ValueData: "AegisubQT.SRT.1"; Flags: createvalueifdoesntexist
+Root: HKLM; SubKey: "SOFTWARE\Classes\.srt"; ValueType: string; ValueData: "AegisubQT.SRT.1"; Flags: createvalueifdoesntexist uninsdeletevalue
 Root: HKLM; SubKey: "SOFTWARE\Classes\.srt"; ValueType: string; ValueName: "PerceivedType"; ValueData: "text"; Flags: createvalueifdoesntexist
 Root: HKLM; Subkey: "SOFTWARE\Classes\.srt\OpenWithProgids"; ValueType: string; ValueName: "AegisubQT.SRT.1"; Flags: uninsdeletevalue
 ; Default handler for .ttxt
-Root: HKLM; SubKey: "SOFTWARE\Classes\.ttxt"; ValueType: string; ValueData: "AegisubQT.TTXT.1"; Flags: createvalueifdoesntexist
+Root: HKLM; SubKey: "SOFTWARE\Classes\.ttxt"; ValueType: string; ValueData: "AegisubQT.TTXT.1"; Flags: createvalueifdoesntexist uninsdeletevalue
 Root: HKLM; SubKey: "SOFTWARE\Classes\.ttxt"; ValueType: string; ValueName: "PerceivedType"; ValueData: "text"; Flags: createvalueifdoesntexist
 Root: HKLM; Subkey: "SOFTWARE\Classes\.ttxt\OpenWithProgids"; ValueType: string; ValueName: "AegisubQT.TTXT.1"; Flags: uninsdeletevalue
 ; Default handler for .mks
-Root: HKLM; SubKey: "SOFTWARE\Classes\.mks"; ValueType: string; ValueData: "AegisubQT.MKS.1"; Flags: createvalueifdoesntexist
+Root: HKLM; SubKey: "SOFTWARE\Classes\.mks"; ValueType: string; ValueData: "AegisubQT.MKS.1"; Flags: createvalueifdoesntexist uninsdeletevalue
 Root: HKLM; SubKey: "SOFTWARE\Classes\.mks"; ValueType: string; ValueName: "PerceivedType"; ValueData: "text"; Flags: createvalueifdoesntexist
 Root: HKLM; Subkey: "SOFTWARE\Classes\.mks\OpenWithProgids"; ValueType: string; ValueName: "AegisubQT.MKS.1"; Flags: uninsdeletevalue
 ; Support opening a bunch more types

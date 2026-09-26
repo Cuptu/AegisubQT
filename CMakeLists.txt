@@ -102,7 +102,6 @@ add_executable(AegisubQT WIN32 ${SOURCES})
 # Compile QRHI shaders at build time.
 qt6_add_shaders(AegisubQT "aegisub_shaders"
     PREFIX "/"
-    BATCHABLE
     FILES
         shaders/spectrogram.vert
 )

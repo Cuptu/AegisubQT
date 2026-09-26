@@ -291,6 +291,13 @@ bool AegisubCoreBridge::writeTextFile(const QString &filePath, const QString &co
 }
 
 void AegisubCoreBridge::launchNewInstance() {
+#if defined(Q_OS_MACOS)
+    const QString bundlePath = QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../..");
+    if (bundlePath.endsWith(".app", Qt::CaseInsensitive)) {
+        QProcess::startDetached("/usr/bin/open", {"-n", "-a", bundlePath});
+        return;
+    }
+#endif
     QProcess::startDetached(QCoreApplication::applicationFilePath(), {});
 }
 
@@ -368,12 +375,7 @@ QString AegisubCoreBridge::extractSubtitlesFromVideo(const QString &videoPath)
             QFile::remove(stale.absoluteFilePath());
     }
 
-    QString localPath = videoPath;
-    if (localPath.startsWith(QStringLiteral("file:///"))) {
-        localPath = QUrl(videoPath).toLocalFile();
-    } else if (localPath.startsWith(QStringLiteral("file://"))) {
-        localPath = localPath.mid(7);
-    }
+    const QString localPath = toLocalPath(videoPath);
     if (localPath.isEmpty() || !QFileInfo::exists(localPath)) return QString();
 
     const QString stem = QFileInfo(localPath).completeBaseName();

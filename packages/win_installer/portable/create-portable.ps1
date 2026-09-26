@@ -42,7 +42,11 @@ foreach ($dir in @("qml", "assets", "automation")) {
     Copy-Item -Path (Join-Path $BuildRoot $dir) -Destination $StagingDir -Recurse
 }
 New-Item -ItemType Directory -Path (Join-Path $StagingDir "locale") | Out-Null
-Copy-Item -Path (Join-Path $BuildRoot "*.qm") -Destination (Join-Path $StagingDir "locale")
+Get-ChildItem -Path @($BuildRoot, (Join-Path $BuildRoot "locale")) -Filter "*.qm" -File -ErrorAction SilentlyContinue |
+    ForEach-Object { Copy-Item $_.FullName -Destination (Join-Path $StagingDir "locale") -Force }
+if (Test-Path (Join-Path $SourceRoot "LICENSE")) {
+    Copy-Item (Join-Path $SourceRoot "LICENSE") -Destination $StagingDir
+}
 
 Write-Host "[3/5] Deploying Qt runtime (windeployqt)"
 $windeployqt = (Get-Command windeployqt.exe -ErrorAction SilentlyContinue).Source

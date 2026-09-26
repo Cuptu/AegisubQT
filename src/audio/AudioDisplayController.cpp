@@ -428,16 +428,20 @@ void AudioDisplayController::mouseLeft()
 
 void AudioDisplayController::wheel(qreal angleX, qreal angleY, int modifiers)
 {
-    if (!m_audioController) return;
     const Qt::KeyboardModifiers mods = Qt::KeyboardModifiers(modifiers);
-    // Ctrl toggles between scrolling and zooming unless overridden by wheelDefaultToZoom.
-    const bool zoom = mods.testFlag(Qt::ControlModifier) != m_wheelDefaultToZoom;
+#if defined(Q_OS_MACOS)
+    const bool ctrlOrCmd = mods.testFlag(Qt::ControlModifier) || mods.testFlag(Qt::MetaModifier);
+#else
+    const bool ctrlOrCmd = mods.testFlag(Qt::ControlModifier);
+#endif
+    // Ctrl/Cmd toggles between scrolling and zooming unless overridden by wheelDefaultToZoom.
+    const bool zoom = ctrlOrCmd != m_wheelDefaultToZoom;
 
     if (!zoom) {
         m_zoomAccum = 0;
-        // Vertical axis takes precedence over horizontal axis.
+        // Vertical axis takes precedence over horizontal axis unless horizontal delta is dominant.
         int amount = -int(std::lround(angleY));
-        if (std::abs(angleX) > std::abs(angleY)) amount = -int(std::lround(angleX));
+        if (std::abs(angleX) > std::abs(angleY) && std::abs(angleX) >= 1.0) amount = -int(std::lround(angleX));
         if (amount != 0) m_audioController->scrollBy(amount);
         return;
     }

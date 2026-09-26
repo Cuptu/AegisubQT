@@ -415,10 +415,15 @@ void VideoDisplayController::wheel(qreal angleDeltaY, qreal x, qreal y, int modi
     //   No modifier = Resizes the video box (12.5% step)
     //   Ctrl        = Zooms the video (content zoom anchored to cursor)
     //   Shift       = Pans the video
+    const bool isZoom = mods.testFlag(Qt::ControlModifier)
+#if defined(Q_OS_MACOS)
+        || mods.testFlag(Qt::MetaModifier)
+#endif
+    ;
     if (mods.testFlag(Qt::ShiftModifier)) {
         const double distance = 5.0 * dir;
         pan(0.0, distance);
-    } else if (mods.testFlag(Qt::ControlModifier)) {
+    } else if (isZoom) {
         const QPointF mousePos(x, y);
         const QPointF anchor = getZoomAnchorPoint(mousePos);
         zoomAndPan(m_contentZoom * (1.0 + dir * 0.125), anchor, mousePos);
