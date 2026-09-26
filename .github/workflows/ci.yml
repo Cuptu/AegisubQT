@@ -24,7 +24,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia qtwayland
+          modules: qtshadertools qtmultimedia
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
 
