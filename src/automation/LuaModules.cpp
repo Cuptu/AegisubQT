@@ -294,7 +294,7 @@ static std::filesystem::path to_fs_path(const char *str) {
 #ifdef _WIN32
     return std::filesystem::path(QString::fromUtf8(str).toStdWString());
 #else
-    return std::filesystem::u8path(str);
+    return std::filesystem::path(str);
 #endif
 }
 

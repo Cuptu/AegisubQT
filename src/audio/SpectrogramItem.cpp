@@ -8,6 +8,7 @@
 #include <QQuickWindow>
 #include <QSGGeometryNode>
 #include <QSGSimpleTextureNode>
+#include <QSGTexture>
 #include <cmath>
 #include <cstring>
 #include <algorithm>

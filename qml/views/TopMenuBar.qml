@@ -187,7 +187,6 @@ MenuBar {
         Action {
             text: qsTr("E&xit") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘Q" : "\tCtrl+Q")
             shortcut: StandardKey.Quit
-            Action.menuRole: Action.QuitRole
             onTriggered: menuBarRoot.exitRequested()
         }
     }
@@ -746,7 +745,6 @@ MenuBar {
         Action {
             text: qsTr("&Options...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘," : "")
             shortcut: StandardKey.Preferences
-            Action.menuRole: Action.PreferencesRole
             icon.source: "../../assets/icons_native/options_button_16.png"
             onTriggered: if (dialogs) dialogs.dlgPreferences.open()
         }
@@ -819,7 +817,6 @@ MenuBar {
         Action { text: qsTr("&Check for Updates..."); onTriggered: menuBarRoot.checkForUpdates() }
         Action {
             text: qsTr("&About Aegisub...")
-            Action.menuRole: Action.AboutRole
             icon.source: "../../assets/icons_native/about_menu_16.png"
             onTriggered: if (dialogs) dialogs.dlgAbout.open()
         }

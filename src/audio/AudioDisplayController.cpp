@@ -428,6 +428,7 @@ void AudioDisplayController::mouseLeft()
 
 void AudioDisplayController::wheel(qreal angleX, qreal angleY, int modifiers)
 {
+    if (!m_audioController) return;
     const Qt::KeyboardModifiers mods = Qt::KeyboardModifiers(modifiers);
 #if defined(Q_OS_MACOS)
     const bool ctrlOrCmd = mods.testFlag(Qt::ControlModifier) || mods.testFlag(Qt::MetaModifier);

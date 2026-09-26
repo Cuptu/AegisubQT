@@ -8,6 +8,7 @@
 
 #include <QQuickWindow>
 #include <QSGSimpleTextureNode>
+#include <QSGTexture>
 #include <QDebug>
 
 VideoSurfaceItem::VideoSurfaceItem(QQuickItem *parent)

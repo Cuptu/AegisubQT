@@ -293,8 +293,8 @@ bool AegisubCoreBridge::writeTextFile(const QString &filePath, const QString &co
 void AegisubCoreBridge::launchNewInstance() {
 #if defined(Q_OS_MACOS)
     const QString bundlePath = QDir::cleanPath(QCoreApplication::applicationDirPath() + "/../..");
-    if (bundlePath.endsWith(".app", Qt::CaseInsensitive)) {
-        QProcess::startDetached("/usr/bin/open", {"-n", "-a", bundlePath});
+    if (bundlePath.endsWith(QStringLiteral(".app"), Qt::CaseInsensitive)) {
+        QProcess::startDetached(QStringLiteral("/usr/bin/open"), QStringList{QStringLiteral("-n"), QStringLiteral("-a"), bundlePath});
         return;
     }
 #endif
