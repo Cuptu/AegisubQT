@@ -19,7 +19,7 @@ ApplicationWindow {
     height: 640
     minimumWidth: 800
     minimumHeight: 480
-    title: (subProject.isModified ? "* " : "") + subProject.currentFileName + " - AegisubQT " + (Qt.application.version || "4.0.1")
+    title: (subProject.isModified ? "* " : "") + subProject.currentFileName + " - AegisubQT " + (Qt.application.version || "4.0.2")
 
     onClosing: (close) => {
         if (isForceClosing) {
@@ -730,33 +730,33 @@ ApplicationWindow {
     }
 
     // Global keyboard shortcuts
-    Shortcut { sequence: "Ctrl+N"; onActivated: root.confirmSaveAndProceed("new") }
-    Shortcut { sequence: "Ctrl+O"; onActivated: root.confirmSaveAndProceed("open") }
-    Shortcut { sequence: "Ctrl+Q"; onActivated: root.close() }
-    Shortcut { sequence: "Ctrl+S"; onActivated: root.saveSubtitlesRequested() }
-    Shortcut { sequence: "Ctrl+Shift+S"; onActivated: fileDialogSubSave.open() }
-    Shortcut { sequence: "Ctrl+Z"; onActivated: subProject.undo() }
-    Shortcut { sequence: "Ctrl+Y"; onActivated: subProject.redo() }
-    Shortcut { sequence: "Ctrl+X"; onActivated: subProject.cutSelectedLines() }
-    Shortcut { sequence: "Ctrl+C"; onActivated: subProject.copySelectedLines() }
-    Shortcut { sequence: "Ctrl+V"; onActivated: subProject.pasteLines(false) }
+    Shortcut { sequence: StandardKey.New; onActivated: root.confirmSaveAndProceed("new") }
+    Shortcut { sequence: StandardKey.Open; onActivated: root.confirmSaveAndProceed("open") }
+    Shortcut { sequence: StandardKey.Quit; onActivated: root.close() }
+    Shortcut { sequence: StandardKey.Save; onActivated: root.saveSubtitlesRequested() }
+    Shortcut { sequence: StandardKey.SaveAs; onActivated: fileDialogSubSave.open() }
+    Shortcut { sequence: StandardKey.Undo; onActivated: subProject.undo() }
+    Shortcut { sequence: StandardKey.Redo; onActivated: subProject.redo() }
+    Shortcut { sequence: StandardKey.Cut; onActivated: subProject.cutSelectedLines() }
+    Shortcut { sequence: StandardKey.Copy; onActivated: subProject.copySelectedLines() }
+    Shortcut { sequence: StandardKey.Paste; onActivated: subProject.pasteLines(false) }
     Shortcut { sequence: "Ctrl+Shift+V"; onActivated: dialogManager.dlgPasteOver.open() }
-    Shortcut { sequence: "Ctrl+A"; onActivated: subProject.selectAllRows() }
+    Shortcut { sequence: StandardKey.SelectAll; onActivated: subProject.selectAllRows() }
     Shortcut {
-        sequence: "Ctrl+F"
+        sequence: StandardKey.Find
         onActivated: {
             dialogManager.dlgSearchReplace.isReplaceMode = false;
             dialogManager.dlgSearchReplace.open();
         }
     }
     Shortcut {
-        sequence: "Ctrl+H"
+        sequence: StandardKey.Replace
         onActivated: {
             dialogManager.dlgSearchReplace.isReplaceMode = true;
             dialogManager.dlgSearchReplace.open();
         }
     }
-    Shortcut { sequence: "Delete"; onActivated: subProject.deleteSelectedLines() }
+    Shortcut { sequence: StandardKey.Delete; onActivated: subProject.deleteSelectedLines() }
     Shortcut {
         sequence: "Return"
         onActivated: {

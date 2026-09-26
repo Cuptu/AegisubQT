@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(AegisubQT VERSION 4.0.1 LANGUAGES C CXX)
+project(AegisubQT VERSION 4.0.2 LANGUAGES C CXX)
 
 # Enable Windows Resource Compiler only on Windows (.rc files are platform-specific).
 if(WIN32)
@@ -160,14 +160,27 @@ if(QT_INSTALL_QML_PATH)
     target_compile_definitions(AegisubQT PRIVATE QT_INSTALL_QML_PATH="${QT_INSTALL_QML_PATH}")
 endif()
 
-# macOS: build a proper .app bundle so macdeployqt can produce a .dmg.
+# macOS: build a proper .app bundle with icons, document types, and metadata.
 if(APPLE)
+    set(MACOS_ICONS
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/Aegisub.icns"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/icon.icns"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/assIcon.icns"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/ssaIcon.icns"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/srtIcon.icns"
+        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/txtIcon.icns"
+    )
+    set_source_files_properties(${MACOS_ICONS} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
+    target_sources(AegisubQT PRIVATE ${MACOS_ICONS})
+
     set_target_properties(AegisubQT PROPERTIES
         MACOSX_BUNDLE TRUE
+        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packages/osx/Info.plist.in"
         MACOSX_BUNDLE_BUNDLE_NAME "AegisubQT"
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.aegisub.aegisubqt"
         MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
+        MACOSX_BUNDLE_ICON_FILE "Aegisub.icns"
     )
 endif()
 
@@ -329,5 +342,10 @@ if(UNIX AND NOT APPLE)
         DESTINATION share/icons/hicolor/64x64/apps
         RENAME AegisubQT.png
     )
+    if(EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/branding/AegisubQT.svg")
+        install(FILES assets/branding/AegisubQT.svg
+            DESTINATION share/icons/hicolor/scalable/apps
+        )
+    endif()
 endif()
 

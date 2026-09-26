@@ -24,7 +24,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qtshadertools qtmultimedia qtwayland
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
 
@@ -95,6 +95,33 @@ jobs:
             build/assets/
             build/automation/
             build/locale/
+          if-no-files-found: error
+
+      # Stage resources, deploy Qt runtime, ad-hoc sign, and verify bundle on macOS.
+      - name: Deploy Qt runtime and verify bundle (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p build/AegisubQT.app/Contents/Resources
+          cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
+          cp assets/icons_native/*.icns build/AegisubQT.app/Contents/Resources/
+          mkdir -p build/AegisubQT.app/Contents/Resources/locale
+          cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
+          macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
+          xattr -cr build/AegisubQT.app
+          chmod +x build/AegisubQT.app/Contents/MacOS/*
+          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec codesign --force --sign - {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/Frameworks -name "*.framework" -exec codesign --force --sign - {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --sign - {} + 2>/dev/null || true
+          codesign --force --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app/Contents/MacOS/AegisubQT
+          codesign --force --sign - build/AegisubQT.app
+          codesign --verify --deep --strict --verbose=2 build/AegisubQT.app
+
+      - name: Upload artifact (macOS)
+        if: runner.os == 'macOS'
+        uses: actions/upload-artifact@v4
+        with:
+          name: AegisubQT-macos-arm64
+          path: build/AegisubQT.app
           if-no-files-found: error
 
       - name: Upload artifact (Linux)

@@ -52,7 +52,7 @@ MenuBar {
                 try {
                     var rel = JSON.parse(xhr.responseText);
                     var remote = (rel.tag_name || "").replace(/^v/i, "");
-                    var currentVer = Qt.application.version || "4.0.1";
+                    var currentVer = Qt.application.version || "4.0.2";
                     if (remote && remote !== currentVer) {
                         menuBarRoot.statusMessage(qsTr("New version %1 found, opening release page...").arg(remote));
                         Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/releases/latest");
@@ -118,8 +118,18 @@ MenuBar {
     NativeMenu {
         id: fileMenu
         title: qsTr("&File")
-        Action { text: qsTr("&New Subtitles") + "\tCtrl+N"; icon.source: "../../assets/icons_native/new_toolbutton_16.png"; onTriggered: menuBarRoot.newSubtitlesRequested() }
-        Action { text: qsTr("&Open Subtitles...") + "\tCtrl+O"; icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: menuBarRoot.openSubtitlesRequested() }
+        Action {
+            text: qsTr("&New Subtitles") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘N" : "\tCtrl+N")
+            shortcut: StandardKey.New
+            icon.source: "../../assets/icons_native/new_toolbutton_16.png"
+            onTriggered: menuBarRoot.newSubtitlesRequested()
+        }
+        Action {
+            text: qsTr("&Open Subtitles...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘O" : "\tCtrl+O")
+            shortcut: StandardKey.Open
+            icon.source: "../../assets/icons_native/open_toolbutton_16.png"
+            onTriggered: menuBarRoot.openSubtitlesRequested()
+        }
         Action { text: qsTr("Open Subtitles with &Charset..."); icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: menuBarRoot.openSubtitlesRequested() }
         Action {
             text: qsTr("Open Subtitles from &Video"); icon.source: "../../assets/icons_native/open_toolbutton_16.png"
@@ -155,12 +165,18 @@ MenuBar {
             }
         }
         Action {
-            text: qsTr("&Save Subtitles") + "\tCtrl+S"
+            text: qsTr("&Save Subtitles") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘S" : "\tCtrl+S")
+            shortcut: StandardKey.Save
             icon.source: "../../assets/icons_native/save_toolbutton_16.png"
             enabled: !!(menuBarRoot.project && menuBarRoot.project.isModified)
             onTriggered: menuBarRoot.saveSubtitlesRequested()
         }
-        Action { text: qsTr("Save Subtitles &as...") + "\tCtrl+Shift+S"; icon.source: "../../assets/icons_native/save_as_toolbutton_16.png"; onTriggered: menuBarRoot.saveSubtitlesAsRequested() }
+        Action {
+            text: qsTr("Save Subtitles &as...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⇧⌘S" : "\tCtrl+Shift+S")
+            shortcut: StandardKey.SaveAs
+            icon.source: "../../assets/icons_native/save_as_toolbutton_16.png"
+            onTriggered: menuBarRoot.saveSubtitlesAsRequested()
+        }
         Action { text: qsTr("&Export Subtitles..."); icon.source: "../../assets/icons_native/export_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgExport.open() }
         NativeMenuSep {}
         Action { text: qsTr("&Properties..."); icon.source: "../../assets/icons_native/properties_toolbutton_16.png"; onTriggered: if (dialogs) dialogs.dlgProperties.open() }
@@ -168,7 +184,12 @@ MenuBar {
         Action { text: qsTr("&Fonts Collector..."); icon.source: "../../assets/icons_native/font_collector_button_16.png"; onTriggered: if (dialogs) dialogs.dlgFontsCollector.open() }
         NativeMenuSep {}
         Action { text: qsTr("New &Window"); icon.source: "../../assets/icons_native/new_window_menu_16.png"; onTriggered: aegisubCore.launchNewInstance() }
-        Action { text: qsTr("E&xit") + "\tCtrl+Q"; onTriggered: menuBarRoot.exitRequested() }
+        Action {
+            text: qsTr("E&xit") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘Q" : "\tCtrl+Q")
+            shortcut: StandardKey.Quit
+            Action.menuRole: Action.QuitRole
+            onTriggered: menuBarRoot.exitRequested()
+        }
     }
 
     // Edit menu
@@ -177,47 +198,71 @@ MenuBar {
         title: qsTr("&Edit")
         Action {
             text: (!menuBarRoot.project || !menuBarRoot.project.canUndo) ?
-                  (qsTr("Nothing to &undo") + "\tCtrl+Z") :
+                  (qsTr("Nothing to &undo") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘Z" : "\tCtrl+Z")) :
                   (qsTr("&Undo %s").indexOf("%s") >= 0 ?
-                   qsTr("&Undo %s").replace("%s", menuBarRoot.project.undoDescription) + "\tCtrl+Z" :
-                   qsTr("&Undo") + "\tCtrl+Z")
+                   qsTr("&Undo %s").replace("%s", menuBarRoot.project.undoDescription) + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘Z" : "\tCtrl+Z") :
+                   qsTr("&Undo") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘Z" : "\tCtrl+Z"))
+            shortcut: StandardKey.Undo
             icon.source: "../../assets/icons_native/undo_button_16.png"
             enabled: !!(menuBarRoot.project && menuBarRoot.project.canUndo)
             onTriggered: if (menuBarRoot.project) menuBarRoot.project.undo()
         }
         Action {
             text: (!menuBarRoot.project || !menuBarRoot.project.canRedo) ?
-                  (qsTr("Nothing to &redo") + "\tCtrl+Y") :
+                  (qsTr("Nothing to &redo") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⇧⌘Z" : "\tCtrl+Y")) :
                   (qsTr("&Redo %s").indexOf("%s") >= 0 ?
-                   qsTr("&Redo %s").replace("%s", menuBarRoot.project.redoDescription) + "\tCtrl+Y" :
-                   qsTr("&Redo") + "\tCtrl+Y")
+                   qsTr("&Redo %s").replace("%s", menuBarRoot.project.redoDescription) + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⇧⌘Z" : "\tCtrl+Y") :
+                   qsTr("&Redo") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⇧⌘Z" : "\tCtrl+Y"))
+            shortcut: StandardKey.Redo
             icon.source: "../../assets/icons_native/redo_button_16.png"
             enabled: !!(menuBarRoot.project && menuBarRoot.project.canRedo)
             onTriggered: if (menuBarRoot.project) menuBarRoot.project.redo()
         }
         NativeMenuSep {}
         Action {
-            text: qsTr("Cu&t Lines") + "\tCtrl+X"
+            text: qsTr("Cu&t Lines") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘X" : "\tCtrl+X")
+            shortcut: StandardKey.Cut
             icon.source: "../../assets/icons_native/cut_button_16.png"
             enabled: !!(menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
             onTriggered: menuBarRoot.project.cutSelectedLines()
         }
         Action {
-            text: qsTr("&Copy Lines") + "\tCtrl+C"
+            text: qsTr("&Copy Lines") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘C" : "\tCtrl+C")
+            shortcut: StandardKey.Copy
             icon.source: "../../assets/icons_native/copy_button_16.png"
             enabled: !!(menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
             onTriggered: menuBarRoot.project.copySelectedLines()
         }
-        Action { text: qsTr("&Paste Lines") + "\tCtrl+V"; icon.source: "../../assets/icons_native/paste_button_16.png"; onTriggered: menuBarRoot.project.pasteLines(false) }
         Action {
-            text: qsTr("Paste &Over...") + "\tCtrl+Shift+V"
+            text: qsTr("&Paste Lines") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘V" : "\tCtrl+V")
+            shortcut: StandardKey.Paste
+            icon.source: "../../assets/icons_native/paste_button_16.png"
+            onTriggered: menuBarRoot.project.pasteLines(false)
+        }
+        Action {
+            text: qsTr("Paste &Over...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⇧⌘V" : "\tCtrl+Shift+V")
             enabled: !!(menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
             onTriggered: if (dialogs) dialogs.dlgPasteOver.open()
         }
         NativeMenuSep {}
-        Action { text: qsTr("&Find...") + "\tCtrl+F"; icon.source: "../../assets/icons_native/find_button_16.png"; onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = false; dialogs.dlgSearchReplace.open(); } }
-        Action { text: qsTr("Find &Next") + "\tF3"; icon.source: "../../assets/icons_native/find_next_menu_16.png"; onTriggered: if (menuBarRoot.project) menuBarRoot.project.findNext() }
-        Action { text: qsTr("&Replace...") + "\tCtrl+H"; icon.source: "../../assets/icons_native/find_replace_menu_16.png"; onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = true; dialogs.dlgSearchReplace.open(); } }
+        Action {
+            text: qsTr("&Find...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘F" : "\tCtrl+F")
+            shortcut: StandardKey.Find
+            icon.source: "../../assets/icons_native/find_button_16.png"
+            onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = false; dialogs.dlgSearchReplace.open(); }
+        }
+        Action {
+            text: qsTr("Find &Next") + "\tF3"
+            shortcut: StandardKey.FindNext
+            icon.source: "../../assets/icons_native/find_next_menu_16.png"
+            onTriggered: if (menuBarRoot.project) menuBarRoot.project.findNext()
+        }
+        Action {
+            text: qsTr("&Replace...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘H" : "\tCtrl+H")
+            shortcut: StandardKey.Replace
+            icon.source: "../../assets/icons_native/find_replace_menu_16.png"
+            onTriggered: if (dialogs) { dialogs.dlgSearchReplace.isReplaceMode = true; dialogs.dlgSearchReplace.open(); }
+        }
     }
 
     // Subtitle menu
@@ -318,7 +363,11 @@ MenuBar {
             onTriggered: menuBarRoot.project.swapSelectedLines()
         }
         Action { text: qsTr("Select &Lines..."); icon.source: "../../assets/icons_native/select_lines_button_16.png"; onTriggered: if (dialogs) dialogs.dlgSelectLines.open() }
-        Action { text: qsTr("Select &All") + "\tCtrl+A"; onTriggered: menuBarRoot.project.selectAllRows() }
+        Action {
+            text: qsTr("Select &All") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘A" : "\tCtrl+A")
+            shortcut: StandardKey.SelectAll
+            onTriggered: menuBarRoot.project.selectAllRows()
+        }
     }
 
     // Timing menu
@@ -694,7 +743,13 @@ MenuBar {
     NativeMenu {
         title: qsTr("Vie&w")
         Action { text: qsTr("&Language..."); icon.source: "../../assets/icons_native/languages_menu_16.png"; onTriggered: if (dialogs) { dialogs.dlgLanguage.open(); } }
-        Action { text: qsTr("&Options..."); icon.source: "../../assets/icons_native/options_button_16.png"; onTriggered: if (dialogs) dialogs.dlgPreferences.open() }
+        Action {
+            text: qsTr("&Options...") + ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? "\t⌘," : "")
+            shortcut: StandardKey.Preferences
+            Action.menuRole: Action.PreferencesRole
+            icon.source: "../../assets/icons_native/options_button_16.png"
+            onTriggered: if (dialogs) dialogs.dlgPreferences.open()
+        }
         NativeMenuSep {}
         Action {
             text: qsTr("S&ubs Only View"); checkable: true
@@ -762,7 +817,12 @@ MenuBar {
         Action { text: qsTr("&Bug Tracker..."); icon.source: "../../assets/icons_native/bugtracker_button_16.png"; onTriggered: Qt.openUrlExternally("https://github.com/Cuptu/AegisubQT/issues") }
         NativeMenuSep {}
         Action { text: qsTr("&Check for Updates..."); onTriggered: menuBarRoot.checkForUpdates() }
-        Action { text: qsTr("&About Aegisub..."); icon.source: "../../assets/icons_native/about_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgAbout.open() }
+        Action {
+            text: qsTr("&About Aegisub...")
+            Action.menuRole: Action.AboutRole
+            icon.source: "../../assets/icons_native/about_menu_16.png"
+            onTriggered: if (dialogs) dialogs.dlgAbout.open()
+        }
         Action { text: qsTr("&Log Window..."); icon.source: "../../assets/icons_native/about_menu_16.png"; onTriggered: if (dialogs) dialogs.dlgLog.open() }
     }
 

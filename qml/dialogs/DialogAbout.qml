@@ -92,7 +92,7 @@ NativeDialogFrame {
                     font.pixelSize: 11
                     font.family: uiTheme.uiFont
                     color: "#000000"
-                    text: "AegisubQT " + (Qt.application.version || "4.0.1") + " (Unofficial)\n" +
+                    text: "AegisubQT " + (Qt.application.version || "4.0.2") + " (Unofficial)\n" +
                           "A modern cross-platform Aegisub rewrite powered by Qt 6 Quick & C++20.\n\n" +
                           "Copyright \u00a9 2005-2026 Rodrigo Braz Monteiro, Niels Martin Hansen, Thomas Goyne, Cuptu et al.\n\n" +
                           "Qt Quick Modern Architecture:\n" +

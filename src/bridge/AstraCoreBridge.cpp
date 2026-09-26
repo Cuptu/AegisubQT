@@ -58,10 +58,12 @@ void AstraCoreBridge::loadLibrary()
     const QString libName = QStringLiteral("libAstraCore.Native.so");
 #endif
 
-    // Search order: application directory, embedded assets/bin, and system library path
+    // Search order: application directory, embedded assets/bin, macOS Frameworks, Linux lib, and system library path
     const QStringList candidates = {
         QCoreApplication::applicationDirPath() + "/" + libName,
         QCoreApplication::applicationDirPath() + "/assets/bin/" + libName,
+        QCoreApplication::applicationDirPath() + "/../Frameworks/" + libName,
+        QCoreApplication::applicationDirPath() + "/../lib/" + libName,
         libName
     };
 

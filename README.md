@@ -6,7 +6,7 @@
 
 **Next-Generation ASS/SSA Subtitle Editor Built with Qt 6 Quick & Modern C++20**
 
-[![Release](https://img.shields.io/badge/Release-v4.0.1-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
+[![Release](https://img.shields.io/badge/Release-v4.0.2-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
 [![Status](https://img.shields.io/badge/Status-Release--Ready-10B981?style=flat-square&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-0078D4?style=flat-square&logo=windows&logoColor=white&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%2020-00599C?style=flat-square&logo=c%2B%2B&logoColor=white&labelColor=1F2937)](https://en.cppreference.com/w/cpp/20)
@@ -185,6 +185,14 @@ cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 :: Compile (produces build/AegisubQT.exe and deploys runtime DLLs & assets)
 ninja -C build
 ```
+
+### macOS Installation & Launch Notes
+Because open-source release artifacts are ad-hoc signed without a paid Apple Developer ID notarization ticket, when opening the downloaded DMG and dragging the app into `/Applications`:
+- **First Launch Prompt**: If macOS displays "cannot be opened because Apple cannot check it for malicious software" or "unidentified developer", navigate to **System Settings -> Privacy & Security**, scroll down to the Security section, and click **Open Anyway**.
+- **Terminal Bypass**: Alternatively, clear the quarantine extended attribute directly via Terminal:
+  ```bash
+  xattr -cr /Applications/AegisubQT.app
+  ```
 
 ---
 

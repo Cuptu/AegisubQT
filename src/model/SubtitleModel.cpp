@@ -649,8 +649,9 @@ QString SubtitleModel::formatDialogueLine(const SubtitleLine &line) const {
 
 bool SubtitleModel::loadFromFile(const QString &filePath) {
     QString cleanPath = filePath;
-    if (cleanPath.startsWith(QStringLiteral("file:///"))) {
-        cleanPath = QUrl(cleanPath).toLocalFile();
+    if (cleanPath.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(cleanPath);
+        if (url.isLocalFile()) cleanPath = url.toLocalFile();
     }
     QFile file(cleanPath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -864,8 +865,9 @@ bool SubtitleModel::serializeDocument(const QString &target) const {
 bool SubtitleModel::saveToFile(const QString &filePath) {
     QString target = filePath.isEmpty() ? m_fileName : filePath;
     if (target.isEmpty() || target == QStringLiteral("Untitled")) return false;
-    if (target.startsWith(QStringLiteral("file:///"))) {
-        target = QUrl(target).toLocalFile();
+    if (target.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(target);
+        if (url.isLocalFile()) target = url.toLocalFile();
     }
     if (!serializeDocument(target)) return false;
 

@@ -6,6 +6,7 @@
 #include <QSettings>
 #include <QFileInfo>
 #include <QDir>
+#include <QUrl>
 
 RecentFilesManager::RecentFilesManager(QObject *parent)
     : QObject(parent)
@@ -27,11 +28,17 @@ void RecentFilesManager::add(const QString &type, const QString &path)
 {
     if (type.isEmpty() || path.isEmpty()) return;
 
+    QString clean = path;
+    if (clean.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(clean);
+        if (url.isLocalFile()) clean = url.toLocalFile();
+    }
+
     QSettings settings(QSettings::IniFormat, QSettings::UserScope, QStringLiteral("Aegisub"), QStringLiteral("Aegisub"));
     QStringList list = settings.value(groupFor(type)).toStringList();
 
     // Normalize separators and deduplicate, newest first.
-    const QString normalized = QDir::cleanPath(path);
+    const QString normalized = QDir::cleanPath(clean);
     list.removeAll(normalized);
     list.prepend(normalized);
     while (list.size() > kMaxEntries) list.removeLast();
@@ -49,5 +56,10 @@ void RecentFilesManager::clear(const QString &type)
 
 bool RecentFilesManager::exists(const QString &path) const
 {
-    return QFileInfo::exists(path);
+    QString clean = path;
+    if (clean.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(clean);
+        if (url.isLocalFile()) clean = url.toLocalFile();
+    }
+    return QFileInfo::exists(clean);
 }

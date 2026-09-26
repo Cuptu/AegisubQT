@@ -62,7 +62,7 @@ jobs:
 
   linux:
     name: Linux (tar.xz)
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -77,7 +77,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qtshadertools qtmultimedia qtwayland
           cache: true
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
@@ -117,8 +117,14 @@ jobs:
           cmake --install build --prefix AppDir/usr
           cp packaging/AegisubQT.desktop AppDir/AegisubQT.desktop
           cp assets/branding/icon_64.png AppDir/AegisubQT.png
+          if [ -f assets/branding/AegisubQT.svg ]; then
+            mkdir -p AppDir/usr/share/icons/hicolor/scalable/apps
+            cp assets/branding/AegisubQT.svg AppDir/usr/share/icons/hicolor/scalable/apps/AegisubQT.svg
+          fi
           export APPIMAGE_EXTRACT_AND_RUN=1
           export LD_LIBRARY_PATH="$Qt6_DIR/lib:$LD_LIBRARY_PATH"
+          export QML_SOURCES_PATHS="$GITHUB_WORKSPACE/qml"
+          export QMAKE="$Qt6_DIR/bin/qmake"
           OUTPUT="AegisubQT-x86_64.AppImage" ./linuxdeploy --appdir AppDir \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \
@@ -165,13 +171,30 @@ jobs:
         run: |
           mkdir -p build/AegisubQT.app/Contents/Resources
           cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
+          cp assets/icons_native/*.icns build/AegisubQT.app/Contents/Resources/
           mkdir -p build/AegisubQT.app/Contents/Resources/locale
           cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
 
-      - name: Bundle and create dmg
+      # macdeployqt modifies Mach-O headers via install_name_tool, breaking pre-existing
+      # code signatures. We re-sign every framework, plugin, and the outer bundle with
+      # ad-hoc signing and entitlements before packaging to avoid Gatekeeper "damaged" errors.
+      - name: Deploy Qt runtime, sign bundle and create dmg
         run: |
-          macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -dmg
-          mv build/AegisubQT.dmg "AegisubQT-${{ steps.ver.outputs.version }}.dmg"
+          macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
+          xattr -cr build/AegisubQT.app
+          chmod +x build/AegisubQT.app/Contents/MacOS/*
+          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec codesign --force --sign - {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/Frameworks -name "*.framework" -exec codesign --force --sign - {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --sign - {} + 2>/dev/null || true
+          codesign --force --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app/Contents/MacOS/AegisubQT
+          codesign --force --sign - build/AegisubQT.app
+          codesign --verify --deep --strict --verbose=2 build/AegisubQT.app
+
+          mkdir -p dmg_staging
+          ditto "build/AegisubQT.app" "dmg_staging/AegisubQT.app"
+          ln -s /Applications dmg_staging/Applications
+          hdiutil create -volname "AegisubQT" -srcfolder dmg_staging -ov -format UDZO "AegisubQT-${{ steps.ver.outputs.version }}.dmg"
+          rm -rf dmg_staging
 
       - name: Upload dmg
         uses: actions/upload-artifact@v4

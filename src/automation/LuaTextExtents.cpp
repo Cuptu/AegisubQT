@@ -46,12 +46,12 @@ bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, dou
 {
     width = height = descent = extlead = 0;
 
+#ifdef _WIN32
     // Scale font size and letter spacing by 64 to preserve 26.6 fixed-point fractional
     // precision when measuring through integer GDI metrics, matching VSFilter behavior.
     double fontsize = style.fontsize * 64.0;
     double spacing = style.spacing * 64.0;
 
-#ifdef _WIN32
     HDC dc = CreateCompatibleDC(nullptr);
     if (!dc) return false;
 
@@ -105,8 +105,14 @@ bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, dou
     SelectObject(dc, old_font);
     DeleteObject(font);
     DeleteDC(dc);
+
+    // Unscale the 64x fixed-point multiplier and apply ASS style ScaleX/ScaleY percentages.
+    width = (style.scalex / 100.0) * width / 64.0;
+    height = (style.scaley / 100.0) * height / 64.0;
+    descent = (style.scaley / 100.0) * descent / 64.0;
+    extlead = (style.scaley / 100.0) * extlead / 64.0;
 #else
-    // Non-Windows POSIX fallback: use QFontMetricsF for equivalent text extents.
+    // Non-Windows POSIX fallback: use QFontMetricsF for equivalent sub-pixel text extents.
     // Fails explicitly if no GUI application instance exists to prevent silent 0x0 metrics.
     if (!QGuiApplication::instance()) return false;
 
@@ -115,24 +121,27 @@ bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, dou
     font.setItalic(style.italic);
     font.setUnderline(style.underline);
     font.setStrikeOut(style.strikeout);
-    font.setPixelSize(static_cast<int>(std::round(fontsize)));
-    if (spacing != 0.0) {
-        // Equivalent to GDI branch per-character spacing accumulation
-        font.setLetterSpacing(QFont::AbsoluteSpacing, spacing);
+    font.setPointSizeF(style.fontsize > 0 ? style.fontsize : 12.0);
+    if (style.spacing != 0.0) {
+        font.setLetterSpacing(QFont::AbsoluteSpacing, style.spacing);
     }
 
     QFontMetricsF fm(font);
     width = fm.horizontalAdvance(text);
+    // GDI adds spacing for every character including the last; QFont letter spacing
+    // only adds spacing between characters (N - 1). Add the trailing spacing to align.
+    if (!text.isEmpty() && style.spacing != 0.0) {
+        width += style.spacing;
+    }
     height = fm.height();
     descent = fm.descent();
     extlead = fm.leading();
-#endif
 
-    // Unscale the 64x fixed-point multiplier and apply ASS style ScaleX/ScaleY percentages.
-    width = (style.scalex / 100.0) * width / 64.0;
-    height = (style.scaley / 100.0) * height / 64.0;
-    descent = (style.scaley / 100.0) * descent / 64.0;
-    extlead = (style.scaley / 100.0) * extlead / 64.0;
+    width = (style.scalex / 100.0) * width;
+    height = (style.scaley / 100.0) * height;
+    descent = (style.scaley / 100.0) * descent;
+    extlead = (style.scaley / 100.0) * extlead;
+#endif
 
     return true;
 }

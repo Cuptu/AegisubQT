@@ -682,7 +682,10 @@ Rectangle {
                             gridContextMenu.y = Math.max(0, Math.min(gridAreaRoot.height - 430, p.y));
                             gridContextMenu.open();
                         } else {
-                            gridAreaRoot.project.selectRow(index, mouse.modifiers & Qt.ControlModifier, mouse.modifiers & Qt.ShiftModifier);
+                            var isMulti = (Qt.platform.os === "osx" || Qt.platform.os === "macos")
+                                ? Boolean(mouse.modifiers & Qt.MetaModifier)
+                                : Boolean(mouse.modifiers & Qt.ControlModifier);
+                            gridAreaRoot.project.selectRow(index, isMulti, mouse.modifiers & Qt.ShiftModifier);
                         }
                     }
                 }

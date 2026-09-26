@@ -36,6 +36,8 @@
 #include <QFileInfo>
 #include <QDebug>
 #include <QMetaObject>
+#include <QUrl>
+#include <QStandardPaths>
 
 namespace Automation {
 
@@ -60,7 +62,10 @@ AutomationManager::AutomationManager(QObject *parent)
     QStringList candidateInclude = {
         currentDir + "/automation/include",
         appDir + "/automation/include",
-        appDir + "/../automation/include"
+        appDir + "/../automation/include",
+        appDir + "/../Resources/automation/include",
+        appDir + "/../share/AegisubQT/automation/include",
+        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/automation/include"
     };
 
     for (const QString &p : candidateInclude) {
@@ -135,7 +140,10 @@ void AutomationManager::scanAutoloadFolder() {
     QStringList candidateAutoload = {
         currentDir + "/automation/autoload",
         appDir + "/automation/autoload",
-        appDir + "/../automation/autoload"
+        appDir + "/../automation/autoload",
+        appDir + "/../Resources/automation/autoload",
+        appDir + "/../share/AegisubQT/automation/autoload",
+        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/automation/autoload"
     };
 
     QString autoloadDir;
@@ -176,9 +184,14 @@ void AutomationManager::scanAutoloadFolder() {
 }
 
 bool AutomationManager::addScript(const QString &filepath, bool isGlobal) {
-    if (!QFileInfo::exists(filepath)) return false;
+    QString cleanPath = filepath;
+    if (cleanPath.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(cleanPath);
+        if (url.isLocalFile()) cleanPath = url.toLocalFile();
+    }
+    if (!QFileInfo::exists(cleanPath)) return false;
 
-    auto s = std::make_unique<LuaScript>(filepath, m_includePaths);
+    auto s = std::make_unique<LuaScript>(cleanPath, m_includePaths);
     bool ok = s->load();
     m_entries.push_back({std::move(s), isGlobal});
     updateMacroList();

@@ -10,6 +10,7 @@ layout(std140, binding = 0) uniform buf {
     vec4 u_audioParams; // (sampleRate, hopSamples, totalFrames, nbrBins)
     vec4 u_curveParams; // (maxFreq, freqRef, posFref, amplitudeScale)
     vec4 u_selParams;   // (selStartMs, selEndMs, qt_Opacity, 0.0)
+    vec4 u_windowParams; // (winStartFrame, winFrameCount, winFrameStep, viewportDeviceHeight)
 };
 
 void main() {

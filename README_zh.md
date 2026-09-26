@@ -6,7 +6,7 @@
 
 **基于 Qt 6 Quick 与现代 C++20 构建的新一代高级 ASS/SSA 动画字幕制作与特效排版引擎**
 
-[![Release](https://img.shields.io/badge/Release-v4.0.1-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
+[![Release](https://img.shields.io/badge/Release-v4.0.2-0078D4?style=flat-square&logo=github&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT/releases)
 [![Status](https://img.shields.io/badge/Status-Release--Ready-10B981?style=flat-square&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-0078D4?style=flat-square&logo=windows&logoColor=white&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%2020-00599C?style=flat-square&logo=c%2B%2B&logoColor=white&labelColor=1F2937)](https://en.cppreference.com/w/cpp/20)
@@ -185,6 +185,14 @@ cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
 :: 编译并部署二进制产物 (生成 build/AegisubQT.exe 及所需 DLL 与资产)
 ninja -C build
 ```
+
+### macOS 用户安装与运行说明
+由于开源发布包采用 Ad-hoc 本地代码签名且未购买苹果商业开发者公证证书（Apple Notarization），从 GitHub 下载 DMG 镜像并拖入 `/Applications` 后：
+- **首次打开提示**：若 macOS 提示“无法打开‘AegisubQT’，因为 Apple 无法检查其是否包含恶意软件”或“来自未辨识的开发者”，请前往 **系统设置 -> 隐私与安全性**，向下滚动至安全性部分，点击 **仍要打开**（Open Anyway）。
+- **命令行快速解除**：亦可在终端中执行以下命令彻底清除隔离扩展属性：
+  ```bash
+  xattr -cr /Applications/AegisubQT.app
+  ```
 
 ---
 

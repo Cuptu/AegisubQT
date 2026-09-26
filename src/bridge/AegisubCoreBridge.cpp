@@ -262,37 +262,32 @@ QString AegisubCoreBridge::inlineStringDecode(const QString &input) {
     return QString::fromStdString(agi::ass::inline_string_decode(input.toStdString()));
 }
 
-QString AegisubCoreBridge::readTextFile(const QString &filePath) {
-    QString localPath = filePath;
-    if (localPath.startsWith("file:///")) {
-        localPath = QUrl(filePath).toLocalFile();
-    } else if (localPath.startsWith("file://")) {
-        localPath = localPath.mid(7);
+static QString toLocalPath(const QString &path) {
+    if (path.startsWith(QStringLiteral("file:"))) {
+        const QUrl url(path);
+        if (url.isLocalFile()) return url.toLocalFile();
     }
+    return path;
+}
+
+QString AegisubCoreBridge::readTextFile(const QString &filePath) {
+    const QString localPath = toLocalPath(filePath);
     QFile file(localPath);
-    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+    if (!file.open(QIODevice::ReadOnly)) {
         return QString();
     }
-    QTextStream in(&file);
-    in.setEncoding(QStringConverter::Utf8);
-    return in.readAll();
+    QByteArray raw = file.readAll();
+    return QString::fromUtf8(raw);
 }
 
 bool AegisubCoreBridge::writeTextFile(const QString &filePath, const QString &content) {
-    QString localPath = filePath;
-    if (localPath.startsWith("file:///")) {
-        localPath = QUrl(filePath).toLocalFile();
-    } else if (localPath.startsWith("file://")) {
-        localPath = localPath.mid(7);
-    }
+    const QString localPath = toLocalPath(filePath);
     QFile file(localPath);
-    if (!file.open(QIODevice::WriteOnly | QIODevice::Text | QIODevice::Truncate)) {
+    if (!file.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
         return false;
     }
-    QTextStream out(&file);
-    out.setEncoding(QStringConverter::Utf8);
-    out << content;
-    return true;
+    const QByteArray utf8 = content.toUtf8();
+    return file.write(utf8) == utf8.size();
 }
 
 void AegisubCoreBridge::launchNewInstance() {
@@ -304,12 +299,7 @@ void AegisubCoreBridge::setClipboardText(const QString &text) {
 }
 
 bool AegisubCoreBridge::copyImageFileToClipboard(const QString &imagePath) {
-    QString localPath = imagePath;
-    if (localPath.startsWith("file:///")) {
-        localPath = QUrl(imagePath).toLocalFile();
-    } else if (localPath.startsWith("file://")) {
-        localPath = localPath.mid(7);
-    }
+    const QString localPath = toLocalPath(imagePath);
     const QImage image(localPath);
     if (image.isNull()) return false;
     QGuiApplication::clipboard()->setImage(image);

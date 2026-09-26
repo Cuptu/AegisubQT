@@ -129,9 +129,13 @@ void SpectrogramItem::renderTimelineRulerImage(int width)
 {
     if (width <= 0 || !m_audioController) return;
 
+    const qreal dpr = window() ? window()->devicePixelRatio() : 1.0;
     const int bottom = 17;
-    if (m_rulerImage.size() != QSize(width, bottom)) {
-        m_rulerImage = QImage(width, bottom, QImage::Format_ARGB32_Premultiplied);
+    const QSize physicalSize(static_cast<int>(std::round(width * dpr)),
+                             static_cast<int>(std::round(bottom * dpr)));
+    if (m_rulerImage.size() != physicalSize || !qFuzzyCompare(m_rulerImage.devicePixelRatio(), dpr)) {
+        m_rulerImage = QImage(physicalSize, QImage::Format_ARGB32_Premultiplied);
+        m_rulerImage.setDevicePixelRatio(dpr);
     }
 
     QPainter painter(&m_rulerImage);
@@ -258,8 +262,12 @@ void SpectrogramItem::renderMarkersOverlayImage(int width, int height)
 {
     if (width <= 0 || height <= 17 || !m_audioController) return;
 
-    if (m_markerImage.size() != QSize(width, height)) {
-        m_markerImage = QImage(width, height, QImage::Format_ARGB32_Premultiplied);
+    const qreal dpr = window() ? window()->devicePixelRatio() : 1.0;
+    const QSize physicalSize(static_cast<int>(std::round(width * dpr)),
+                             static_cast<int>(std::round(height * dpr)));
+    if (m_markerImage.size() != physicalSize || !qFuzzyCompare(m_markerImage.devicePixelRatio(), dpr)) {
+        m_markerImage = QImage(physicalSize, QImage::Format_ARGB32_Premultiplied);
+        m_markerImage.setDevicePixelRatio(dpr);
     }
     m_markerImage.fill(Qt::transparent);
 

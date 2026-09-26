@@ -9,7 +9,7 @@ param (
     [Parameter(Position = 0)]
     [string]$BuildRoot = "",
     [Parameter(Position = 1)]
-    [string]$Version = "4.0.1"
+    [string]$Version = "4.0.2"
 )
 
 $ErrorActionPreference = 'Stop'

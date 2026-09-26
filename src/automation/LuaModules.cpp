@@ -291,11 +291,19 @@ struct DirectoryIterator {
 
 static std::filesystem::path to_fs_path(const char *str) {
     if (!str) return std::filesystem::path();
+#ifdef _WIN32
     return std::filesystem::path(QString::fromUtf8(str).toStdWString());
+#else
+    return std::filesystem::u8path(str);
+#endif
 }
 
 static std::string from_fs_path(const std::filesystem::path &p) {
+#ifdef _WIN32
     return QString::fromStdWString(p.wstring()).toUtf8().toStdString();
+#else
+    return p.string();
+#endif
 }
 
 static DirectoryIterator *lfs_dir_new(const char *path, char **err) {

@@ -28,6 +28,7 @@
 // Aegisub Project http://www.aegisub.org/
 
 #include <QGuiApplication>
+#include <QFileOpenEvent>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include <QQuickStyle>
@@ -213,8 +214,62 @@ static void migrateLegacySettings()
     ini.setValue(QStringLiteral("SettingsMigrated"), true);
 }
 
+class AegisubApplication : public QGuiApplication {
+public:
+    AegisubApplication(int &argc, char **argv) : QGuiApplication(argc, argv) {}
+
+    void setSubtitleModel(SubtitleModel *model) {
+        m_model = model;
+        if (m_model && !m_pendingFile.isEmpty()) {
+            m_model->loadFromFile(m_pendingFile);
+            m_pendingFile.clear();
+        }
+    }
+
+protected:
+    bool event(QEvent *event) override {
+        if (event->type() == QEvent::FileOpen) {
+            auto *fe = static_cast<QFileOpenEvent*>(event);
+            if (m_model) {
+                m_model->loadFromFile(fe->file());
+            } else {
+                m_pendingFile = fe->file();
+            }
+            return true;
+        }
+        return QGuiApplication::event(event);
+    }
+
+private:
+    SubtitleModel *m_model = nullptr;
+    QString m_pendingFile;
+};
+
 int main(int argc, char *argv[])
 {
+#if defined(Q_OS_MACOS)
+    // GUI applications launched from Finder/Dock inherit a minimal PATH that excludes
+    // Homebrew or MacPorts prefixes. Prepend them so tools like ffmpeg are discovered.
+    QByteArray pathEnv = qgetenv("PATH");
+    QStringList paths = QString::fromLocal8Bit(pathEnv).split(':', Qt::SkipEmptyParts);
+    const QStringList extraPaths = {
+        QStringLiteral("/opt/homebrew/bin"),
+        QStringLiteral("/usr/local/bin"),
+        QStringLiteral("/usr/bin"),
+        QStringLiteral("/bin")
+    };
+    bool pathChanged = false;
+    for (const QString &p : extraPaths) {
+        if (!paths.contains(p) && QDir(p).exists()) {
+            paths.prepend(p);
+            pathChanged = true;
+        }
+    }
+    if (pathChanged) {
+        qputenv("PATH", paths.join(':').toLocal8Bit());
+    }
+#endif
+
     if (qEnvironmentVariableIsSet("AEGISUB_DEBUG_LOG")) {
         QFile file("debug_log.txt");
         (void)file.open(QIODevice::WriteOnly | QIODevice::Truncate | QIODevice::Text);
@@ -224,13 +279,15 @@ int main(int argc, char *argv[])
     qInstallMessageHandler(customLogHandler);
     QQuickStyle::setStyle("Aegisub");
     QQuickStyle::setFallbackStyle("Fusion");
-    // Prevent platforms from attempting to delegate in-scene QML MenuBar to native menu bars
+#if !defined(Q_OS_MACOS)
+    // Prevent non-macOS platforms from attempting to delegate in-scene QML MenuBar to native menu bars
     QCoreApplication::setAttribute(Qt::AA_DontUseNativeMenuBar);
-    QGuiApplication app(argc, argv);
+#endif
+    AegisubApplication app(argc, argv);
     QCoreApplication::addLibraryPath(app.applicationDirPath() + "/plugins");
     QCoreApplication::addLibraryPath(app.applicationDirPath());
     app.setApplicationName("AegisubQT");
-    app.setApplicationVersion("4.0.1");
+    app.setApplicationVersion("4.0.2");
     app.setOrganizationName("AegisubQT");
 
     // Portable mode: a "portable.txt" marker next to the executable keeps all
@@ -264,16 +321,24 @@ int main(int argc, char *argv[])
     app.setPalette(appPal);
 
     // Set official application window and taskbar icon
-    QIcon appIcon;
-    const QStringList iconCandidates = {
-        app.applicationDirPath() + "/assets/icons_native/icon.ico",
-        app.applicationDirPath() + "/../assets/icons_native/icon.ico",
-        QDir::current().filePath("assets/icons_native/icon.ico")
-    };
-    for (const QString &p : iconCandidates) {
-        if (QFileInfo::exists(p)) {
-            appIcon.addFile(p);
-            break;
+    QIcon appIcon = QIcon::fromTheme(QStringLiteral("AegisubQT"));
+    if (appIcon.isNull()) {
+        const QStringList iconCandidates = {
+            app.applicationDirPath() + "/assets/icons_native/icon.ico",
+            app.applicationDirPath() + "/assets/branding/icon_64.png",
+            app.applicationDirPath() + "/assets/icons_native/icon.icns",
+            app.applicationDirPath() + "/../Resources/assets/branding/icon_64.png",
+            app.applicationDirPath() + "/../Resources/icon.icns",
+            app.applicationDirPath() + "/../share/AegisubQT/assets/branding/icon_64.png",
+            app.applicationDirPath() + "/../assets/icons_native/icon.ico",
+            QDir::current().filePath("assets/branding/icon_64.png"),
+            QDir::current().filePath("assets/icons_native/icon.ico")
+        };
+        for (const QString &p : iconCandidates) {
+            if (QFileInfo::exists(p)) {
+                appIcon.addFile(p);
+                break;
+            }
         }
     }
     if (!appIcon.isNull()) {
@@ -336,6 +401,10 @@ int main(int argc, char *argv[])
             // Bare path argument: open as subtitle file (shell file association).
             if (assPath.isEmpty()) {
                 assPath = a;
+                if (assPath.startsWith(QStringLiteral("file:"))) {
+                    const QUrl url(assPath);
+                    if (url.isLocalFile()) assPath = url.toLocalFile();
+                }
             }
         }
     }
@@ -396,6 +465,7 @@ int main(int argc, char *argv[])
     // newDocument() initializes default 0:00:00.00-0:00:05.00 dialogue line
     // and resets modification tracking to pristine state.
     subtitleModel.newDocument();
+    app.setSubtitleModel(&subtitleModel);
     engine.rootContext()->setContextProperty("nativeSubtitleModel", &subtitleModel);
     Automation::AutomationManager::instance()->setSubtitleModel(&subtitleModel);
 

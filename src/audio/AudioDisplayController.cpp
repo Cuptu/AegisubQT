@@ -456,7 +456,11 @@ bool AudioDisplayController::keyPressed(int key, int modifiers)
     if (!m_audioController) return false;
 
     const Qt::KeyboardModifiers mods = Qt::KeyboardModifiers(modifiers);
+#if defined(Q_OS_MACOS)
+    if (mods.testFlag(Qt::MetaModifier) || mods.testFlag(Qt::ControlModifier)) return false;
+#else
     if (mods.testFlag(Qt::ControlModifier)) return false;
+#endif
 
     const bool shift = mods.testFlag(Qt::ShiftModifier);
     const bool keypad = mods.testFlag(Qt::KeypadModifier);

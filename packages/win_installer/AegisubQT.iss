@@ -11,7 +11,7 @@
 #define StagingDir "..\..\build\installer-staging"
 #endif
 #ifndef Version
-#define Version "4.0.1"
+#define Version "4.0.2"
 #endif
 #ifndef SourceRoot
 #define SourceRoot "..\.."
@@ -28,6 +28,7 @@ AppSupportURL=https://github.com/AegisubQT/AegisubQT/issues
 DefaultDirName={autopf}\AegisubQT
 DefaultGroupName=AegisubQT
 UninstallDisplayName=AegisubQT {#Version}
+UninstallDisplayIcon={app}\AegisubQT.exe
 LicenseFile={#SourceRoot}\LICENSE
 SetupIconFile={#StagingDir}\assets\icons_native\icon.ico
 OutputDir=..\..\build
