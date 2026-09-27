@@ -183,12 +183,19 @@ jobs:
       # and LanguageManager both search the Resources layout.
       - name: Stage app resources into bundle
         run: |
-          mkdir -p build/AegisubQT.app/Contents/Resources
+          mkdir -p build/AegisubQT.app/Contents/Resources/locale
           cp packages/osx/Info.plist.in build/AegisubQT.app/Contents/Info.plist
           cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
           cp assets/icons_native/*.icns build/AegisubQT.app/Contents/Resources/
-          mkdir -p build/AegisubQT.app/Contents/Resources/locale
-          cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
+          if compgen -G "build/*.qm" > /dev/null; then
+            cp build/*.qm build/AegisubQT.app/Contents/Resources/locale/
+          fi
+          if compgen -G "build/locale/*.qm" > /dev/null; then
+            cp build/locale/*.qm build/AegisubQT.app/Contents/Resources/locale/
+          fi
+          if compgen -G "build/AegisubQT.app/Contents/MacOS/locale/*.qm" > /dev/null; then
+            cp build/AegisubQT.app/Contents/MacOS/locale/*.qm build/AegisubQT.app/Contents/Resources/locale/
+          fi
 
       # macdeployqt modifies Mach-O headers via install_name_tool, breaking pre-existing
       # code signatures. We re-sign every framework, plugin, and the outer bundle with
@@ -198,15 +205,19 @@ jobs:
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
           xattr -cr build/AegisubQT.app
           chmod 755 build/AegisubQT.app/Contents/MacOS/AegisubQT
-          find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} \;
-          for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
-            if [ -d "$fw" ]; then
-              codesign --force --timestamp=none --sign - "$fw"
-            fi
-          done
-          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} \;
+          if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
+            find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
+            for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
+              if [ -d "$fw" ]; then
+                codesign --force --timestamp=none --sign - "$fw"
+              fi
+            done
+          fi
+          if [ -d build/AegisubQT.app/Contents/PlugIns ]; then
+            find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
+          fi
           codesign --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app/Contents/MacOS/AegisubQT
-          codesign --force --timestamp=none --sign - build/AegisubQT.app
+          codesign --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app
           codesign --verify --deep --strict --verbose=2 build/AegisubQT.app
 
           mkdir -p dmg_staging
