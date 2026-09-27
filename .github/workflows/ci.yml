@@ -20,6 +20,11 @@ jobs:
         with:
           submodules: recursive
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -117,6 +122,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           mkdir -p build/AegisubQT.app/Contents/Resources
+          cp packages/osx/Info.plist.in build/AegisubQT.app/Contents/Info.plist
           cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
           cp assets/icons_native/*.icns build/AegisubQT.app/Contents/Resources/
           mkdir -p build/AegisubQT.app/Contents/Resources/locale

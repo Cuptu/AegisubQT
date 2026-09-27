@@ -159,16 +159,14 @@ if(QT_INSTALL_QML_PATH)
     target_compile_definitions(AegisubQT PRIVATE QT_INSTALL_QML_PATH="${QT_INSTALL_QML_PATH}")
 endif()
 
-# macOS: build a proper .app bundle with icons, document types, and metadata.
+# macOS: build a proper .app bundle so macdeployqt can produce a .dmg.
 if(APPLE)
     set_target_properties(AegisubQT PROPERTIES
         MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packages/osx/Info.plist.in"
         MACOSX_BUNDLE_BUNDLE_NAME "AegisubQT"
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.aegisub.aegisubqt"
         MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"
         MACOSX_BUNDLE_SHORT_VERSION_STRING "${PROJECT_VERSION}"
-        MACOSX_BUNDLE_ICON_FILE "Aegisub.icns"
     )
 endif()
 
