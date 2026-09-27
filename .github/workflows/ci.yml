@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-24.04, macos-14]
+        os: [windows-latest, ubuntu-22.04, macos-14]
 
     steps:
       - name: Checkout
@@ -37,7 +37,7 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ninja-build
+          sudo apt-get install -y build-essential ninja-build libxcb-cursor0
 
       - name: Setup build tools (macOS)
         if: runner.os == 'macOS'
@@ -89,7 +89,7 @@ jobs:
           export QT_QPA_PLATFORM=offscreen
           export QT_QUICK_BACKEND=software
           set +e
-          timeout 20s ./build/AegisubQT > smoke.log 2>&1
+          timeout 10s ./build/AegisubQT > smoke.log 2>&1
           code=$?
           set -e
           cat smoke.log
@@ -98,32 +98,53 @@ jobs:
             exit "$code"
           fi
 
-      # Bundle Qt runtime DLLs next to the exe so the artifact runs out of the box.
+      # Stage app payload, deploy Qt runtime, prune unneeded modules, and package Windows artifact
       - name: Deploy Qt runtime (Windows)
         if: runner.os == 'Windows'
-        run: windeployqt --release --compiler-runtime --qmldir qml build/AegisubQT.exe
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist_win | Out-Null
+          Copy-Item build\AegisubQT.exe dist_win\
+          if (Test-Path build\assets) { Copy-Item -Recurse build\assets dist_win\ } else { Copy-Item -Recurse assets dist_win\ }
+          if (Test-Path build\automation) { Copy-Item -Recurse build\automation dist_win\ } else { Copy-Item -Recurse automation dist_win\ }
+          if (Test-Path build\locale) { Copy-Item -Recurse build\locale dist_win\ }
+          windeployqt --release --compiler-runtime --no-opengl-sw --qmldir qml --dir dist_win dist_win\AegisubQT.exe
+
+          # Remove QML profiling/debugging DLLs
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qmltooling
+
+          # Remove unused alternative mobile/desktop QML styles (AegisubQT uses native/custom style)
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\Controls\Material
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\Controls\Universal
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\Controls\Imagine
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\Controls\FluentWinUI3
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\VirtualKeyboard
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick3D
+          Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qml\QtQuick\Timeline
+
+          # Remove standalone redist installers and intermediate build artifacts
+          Remove-Item -Path dist_win\vc_redist*.exe -Force -ErrorAction SilentlyContinue
+          Get-ChildItem -Path dist_win -Include *.lib,*.exp,*.obj -Recurse | Remove-Item -Force -ErrorAction SilentlyContinue
+
+          # Ensure MSVC runtime DLLs are present
+          $needed = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll")
+          $missing = @($needed | Where-Object { !(Test-Path "dist_win\$_") })
+          if ($missing.Count -gt 0 -and $env:VCToolsRedistDir) {
+              $crtDir = Get-ChildItem -Path "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT" -ErrorAction SilentlyContinue | Select-Object -First 1
+              if ($crtDir) {
+                  foreach ($dll in $missing) {
+                      $src = Join-Path $crtDir.FullName $dll
+                      if (Test-Path $src) { Copy-Item $src dist_win\ }
+                  }
+              }
+          }
 
       - name: Upload artifact (Windows)
         if: runner.os == 'Windows'
         uses: actions/upload-artifact@v4
         with:
           name: AegisubQT-windows-x64
-          path: |
-            build/AegisubQT.exe
-            build/*.dll
-            build/platforms/
-            build/imageformats/
-            build/iconengines/
-            build/generic/
-            build/tls/
-            build/multimedia/
-            build/networkinformation/
-            build/translations/
-            build/qmltooling/
-            build/qml/
-            build/assets/
-            build/automation/
-            build/locale/
+          path: dist_win/
           if-no-files-found: error
 
       # Stage resources, deploy Qt runtime, ad-hoc sign, and verify bundle on macOS.
@@ -221,15 +242,71 @@ jobs:
           path: build/AegisubQT-macos-arm64.dmg
           if-no-files-found: error
 
+      # Package self-contained Linux AppImage bundling Qt runtime and dependencies
+      - name: Package AppImage (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          set -e
+          wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-x86_64.AppImage -O linuxdeploy
+          wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/1-alpha-20240109-1/linuxdeploy-plugin-qt-x86_64.AppImage -O linuxdeploy-plugin-qt
+          chmod +x linuxdeploy linuxdeploy-plugin-qt
+
+          cmake --install build --prefix AppDir/usr
+          cp packaging/AegisubQT.desktop AppDir/AegisubQT.desktop
+          cp assets/branding/icon_64.png AppDir/AegisubQT.png
+          if [ -f assets/branding/AegisubQT.svg ]; then
+            mkdir -p AppDir/usr/share/icons/hicolor/scalable/apps
+            cp assets/branding/AegisubQT.svg AppDir/usr/share/icons/hicolor/scalable/apps/AegisubQT.svg
+          fi
+
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          export LD_LIBRARY_PATH="$Qt6_DIR/lib:$LD_LIBRARY_PATH"
+          export QML_SOURCES_PATHS="$GITHUB_WORKSPACE/qml"
+          export QMAKE="$Qt6_DIR/bin/qmake"
+
+          mkdir -p AppDir/usr/lib
+          cp -P /usr/lib/x86_64-linux-gnu/libxcb-cursor.so* AppDir/usr/lib/ 2>/dev/null || true
+
+          # Deploy Qt runtime and plugins into AppDir
+          ./linuxdeploy --appdir AppDir \
+            --desktop-file AppDir/AegisubQT.desktop \
+            --icon-file AppDir/AegisubQT.png \
+            --plugin qt
+
+          # Strip binaries and prune unused QML styles
+          strip --strip-unneeded AppDir/usr/bin/* AppDir/usr/lib/*.so* AppDir/usr/plugins/*/*.so 2>/dev/null || true
+          rm -rf AppDir/usr/plugins/qmltooling 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/Controls/{Material,Universal,Imagine,FluentWinUI3} 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/VirtualKeyboard 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick3D 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/Timeline 2>/dev/null || true
+
+          # Generate standalone AppImage
+          OUTPUT="AegisubQT-linux-x64.AppImage" ./linuxdeploy --appdir AppDir \
+            --desktop-file AppDir/AegisubQT.desktop \
+            --icon-file AppDir/AegisubQT.png \
+            --output appimage
+
+      - name: Smoke test (Linux AppImage, offscreen)
+        if: runner.os == 'Linux'
+        run: |
+          export QT_QPA_PLATFORM=offscreen
+          export QT_QUICK_BACKEND=software
+          export APPIMAGE_EXTRACT_AND_RUN=1
+          set +e
+          timeout 10s ./AegisubQT-linux-x64.AppImage --appimage-extract-and-run > smoke-appimage.log 2>&1
+          code=$?
+          set -e
+          cat smoke-appimage.log
+          if [ "$code" -ne 0 ] && [ "$code" -ne 124 ]; then
+            echo "::error::AppImage smoke test failed with exit code $code"
+            exit "$code"
+          fi
+
       - name: Upload artifact (Linux)
         if: runner.os == 'Linux'
         uses: actions/upload-artifact@v4
         with:
           name: AegisubQT-linux-x64
-          path: |
-            build/AegisubQT
-            build/qml/
-            build/assets/
-            build/automation/
-            build/locale/
+          path: AegisubQT-linux-x64.AppImage
           if-no-files-found: error

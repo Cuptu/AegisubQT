@@ -59,6 +59,16 @@ if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
 # Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.
 Remove-Item -Path (Join-Path $StagingDir "vc_redist*.exe") -Force -ErrorAction SilentlyContinue
 
+# Prune unused QML modules and profiling tooling
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qmltooling")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Material")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Universal")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Imagine")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\FluentWinUI3")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\VirtualKeyboard")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick3D")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Timeline")
+
 $needed = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll")
 $missing = @($needed | Where-Object { !(Test-Path (Join-Path $StagingDir $_)) })
 if ($missing.Count -gt 0) {

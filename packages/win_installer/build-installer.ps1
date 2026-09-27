@@ -66,6 +66,16 @@ if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
 # Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.
 Remove-Item -Path (Join-Path $StagingDir "vc_redist*.exe") -Force -ErrorAction SilentlyContinue
 
+# Prune unused QML modules and profiling tooling
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qmltooling")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Material")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Universal")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\Imagine")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Controls\FluentWinUI3")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\VirtualKeyboard")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick3D")
+Remove-Item -Recurse -Force -ErrorAction SilentlyContinue (Join-Path $StagingDir "qml\QtQuick\Timeline")
+
 # --compiler-runtime normally copies the MSVC CRT next to the app; verify and
 # fall back to a manual redist copy for toolchains that cannot locate it.
 $needed = @("msvcp140.dll", "vcruntime140.dll", "vcruntime140_1.dll")

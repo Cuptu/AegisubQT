@@ -89,7 +89,7 @@ jobs:
       - name: Setup build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ninja-build
+          sudo apt-get install -y build-essential ninja-build libxcb-cursor0
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
@@ -130,15 +130,28 @@ jobs:
           export LD_LIBRARY_PATH="$Qt6_DIR/lib:$LD_LIBRARY_PATH"
           export QML_SOURCES_PATHS="$GITHUB_WORKSPACE/qml"
           export QMAKE="$Qt6_DIR/bin/qmake"
-          export EXTRA_PLATFORM_PLUGINS="qwayland-generic;qwayland-egl"
-          export EXTRA_QT_PLUGINS="wayland-shell-integration;wayland-decoration-client;wayland-graphics-integration-client"
           mkdir -p AppDir/usr/lib
           cp -P /usr/lib/x86_64-linux-gnu/libxcb-cursor.so* AppDir/usr/lib/ 2>/dev/null || true
-          OUTPUT="AegisubQT-x86_64.AppImage" ./linuxdeploy --appdir AppDir \
+
+          # Deploy Qt runtime and plugins into AppDir
+          ./linuxdeploy --appdir AppDir \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \
-            --plugin qt --output appimage
-          mv AegisubQT-x86_64.AppImage "AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage"
+            --plugin qt
+
+          # Strip binaries and prune unused QML styles
+          strip --strip-unneeded AppDir/usr/bin/* AppDir/usr/lib/*.so* AppDir/usr/plugins/*/*.so 2>/dev/null || true
+          rm -rf AppDir/usr/plugins/qmltooling 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/Controls/{Material,Universal,Imagine,FluentWinUI3} 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/VirtualKeyboard 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick3D 2>/dev/null || true
+          rm -rf AppDir/usr/qml/QtQuick/Timeline 2>/dev/null || true
+
+          # Generate final AppImage
+          OUTPUT="AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage" ./linuxdeploy --appdir AppDir \
+            --desktop-file AppDir/AegisubQT.desktop \
+            --icon-file AppDir/AegisubQT.png \
+            --output appimage
 
       - name: Upload AppImage
         uses: actions/upload-artifact@v4
