@@ -89,7 +89,7 @@ jobs:
       - name: Setup build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ninja-build libxcb-cursor0
+          sudo apt-get install -y build-essential ninja-build libxcb-cursor0 file
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
@@ -115,10 +115,12 @@ jobs:
         run: |
           wget -q https://github.com/linuxdeploy/linuxdeploy/releases/download/1-alpha-20240109-1/linuxdeploy-x86_64.AppImage -O linuxdeploy
           wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-qt/releases/download/1-alpha-20240109-1/linuxdeploy-plugin-qt-x86_64.AppImage -O linuxdeploy-plugin-qt
-          chmod +x linuxdeploy linuxdeploy-plugin-qt
+          wget -q https://github.com/linuxdeploy/linuxdeploy-plugin-appimage/releases/download/continuous/linuxdeploy-plugin-appimage-x86_64.AppImage -O linuxdeploy-plugin-appimage
+          chmod +x linuxdeploy linuxdeploy-plugin-qt linuxdeploy-plugin-appimage
 
       - name: Build AppImage
         run: |
+          export PATH="$PWD:$PATH"
           cmake --install build --prefix AppDir/usr
           cp packaging/AegisubQT.desktop AppDir/AegisubQT.desktop
           cp assets/branding/icon_64.png AppDir/AegisubQT.png
@@ -127,9 +129,9 @@ jobs:
             cp assets/branding/AegisubQT.svg AppDir/usr/share/icons/hicolor/scalable/apps/AegisubQT.svg
           fi
           export APPIMAGE_EXTRACT_AND_RUN=1
-          export LD_LIBRARY_PATH="$Qt6_DIR/lib:$LD_LIBRARY_PATH"
+          export QMAKE="$(which qmake 2>/dev/null || which qmake6 2>/dev/null || echo "${QT_ROOT_DIR}/bin/qmake")"
           export QML_SOURCES_PATHS="$GITHUB_WORKSPACE/qml"
-          export QMAKE="$Qt6_DIR/bin/qmake"
+          export LD_LIBRARY_PATH="${QT_ROOT_DIR}/lib:$LD_LIBRARY_PATH"
           mkdir -p AppDir/usr/lib
           cp -P /usr/lib/x86_64-linux-gnu/libxcb-cursor.so* AppDir/usr/lib/ 2>/dev/null || true
 
@@ -148,7 +150,10 @@ jobs:
           rm -rf AppDir/usr/qml/QtQuick/Timeline 2>/dev/null || true
 
           # Generate final AppImage
-          OUTPUT="AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage" ./linuxdeploy --appdir AppDir \
+          OUTPUT="AegisubQT-${{ steps.ver.outputs.version }}-x86_64.AppImage"
+          export OUTPUT
+          export LDAI_OUTPUT="$OUTPUT"
+          ./linuxdeploy --appdir AppDir \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \
             --output appimage
