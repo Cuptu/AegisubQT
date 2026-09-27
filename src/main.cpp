@@ -248,25 +248,27 @@ private:
 int main(int argc, char *argv[])
 {
 #if defined(Q_OS_MACOS)
-    // GUI applications launched from Finder/Dock inherit a minimal PATH that excludes
-    // Homebrew or MacPorts prefixes. Prepend them so tools like ffmpeg are discovered.
-    const QByteArray pathEnv = qgetenv("PATH");
-    QStringList paths = QString::fromLocal8Bit(pathEnv).split(QLatin1Char(':'), Qt::SkipEmptyParts);
-    const QStringList extraPaths = {
-        QStringLiteral("/opt/homebrew/bin"),
-        QStringLiteral("/usr/local/bin"),
-        QStringLiteral("/usr/bin"),
-        QStringLiteral("/bin")
-    };
-    bool pathChanged = false;
-    for (const QString &p : extraPaths) {
-        if (!paths.contains(p) && QDir(p).exists()) {
-            paths.prepend(p);
-            pathChanged = true;
+    {
+        // GUI applications launched from Finder/Dock inherit a minimal PATH that excludes
+        // Homebrew or MacPorts prefixes. Prepend them so tools like ffmpeg are discovered.
+        const QByteArray pathEnv = qgetenv("PATH");
+        QStringList envPaths = QString::fromLocal8Bit(pathEnv).split(QLatin1Char(':'), Qt::SkipEmptyParts);
+        const QStringList extraPaths = {
+            QStringLiteral("/opt/homebrew/bin"),
+            QStringLiteral("/usr/local/bin"),
+            QStringLiteral("/usr/bin"),
+            QStringLiteral("/bin")
+        };
+        bool pathChanged = false;
+        for (const QString &p : extraPaths) {
+            if (!envPaths.contains(p) && QDir(p).exists()) {
+                envPaths.prepend(p);
+                pathChanged = true;
+            }
         }
-    }
-    if (pathChanged) {
-        qputenv("PATH", paths.join(QLatin1Char(':')).toLocal8Bit());
+        if (pathChanged) {
+            qputenv("PATH", envPaths.join(QLatin1Char(':')).toLocal8Bit());
+        }
     }
 #endif
 
