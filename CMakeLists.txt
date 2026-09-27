@@ -161,21 +161,9 @@ endif()
 
 # macOS: build a proper .app bundle with icons, document types, and metadata.
 if(APPLE)
-    set(MACOS_ICONS
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/Aegisub.icns"
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/icon.icns"
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/assIcon.icns"
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/ssaIcon.icns"
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/srtIcon.icns"
-        "${CMAKE_CURRENT_SOURCE_DIR}/assets/icons_native/txtIcon.icns"
-    )
-    set_source_files_properties(${MACOS_ICONS} PROPERTIES MACOSX_PACKAGE_LOCATION "Resources")
-    target_sources(AegisubQT PRIVATE ${MACOS_ICONS})
-
     set_target_properties(AegisubQT PROPERTIES
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/packages/osx/Info.plist.in"
-        MACOSX_BUNDLE_EXECUTABLE_NAME "AegisubQT"
         MACOSX_BUNDLE_BUNDLE_NAME "AegisubQT"
         MACOSX_BUNDLE_GUI_IDENTIFIER "org.aegisub.aegisubqt"
         MACOSX_BUNDLE_BUNDLE_VERSION "${PROJECT_VERSION}"

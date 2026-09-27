@@ -5,25 +5,25 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>English</string>
 	<key>CFBundleExecutable</key>
-	<string>@MACOSX_BUNDLE_EXECUTABLE_NAME@</string>
+	<string>AegisubQT</string>
 	<key>CFBundleIconFile</key>
-	<string>@MACOSX_BUNDLE_ICON_FILE@</string>
+	<string>Aegisub.icns</string>
 	<key>CFBundleIconName</key>
-	<string>@MACOSX_BUNDLE_ICON_FILE@</string>
+	<string>Aegisub.icns</string>
 	<key>CFBundleIdentifier</key>
-	<string>@MACOSX_BUNDLE_GUI_IDENTIFIER@</string>
+	<string>org.aegisub.aegisubqt</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>@MACOSX_BUNDLE_BUNDLE_NAME@</string>
+	<string>AegisubQT</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleSignature</key>
 	<string>agsu</string>
 	<key>CFBundleShortVersionString</key>
-	<string>@MACOSX_BUNDLE_SHORT_VERSION_STRING@</string>
+	<string>4.0.2</string>
 	<key>CFBundleVersion</key>
-	<string>@MACOSX_BUNDLE_BUNDLE_VERSION@</string>
+	<string>4.0.2</string>
 	<key>CFBundleSupportedPlatforms</key>
 	<array>
 		<string>MacOSX</string>

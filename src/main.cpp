@@ -250,8 +250,8 @@ int main(int argc, char *argv[])
 #if defined(Q_OS_MACOS)
     // GUI applications launched from Finder/Dock inherit a minimal PATH that excludes
     // Homebrew or MacPorts prefixes. Prepend them so tools like ffmpeg are discovered.
-    QByteArray pathEnv = qgetenv("PATH");
-    QStringList paths = QString::fromLocal8Bit(pathEnv).split(':', Qt::SkipEmptyParts);
+    const QByteArray pathEnv = qgetenv("PATH");
+    QStringList paths = QString::fromLocal8Bit(pathEnv).split(QLatin1Char(':'), Qt::SkipEmptyParts);
     const QStringList extraPaths = {
         QStringLiteral("/opt/homebrew/bin"),
         QStringLiteral("/usr/local/bin"),
@@ -266,7 +266,7 @@ int main(int argc, char *argv[])
         }
     }
     if (pathChanged) {
-        qputenv("PATH", paths.join(':').toLocal8Bit());
+        qputenv("PATH", paths.join(QLatin1Char(':')).toLocal8Bit());
     }
 #endif
 
@@ -309,7 +309,13 @@ int main(int argc, char *argv[])
     defaultFont.setFamilies({"Segoe UI", "Microsoft YaHei UI", "Yu Gothic UI", "Malgun Gothic", "Tahoma"});
     defaultFont.setPointSize(9);
 #elif defined(Q_OS_MACOS)
-    defaultFont.setFamilies({".AppleSystemUIFont", "PingFang SC", "Hiragino Sans", "Apple SD Gothic Neo", "Helvetica Neue"});
+    defaultFont.setFamilies(QStringList{
+        QStringLiteral(".AppleSystemUIFont"),
+        QStringLiteral("PingFang SC"),
+        QStringLiteral("Hiragino Sans"),
+        QStringLiteral("Apple SD Gothic Neo"),
+        QStringLiteral("Helvetica Neue")
+    });
     defaultFont.setPointSize(12);
 #else
     defaultFont.setFamilies({"Cantarell", "Ubuntu", "Noto Sans", "sans-serif"});
