@@ -269,22 +269,28 @@ qt_add_lrelease(AegisubQT
     QM_FILES_OUTPUT_VARIABLE AEGISUB_QM_FILES
 )
 
-# Copy runtime assets, QML, automation scripts, and compiled .qm files next to the binary.
-# Native DLLs are copied if present (AstraCore.Native is an optional runtime component).
+# Copy runtime assets, QML, automation scripts, and compiled .qm files next to the binary
+# (or into Contents/Resources for macOS app bundles).
+if(APPLE)
+    set(AEGISUB_POST_BUILD_DEST "$<TARGET_BUNDLE_DIR:AegisubQT>/Contents/Resources")
+else()
+    set(AEGISUB_POST_BUILD_DEST "$<TARGET_FILE_DIR:AegisubQT>")
+endif()
+
 set(AEGISUB_POST_BUILD_COMMANDS
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/assets"
-        $<TARGET_FILE_DIR:AegisubQT>/assets
+        "${AEGISUB_POST_BUILD_DEST}/assets"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/automation"
-        $<TARGET_FILE_DIR:AegisubQT>/automation
+        "${AEGISUB_POST_BUILD_DEST}/automation"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/qml"
-        $<TARGET_FILE_DIR:AegisubQT>/qml
-    COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_FILE_DIR:AegisubQT>/locale
+        "${AEGISUB_POST_BUILD_DEST}/qml"
+    COMMAND ${CMAKE_COMMAND} -E make_directory "${AEGISUB_POST_BUILD_DEST}/locale"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${AEGISUB_QM_FILES}
-        $<TARGET_FILE_DIR:AegisubQT>/locale
+        "${AEGISUB_POST_BUILD_DEST}/locale"
 )
 
 if(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")

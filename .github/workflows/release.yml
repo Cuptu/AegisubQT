@@ -216,8 +216,22 @@ jobs:
           if [ -d build/AegisubQT.app/Contents/PlugIns ]; then
             find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
           fi
-          codesign --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app
-          codesign --verify --deep --strict --verbose=2 build/AegisubQT.app
+          # Clean up any non-binary resource directories from Contents/MacOS that violate bundle layout
+          rm -rf build/AegisubQT.app/Contents/MacOS/{assets,automation,qml,locale} 2>/dev/null || true
+
+          echo "Signing app bundle..."
+          if ! codesign_out=$(codesign -vvv --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app 2>&1); then
+            echo "::error::codesign bundle failed: $codesign_out"
+            exit 1
+          fi
+          echo "$codesign_out"
+
+          echo "Verifying app bundle..."
+          if ! verify_out=$(codesign --verify --deep --strict --verbose=2 build/AegisubQT.app 2>&1); then
+            echo "::error::codesign verify failed: $verify_out"
+            exit 1
+          fi
+          echo "$verify_out"
 
           mkdir -p dmg_staging
           ditto "build/AegisubQT.app" "dmg_staging/AegisubQT.app"
