@@ -204,10 +204,37 @@ jobs:
         run: |
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
           xattr -cr build/AegisubQT.app
+          # Thin universal binaries to pure arm64 to remove dead x86_64 slices
+          find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -type f \( -name "*.dylib" -o -perm +111 \) 2>/dev/null | while IFS= read -r f; do
+            if [ ! -L "$f" ] && lipo -info "$f" 2>/dev/null | grep -q "x86_64"; then
+              if lipo -thin arm64 "$f" -output "${f}.arm64" 2>/dev/null; then
+                mv "${f}.arm64" "$f"
+              else
+                rm -f "${f}.arm64"
+              fi
+            fi
+          done
+
           # Strip non-global symbols from Mach-O dynamic libraries and frameworks before signing
           find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
           find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
           strip -x build/AegisubQT.app/Contents/MacOS/AegisubQT 2>/dev/null || true
+
+          # Remove QML profiling/debugging dylibs not needed in production releases
+          rm -rf build/AegisubQT.app/Contents/PlugIns/qmltooling 2>/dev/null || true
+
+          # Remove unused alternative mobile/desktop QML styles (AegisubQT uses native/custom style)
+          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Controls/{Material,Universal,Imagine,FluentWinUI3} 2>/dev/null || true
+          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/VirtualKeyboard 2>/dev/null || true
+          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick3D 2>/dev/null || true
+          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Timeline 2>/dev/null || true
+
+          # Remove redundant developer metadata and intermediate build files
+          find build/AegisubQT.app -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -delete 2>/dev/null || true
+          find build/AegisubQT.app/Contents/Frameworks -type d -name "Headers" -exec rm -rf {} + 2>/dev/null || true
+
+          # Clean up any non-binary resource directories from Contents/MacOS that violate bundle layout
+          rm -rf build/AegisubQT.app/Contents/MacOS/{assets,automation,qml,locale} 2>/dev/null || true
 
           if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
             find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
@@ -220,8 +247,6 @@ jobs:
           if [ -d build/AegisubQT.app/Contents/PlugIns ]; then
             find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
           fi
-          # Clean up any non-binary resource directories from Contents/MacOS that violate bundle layout
-          rm -rf build/AegisubQT.app/Contents/MacOS/{assets,automation,qml,locale} 2>/dev/null || true
 
           echo "Signing app bundle..."
           if ! codesign_out=$(codesign -vvv --force --timestamp=none --sign - --entitlements packages/osx/aegisub.entitlements build/AegisubQT.app 2>&1); then
