@@ -204,7 +204,11 @@ jobs:
         run: |
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
           xattr -cr build/AegisubQT.app
-          chmod 755 build/AegisubQT.app/Contents/MacOS/AegisubQT
+          # Strip non-global symbols from Mach-O dynamic libraries and frameworks before signing
+          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
+          strip -x build/AegisubQT.app/Contents/MacOS/AegisubQT 2>/dev/null || true
+
           if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
             find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
             for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do

@@ -148,7 +148,11 @@ jobs:
           fi
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
           xattr -cr build/AegisubQT.app
-          chmod 755 build/AegisubQT.app/Contents/MacOS/AegisubQT
+          # Strip non-global symbols from Mach-O dynamic libraries and frameworks before signing
+          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
+          strip -x build/AegisubQT.app/Contents/MacOS/AegisubQT 2>/dev/null || true
+
           if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
             find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
             for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
@@ -177,12 +181,19 @@ jobs:
           fi
           echo "$verify_out"
 
+          echo "Creating compressed DMG disk image..."
+          mkdir -p dmg_staging
+          ditto "build/AegisubQT.app" "dmg_staging/AegisubQT.app"
+          ln -s /Applications dmg_staging/Applications
+          hdiutil create -volname "AegisubQT" -srcfolder dmg_staging -ov -format UDZO build/AegisubQT-macos-arm64.dmg
+          rm -rf dmg_staging
+
       - name: Upload artifact (macOS)
         if: runner.os == 'macOS'
         uses: actions/upload-artifact@v4
         with:
           name: AegisubQT-macos-arm64
-          path: build/AegisubQT.app
+          path: build/AegisubQT-macos-arm64.dmg
           if-no-files-found: error
 
       - name: Upload artifact (Linux)
