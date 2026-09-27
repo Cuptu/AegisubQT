@@ -54,23 +54,32 @@ jobs:
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="${{ env.Qt6_DIR }}"
 
-      - name: Build
-        id: build
+      - name: Build (Windows)
+        if: runner.os == 'Windows'
+        run: cmake --build build --parallel
+
+      - name: Build (Unix)
+        if: runner.os != 'Windows'
         run: |
           set -o pipefail
-          cmake --build build --parallel 2>&1 | tee build.log
-        shell: bash
+          cmake --build build --parallel 2>&1 | tee build.log || {
+            echo "::error::--- BUILD FAILURE LOG (${{ matrix.os }}) ---"
+            grep -i -E "error:|fatal:|failed:|undefined symbol" build.log | head -n 30 | while IFS= read -r l; do
+              echo "::error::[error] $l"
+            done
+            tail -n 30 build.log | while IFS= read -r l; do
+              echo "::error::[tail] $l"
+            done
+            exit 1
+          }
 
-      - name: Report build failure log
-        if: failure() && steps.build.conclusion == 'failure'
-        run: |
-          echo "### Build Failure (${{ matrix.os }})" >> $GITHUB_STEP_SUMMARY
-          echo '```text' >> $GITHUB_STEP_SUMMARY
-          if [ -f build.log ]; then
-            tail -n 150 build.log >> $GITHUB_STEP_SUMMARY
-          fi
-          echo '```' >> $GITHUB_STEP_SUMMARY
-        shell: bash
+      - name: Upload build log on failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-log-${{ matrix.os }}
+          path: build.log
+          if-no-files-found: ignore
 
       # Headless smoke test: the app must stay alive (timeout exit code 124)
       # after loading QML; a startup failure exits non-zero before the timeout.
