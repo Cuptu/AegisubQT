@@ -29,6 +29,7 @@
 #include <QClipboard>
 #include <QMimeData>
 #include <QFontDatabase>
+#include <QKeySequence>
 #include <QUrl>
 #include <QtTest/QTest>
 #include <QtTest/QSignalSpy>
@@ -150,9 +151,10 @@ int main(int argc, char **argv) {
 #ifdef Q_OS_WIN
     // The offscreen plugin does not enumerate Windows system fonts. Supply the
     // fonts that the production Windows platform plugin normally discovers.
+    // Use Arial and Times here so the chooser test also runs without Segoe UI.
     const auto fontDirectory = qEnvironmentVariable("WINDIR") + "/Fonts/";
-    QFontDatabase::addApplicationFont(fontDirectory + "segoeui.ttf");
     QFontDatabase::addApplicationFont(fontDirectory + "arial.ttf");
+    QFontDatabase::addApplicationFont(fontDirectory + "times.ttf");
 #endif
     const QString root = QStringLiteral(AUTOMATION_SOURCE_DIR);
     const QStringList includes{root + "/include"};
@@ -1336,11 +1338,20 @@ end)
         auto *underline = fontControl("underlineEffect");
         CHECK(familyList && sizeInput && underline);
         auto *fontWindow = familyList->window();
+        CHECK(familyList->property("count").toInt() > 1);
         familyList->forceActiveFocus();
+        QTest::keyClick(fontWindow, Qt::Key_Home);
+        CHECK(familyList->property("currentIndex").toInt() == 0);
         QTest::keyClick(fontWindow, Qt::Key_Down);
-        CHECK(fontDialog->property("selectedFont").value<QFont>().family() == "Segoe UI");
+        CHECK(familyList->property("currentIndex").toInt() == 1);
+        auto *familyDelegate = familyList->property("currentItem").value<QQuickItem *>();
+        CHECK(familyDelegate);
+        const auto chosenFamily = familyDelegate->property("text").toString();
+        printf("Font chooser keyboard selected installed family: %s\n", qPrintable(chosenFamily));
+        CHECK(!chosenFamily.isEmpty() && QFontDatabase::families().contains(chosenFamily));
+        CHECK(fontDialog->property("selectedFont").value<QFont>().family() == chosenFamily);
         sizeInput->forceActiveFocus();
-        QTest::keyClick(fontWindow, Qt::Key_A, Qt::ControlModifier);
+        QTest::keySequence(fontWindow, QKeySequence(QKeySequence::SelectAll));
         QTest::keyClick(fontWindow, Qt::Key_3);
         QTest::keyClick(fontWindow, Qt::Key_2);
         QTest::mouseClick(fontWindow, Qt::LeftButton, Qt::NoModifier,
@@ -1359,7 +1370,7 @@ end)
         QTest::mouseClick(fontWindow, Qt::LeftButton, Qt::NoModifier,
             okButton->mapToScene(QPointF(okButton->width()/2, okButton->height()/2)).toPoint());
         CHECK(!fontDialog->property("visible").toBool());
-        CHECK(formatModel.get(0).value("text") == "{\\fnSegoe UI\\fs32\\u1}word tail");
+        CHECK(formatModel.get(0).value("text") == QStringLiteral("{\\fn%1\\fs32\\u1}word tail").arg(chosenFamily));
         CHECK(area->property("text") == formatModel.get(0).value("text"));
         CHECK(QMetaObject::invokeMethod(project.get(), "undo"));
         CHECK(formatModel.get(0).value("text") == tagged && !formatModel.canUndo());
@@ -1891,7 +1902,7 @@ end)
             styleWindow->requestActivate();
             field->forceActiveFocus();
             if (!field->hasActiveFocus()) return false;
-            QTest::keyClick(styleWindow, Qt::Key_A, Qt::ControlModifier);
+            QTest::keySequence(styleWindow, QKeySequence(QKeySequence::SelectAll));
             QTest::keyClick(styleWindow, Qt::Key_Backspace);
             for (char c : name) QTest::keyClick(styleWindow, c);
             return true;
@@ -1983,7 +1994,7 @@ end)
             if (!item || !item->isEnabled() || !item->isVisible()) return false;
             item->forceActiveFocus();
             if (!item->hasActiveFocus()) return false;
-            QTest::keyClick(resampleWindow, Qt::Key_A, Qt::ControlModifier);
+            QTest::keySequence(resampleWindow, QKeySequence(QKeySequence::SelectAll));
             QTest::keyClick(resampleWindow, Qt::Key_Backspace);
             for (char c : text) QTest::keyClick(resampleWindow, c);
             return true;
@@ -2078,7 +2089,7 @@ end)
         if (!item) return false;
         item->forceActiveFocus();
         if (!item->hasActiveFocus()) return false;
-        QTest::keyClick(window, Qt::Key_A, Qt::ControlModifier);
+        QTest::keySequence(window, QKeySequence(QKeySequence::SelectAll));
         for (char character : text) {
             if (character == '\n') QTest::keyClick(window, Qt::Key_Return);
             else QTest::keyClick(window, character);

@@ -13,6 +13,12 @@ public:
     Q_INVOKABLE int timeAtFrameMs(int frame, int type) const {
         return fps.TimeAtFrame(frame, type == 1 ? agi::vfr::START : agi::vfr::END);
     }
+    Q_INVOKABLE void parseAndSetActiveSubtitle(const QString &start, const QString &end, const QString &text) {
+        activeStart = start;
+        activeEnd = end;
+        activeText = text;
+    }
+    QString activeStart, activeEnd, activeText;
     void close() { loaded = false; emit timecodesChanged(); }
 signals:
     void timecodesChanged();
