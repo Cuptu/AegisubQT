@@ -436,7 +436,9 @@ for _, fn in ipairs(invalid) do assert(not pcall(fn), 'invalid registration acce
     CHECK(controls[2].toMap().value("value").typeId() == QMetaType::Bool);
     CHECK(source.getLines().front().text == "Original" && !source.isModified());
     for (int i = 0; i < 100; ++i) {
-        CHECK(script.runFilter(first.id, lines, 1920, 1080, settings, error));
+        const bool ran = script.runFilter(first.id, lines, 1920, 1080, settings, error);
+        if (!ran) fprintf(stderr, "Export filter callback failed: %s\n", qPrintable(error));
+        CHECK(ran);
         CHECK(lines.front().text == binaryText);
         CHECK(!script.runFilter(script.filters()[1].id, lines, 1920, 1080, {}, error));
         CHECK(error.contains("intentional export failure") && lines.front().text == binaryText);

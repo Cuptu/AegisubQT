@@ -20,6 +20,25 @@ if(NOT ICU_FOUND AND MSVC AND CMAKE_SIZEOF_VOID_P EQUAL 8
         SOURCE_SUBDIR cmake-unused)
     FetchContent_MakeAvailable(aegisub_icu)
     set(ICU_ROOT "${aegisub_icu_SOURCE_DIR}")
+    # A failed FindICU can still cache individual Windows SDK libraries. They
+    # must not be combined with the downloaded ICU headers/data library.
+    set(ICU_INCLUDE_DIR "${ICU_ROOT}/include" CACHE PATH "ICU headers" FORCE)
+    foreach(_component data i18n uc)
+        string(TOUPPER "${_component}" _upper_component)
+        if(_component STREQUAL "data")
+            set(_library_name icudt)
+        elseif(_component STREQUAL "i18n")
+            set(_library_name icuin)
+        else()
+            set(_library_name icuuc)
+        endif()
+        foreach(_suffix "" _RELEASE _DEBUG)
+            unset(ICU_${_upper_component}_LIBRARY${_suffix} CACHE)
+            unset(ICU_${_upper_component}_LIBRARY${_suffix})
+        endforeach()
+        find_library(ICU_${_upper_component}_LIBRARY_RELEASE NAMES ${_library_name}
+            PATHS "${ICU_ROOT}/lib64" NO_DEFAULT_PATH REQUIRED)
+    endforeach()
 endif()
 find_package(ICU REQUIRED COMPONENTS data i18n uc)
 

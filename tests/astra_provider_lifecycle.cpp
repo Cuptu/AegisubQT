@@ -13,8 +13,19 @@
 #include <iostream>
 #include <stdexcept>
 #include <thread>
+#include <utility>
 
 namespace {
+// Apple libc++ on the macos-14 runner lacks jthread. These helpers do not use
+// stop tokens; retain automatic joining with the portable C++11 thread API.
+class JoiningThread {
+    std::thread thread;
+public:
+    template<class Function> explicit JoiningThread(Function &&function)
+        : thread(std::forward<Function>(function)) {}
+    ~JoiningThread() { if (thread.joinable()) thread.join(); }
+    void join() { thread.join(); }
+};
 void require(bool condition, const char *message) {
     if (!condition) throw std::runtime_error(message);
 }
@@ -93,7 +104,7 @@ int main(int argc, char **argv) {
             pool->start([&] { entered.set_value(); releaseFuture.wait(); });
             entered.get_future().wait();
             provider.requestFrameAsync(1, 1);
-            std::jthread unblock([&] {
+            JoiningThread unblock([&] {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
                 release.set_value();
             });
@@ -110,7 +121,7 @@ int main(int argc, char **argv) {
                 control.arm();
                 provider.requestFrameAsync(1, 1);
                 require(control.waitEntered(2000), "native decode did not start");
-                std::jthread unblock([&] {
+                JoiningThread unblock([&] {
                     std::this_thread::sleep_for(std::chrono::milliseconds(100));
                     control.release();
                 });
@@ -164,7 +175,7 @@ int main(int argc, char **argv) {
                 require(control.waitEntered(2000), "native operation did not enter gate");
                 std::promise<void> finished;
                 auto ready = finished.get_future();
-                std::jthread watchdog([&] {
+                JoiningThread watchdog([&] {
                     if (ready.wait_for(std::chrono::seconds(1)) == std::future_status::timeout) control.release();
                 });
                 provider.close();
@@ -194,7 +205,7 @@ int main(int argc, char **argv) {
             control.armClose();
             std::promise<void> finished;
             auto ready = finished.get_future();
-            std::jthread watchdog([&] {
+            JoiningThread watchdog([&] {
                 if (ready.wait_for(std::chrono::seconds(1)) == std::future_status::timeout) control.release();
             });
             provider.close();
@@ -217,7 +228,7 @@ int main(int argc, char **argv) {
                 require(control.waitEntered(2000), "doomed native operation did not enter gate");
                 std::promise<void> finished;
                 auto ready = finished.get_future();
-                std::jthread watchdog([&] {
+                JoiningThread watchdog([&] {
                     if (ready.wait_for(std::chrono::seconds(1)) == std::future_status::timeout) control.release();
                 });
                 doomed.reset();
