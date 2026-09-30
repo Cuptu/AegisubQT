@@ -29,4 +29,23 @@ include(BundleUtilities)
 set(dependency_dirs "${BUNDLE}/Contents/Frameworks" "${BUNDLE}/Contents/MacOS")
 list(APPEND dependency_dirs ${MEDIA_LIBRARY_DIRS})
 fixup_bundle("${BUNDLE}" "${native}" "${dependency_dirs}")
-message(STATUS "Native media dependency closure deployed and verified; re-sign the bundle after all fixups")
+# install_name_tool invalidates existing signatures. On Apple Silicon the
+# deployed FFmpeg/native-load smoke test cannot run until its dependency closure
+# is signed again. Final stripping/thinning still requires a later bundle sign.
+file(GLOB_RECURSE framework_files LIST_DIRECTORIES false "${BUNDLE}/Contents/Frameworks/*")
+list(APPEND framework_files "${BUNDLE}/Contents/MacOS/ffmpeg")
+foreach(binary IN LISTS framework_files)
+    execute_process(COMMAND /usr/bin/file -b "${binary}"
+        RESULT_VARIABLE file_result OUTPUT_VARIABLE file_type ERROR_VARIABLE file_error)
+    if(NOT file_result EQUAL 0)
+        message(FATAL_ERROR "Cannot inspect deployed file ${binary}: ${file_error}")
+    endif()
+    if(file_type MATCHES "Mach-O")
+        execute_process(COMMAND /usr/bin/codesign --force --timestamp=none --sign - "${binary}"
+            RESULT_VARIABLE sign_result OUTPUT_VARIABLE sign_output ERROR_VARIABLE sign_error)
+        if(NOT sign_result EQUAL 0)
+            message(FATAL_ERROR "Cannot sign deployed Mach-O ${binary}: ${sign_output}${sign_error}")
+        endif()
+    endif()
+endforeach()
+message(STATUS "Native media dependency closure deployed, verified and signed for execution; re-sign the bundle after final stripping/thinning")
