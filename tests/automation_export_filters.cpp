@@ -151,10 +151,10 @@ int main(int argc, char **argv) {
 #ifdef Q_OS_WIN
     // The offscreen plugin does not enumerate Windows system fonts. Supply the
     // fonts that the production Windows platform plugin normally discovers.
-    // Use Arial and Times here so the chooser test also runs without Segoe UI.
+    // Include a bold family to exercise the font chooser's inherited style flags.
     const auto fontDirectory = qEnvironmentVariable("WINDIR") + "/Fonts/";
     QFontDatabase::addApplicationFont(fontDirectory + "arial.ttf");
-    QFontDatabase::addApplicationFont(fontDirectory + "times.ttf");
+    QFontDatabase::addApplicationFont(fontDirectory + "timesbd.ttf");
 #endif
     const QString root = QStringLiteral(AUTOMATION_SOURCE_DIR);
     const QStringList includes{root + "/include"};
@@ -1376,7 +1376,16 @@ end)
         QTest::mouseClick(fontWindow, Qt::LeftButton, Qt::NoModifier,
             okButton->mapToScene(QPointF(okButton->width()/2, okButton->height()/2)).toPoint());
         CHECK(!fontDialog->property("visible").toBool());
-        CHECK(formatModel.get(0).value("text") == QStringLiteral("{\\fn%1\\fs32\\u1}word tail").arg(chosenFamily));
+        // Installed families can select a bold or italic face by default (for
+        // example Arial Black on macOS). Preserve those chosen font properties.
+        QString expectedTags = QStringLiteral("\\fn%1\\fs32").arg(chosenFamily);
+        if (font.bold()) expectedTags += QStringLiteral("\\b1");
+        if (font.italic()) expectedTags += QStringLiteral("\\i1");
+        expectedTags += QStringLiteral("\\u1");
+        if (font.strikeOut()) expectedTags += QStringLiteral("\\s1");
+        const auto expectedText = QStringLiteral("{%1}word tail").arg(expectedTags);
+        printf("Font chooser saved ASS: %s\n", qPrintable(formatModel.get(0).value("text").toString()));
+        CHECK(formatModel.get(0).value("text") == expectedText);
         CHECK(area->property("text") == formatModel.get(0).value("text"));
         CHECK(QMetaObject::invokeMethod(project.get(), "undo"));
         CHECK(formatModel.get(0).value("text") == tagged && !formatModel.canUndo());
