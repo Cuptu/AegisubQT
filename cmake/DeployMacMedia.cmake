@@ -23,5 +23,10 @@ endif()
 # the application's link graph. This copies recursive third-party dependencies,
 # repairs Mach-O install names, and fails if verify_app finds external deps.
 include(BundleUtilities)
-fixup_bundle("${BUNDLE}" "${native}" "${MEDIA_LIBRARY_DIRS}")
+# macdeployqt has already copied Qt frameworks here. BundleUtilities does not
+# expand every @loader_path entry in dependent libraries' LC_RPATH commands,
+# so explicitly resolve @rpath frameworks against the deployed bundle first.
+set(dependency_dirs "${BUNDLE}/Contents/Frameworks" "${BUNDLE}/Contents/MacOS")
+list(APPEND dependency_dirs ${MEDIA_LIBRARY_DIRS})
+fixup_bundle("${BUNDLE}" "${native}" "${dependency_dirs}")
 message(STATUS "Native media dependency closure deployed and verified; re-sign the bundle after all fixups")
