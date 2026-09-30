@@ -11,24 +11,34 @@ Control {
 
     property int from: 0
     property int to: 100000
-    property int value: 0
-    property int stepSize: 1
+    property real value: 0
+    property real stepSize: 1
+    property int decimals: 0
     property string suffix: ""
     property alias readOnly: input.readOnly
 
-    signal valueModified(int val)
+    signal valueModified(real val)
+
+    function formatValue(number) {
+        return Number(number.toFixed(decimals)).toString();
+    }
+
+    function normalizeValue(number) {
+        var factor = Math.pow(10, decimals);
+        return Math.round(Math.max(from, Math.min(to, number)) * factor) / factor;
+    }
 
     implicitHeight: 21
     implicitWidth: 80
 
     onValueChanged: {
         if (!input.activeFocus) {
-            input.text = spinRoot.value.toString() + (spinRoot.suffix ? " " + spinRoot.suffix : "");
+            input.text = spinRoot.formatValue(spinRoot.value) + (spinRoot.suffix ? " " + spinRoot.suffix : "");
         }
     }
 
     Component.onCompleted: {
-        input.text = spinRoot.value.toString() + (spinRoot.suffix ? " " + spinRoot.suffix : "");
+        input.text = spinRoot.formatValue(spinRoot.value) + (spinRoot.suffix ? " " + spinRoot.suffix : "");
     }
 
     background: Rectangle {
@@ -63,12 +73,11 @@ Control {
             selectedTextColor: "#ffffff"
 
             onEditingFinished: {
-                var num = parseInt(text.replace(/[^0-9\-]/g, ""));
+                var num = parseFloat(text.replace(",", "."));
                 if (isNaN(num)) num = spinRoot.from;
-                num = Math.max(spinRoot.from, Math.min(spinRoot.to, num));
-                spinRoot.value = num;
-                spinRoot.valueModified(num);
-                text = num.toString() + (spinRoot.suffix ? " " + spinRoot.suffix : "");
+                num = spinRoot.normalizeValue(num);
+                spinRoot.applyUserValue(num);
+                text = spinRoot.formatValue(num) + (spinRoot.suffix ? " " + spinRoot.suffix : "");
             }
 
             Keys.onUpPressed: spinRoot.stepUp()
@@ -183,25 +192,21 @@ Control {
         }
     }
 
+    function applyUserValue(number) {
+        var next = normalizeValue(number);
+        // Let the owner update its bound value before falling back to local
+        // state, so a user step does not discard a live value binding.
+        valueModified(next);
+        if (value !== next) value = next;
+    }
+
     function stepUp() {
-        if (value + stepSize <= to) {
-            value += stepSize;
-            valueModified(value);
-        } else {
-            value = to;
-            valueModified(value);
-        }
-        input.text = value.toString() + (suffix ? " " + suffix : "");
+        applyUserValue(value + stepSize);
+        input.text = formatValue(value) + (suffix ? " " + suffix : "");
     }
 
     function stepDown() {
-        if (value - stepSize >= from) {
-            value -= stepSize;
-            valueModified(value);
-        } else {
-            value = from;
-            valueModified(value);
-        }
-        input.text = value.toString() + (suffix ? " " + suffix : "");
+        applyUserValue(value - stepSize);
+        input.text = formatValue(value) + (suffix ? " " + suffix : "");
     }
 }

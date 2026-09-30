@@ -26,13 +26,25 @@ Save::Save(agi::fs::path const& file, bool binary)
 }
 
 Save::~Save() {
-    fp.reset();
+    // Commit is explicit so a failed flush or rename reaches the caller.
+}
+
+void Save::Commit() {
+    if (committed) return;
+    if (fp) {
+        fp->flush();
+        if (!fp->good()) throw IOFatal("Failed flushing " + tmp_name.string());
+        fp->close();
+        if (fp->fail()) throw IOFatal("Failed closing " + tmp_name.string());
+        fp.reset();
+    }
     for (int i = 0; i < 10; ++i) {
         try {
             fs::Rename(tmp_name, file_name);
+            committed = true;
             return;
         } catch (...) {
-            if (i == 9) return;
+            if (i == 9) throw;
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     }

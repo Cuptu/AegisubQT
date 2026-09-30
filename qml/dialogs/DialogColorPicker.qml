@@ -13,7 +13,7 @@ NativeDialogFrame {
     isModal: true
     title: qsTr("Select Color")
     implicitWidth: 540
-    implicitHeight: 380
+    implicitHeight: 400
 
     property color currentColor: "#ff5500"
     property color originalColor: "#ffffff"
@@ -21,12 +21,61 @@ NativeDialogFrame {
     property int redVal: 255
     property int greenVal: 85
     property int blueVal: 0
+    // ASS transparency: 0 is opaque, 255 is transparent.
+    property int alphaVal: 0
 
     property real hueVal: 20
     property real satVal: 1.0
     property real valVal: 1.0
 
     property string targetProp: ""
+    property bool pickingScreen: false
+    signal dropperError(string message)
+
+    function startScreenPick() {
+        if (typeof aegisubCore === "undefined" || !aegisubCore) {
+            dropperError(qsTr("Screen colour picking is unavailable."));
+            return;
+        }
+        pickingScreen = true;
+        visible = false;
+        pickDelay.start();
+        dropperActivated();
+    }
+    function finishScreenPick(col) {
+        if (!pickingScreen) return;
+        pickDelay.stop();
+        pickingScreen = false;
+        if (col)
+            currentColor = Qt.rgba(col.r, col.g, col.b, currentColor.a);
+        visible = true;
+        requestActivate();
+        raise();
+    }
+    Timer {
+        id: pickDelay
+        interval: 80
+        onTriggered: aegisubCore.beginScreenColorPick()
+    }
+    Connections {
+        target: typeof aegisubCore !== "undefined" ? aegisubCore : null
+        function onScreenColorPicked(col) { dialog.finishScreenPick(col); }
+        function onScreenColorPickCancelled() { dialog.finishScreenPick(null); }
+        function onScreenColorPickFailed(message) {
+            if (!dialog.pickingScreen) return;
+            dialog.finishScreenPick(null);
+            dialog.dropperError(message);
+        }
+    }
+    Component.onDestruction: {
+        if (pickingScreen && typeof aegisubCore !== "undefined" && aegisubCore)
+            aegisubCore.cancelScreenColorPick();
+    }
+    readonly property string assBgrCode: "&H" + byteHex(Math.round(currentColor.b * 255))
+        + byteHex(Math.round(currentColor.g * 255)) + byteHex(Math.round(currentColor.r * 255)) + "&"
+    readonly property string assAbgrCode: "&H" + byteHex(Math.round((1 - currentColor.a) * 255))
+        + byteHex(Math.round(currentColor.b * 255)) + byteHex(Math.round(currentColor.g * 255))
+        + byteHex(Math.round(currentColor.r * 255))
 
     // Emitted when a color is confirmed
     signal colorSelected(color col)
@@ -35,15 +84,45 @@ NativeDialogFrame {
     // Emitted when user activates screen/video eyedropper
     signal dropperActivated()
 
-    function updateFromRgb() {
-        currentColor = Qt.rgba(redVal / 255.0, greenVal / 255.0, blueVal / 255.0, 1.0);
-    }
+    function byteHex(value) { return ("00" + value.toString(16).toUpperCase()).slice(-2); }
 
-    function updateFromHsv() {
-        currentColor = Qt.hsva(hueVal / 360.0, satVal, valVal, 1.0);
+    function syncChannels() {
         redVal = Math.round(currentColor.r * 255);
         greenVal = Math.round(currentColor.g * 255);
         blueVal = Math.round(currentColor.b * 255);
+        alphaVal = Math.round((1 - currentColor.a) * 255);
+        var maximum = Math.max(currentColor.r, currentColor.g, currentColor.b);
+        var minimum = Math.min(currentColor.r, currentColor.g, currentColor.b);
+        var delta = maximum - minimum;
+        valVal = maximum;
+        satVal = maximum > 0 ? delta / maximum : 0;
+        if (delta > 0) {
+            var hue;
+            if (maximum === currentColor.r) hue = (currentColor.g - currentColor.b) / delta;
+            else if (maximum === currentColor.g) hue = 2 + (currentColor.b - currentColor.r) / delta;
+            else hue = 4 + (currentColor.r - currentColor.g) / delta;
+            hueVal = ((hue * 60) + 360) % 360;
+        }
+    }
+
+    onCurrentColorChanged: syncChannels()
+    onAboutToShow: {
+        originalColor = currentColor;
+        syncChannels();
+    }
+
+    function acceptColor() {
+        colorSelected(currentColor);
+        colorAccepted(currentColor, assBgrCode, assAbgrCode);
+        close();
+    }
+
+    function updateFromRgb() {
+        currentColor = Qt.rgba(redVal / 255.0, greenVal / 255.0, blueVal / 255.0, 1.0 - alphaVal / 255.0);
+    }
+
+    function updateFromHsv() {
+        currentColor = Qt.hsva(hueVal / 360.0, satVal, valVal, 1.0 - alphaVal / 255.0);
     }
 
     ColumnLayout {
@@ -147,8 +226,9 @@ NativeDialogFrame {
                 }
 
                 NativeButton {
+                    objectName: "color-picker-dropper"
                     text: qsTr("Dropper"); Layout.fillWidth: true
-                    onClicked: dialog.dropperActivated()
+                    onClicked: dialog.startScreenPick()
                 }
 
                 Item { Layout.fillHeight: true }
@@ -162,7 +242,7 @@ NativeDialogFrame {
                 NativeGroupBox {
                     title: "RGB"
                     Layout.fillWidth: true
-                    implicitHeight: 95
+                    implicitHeight: 125
 
                     GridLayout {
                         anchors.fill: parent
@@ -172,6 +252,7 @@ NativeDialogFrame {
 
                         Text { text: qsTr("Red (R):"); font.pixelSize: 11 }
                         NativeSpinBox {
+                            objectName: "color-picker-red"
                             Layout.fillWidth: true
                             from: 0; to: 255; value: dialog.redVal
                             onValueModified: (v) => { dialog.redVal = v; dialog.updateFromRgb(); }
@@ -179,6 +260,7 @@ NativeDialogFrame {
 
                         Text { text: qsTr("Green (G):"); font.pixelSize: 11 }
                         NativeSpinBox {
+                            objectName: "color-picker-green"
                             Layout.fillWidth: true
                             from: 0; to: 255; value: dialog.greenVal
                             onValueModified: (v) => { dialog.greenVal = v; dialog.updateFromRgb(); }
@@ -186,9 +268,20 @@ NativeDialogFrame {
 
                         Text { text: qsTr("Blue (B):"); font.pixelSize: 11 }
                         NativeSpinBox {
+                            objectName: "color-picker-blue"
                             Layout.fillWidth: true
                             from: 0; to: 255; value: dialog.blueVal
                             onValueModified: (v) => { dialog.blueVal = v; dialog.updateFromRgb(); }
+                        }
+
+                        Text { text: qsTr("Transparency:"); font.pixelSize: 11 }
+                        NativeSpinBox {
+                            objectName: "color-picker-alpha"
+                            Layout.fillWidth: true
+                            from: 0; to: 255; value: dialog.alphaVal
+                            onValueModified: (v) => { dialog.alphaVal = v; dialog.updateFromRgb(); }
+                            ToolTip.text: qsTr("ASS transparency: 0 = opaque, 255 = transparent")
+                            ToolTip.visible: hovered
                         }
                     }
                 }
@@ -201,7 +294,8 @@ NativeDialogFrame {
                     RowLayout {
                         anchors.fill: parent
                         NativeTextBox {
-                            text: "&H" + ("00" + dialog.blueVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.greenVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.redVal.toString(16).toUpperCase()).slice(-2) + "&"
+                            objectName: "color-picker-ass"
+                            text: dialog.assAbgrCode
                             readOnly: true
                             Layout.fillWidth: true
                         }
@@ -218,15 +312,10 @@ NativeDialogFrame {
             Item { Layout.fillWidth: true }
 
             NativeButton {
+                objectName: "color-picker-ok"
                 text: qsTr("OK"); isDefault: true
                 Layout.preferredWidth: 75
-                onClicked: {
-                    var hexBgr = "&H" + ("00" + dialog.blueVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.greenVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.redVal.toString(16).toUpperCase()).slice(-2) + "&";
-                    var hexAbgr = "&H00" + ("00" + dialog.blueVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.greenVal.toString(16).toUpperCase()).slice(-2) + ("00" + dialog.redVal.toString(16).toUpperCase()).slice(-2);
-                    dialog.colorSelected(dialog.currentColor);
-                    dialog.colorAccepted(dialog.currentColor, hexBgr, hexAbgr);
-                    dialog.close();
-                }
+                onClicked: dialog.acceptColor()
             }
 
             NativeButton {

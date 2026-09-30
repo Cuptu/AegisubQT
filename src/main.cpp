@@ -47,6 +47,7 @@
 #include "SpectrogramItem.h"
 #include "AutomationManager.h"
 #include "AegisubCoreBridge.h"
+#include "AppPaths.h"
 #include "RecentFilesManager.h"
 #include "LanguageManager.h"
 #include "model/SubtitleModel.h"
@@ -65,61 +66,7 @@
 #include <QStringListModel>
 #include <climits>
 
-// Thread-safe in-memory log ring buffer powering the in-app Log Window
-// (upstream Help > Log Window). Qt log messages are mirrored here in addition
-// to stderr so users can inspect runtime diagnostics without a console.
-class AppLogBuffer : public QObject {
-    Q_OBJECT
-    Q_PROPERTY(QStringList lines READ lines NOTIFY linesChanged)
-public:
-    explicit AppLogBuffer(QObject *parent = nullptr) : QObject(parent) {}
-
-    void append(QtMsgType type, const QString &msg) {
-        static constexpr int kMaxLines = 1000;
-        const QString stamp = QDateTime::currentDateTime().toString(QStringLiteral("hh:mm:ss.zzz"));
-        const QString prefix = (type == QtWarningMsg) ? QStringLiteral("W")
-                               : (type == QtCriticalMsg) ? QStringLiteral("C")
-                               : (type == QtFatalMsg) ? QStringLiteral("F")
-                               : QStringLiteral("I");
-        const QString line = QStringLiteral("[%1][%2] %3").arg(stamp, prefix, msg);
-        {
-            QMutexLocker lock(&m_mutex);
-            m_lines.append(line);
-            while (m_lines.size() > kMaxLines) m_lines.removeFirst();
-            const QStringList snapshot = m_lines;
-            QMetaObject::invokeMethod(this, [this, snapshot]() {
-                m_model.setStringList(snapshot);
-                Q_EMIT linesChanged();
-            }, Qt::QueuedConnection);
-        }
-    }
-
-    QStringList lines() const {
-        QMutexLocker lock(&m_mutex);
-        return m_lines;
-    }
-
-    Q_INVOKABLE void clear() {
-        {
-            QMutexLocker lock(&m_mutex);
-            m_lines.clear();
-        }
-        QMetaObject::invokeMethod(this, [this]() {
-            m_model.setStringList({});
-            Q_EMIT linesChanged();
-        }, Qt::QueuedConnection);
-    }
-
-    QAbstractListModel *model() { return &m_model; }
-
-signals:
-    void linesChanged();
-
-private:
-    mutable QMutex m_mutex;
-    QStringList m_lines;
-    QStringListModel m_model;
-};
+#include "AppLogBuffer.h"
 
 static AppLogBuffer *g_appLog = nullptr;
 
@@ -299,8 +246,8 @@ int main(int argc, char *argv[])
     // settings in an ini file beside the app instead of the platform store.
     // All QSettings call sites use the explicit IniFormat, which honours the
     // path set here (matching upstream Aegisub's file-based config).
-    if (QFileInfo::exists(app.applicationDirPath() + "/portable.txt")) {
-        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, app.applicationDirPath());
+    if (AppPaths::portable()) {
+        QSettings::setPath(QSettings::IniFormat, QSettings::UserScope, AppPaths::configDirectory());
     } else {
         migrateLegacySettings();
     }
@@ -457,6 +404,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("astracore", AstraCoreBridge::instance());
     AegisubCoreBridge aegisubCoreBridge;
     engine.rootContext()->setContextProperty("aegisubCore", &aegisubCoreBridge);
+    Automation::AutomationManager::instance()->setVideoContextSources(&videoController, &videoDisplayController);
     engine.rootContext()->setContextProperty("automationManager", Automation::AutomationManager::instance());
     // Unified platform font theme for all QML views
     UiTheme uiTheme;
@@ -493,17 +441,15 @@ int main(int argc, char *argv[])
     }
 
     QStringList candidates = {
-        app.applicationDirPath() + "/../qml/Main.qml",
+        app.applicationDirPath() + "/qml/Main.qml",
         // Layout produced by `cmake --install`: exe in <prefix>/bin, QML in <prefix>/share/AegisubQT.
         app.applicationDirPath() + "/../share/AegisubQT/qml/Main.qml",
         // macOS .app bundle: resources live in Contents/Resources.
-        app.applicationDirPath() + "/../Resources/qml/Main.qml",
-        QDir::current().filePath("qml/Main.qml"),
-        app.applicationDirPath() + "/qml/Main.qml",
-        QDir::current().filePath("Main.qml"),
-        app.applicationDirPath() + "/Main.qml",
-        app.applicationDirPath() + "/../Main.qml"
+        app.applicationDirPath() + "/../Resources/qml/Main.qml"
     };
+#ifdef AEGISUB_DEVELOPMENT_QML
+    candidates.prepend(QStringLiteral(AEGISUB_DEVELOPMENT_QML) + "/Main.qml");
+#endif
 
     QString mainQml;
     for (const QString &path : candidates) {
@@ -529,7 +475,7 @@ int main(int argc, char *argv[])
     // Qt built-in QML module path: prioritize QLibraryInfo (relocatable deployment),
     // with build-time qmake query fallback for in-source developer trees.
     engine.addImportPath(QLibraryInfo::path(QLibraryInfo::QmlImportsPath));
-#ifdef QT_INSTALL_QML_PATH
+#if defined(QT_INSTALL_QML_PATH) && defined(AEGISUB_DEVELOPMENT_QML)
     engine.addImportPath(QStringLiteral(QT_INSTALL_QML_PATH));
 #endif
     qInfo() << "[Aegisub-QtQuick] Import paths:" << engine.importPathList();

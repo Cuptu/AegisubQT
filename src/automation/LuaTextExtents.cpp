@@ -28,8 +28,10 @@
 // Aegisub Project http://www.aegisub.org/
 
 #include "LuaTextExtents.h"
+#include <cmath>
+#include <limits>
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(AEGISUB_TEST_QT_TEXT_EXTENTS)
 // Prevent windows.h min/max macros from polluting identifiers in this TU.
 #define NOMINMAX
 #include <windows.h>
@@ -37,7 +39,6 @@
 #include <QFont>
 #include <QFontMetricsF>
 #include <QGuiApplication>
-#include <cmath>
 #endif
 
 namespace Automation {
@@ -45,8 +46,14 @@ namespace Automation {
 bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, double &width, double &height, double &descent, double &extlead)
 {
     width = height = descent = extlead = 0;
+    // Both backends convert the 64x size to an integer font size. Reject
+    // invalid input before conversion rather than invoking undefined behavior.
+    if (!std::isfinite(style.fontsize) || style.fontsize <= 0.0 ||
+        style.fontsize * 64.0 > std::numeric_limits<int>::max() ||
+        !std::isfinite(style.spacing) || !std::isfinite(style.scalex) ||
+        !std::isfinite(style.scaley)) return false;
 
-#ifdef _WIN32
+#if defined(_WIN32) && !defined(AEGISUB_TEST_QT_TEXT_EXTENTS)
     // Scale font size and letter spacing by 64 to preserve 26.6 fixed-point fractional
     // precision when measuring through integer GDI metrics, matching VSFilter behavior.
     double fontsize = style.fontsize * 64.0;
@@ -112,35 +119,45 @@ bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, dou
     descent = (style.scaley / 100.0) * descent / 64.0;
     extlead = (style.scaley / 100.0) * extlead / 64.0;
 #else
-    // Non-Windows POSIX fallback: use QFontMetricsF for equivalent sub-pixel text extents.
-    // Fails explicitly if no GUI application instance exists to prevent silent 0x0 metrics.
-    if (!QGuiApplication::instance()) return false;
+    // Preserve fractional ASS sizes by measuring at 64x, as the original
+    // POSIX implementation does. Qt's font engine differs from GDI; normalize
+    // its font height to the requested ASS size instead of promising identical
+    // rasterization across platforms or depending on the screen's point DPI.
+    if (!qobject_cast<QGuiApplication *>(QCoreApplication::instance())) return false;
+    const double fontsize = style.fontsize * 64.0;
+    const double spacing = style.spacing * 64.0;
 
     QFont font(style.font);
     font.setBold(style.bold);
     font.setItalic(style.italic);
     font.setUnderline(style.underline);
     font.setStrikeOut(style.strikeout);
-    font.setPixelSize(static_cast<int>(std::round(style.fontsize > 0 ? style.fontsize : 12.0)));
-    if (style.spacing != 0.0) {
-        font.setLetterSpacing(QFont::AbsoluteSpacing, style.spacing);
-    }
+    font.setPixelSize(qMax(1, static_cast<int>(fontsize)));
 
     QFontMetricsF fm(font);
-    width = fm.horizontalAdvance(text);
-    // GDI adds spacing for every character including the last; QFont letter spacing
-    // only adds spacing between characters (N - 1). Add the trailing spacing to align.
-    if (!text.isEmpty() && style.spacing != 0.0) {
-        width += style.spacing;
+    const double fontHeight = fm.height();
+    if (!std::isfinite(fontHeight) || fontHeight <= 0.0) return false;
+    const double normalization = fontsize / fontHeight;
+    if (spacing != 0.0) {
+        // The upstream spacing path measures each Unicode character separately
+        // to suppress kerning and ligatures, including spacing after the last.
+        // Iterate code points so supplementary characters are not split into
+        // two invalid surrogate glyphs by QString's UTF-16 representation.
+        for (const auto codepoint : text.toUcs4()) {
+            const char32_t character = codepoint;
+            width += fm.horizontalAdvance(QString::fromUcs4(&character, 1)) + spacing;
+        }
+    } else {
+        width = fm.horizontalAdvance(text);
     }
-    height = fm.height();
+    height = text.isEmpty() ? 0.0 : fontHeight;
     descent = fm.descent();
     extlead = fm.leading();
 
-    width = (style.scalex / 100.0) * width;
-    height = (style.scaley / 100.0) * height;
-    descent = (style.scaley / 100.0) * descent;
-    extlead = (style.scaley / 100.0) * extlead;
+    width *= (style.scalex / 100.0) * normalization / 64.0;
+    height *= (style.scaley / 100.0) * normalization / 64.0;
+    descent *= (style.scaley / 100.0) * normalization / 64.0;
+    extlead *= (style.scaley / 100.0) * normalization / 64.0;
 #endif
 
     return true;

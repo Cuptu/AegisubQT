@@ -29,12 +29,9 @@ NativeDialogFrame {
         onAccepted: {
             var path = selectedFile.toString();
             var filename = path.substring(Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1);
-            if (dialog.project && dialog.project.addAttachment) {
-                dialog.project.addAttachment(filename, "Font", "[Fonts]");
-            } else {
-                dummyModel.append({ filename: filename, sizeStr: "Font", typeStr: "[Fonts]" });
-            }
-            dialog.statusMessage(qsTr("Attached font: %1").arg(filename));
+            var ok = dialog.project && dialog.project.addAttachment(path, true);
+            dialog.statusMessage(ok ? qsTr("Attached font: %1").arg(filename)
+                                    : qsTr("Failed to attach font: %1").arg(filename));
         }
     }
 
@@ -45,12 +42,9 @@ NativeDialogFrame {
         onAccepted: {
             var path = selectedFile.toString();
             var filename = path.substring(Math.max(path.lastIndexOf("/"), path.lastIndexOf("\\")) + 1);
-            if (dialog.project && dialog.project.addAttachment) {
-                dialog.project.addAttachment(filename, "Image", "[Graphics]");
-            } else {
-                dummyModel.append({ filename: filename, sizeStr: "Image", typeStr: "[Graphics]" });
-            }
-            dialog.statusMessage(qsTr("Attached graphics: %1").arg(filename));
+            var ok = dialog.project && dialog.project.addAttachment(path, false);
+            dialog.statusMessage(ok ? qsTr("Attached graphics: %1").arg(filename)
+                                    : qsTr("Failed to attach graphics: %1").arg(filename));
         }
     }
 
@@ -61,7 +55,9 @@ NativeDialogFrame {
             if (dialog.selectedIndex >= 0 && dialog.selectedIndex < attachList.count) {
                 var item = attachList.model.get(dialog.selectedIndex);
                 var fname = item ? item.filename : "";
-                dialog.statusMessage(qsTr("Extracted attachment %1 to %2").arg(fname).arg(selectedFolder.toString()));
+                var ok = dialog.project && dialog.project.extractAttachment(dialog.selectedIndex, selectedFolder.toString());
+                dialog.statusMessage(ok ? qsTr("Extracted attachment %1 to %2").arg(fname).arg(selectedFolder.toString())
+                                        : qsTr("Failed to extract attachment: %1").arg(fname));
             }
         }
     }
@@ -172,8 +168,6 @@ NativeDialogFrame {
 
                     ListModel {
                         id: dummyModel
-                        ListElement { filename: "SourceHanSans-Medium.otf"; sizeStr: "8.4 MB"; typeStr: "[Fonts]" }
-                        ListElement { filename: "watermark_logo.png"; sizeStr: "42.1 KB"; typeStr: "[Graphics]" }
                     }
 
                     delegate: Rectangle {
@@ -283,10 +277,9 @@ NativeDialogFrame {
                 enabled: dialog.selectedIndex !== -1 && attachList.count > 0
                 onClicked: {
                     if (dialog.selectedIndex >= 0 && dialog.selectedIndex < attachList.count) {
-                        if (dialog.project && dialog.project.removeAttachment) dialog.project.removeAttachment(dialog.selectedIndex);
-                        else dummyModel.remove(dialog.selectedIndex);
-                        dialog.selectedIndex = -1;
-                        dialog.statusMessage(qsTr("Attachment removed"));
+                        var ok = dialog.project && dialog.project.removeAttachment(dialog.selectedIndex);
+                        if (ok) dialog.selectedIndex = -1;
+                        dialog.statusMessage(ok ? qsTr("Attachment removed") : qsTr("Failed to remove attachment"));
                     }
                 }
             }

@@ -49,21 +49,30 @@ NativeDialogFrame {
 
     function onOkClicked() {
         if (project) {
-            project.setScriptInfo("Title", txtTitle.text);
-            project.setScriptInfo("Original Script", txtOriginalScript.text);
-            project.setScriptInfo("Original Translation", txtTranslation.text);
-            project.setScriptInfo("Original Editing", txtEditing.text);
-            project.setScriptInfo("Original Timing", txtTiming.text);
-            project.setScriptInfo("Synch Point", txtSynchPoint.text);
-            project.setScriptInfo("Script Updated By", txtUpdatedBy.text);
-            project.setScriptInfo("Update Details", txtUpdateDetails.text);
-            project.setScriptInfo("PlayResX", parseInt(txtResX.text) || 0);
-            project.setScriptInfo("PlayResY", parseInt(txtResY.text) || 0);
-            project.setScriptInfo("LayoutResX", parseInt(txtLayoutResX.text) || 0);
-            project.setScriptInfo("LayoutResY", parseInt(txtLayoutResY.text) || 0);
-            project.setScriptInfo("WrapStyle", cmbWrapStyle.currentIndex);
-            project.setScriptInfo("ScaledBorderAndShadow", chkScaleBorder.checked ? "yes" : "no");
-            project.setScriptInfo("YCbCr Matrix", cmbMatrix.currentText);
+            var changes = [
+                ["Title", txtTitle.text],
+                ["Original Script", txtOriginalScript.text],
+                ["Original Translation", txtTranslation.text],
+                ["Original Editing", txtEditing.text],
+                ["Original Timing", txtTiming.text],
+                ["Synch Point", txtSynchPoint.text],
+                ["Script Updated By", txtUpdatedBy.text],
+                ["Update Details", txtUpdateDetails.text],
+                ["PlayResX", parseInt(txtResX.text) || 0],
+                ["PlayResY", parseInt(txtResY.text) || 0],
+                ["LayoutResX", parseInt(txtLayoutResX.text) || 0],
+                ["LayoutResY", parseInt(txtLayoutResY.text) || 0],
+                ["WrapStyle", cmbWrapStyle.currentIndex],
+                ["ScaledBorderAndShadow", chkScaleBorder.checked ? "yes" : "no"],
+                ["YCbCr Matrix", cmbMatrix.currentText]
+            ];
+            var changed = changes.some(function(entry) {
+                return JSON.stringify(project.getScriptInfo(entry[0], undefined)) !== JSON.stringify(entry[1]);
+            });
+            if (changed) {
+                project.pushUndo(qsTr("edit script properties"));
+                changes.forEach(function(entry) { project.setScriptInfo(entry[0], entry[1]); });
+            }
         }
         dialog.propertiesUpdated(txtTitle.text, txtOriginalScript.text, txtTranslation.text, parseInt(txtResX.text) || 0, parseInt(txtResY.text) || 0, cmbWrapStyle.currentIndex, cmbMatrix.currentText);
         dialog.close();

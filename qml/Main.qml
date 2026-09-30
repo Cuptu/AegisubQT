@@ -11,6 +11,7 @@ import "dialogs"
 import "project"
 import "controls"
 import "project/AssUtils.js" as AssUtils
+import "project/AudioClipSelection.js" as AudioClipSelection
 
 ApplicationWindow {
     id: root
@@ -19,6 +20,7 @@ ApplicationWindow {
     height: 640
     minimumWidth: 800
     minimumHeight: 480
+    property string openCharsetName: ""
     title: (subProject.isModified ? "* " : "") + subProject.currentFileName + " - AegisubQT " + (Qt.application.version || "4.0.2")
 
     onClosing: (close) => {
@@ -100,6 +102,7 @@ ApplicationWindow {
     property bool isForceClosing: false
     property string pendingAction: ""
     property var pendingActionData: null
+    property var pendingAudioClipRange: null
 
     // Backward-compatibility model and data property aliases
     property alias project: subProject
@@ -119,6 +122,7 @@ ApplicationWindow {
         onSaveConfirmed: root.handleSaveConfirmSave()
         onDiscardConfirmed: root.handleSaveConfirmDiscard()
         onCancelled: root.handleSaveConfirmCancel()
+        onRestoreAutosaveRequested: (path) => root.confirmSaveAndProceed("restore", path)
     }
 
     // Dialog aliases for external and test compatibility
@@ -172,8 +176,27 @@ ApplicationWindow {
         title: qsTr("Open Subtitles")
         nameFilters: ["Advanced SubStation Alpha (*.ass *.ssa)", "SubRip (*.srt)", "All Files (*.*)"]
         onAccepted: {
-            recentFiles.add("subtitles", selectedFile.toString());
-            subProject.openSubtitles(selectedFile.toString());
+            if (subProject.openSubtitles(selectedFile.toString(), root.openCharsetName))
+                recentFiles.add("subtitles", selectedFile.toString());
+            root.openCharsetName = "";
+        }
+        onRejected: root.openCharsetName = ""
+    }
+
+    Dialog {
+        id: charsetDialog
+        title: qsTr("Open Subtitles with Charset")
+        modal: true
+        anchors.centerIn: parent
+        standardButtons: Dialog.Ok | Dialog.Cancel
+        contentItem: ComboBox {
+            id: charsetChoice
+            implicitWidth: 240
+            model: ["UTF-8", "UTF-16LE", "UTF-16BE", "GB18030", "GBK", "Big5", "Shift-JIS", "Windows-1252", "ISO-8859-1"]
+        }
+        onAccepted: {
+            root.openCharsetName = charsetChoice.currentText;
+            fileDialogSubOpen.open();
         }
     }
 
@@ -224,6 +247,23 @@ ApplicationWindow {
     }
 
     FileDialog {
+        id: fileDialogAudioClipSave
+        objectName: "audio-clip-save-dialog"
+        title: qsTr("Save Audio Clip")
+        fileMode: FileDialog.SaveFile
+        defaultSuffix: "wav"
+        nameFilters: ["WAV audio (*.wav)"]
+        onAccepted: {
+            var range = root.pendingAudioClipRange;
+            root.pendingAudioClipRange = null;
+            if (!range || typeof audioController === "undefined" || !audioController) return;
+            var result = audioController.saveAudioClip(selectedFile, range.startMs, range.endMs);
+            root.statusMsgText = result.message;
+        }
+        onRejected: root.pendingAudioClipRange = null
+    }
+
+    FileDialog {
         id: fileDialogKeyframesOpen
         title: qsTr("Open Keyframes")
         nameFilters: ["Keyframe Files (*.txt *.keyframes *.pass)", "All Files (*.*)"]
@@ -253,9 +293,9 @@ ApplicationWindow {
         title: qsTr("Open Timecodes")
         nameFilters: ["Timecode Files (*.txt *.tc)", "All Files (*.*)"]
         onAccepted: {
-            recentFiles.add("timecodes", selectedFile.toString());
-            if (typeof videoController !== "undefined") {
-                videoController.openTimecodesFile(selectedFile.toString());
+            if (typeof videoController !== "undefined" && videoController &&
+                    videoController.openTimecodesFile(selectedFile.toString())) {
+                recentFiles.add("timecodes", selectedFile.toString());
             }
         }
     }
@@ -266,8 +306,8 @@ ApplicationWindow {
         fileMode: FileDialog.SaveFile
         nameFilters: ["Timecode Files (*.txt *.tc)", "All Files (*.*)"]
         onAccepted: {
-            if (typeof videoController !== "undefined") {
-                videoController.saveTimecodesFile(selectedFile.toString());
+            if (typeof videoController !== "undefined" && videoController &&
+                    videoController.saveTimecodesFile(selectedFile.toString())) {
                 root.statusMsgText = qsTr("Saved timecodes");
             }
         }
@@ -288,6 +328,7 @@ ApplicationWindow {
         onStatusMessage: (msg) => root.statusMsgText = msg
         onNewSubtitlesRequested: root.confirmSaveAndProceed("new")
         onOpenSubtitlesRequested: root.confirmSaveAndProceed("open")
+        onOpenSubtitlesWithCharsetRequested: root.confirmSaveAndProceed("openCharset")
         onExitRequested: root.close()
         onJumpToLineStartRequested: root.jumpToLineStart()
         onJumpToLineEndRequested: root.jumpToLineEnd()
@@ -664,10 +705,11 @@ ApplicationWindow {
         target: dialogManager.dlgColorPicker
         function onColorAccepted(col, assBgrCode, assAbgrCode) {
             var tag = "";
-            if (dialogManager.dlgColorPicker.targetProp === "primary") tag = "{\\c" + assBgrCode + "}";
-            else if (dialogManager.dlgColorPicker.targetProp === "secondary") tag = "{\\2c" + assBgrCode + "}";
-            else if (dialogManager.dlgColorPicker.targetProp === "outline") tag = "{\\3c" + assBgrCode + "}";
-            else if (dialogManager.dlgColorPicker.targetProp === "shadow") tag = "{\\4c" + assBgrCode + "}";
+            var alpha = "&H" + assAbgrCode.substring(2, 4) + "&";
+            if (dialogManager.dlgColorPicker.targetProp === "primary") tag = "{\\c" + assBgrCode + "\\1a" + alpha + "}";
+            else if (dialogManager.dlgColorPicker.targetProp === "secondary") tag = "{\\2c" + assBgrCode + "\\2a" + alpha + "}";
+            else if (dialogManager.dlgColorPicker.targetProp === "outline") tag = "{\\3c" + assBgrCode + "\\3a" + alpha + "}";
+            else if (dialogManager.dlgColorPicker.targetProp === "shadow") tag = "{\\4c" + assBgrCode + "\\4a" + alpha + "}";
             if (tag.length > 0) {
                 var curPos = subtitleEditBox.subtitleEditArea.cursorPosition;
                 var txt = subtitleEditBox.subtitleEditArea.text;
@@ -788,7 +830,12 @@ ApplicationWindow {
         } else if (action === "new") {
             subProject.fileNew();
         } else if (action === "open") {
+            root.openCharsetName = "";
             fileDialogSubOpen.open();
+        } else if (action === "openCharset") {
+            charsetDialog.open();
+        } else if (action === "restore") {
+            if (data) subProject.openSubtitles(data);
         } else if (action === "drop") {
             if (data) {
                 subProject.openSubtitles(data);
@@ -837,9 +884,17 @@ ApplicationWindow {
 
     // Helper action functions
     function createAudioClip() {
-        if (subProject.subtitleModel.count === 0) return;
-        var it = subProject.subtitleModel.get(subProject.currentSelectedIndex);
-        root.statusMsgText = qsTr("Created audio clip for line #%1").arg(it.lineNumber);
+        if (typeof audioController === "undefined" || !audioController || !audioController.hasAudio) {
+            root.statusMsgText = qsTr("Open audio before creating a clip");
+            return;
+        }
+        var range = AudioClipSelection.range(subProject.subtitleModel, subProject.selectedIndices);
+        if (!range) {
+            root.statusMsgText = qsTr("Selected lines have no audio interval");
+            return;
+        }
+        pendingAudioClipRange = range;
+        fileDialogAudioClipSave.open();
     }
 
     function jumpToLineStart() {
@@ -929,9 +984,8 @@ ApplicationWindow {
 
         // 5. Timecode files
         if (lower.endsWith(".tc") || lower.endsWith(".timecode") || (lower.endsWith(".txt") && lower.includes("timecode"))) {
-            if (typeof videoController !== "undefined" && videoController) {
+            if (typeof videoController !== "undefined" && videoController && videoController.openTimecodesFile(localPath)) {
                 recentFiles.add("timecodes", localPath);
-                videoController.openTimecodesFile(localPath);
                 root.statusMsgText = qsTr("Loaded timecodes: ") + fileName;
             }
             return;
@@ -968,9 +1022,8 @@ ApplicationWindow {
                 videoController.openKeyframesFile(path);
             }
         } else if (type === "timecodes") {
-            recentFiles.add("timecodes", path);
-            if (typeof videoController !== "undefined" && videoController) {
-                videoController.openTimecodesFile(path);
+            if (typeof videoController !== "undefined" && videoController && videoController.openTimecodesFile(path)) {
+                recentFiles.add("timecodes", path);
             }
         }
     }

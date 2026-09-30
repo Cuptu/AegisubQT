@@ -36,6 +36,8 @@
 #include <QTimer>
 #include <QElapsedTimer>
 #include <QPointer>
+#include <QUrl>
+#include <QVariantMap>
 #include <atomic>
 #include "VideoController.h"
 #include "AstraCoreBridge.h"
@@ -232,6 +234,7 @@ public Q_SLOTS:
     bool openBlankAudio();
     bool openNoiseAudio();
     void closeAudio();
+    Q_INVOKABLE QVariantMap saveAudioClip(const QUrl &destination, qint64 startMs, qint64 endMs) const;
     // Maps to Audio/Renderer/Spectrum/FreqCurve: 0=Linear ... 4=Logarithmic.
     void applyFreqCurve(int curve);
 

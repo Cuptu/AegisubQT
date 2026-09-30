@@ -2,6 +2,7 @@
 // SPDX-License-Identifier: MIT
 
 #include "StyleStorageManager.h"
+#include "../bridge/AppPaths.h"
 #include <QStandardPaths>
 #include <QDir>
 #include <QFile>
@@ -26,7 +27,7 @@ StyleStorageManager::~StyleStorageManager() {
 }
 
 QString StyleStorageManager::storageFilePath() const {
-    QString configDir = QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
+    QString configDir = AppPaths::configDirectory();
     if (configDir.isEmpty()) {
         configDir = QDir::current().filePath(QStringLiteral("config"));
     }

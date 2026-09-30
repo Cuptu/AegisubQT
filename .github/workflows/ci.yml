@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-22.04, macos-14]
+        os: [windows-latest, ubuntu-24.04, macos-14]
 
     steps:
       - name: Checkout
@@ -29,7 +29,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qt5compat qtshadertools qtmultimedia
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
 
@@ -37,11 +37,14 @@ jobs:
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ninja-build libxcb-cursor0 file
+          sudo apt-get install -y build-essential ninja-build libxcb-cursor0 file libicu-dev fonts-dejavu-core pkg-config ffmpeg libavformat-dev libavcodec-dev libavutil-dev libswresample-dev libswscale-dev
 
       - name: Setup build tools (macOS)
         if: runner.os == 'macOS'
-        run: brew install ninja
+        run: |
+          brew install ninja icu4c pkg-config ffmpeg
+          echo "ICU_ROOT=$(brew --prefix icu4c)" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$(brew --prefix ffmpeg)/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
 
       - name: Setup MSVC toolchain (Windows)
         if: runner.os == 'Windows'
@@ -81,6 +84,9 @@ jobs:
           path: build.log
           if-no-files-found: ignore
 
+      - name: Run regression tests
+        run: ctest --test-dir build -C Release --output-on-failure
+
       # Headless smoke test: the app must stay alive (timeout exit code 124)
       # after loading QML; a startup failure exits non-zero before the timeout.
       - name: Smoke test (Linux, offscreen)
@@ -105,10 +111,13 @@ jobs:
         run: |
           New-Item -ItemType Directory -Force -Path dist_win | Out-Null
           Copy-Item build\AegisubQT.exe dist_win\
+          Copy-Item build\icu*.dll dist_win\
+          Copy-Item -Recurse build\licenses dist_win\
+          Copy-Item -Recurse qml dist_win\
           if (Test-Path build\assets) { Copy-Item -Recurse build\assets dist_win\ } else { Copy-Item -Recurse assets dist_win\ }
           if (Test-Path build\automation) { Copy-Item -Recurse build\automation dist_win\ } else { Copy-Item -Recurse automation dist_win\ }
           if (Test-Path build\locale) { Copy-Item -Recurse build\locale dist_win\ }
-          windeployqt --release --compiler-runtime --no-opengl-sw --qmldir qml --dir dist_win dist_win\AegisubQT.exe
+          windeployqt --release --compiler-runtime --no-opengl-sw --include-plugins qoffscreen --qmldir qml --dir dist_win dist_win\AegisubQT.exe
 
           # Remove QML profiling/debugging DLLs
           Remove-Item -Recurse -Force -ErrorAction SilentlyContinue dist_win\qmltooling
@@ -132,12 +141,16 @@ jobs:
           if ($missing.Count -gt 0 -and $env:VCToolsRedistDir) {
               $crtDir = Get-ChildItem -Path "$env:VCToolsRedistDir\x64\Microsoft.VC*.CRT" -ErrorAction SilentlyContinue | Select-Object -First 1
               if ($crtDir) {
-                  foreach ($dll in $missing) {
-                      $src = Join-Path $crtDir.FullName $dll
-                      if (Test-Path $src) { Copy-Item $src dist_win\ }
-                  }
+                  Get-ChildItem -LiteralPath $crtDir.FullName -Filter *.dll | Copy-Item -Destination dist_win\
               }
           }
+          $missing = @($needed | Where-Object { !(Test-Path "dist_win\$_") })
+          if ($missing.Count -gt 0) { throw "Missing deployed MSVC runtime: $($missing -join ', ')" }
+
+      - name: Smoke test deployed payload (Windows, isolated)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: ./.github/scripts/SmokeWindows.ps1 -AppDirectory dist_win
 
       - name: Upload artifact (Windows)
         if: runner.os == 'Windows'
@@ -168,6 +181,15 @@ jobs:
             cp build/AegisubQT.app/Contents/MacOS/locale/*.qm build/AegisubQT.app/Contents/Resources/locale/
           fi
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
+          cmake -DBUNDLE="$PWD/build/AegisubQT.app" \
+            -DFFMPEG_EXECUTABLE="$(command -v ffmpeg)" \
+            -DMEDIA_LIBRARY_DIRS="$(brew --prefix ffmpeg)/lib" -P cmake/DeployMacMedia.cmake
+          cp build/third_party/astracore/astra_native_dynamic_load build/AegisubQT.app/Contents/MacOS/
+          cmake -DLOADER="$PWD/build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load" \
+            -DNATIVE="$PWD/build/AegisubQT.app/Contents/Frameworks/libAstraCore.Native.dylib" \
+            -DFFMPEG_EXECUTABLE="$PWD/build/AegisubQT.app/Contents/MacOS/ffmpeg" \
+            -DWORK_DIR="$RUNNER_TEMP/deployed-native-media" -P cmake/VerifyNativeMedia.cmake
+          rm build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load
           xattr -cr build/AegisubQT.app
           # Thin universal binaries to pure arm64 to remove dead x86_64 slices
           find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -type f \( -name "*.dylib" -o -perm +111 \) 2>/dev/null | while IFS= read -r f; do
@@ -275,9 +297,18 @@ jobs:
 
           # Deploy Qt runtime and plugins into AppDir
           ./linuxdeploy --appdir AppDir \
+            --library AppDir/usr/lib/libAstraCore.Native.so \
+            --executable "$(command -v ffmpeg)" \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \
             --plugin qt
+
+          cp build/third_party/astracore/astra_native_dynamic_load AppDir/usr/bin/
+          cmake -DLOADER="$PWD/AppDir/usr/bin/astra_native_dynamic_load" \
+            -DNATIVE="$PWD/AppDir/usr/lib/libAstraCore.Native.so" \
+            -DFFMPEG_EXECUTABLE="$PWD/AppDir/usr/bin/ffmpeg" \
+            -DWORK_DIR="$RUNNER_TEMP/deployed-native-media" -P cmake/VerifyNativeMedia.cmake
+          rm AppDir/usr/bin/astra_native_dynamic_load
 
           # Strip binaries and prune unused QML styles
           strip --strip-unneeded AppDir/usr/bin/* AppDir/usr/lib/*.so* AppDir/usr/plugins/*/*.so 2>/dev/null || true

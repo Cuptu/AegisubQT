@@ -7,6 +7,7 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 import "../controls"
+import "../project/TranslationUtils.js" as TranslationUtils
 
 NativeDialogFrame {
     id: dialog
@@ -19,12 +20,59 @@ NativeDialogFrame {
     property int currentLineNumber: 1
     property int totalLines: 10
     property string currentLineTime: ""
-    property string originalText: "This is the source dialogue text to be translated."
-    property string translationText: ""
+    property string originalText: ""
+    property bool hasCommittedSource: false
+    property string committedSource: ""
+    readonly property string sourceText: hasCommittedSource ? committedSource : originalText
+    property int blockIndex: -1
+    readonly property var sourceBlocks: TranslationUtils.blocks(sourceText)
+    property alias enablePreview: previewCheck.checked
+    property bool closeAfterLast: false
+    signal previewRequested()
+
+    function previewLine() {
+        if (visible && enablePreview) previewRequested();
+    }
+    function navigateBlock(direction) {
+        var next = TranslationUtils.nextPlain(TranslationUtils.blocks(sourceText), blockIndex, direction);
+        if (next >= 0) {
+            blockIndex = next;
+            txtTrans.text = "";
+            txtTrans.forceActiveFocus();
+            previewLine();
+        } else if (direction < 0) prevRequested();
+        else nextRequested();
+    }
+    function previewChanges() {
+        if (blockIndex >= 0) commitRequested(txtTrans.text, blockIndex, false);
+        txtTrans.text = "";
+        txtTrans.forceActiveFocus();
+        previewLine();
+    }
+    function handleKey(event) {
+        if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) {
+            if (event.modifiers === Qt.AltModifier) insertOriginal();
+            else if (event.modifiers === Qt.NoModifier) acceptCurrent();
+            else return;
+        } else if (event.modifiers !== Qt.NoModifier) return;
+        else if (event.key === Qt.Key_PageUp) navigateBlock(-1);
+        else if (event.key === Qt.Key_PageDown) navigateBlock(1);
+        else if (event.key === Qt.Key_F1) playAudioRequested();
+        else if (event.key === Qt.Key_F2) playVideoRequested();
+        else if (event.key === Qt.Key_F8) previewChanges();
+        else return;
+        event.accepted = true;
+    }
+    Shortcut { sequence: "PgUp"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.navigateBlock(-1) }
+    Shortcut { sequence: "PgDown"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.navigateBlock(1) }
+    Shortcut { sequence: "F1"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.playAudioRequested() }
+    Shortcut { sequence: "F2"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.playVideoRequested() }
+    Shortcut { sequence: "F8"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.previewChanges() }
+    Shortcut { sequence: "Alt+Return"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.insertOriginal() }
+    Shortcut { sequence: "Alt+Enter"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.insertOriginal() }
 
     // Emitted when translation text is submitted for current line
-    signal commitTranslation(string newText)
-    signal commitRequested(string text, bool autoNext)
+    signal commitRequested(string text, int blockIndex, bool autoNext)
 
     // Playback and navigation requests
     signal auditionRequested()
@@ -34,12 +82,49 @@ NativeDialogFrame {
     signal playVideoRequested()
 
     function acceptCurrent() {
-        dialog.commitTranslation(txtTrans.text);
-        dialog.commitRequested(txtTrans.text, true);
+        if (dialog.blockIndex >= 0)
+            dialog.commitRequested(txtTrans.text, dialog.blockIndex, true);
     }
 
     function insertOriginal() {
-        txtTrans.text = dialog.originalText;
+        if (dialog.blockIndex >= 0)
+            txtTrans.insert(txtTrans.cursorPosition, dialog.sourceBlocks[dialog.blockIndex].text);
+        txtTrans.forceActiveFocus();
+    }
+
+    function resetForLine() {
+        hasCommittedSource = false;
+        committedSource = "";
+        blockIndex = TranslationUtils.firstPlain(TranslationUtils.blocks(originalText));
+        txtTrans.text = "";
+        txtTrans.forceActiveFocus();
+        previewLine();
+    }
+
+    function setCommittedSource(text) {
+        committedSource = text;
+        hasCommittedSource = true;
+    }
+
+    function advanceAfterCommit() {
+        txtTrans.text = "";
+        var next = TranslationUtils.nextPlain(TranslationUtils.blocks(sourceText), blockIndex, 1);
+        if (next >= 0) {
+            blockIndex = next;
+            txtTrans.forceActiveFocus();
+            previewLine();
+        } else {
+            closeAfterLast = true;
+            nextRequested();
+            closeAfterLast = false;
+        }
+    }
+
+    onAboutToShow: resetForLine()
+    onOpened: previewLine()
+    onCurrentLineNumberChanged: resetForLine()
+    onOriginalTextChanged: {
+        if (!hasCommittedSource) resetForLine();
     }
 
     ColumnLayout {
@@ -64,7 +149,7 @@ NativeDialogFrame {
                     anchors.margins: 4
 
                     TextArea {
-                        text: dialog.originalText
+                        text: dialog.sourceText
                         readOnly: true
                         font.pixelSize: 12
                         font.family: uiTheme.uiFont
@@ -93,20 +178,14 @@ NativeDialogFrame {
 
                     TextArea {
                         id: txtTrans
-                        text: dialog.translationText
+                        objectName: "translation-input"
+                        text: ""
                         font.pixelSize: 12
                         font.family: uiTheme.uiFont
                         wrapMode: TextArea.Wrap
                         background: null
                         focus: true
-                        Keys.onReturnPressed: (event) => {
-                            if (event.modifiers & Qt.ShiftModifier) {
-                                event.accepted = false; // Allow newline with Shift+Enter
-                            } else {
-                                dialog.acceptCurrent();
-                                event.accepted = true;
-                            }
-                        }
+                        Keys.onPressed: (event) => dialog.handleKey(event)
                     }
                 }
             }
@@ -148,13 +227,20 @@ NativeDialogFrame {
 
                         Text { text: qsTr("Insert original text:"); font.pixelSize: 11; color: "#555555" }
                         Text { text: "Alt+Enter"; font.pixelSize: 11; font.bold: true }
+                        Text { text: qsTr("Preview changes:"); font.pixelSize: 11; color: "#555555" }
+                        Text { text: "F8"; font.pixelSize: 11; font.bold: true }
+                        Text { text: qsTr("Play audio / video:"); font.pixelSize: 11; color: "#555555" }
+                        Text { text: "F1 / F2"; font.pixelSize: 11; font.bold: true }
                     }
 
                     Item { Layout.fillHeight: true }
 
                     NativeCheckBox {
+                        id: previewCheck
+                        objectName: "translation-preview"
                         text: qsTr("Enable &preview")
                         checked: true
+                        onToggled: dialog.previewLine()
                     }
                 }
             }

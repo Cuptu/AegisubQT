@@ -10,7 +10,7 @@
 [![Status](https://img.shields.io/badge/Status-Release--Ready-10B981?style=flat-square&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-0078D4?style=flat-square&logo=windows&logoColor=white&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%2020-00599C?style=flat-square&logo=c%2B%2B&logoColor=white&labelColor=1F2937)](https://en.cppreference.com/w/cpp/20)
-[![Qt](https://img.shields.io/badge/Qt-6.11%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
+[![Qt](https://img.shields.io/badge/Qt-6.11.2%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
 [![Lua](https://img.shields.io/badge/Automation-LuaJIT%202.1-000080?style=flat-square&logo=lua&logoColor=white&labelColor=1F2937)](https://luajit.org/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause%20%2F%20MIT-F59E0B?style=flat-square&labelColor=1F2937)](./LICENSE)
 
@@ -170,21 +170,40 @@ AegisubQT/
 ## 4. 构建与编译指南
 
 ### 环境依赖
+- **自动化正则**：需要 ICU 开发库（Debian/Ubuntu 安装 `libicu-dev`；macOS 使用 `brew install icu4c` 并设置 `ICU_ROOT=$(brew --prefix icu4c)`）。CMake 下载固定版本的独立 Boost.Regex 源码；MSVC x64 未安装 ICU 时下载官方 ICU 78.3 开发/运行库，Windows 打包包含其 DLL 和许可证。离线配置可通过 `FETCHCONTENT_SOURCE_DIR_AEGISUB_BOOST_REGEX` 和 `ICU_ROOT` 指定本地副本。
 - **编译器**：Visual Studio 2022 (MSVC v143 x64) 或支持 C++20 的现代 Clang / GCC。
-- **图形库**：Qt 6.8+（包含 `Qt6::Core`, `Qt6::Gui`, `Qt6::Quick`, `Qt6::Qml`, `Qt6::QuickControls2`, `Qt6::ShaderTools`, `Qt6::Multimedia` 模块）。
-- **构建系统**：CMake 3.20+ 与 Ninja。
+- **图形库**：Qt 6.11.2+（包含 `Qt6::Core`, `Qt6::Core5Compat`, `Qt6::Gui`, `Qt6::Quick`, `Qt6::Qml`, `Qt6::QuickControls2`, `Qt6::ShaderTools`, `Qt6::Multimedia`, `Qt6::LinguistTools` 模块）。
+- **构建系统**：CMake 3.20+、Ninja（Windows 也可用 Visual Studio 生成器）及 Git。Unix 的 LuaJIT 构建还需要 GNU make。配置前须初始化 LuaJIT 子模块。
 
 ### 构建命令
 ```cmd
 :: 载入 MSVC 64位命令行工具链
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
 
-:: 生成工程配置
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+:: 初始化源码依赖，并指定 Qt 安装目录
+git submodule update --init --recursive
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:/Qt
 
-:: 编译并部署二进制产物 (生成 build/AegisubQT.exe 及所需 DLL 与资产)
-ninja -C build
+:: 编译应用并复制 QML、资产、自动化脚本和翻译文件
+cmake --build build --parallel
+
+:: 将 Qt 运行库部署到独立的 Windows 目录
+windeployqt --release --compiler-runtime --qmldir qml --dir build build\AegisubQT.exe
 ```
+
+编译生成的 EXE 并不是完整的媒体分发包：还需部署 Astra 后端依赖和 FFmpeg 命令行工具。生成发布包时应使用打包脚本，并在源码目录之外验证产物。
+
+Windows 媒体部署可配置 `-DAEGISUB_MEDIA_RUNTIME_DIR=C:/media-runtime`，指定包含当前 Astra 桥所需 FFmpeg DLL 的目录。CMake 递归扫描桥和命令行工具的依赖，缺少依赖时失败，并把完整依赖复制到构建产物的 `assets/bin`；Windows 打包脚本会包含该目录。完整 CLI 位于其他目录时，设置 `-DAEGISUB_FFMPEG_EXECUTABLE=C:/ffmpeg/bin/ffmpeg.exe`。CLI 必须支持音频提取所需的 `pcm_s16le` 编码器；应用优先使用随包工具。发布时需记录运行库版本、来源与许可证材料；这些设置不会下载媒体依赖，也不会构建 Unix Astra 后端。
+
+Windows 如需从源码构建更新后的 AstraCore，再设置 `-DAEGISUB_BUILD_NATIVE_MEDIA=ON -DASTRA_FFMPEG_SDK=C:/ffmpeg-sdk`，SDK 需包含 FFmpeg 6.1 及以上的头文件和 MSVC 导入库。将 `AEGISUB_MEDIA_RUNTIME_DIR` 指向同一 SDK 的 `bin` 目录，`AEGISUB_FFMPEG_EXECUTABLE` 指向其中的 `ffmpeg.exe`。构建会一起部署新后端和匹配的 FFmpeg 依赖。新后端能向“视频详情”提供实际色彩矩阵和范围；旧预编译桥无法提供范围时会显示“Unknown”。
+
+正式构建只从可执行文件、安装目录或应用 bundle 中加载应用 QML。开发时可配置 `-DAEGISUB_DEVELOPMENT_QML=ON`，显式启用该源码 checkout 的 QML 目录。
+
+Linux/macOS 默认开启 `AEGISUB_BUILD_NATIVE_MEDIA`，从纳入工程的 AstraCore 源码构建原生库，需要 FFmpeg 6.1 及以上开发库。Ubuntu 24.04 安装 `pkg-config ffmpeg libavformat-dev libavcodec-dev libavutil-dev libswresample-dev libswscale-dev`；macOS 使用 Homebrew 安装 `pkg-config ffmpeg`，配置前设置 `PKG_CONFIG_PATH="$(brew --prefix ffmpeg)/lib/pkgconfig:${PKG_CONFIG_PATH:-}"`。CMake 将原生库安装到 Linux 的 `lib` 或 macOS 的 `AegisubQT.app/Contents/Frameworks`。原生 CTest 使用 FFmpeg CLI 生成真实媒体，验证探测、音频提取、解码、重复定位、缩放、时间戳和关键帧。发布打包还必须携带原生库的 FFmpeg 依赖，单独安装该库不足以形成独立运行的软件包。
+
+AstraCore 后端采用 GPLv3，完整许可证和来源见 `third_party/astracore/LICENSE`、`PROVENANCE.md`。包含该后端的应用发行版须遵守 GPLv3，并提供所要求的完整对应源码，包括应用、后端与构建修改；各组件保留各自许可证。
+
+Unix 发布流程明确部署动态加载的原生后端与 FFmpeg CLI：Linux AppImage 将 `libAstraCore.Native.so` 显式加入 linuxdeploy 依赖扫描，发行压缩包也包含安装后的 `lib` 目录。macOS 在 macdeployqt 之后、签名之前运行 `cmake/DeployMacMedia.cmake`，复制第三方依赖并修改 Mach-O 库引用。随后 `cmake/VerifyNativeMedia.cmake` 清除外部注入的库搜索路径，使用打包的 CLI 生成媒体，再由独立检查程序动态加载打包的后端并解码；Linux 检查还会拒绝来自软件包目录之外的 FFmpeg 库。
 
 ### macOS 用户安装与运行说明
 由于开源发布包采用 Ad-hoc 本地代码签名且未购买苹果商业开发者公证证书（Apple Notarization），从 GitHub 下载 DMG 镜像并拖入 `/Applications` 后：

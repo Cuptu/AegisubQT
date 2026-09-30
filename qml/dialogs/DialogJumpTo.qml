@@ -18,7 +18,8 @@ NativeDialogFrame {
 
     property int targetFrame: 0
     property string targetTime: "0:00:00.00"
-    property real fps: 23.976
+    property var videoCtrl: null
+    property bool editedFrame: false
 
     // Emitted when target frame or timestamp is confirmed for seeking
     signal jumpRequested(int frame, string timeStr, real timeSec)
@@ -26,21 +27,21 @@ NativeDialogFrame {
     function onFrameEdited() {
         var f = parseInt(txtFrame.text) || 0;
         targetFrame = Math.max(0, f);
-        var sec = targetFrame / (fps > 0 ? fps : 23.976);
-        targetTime = AssUtils.msToAss(Math.round(sec * 1000));
+        editedFrame = true;
+        targetTime = AssUtils.msToAss(videoCtrl ? videoCtrl.timeAtFrameMs(targetFrame) : 0);
         txtTime.text = targetTime;
     }
 
     function onTimeEdited() {
         var ms = AssUtils.assToMs(txtTime.text);
-        var sec = ms / 1000.0;
+        editedFrame = false;
         targetTime = txtTime.text;
-        targetFrame = Math.round(sec * (fps > 0 ? fps : 23.976));
+        targetFrame = videoCtrl ? Math.max(0, videoCtrl.frameAtTimeMs(ms)) : 0;
         txtFrame.text = targetFrame.toString();
     }
 
     function onOkClicked() {
-        var ms = AssUtils.assToMs(txtTime.text);
+        var ms = editedFrame && videoCtrl ? videoCtrl.timeAtFrameMs(targetFrame) : AssUtils.assToMs(txtTime.text);
         var sec = ms / 1000.0;
         dialog.jumpRequested(targetFrame, targetTime, sec);
         dialog.close();
@@ -67,6 +68,7 @@ NativeDialogFrame {
 
             NativeTextBox {
                 id: txtFrame
+                objectName: "jumpFrameInput"
                 text: dialog.targetFrame.toString()
                 implicitWidth: 120
                 validator: IntValidator { bottom: 0; top: 10000000 }
@@ -85,6 +87,7 @@ NativeDialogFrame {
 
             NativeTextBox {
                 id: txtTime
+                objectName: "jumpTimeInput"
                 text: dialog.targetTime
                 implicitWidth: 120
                 onTextChanged: {

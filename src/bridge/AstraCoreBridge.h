@@ -41,7 +41,8 @@ public:
     QVector<float> extractSpectrogram(const QString &filePath, int targetSampleRate = 16000, int nFft = 512, int hopSize = 256, int *outNumBins = nullptr, int maxFrames = 10000);
     QVector<double> extractTimecodes(const QString &inputPath, const QString &outputTimecodesPath = QString(), int maxFrames = 500000);
     QImage grabFrameImage(const QString &filePath, double targetSeconds, int targetWidth = 0, int targetHeight = 0, double *outActualSeconds = nullptr);
-    bool probeHdr(const QString &filePath, bool &isHdr, int &bitDepth, int &colorPrimaries, int &colorTransfer);
+    bool probeHdr(const QString &filePath, bool &isHdr, int &bitDepth, int &colorPrimaries,
+                  int &colorTransfer, int *colorSpace = nullptr, int *colorRange = nullptr);
 
     // Persistent video session methods for low-latency scrubbing
     void* openVideoSession(const QString &filePath);
@@ -54,9 +55,13 @@ public:
 
 private:
     void loadLibrary();
+    QFunctionPointer resolveSymbol(const char *name);
 
     bool m_available = false;
     QLibrary m_lib;
+#ifdef Q_OS_WIN
+    void *m_nativeHandle = nullptr;
+#endif
 
     // Native C FFI function signatures
     typedef uint32_t (*ac_abi_version_fn)();

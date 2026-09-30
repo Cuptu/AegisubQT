@@ -10,19 +10,48 @@
 #include <cstdlib>
 #include <functional>
 #include <sstream>
+#include <limits>
+#include <numeric>
 
 namespace {
 static const int64_t default_denominator = 1000000000;
 using agi::line_iterator;
 using namespace agi::vfr;
+constexpr int max_timecode_frames = 10'000'000;
+
+bool multiply_nonnegative(int64_t a, int64_t b, int64_t &result) {
+    if (a < 0 || b < 0 || (b && a > std::numeric_limits<int64_t>::max() / b)) return false;
+    result = a * b;
+    return true;
+}
+
+int bounded_integer(long double value) {
+    return static_cast<int>(std::clamp(value, static_cast<long double>(std::numeric_limits<int>::min()),
+                                      static_cast<long double>(std::numeric_limits<int>::max())));
+}
+
+std::string trim_line(std::string const& text) {
+    const auto first = text.find_first_not_of(" \t\r\n");
+    if (first == std::string::npos) return {};
+    return text.substr(first, text.find_last_not_of(" \t\r\n") - first + 1);
+}
+
+double parse_number(std::string const& text) {
+    std::istringstream stream(text);
+    double value = 0.;
+    if (!(stream >> value) || !std::isfinite(value)) throw MalformedLine(text);
+    stream >> std::ws;
+    if (!stream.eof()) throw MalformedLine(text);
+    return value;
+}
 
 void validate_timecodes(std::vector<int> const& timecodes) {
     if (timecodes.size() <= 1)
         throw InvalidFramerate("Must have at least two timecodes to do anything useful");
-    if (!std::is_sorted(timecodes.begin(), timecodes.end()))
-        throw InvalidFramerate("Timecodes are out of order");
-    if (timecodes.front() == timecodes.back())
-        throw InvalidFramerate("Timecodes are all identical");
+    if (timecodes.size() > max_timecode_frames || timecodes.front() < 0)
+        throw InvalidFramerate("Timecodes exceed supported range");
+    if (std::adjacent_find(timecodes.begin(), timecodes.end(), std::greater_equal<int>()) != timecodes.end())
+        throw InvalidFramerate("Timecodes must be strictly increasing");
 }
 
 void normalize_timecodes(std::vector<int> &timecodes) {
@@ -46,13 +75,17 @@ TimecodeRange v1_parse_line(std::string const& str) {
     TimecodeRange range;
     char comma1 = 0, comma2 = 0;
     ss >> range.start >> comma1 >> range.end >> comma2 >> range.fps;
-    if (ss.fail() || comma1 != ',' || comma2 != ',' || !ss.eof())
+    if (ss.fail() || comma1 != ',' || comma2 != ',')
         throw MalformedLine(str);
+    ss >> std::ws;
+    if (!ss.eof()) throw MalformedLine(str);
     if (range.start < 0 || range.end < 0)
         throw InvalidFramerate("Cannot specify frame rate for negative frames.");
     if (range.end < range.start)
         throw InvalidFramerate("End frame must be greater than or equal to start frame");
-    if (range.fps <= 0.)
+    if (range.end >= max_timecode_frames)
+        throw InvalidFramerate("Override range exceeds supported frame count");
+    if (!std::isfinite(range.fps) || range.fps <= 0.)
         throw InvalidFramerate("FPS must be greater than zero");
     if (range.fps > 1000.)
         throw InvalidFramerate("FPS must be at most 1000");
@@ -60,13 +93,14 @@ TimecodeRange v1_parse_line(std::string const& str) {
 }
 
 int64_t v1_parse(line_iterator<std::string> file, std::string line, std::vector<int> &timecodes, int64_t &last) {
-    double fps = std::atof(line.substr(7).c_str());
-    if (fps <= 0.) throw InvalidFramerate("Assumed FPS must be greater than zero");
+    if (!line.starts_with("Assume ")) throw MalformedLine(line);
+    double fps = parse_number(line.substr(7));
+    if (fps < 1. / default_denominator) throw InvalidFramerate("Assumed FPS is too small");
     if (fps > 1000.) throw InvalidFramerate("Assumed FPS must not be greater than 1000");
 
     std::vector<TimecodeRange> ranges;
     for (auto const& l : file) {
-        auto range = v1_parse_line(l);
+        auto range = v1_parse_line(trim_line(l));
         if (range.fps != 0)
             ranges.push_back(range);
     }
@@ -82,16 +116,26 @@ int64_t v1_parse(line_iterator<std::string> file, std::string line, std::vector<
             throw InvalidFramerate("Override ranges must not overlap");
         }
         for (; frame < range.start; ++frame) {
+            if (time > std::numeric_limits<int>::max() - 1.)
+                throw InvalidFramerate("Timecode exceeds supported duration");
             timecodes.push_back(static_cast<int>(time + .5));
             time += 1000. / fps;
         }
         for (; frame <= range.end; ++frame) {
+            if (time > std::numeric_limits<int>::max() - 1.)
+                throw InvalidFramerate("Timecode exceeds supported duration");
             timecodes.push_back(static_cast<int>(time + .5));
             time += 1000. / range.fps;
         }
     }
+    if (time > std::numeric_limits<int>::max() - 1.)
+        throw InvalidFramerate("Timecode exceeds supported duration");
     timecodes.push_back(static_cast<int>(time + .5));
-    last = static_cast<int64_t>(time * fps * default_denominator);
+    if (timecodes.size() > 1) validate_timecodes(timecodes);
+    const long double unrounded = static_cast<long double>(time) * fps * default_denominator;
+    if (unrounded >= std::numeric_limits<int64_t>::max())
+        throw InvalidFramerate("Timecodes exceed supported timebase range");
+    last = static_cast<int64_t>(unrounded);
     return static_cast<int64_t>(fps * default_denominator);
 }
 } // anonymous namespace
@@ -99,10 +143,11 @@ int64_t v1_parse(line_iterator<std::string> file, std::string line, std::vector<
 namespace agi::vfr {
 
 Framerate::Framerate(double fps)
-: denominator(default_denominator)
-, numerator(static_cast<int64_t>(fps * default_denominator)) {
-    if (fps < 0.) throw InvalidFramerate("FPS must be greater than zero");
+: denominator(default_denominator) {
+    if (!std::isfinite(fps) || fps < 0.) throw InvalidFramerate("FPS must be nonnegative and finite");
     if (fps > 1000.) throw InvalidFramerate("FPS must not be greater than 1000");
+    numerator = static_cast<int64_t>(fps * default_denominator);
+    if (fps > 0 && numerator == 0) throw InvalidFramerate("FPS is too small");
     timecodes.push_back(0);
 }
 
@@ -112,7 +157,12 @@ Framerate::Framerate(int64_t numerator, int64_t denominator, bool drop)
 , drop(drop && denominator != 0 && numerator % denominator != 0) {
     if (numerator <= 0 || denominator <= 0)
         throw InvalidFramerate("Numerator and denominator must both be greater than zero");
-    if (numerator / denominator > 1000) throw InvalidFramerate("FPS must not be greater than 1000");
+    if (static_cast<long double>(numerator) / denominator > 1000) throw InvalidFramerate("FPS must not be greater than 1000");
+    const int64_t divisor = std::gcd(numerator, denominator);
+    this->numerator /= divisor;
+    this->denominator /= divisor;
+    if (this->denominator > std::numeric_limits<int64_t>::max() / 1000)
+        throw InvalidFramerate("Timebase exceeds supported range");
     timecodes.push_back(0);
 }
 
@@ -120,8 +170,11 @@ void Framerate::SetFromTimecodes() {
     validate_timecodes(timecodes);
     normalize_timecodes(timecodes);
     denominator = default_denominator;
-    numerator = static_cast<int64_t>(timecodes.size() - 1) * denominator * 1000 / timecodes.back();
-    last = static_cast<int64_t>(timecodes.size() - 1) * denominator * 1000;
+    const int64_t frame_milliseconds = static_cast<int64_t>(timecodes.size() - 1) * 1000;
+    numerator = frame_milliseconds / timecodes.back() * denominator +
+                frame_milliseconds % timecodes.back() * denominator / timecodes.back();
+    if (!multiply_nonnegative(frame_milliseconds, denominator, last))
+        throw InvalidFramerate("Timecodes exceed supported timebase range");
 }
 
 Framerate::Framerate(std::vector<int> timecodes)
@@ -141,13 +194,19 @@ Framerate::Framerate(agi::fs::path const& filename)
     if (it == line_iterator<std::string>())
         throw UnknownFormat("Empty file");
 
-    std::string line = *it;
+    std::string line = trim_line(*it);
+    if (line.starts_with("\xEF\xBB\xBF")) line.erase(0, 3);
     ++it;
 
     if (line == "# timecode format v2") {
-        for (auto const& l : it) {
+        for (auto const& entry : it) {
+            const auto l = trim_line(entry);
             if (!l.empty() && l[0] != '#') {
-                timecodes.push_back(std::atoi(l.c_str()));
+                const double value = parse_number(l);
+                if (value < 0 || value > std::numeric_limits<int>::max() - .5 ||
+                    timecodes.size() >= max_timecode_frames)
+                    throw InvalidFramerate("Timecodes exceed supported range");
+                timecodes.push_back(static_cast<int>(value + .5));
             }
         }
         SetFromTimecodes();
@@ -158,7 +217,7 @@ Framerate::Framerate(agi::fs::path const& filename)
         if (line[0] == '#') {
             if (it == line_iterator<std::string>())
                 throw UnknownFormat("Premature EOF");
-            line = *it;
+            line = trim_line(*it);
             ++it;
         }
         numerator = v1_parse(it, line, timecodes, last);
@@ -177,45 +236,68 @@ void Framerate::Save(agi::fs::path const& filename, int length) const {
         out << tc << "\n";
     for (int written = static_cast<int>(timecodes.size()); written < length; ++written)
         out << TimeAtFrame(written) << "\n";
+    file.Commit();
 }
 
 int Framerate::FrameAtTime(int ms, Time type) const {
     if (type == START)
-        return FrameAtTime(ms - 1) + 1;
+        return bounded_integer(static_cast<long double>(FrameAtTime(ms == std::numeric_limits<int>::min() ? ms : ms - 1)) + 1);
     if (type == END)
-        return FrameAtTime(ms - 1);
+        return FrameAtTime(ms == std::numeric_limits<int>::min() ? ms : ms - 1);
 
-    if (ms < 0)
-        return static_cast<int>((ms * numerator / denominator - 999) / 1000);
+    if (ms < 0) {
+        int64_t product = 0;
+        if (multiply_nonnegative(-static_cast<int64_t>(ms), numerator, product))
+            return bounded_integer((-product / denominator - 999) / 1000);
+        return bounded_integer(std::trunc((std::trunc(static_cast<long double>(ms) * numerator / denominator) - 999) / 1000));
+    }
 
-    if (ms > timecodes.back())
-        return static_cast<int>(((ms + 1) * numerator - last - numerator / 2 + (1000 * denominator - 1)) / (1000 * denominator) + timecodes.size() - 2);
+    if (ms > timecodes.back()) {
+        int64_t product = 0;
+        const int64_t divisor = 1000 * denominator;
+        if (multiply_nonnegative(static_cast<int64_t>(ms) + 1, numerator, product) &&
+            product >= last && product - last >= numerator / 2 &&
+            product - last - numerator / 2 <= std::numeric_limits<int64_t>::max() - divisor) {
+            return bounded_integer((product - last - numerator / 2 + divisor - 1) / divisor +
+                                   static_cast<int64_t>(timecodes.size()) - 2);
+        }
+        return bounded_integer(std::floor(((static_cast<long double>(ms) + 1) * numerator - last - numerator / 2 + divisor - 1) / divisor) + timecodes.size() - 2);
+    }
 
     return static_cast<int>(std::distance(std::lower_bound(timecodes.rbegin(), timecodes.rend(), ms, std::greater<int>()), timecodes.rend())) - 1;
 }
 
 int Framerate::TimeAtFrame(int frame, Time type) const {
     if (type == START) {
-        int prev = TimeAtFrame(frame - 1);
+        int prev = TimeAtFrame(frame == std::numeric_limits<int>::min() ? frame : frame - 1);
         int cur = TimeAtFrame(frame);
-        return prev + (cur - prev + 1) / 2;
+        return bounded_integer(static_cast<int64_t>(prev) + (static_cast<int64_t>(cur) - prev + 1) / 2);
     }
 
     if (type == END) {
         int cur = TimeAtFrame(frame);
-        int next = TimeAtFrame(frame + 1);
-        return cur + (next - cur + 1) / 2;
+        int next = TimeAtFrame(frame == std::numeric_limits<int>::max() ? frame : frame + 1);
+        return bounded_integer(static_cast<int64_t>(cur) + (static_cast<int64_t>(next) - cur + 1) / 2);
     }
 
     if (numerator == 0)
         return 0;
 
-    if (frame < 0)
-        return static_cast<int>(frame * denominator * 1000 / numerator);
+    if (frame < 0) {
+        int64_t product = 0;
+        if (multiply_nonnegative(-static_cast<int64_t>(frame), denominator * 1000, product))
+            return bounded_integer(-product / numerator);
+        return bounded_integer(std::trunc(static_cast<long double>(frame) * denominator * 1000 / numerator));
+    }
 
     if (frame >= static_cast<int>(timecodes.size())) {
         int64_t frames_past_end = frame - static_cast<int>(timecodes.size()) + 1;
-        return static_cast<int>((frames_past_end * 1000 * denominator + last + numerator / 2) / numerator);
+        int64_t product = 0;
+        if (multiply_nonnegative(frames_past_end, 1000 * denominator, product) &&
+            last <= std::numeric_limits<int64_t>::max() - numerator / 2 &&
+            product <= std::numeric_limits<int64_t>::max() - last - numerator / 2)
+            return bounded_integer((product + last + numerator / 2) / numerator);
+        return bounded_integer(std::floor((static_cast<long double>(frames_past_end) * 1000 * denominator + last + numerator / 2) / numerator));
     }
 
     return timecodes[frame];

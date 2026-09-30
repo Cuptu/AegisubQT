@@ -30,6 +30,7 @@
 #pragma once
 
 #include <QObject>
+#include <QPointer>
 #include <QVariantList>
 #include <QVariantMap>
 #include <QStringList>
@@ -41,11 +42,13 @@ class SubtitleModel;
 namespace Automation {
 
 class LuaScript;
+struct LuaVideoContext;
 
 class AutomationManager : public QObject {
     Q_OBJECT
     Q_PROPERTY(QVariantList scripts READ scripts NOTIFY scriptsChanged)
     Q_PROPERTY(QVariantList macros READ macros NOTIFY macrosChanged)
+    Q_PROPERTY(QVariantList filters READ filters NOTIFY filtersChanged)
 
 public:
     explicit AutomationManager(QObject *parent = nullptr);
@@ -55,6 +58,7 @@ public:
 
     QVariantList scripts() const;
     QVariantList macros() const;
+    QVariantList filters() const { return m_cachedFilters; }
 
     Q_INVOKABLE void scanAutoloadFolder();
     Q_INVOKABLE bool addScript(const QString &filepath, bool isGlobal = true);
@@ -64,19 +68,32 @@ public:
 
     Q_INVOKABLE bool runMacro(int macroId, QObject *subtitleProject = nullptr, int activeIndex = 0, const QVariantList &selectedIndices = {});
 
+    Q_INVOKABLE void refreshMacroStates(QObject *subtitleProject = nullptr, int activeIndex = 0, const QVariantList &selectedIndices = {});
+    Q_INVOKABLE QVariantMap exportFilterConfig(int filterId, QObject *subtitleProject,
+                                               const QVariantMap &settings = {});
+    Q_INVOKABLE QVariantMap normalizeConfigColor(const QString &text, bool withAlpha) const;
+    Q_INVOKABLE QVariantMap exportSubtitles(const QString &filePath, const QString &charset,
+                                            const QVariantList &pipeline, QObject *subtitleProject = nullptr);
+
     QStringList includePaths() const { return m_includePaths; }
     void addIncludePath(const QString &path);
 
     SubtitleModel *subtitleModel() const { return m_subtitleModel; }
     void setSubtitleModel(SubtitleModel *model) { m_subtitleModel = model; }
+    void setVideoContextSources(QObject *video, QObject *display) { m_video = video; m_videoDisplay = display; }
 
 signals:
     void scriptsChanged();
     void macrosChanged();
+    void filtersChanged();
     void macroExecuted(const QString &name, bool success, const QString &message);
     void statusMessage(const QString &msg);
+    void macroSelectionChanged(QObject *subtitleProject, int activeIndex, const QVariantList &selectedIndices);
 
 private:
+    LuaVideoContext videoContext() const;
+    QPointer<QObject> m_video;
+    QPointer<QObject> m_videoDisplay;
     void updateMacroList();
 
     struct ScriptEntry {
@@ -88,6 +105,7 @@ private:
     QStringList m_includePaths;
     QVariantList m_cachedScripts;
     QVariantList m_cachedMacros;
+    QVariantList m_cachedFilters;
     SubtitleModel *m_subtitleModel = nullptr;
 };
 

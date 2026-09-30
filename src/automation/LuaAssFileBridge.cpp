@@ -35,6 +35,7 @@
 #include <QDebug>
 #include <cmath>
 #include <algorithm>
+#include <libaegisub/ass/time.h>
 
 namespace Automation {
 
@@ -184,6 +185,29 @@ void LuaAssFileBridge::pushToStack() {
 // -------------------------------------------------------------
 // Convert C++ AssEntryData -> Lua Table
 // -------------------------------------------------------------
+static QString assEntryRaw(const AssEntryData &entry, const QString &extraPrefix) {
+    auto number = [](double value) { return QString::number(value, 'g', 6); };
+    auto integer = [](int value) { return QString::number(value); };
+    auto flag = [](bool value) { return value ? QStringLiteral("-1") : QStringLiteral("0"); };
+    auto color = [](QString value) { if (value.endsWith('&')) value.chop(1); return value; };
+    auto field = [](QString value) { return value.replace(',', ';'); };
+    if (entry.entryClass == AssEntryClass::Info) return entry.key + ": " + entry.value;
+    if (entry.entryClass == AssEntryClass::Style) {
+        return "Style: " + QStringList{field(entry.styleName), field(entry.fontName), number(entry.fontSize),
+            color(entry.color1), color(entry.color2), color(entry.color3), color(entry.color4),
+            flag(entry.bold), flag(entry.italic), flag(entry.underline), flag(entry.strikeout),
+            number(entry.scaleX), number(entry.scaleY), number(entry.spacing), number(entry.angle),
+            integer(entry.borderStyle), number(entry.outline), number(entry.shadow), integer(entry.align),
+            integer(entry.marginL), integer(entry.marginR), integer(entry.marginV), integer(entry.encoding)}.join(',');
+    }
+    QString text = entry.text;
+    text.remove('\r'); text.remove('\n');
+    return (entry.comment ? QStringLiteral("Comment: ") : QStringLiteral("Dialogue: ")) +
+        QStringList{integer(entry.layer), QString::fromStdString(agi::Time(entry.startTime).GetAssFormatted()),
+            QString::fromStdString(agi::Time(entry.endTime).GetAssFormatted()), field(entry.style), field(entry.actor),
+            integer(entry.margin_l), integer(entry.margin_r), integer(entry.margin_t), field(entry.effect), extraPrefix + text}.join(',');
+}
+
 void LuaAssFileBridge::assEntryToLua(lua_State *L, size_t idx) {
     if (idx >= m_lines.size()) {
         lua_pushnil(L);
@@ -194,6 +218,23 @@ void LuaAssFileBridge::assEntryToLua(lua_State *L, size_t idx) {
 
     lua_pushstring(L, e.section.toUtf8().constData());
     lua_setfield(L, -2, "section");
+
+    QString extraPrefix;
+    if (!e.extra.isEmpty() && e.entryClass == AssEntryClass::Dialogue) {
+        extraPrefix = "{";
+        QList<int> ids;
+        for (auto it = e.extra.cbegin(); it != e.extra.cend(); ++it) {
+            const auto key = qMakePair(it.key(), it.value());
+            if (!m_extraIds.contains(key)) m_extraIds.insert(key, static_cast<int>(m_extraIds.size()));
+            ids.append(m_extraIds.value(key));
+        }
+        std::sort(ids.begin(), ids.end());
+        for (int id : ids) extraPrefix += "=" + QString::number(id);
+        extraPrefix += "}";
+    }
+    const auto raw = assEntryRaw(e, extraPrefix).toUtf8();
+    lua_pushlstring(L, raw.constData(), raw.size());
+    lua_setfield(L, -2, "raw");
 
     if (e.entryClass == AssEntryClass::Info) {
         lua_pushstring(L, "info");
@@ -323,14 +364,15 @@ void LuaAssFileBridge::assEntryToLua(lua_State *L, size_t idx) {
         lua_pushstring(L, e.effect.toUtf8().constData());
         lua_setfield(L, -2, "effect");
 
-        lua_pushstring(L, e.text.toUtf8().constData());
+        const auto textBytes = e.text.toUtf8();
+        lua_pushlstring(L, textBytes.constData(), textBytes.size());
         lua_setfield(L, -2, "text");
 
         // extradata table
         lua_newtable(L);
         for (auto it = e.extra.begin(); it != e.extra.end(); ++it) {
-            lua_pushstring(L, it.key().toUtf8().constData());
-            lua_pushstring(L, it.value().toUtf8().constData());
+            lua_pushlstring(L, it.key().constData(), it.key().size());
+            lua_pushlstring(L, it.value().constData(), it.value().size());
             lua_settable(L, -3);
         }
         lua_setfield(L, -2, "extra");
@@ -340,13 +382,87 @@ void LuaAssFileBridge::assEntryToLua(lua_State *L, size_t idx) {
 // -------------------------------------------------------------
 // Convert Lua Table -> C++ AssEntryData
 // -------------------------------------------------------------
+namespace {
+// Validate before allocating C++ values or changing the bridge: luaL_error
+// unwinds Lua calls, so invalid batches must not leave partially applied rows.
+int checkedIndex(lua_State *L, int idx, int minimum, int maximum) {
+    if (lua_type(L, idx) != LUA_TNUMBER)
+        luaL_error(L, "Subtitle index must be an integer");
+    const double value = lua_tonumber(L, idx);
+    if (!std::isfinite(value) || std::floor(value) != value || value < minimum || value > maximum)
+        luaL_error(L, "Subtitle index is out of range");
+    return static_cast<int>(value);
+}
+void requiredField(lua_State *L, int idx, const char *name, int type, bool integer = false) {
+    lua_getfield(L, idx, name);
+    const bool valid = type == LUA_TSTRING ? lua_isstring(L, -1)
+                     : type == LUA_TNUMBER ? lua_isnumber(L, -1)
+                     : lua_type(L, -1) == type;
+    if (!valid) luaL_error(L, "Invalid or missing subtitle field '%s'", name);
+    if (type == LUA_TNUMBER) {
+        const double number = lua_tonumber(L, -1);
+        if (!std::isfinite(number) || (integer &&
+                (number < std::numeric_limits<int>::min() || number > std::numeric_limits<int>::max())))
+            luaL_error(L, "Subtitle field '%s' is outside its numeric range", name);
+    }
+    lua_pop(L, 1);
+}
+void validateEntry(lua_State *L, int idx) {
+    if (!lua_istable(L, idx)) luaL_error(L, "Subtitle line must be a table");
+    lua_getfield(L, idx, "class");
+    if (lua_type(L, -1) != LUA_TSTRING) luaL_error(L, "Subtitle line requires a string class");
+    const char *cls = lua_tostring(L, -1);
+    const bool info = qstricmp(cls, "info") == 0;
+    const bool style = qstricmp(cls, "style") == 0;
+    const bool dialogue = qstricmp(cls, "dialogue") == 0;
+    if (!info && !style && !dialogue) luaL_error(L, "Unknown subtitle class '%s'", cls);
+    lua_pop(L, 1);
+    if (info) {
+        requiredField(L, idx, "key", LUA_TSTRING);
+        requiredField(L, idx, "value", LUA_TSTRING);
+        return;
+    }
+    if (style) {
+        for (const char *name : {"name", "fontname", "color1", "color2", "color3", "color4"})
+            requiredField(L, idx, name, LUA_TSTRING);
+        for (const char *name : {"bold", "italic", "underline", "strikeout"})
+            requiredField(L, idx, name, LUA_TBOOLEAN);
+        for (const char *name : {"fontsize", "scale_x", "scale_y", "spacing", "angle", "outline", "shadow"})
+            requiredField(L, idx, name, LUA_TNUMBER);
+        for (const char *name : {"borderstyle", "align", "margin_l", "margin_r", "margin_t", "encoding"})
+            requiredField(L, idx, name, LUA_TNUMBER, true);
+        return;
+    }
+    for (const char *name : {"text", "style", "actor", "effect"}) requiredField(L, idx, name, LUA_TSTRING);
+    requiredField(L, idx, "comment", LUA_TBOOLEAN);
+    for (const char *name : {"layer", "start_time", "end_time", "margin_l", "margin_r", "margin_t"})
+        requiredField(L, idx, name, LUA_TNUMBER, true);
+    lua_getfield(L, idx, "margin_b");
+    const bool hasBottom = !lua_isnil(L, -1);
+    lua_pop(L, 1);
+    if (hasBottom) requiredField(L, idx, "margin_b", LUA_TNUMBER, true);
+    lua_getfield(L, idx, "extra");
+    if (!lua_isnil(L, -1) && !lua_istable(L, -1)) luaL_error(L, "Subtitle extra must be a table");
+    if (lua_istable(L, -1)) {
+        lua_pushnil(L);
+        while (lua_next(L, -2)) {
+            if (lua_type(L, -2) != LUA_TSTRING || lua_type(L, -1) != LUA_TSTRING)
+                luaL_error(L, "Subtitle extra keys and values must be strings");
+            lua_pop(L, 1);
+        }
+    }
+    lua_pop(L, 1);
+}
+}
 AssEntryData LuaAssFileBridge::luaToAssEntry(lua_State *L, int idx) {
+    validateEntry(L, idx);
     AssEntryData res;
-    if (!lua_istable(L, idx)) return res;
 
     auto getString = [&](const char *name, const QString &def = "") -> QString {
         lua_getfield(L, idx, name);
-        QString val = lua_isstring(L, -1) ? QString::fromUtf8(lua_tostring(L, -1)) : def;
+        size_t length = 0;
+        const char *bytes = lua_isstring(L, -1) ? lua_tolstring(L, -1, &length) : nullptr;
+        QString val = bytes ? QString::fromUtf8(bytes, static_cast<qsizetype>(length)) : def;
         lua_pop(L, 1);
         return val;
     };
@@ -424,9 +540,10 @@ AssEntryData LuaAssFileBridge::luaToAssEntry(lua_State *L, int idx) {
             lua_pushnil(L);
             while (lua_next(L, -2) != 0) {
                 if (lua_isstring(L, -2) && lua_isstring(L, -1)) {
-                    QString k = QString::fromUtf8(lua_tostring(L, -2));
-                    QString v = QString::fromUtf8(lua_tostring(L, -1));
-                    res.extra[k] = v;
+                    size_t keySize = 0, valueSize = 0;
+                    const char *key = lua_tolstring(L, -2, &keySize);
+                    const char *value = lua_tolstring(L, -1, &valueSize);
+                    res.extra[QByteArray(key, static_cast<qsizetype>(keySize))] = QByteArray(value, static_cast<qsizetype>(valueSize));
                 }
                 lua_pop(L, 1);
             }
@@ -441,8 +558,8 @@ AssEntryData LuaAssFileBridge::luaToAssEntry(lua_State *L, int idx) {
 // Lua Metatable Index / NewIndex
 // -------------------------------------------------------------
 int LuaAssFileBridge::indexRead(lua_State *L) {
-    if (lua_isnumber(L, 2)) {
-        int idx = (int)lua_tointeger(L, 2);
+    if (lua_type(L, 2) == LUA_TNUMBER) {
+        int idx = checkedIndex(L, 2, 1, static_cast<int>(m_lines.size()));
         if (idx < 1 || idx > (int)m_lines.size()) {
             return luaL_error(L, "Requested out-of-range line from subtitle file: %d", idx);
         }
@@ -483,8 +600,10 @@ int LuaAssFileBridge::indexRead(lua_State *L) {
 }
 
 int LuaAssFileBridge::indexWrite(lua_State *L) {
-    m_modified = true;
-    int n = (int)lua_tointeger(L, 2);
+    if (m_readOnly) return luaL_error(L, "Subtitles are read-only in macro state callbacks");
+    const int size = static_cast<int>(m_lines.size());
+    int n = checkedIndex(L, 2, -size - 1, size);
+    if (!lua_isnil(L, 3) || n <= 0) validateEntry(L, 3);
 
     if (n < 0) {
         // insert line at -n
@@ -510,6 +629,7 @@ int LuaAssFileBridge::indexWrite(lua_State *L) {
             }
         }
     }
+    m_modified = true;
     return 0;
 }
 
@@ -541,8 +661,9 @@ int LuaAssFileBridge::iterNext(lua_State *L) {
 // Subtitle Object Operations
 // -------------------------------------------------------------
 int LuaAssFileBridge::append(lua_State *L) {
-    m_modified = true;
+    if (m_readOnly) return luaL_error(L, "Subtitles are read-only in macro state callbacks");
     int count = lua_gettop(L);
+    for (int i = 1; i <= count; ++i) validateEntry(L, i);
     for (int i = 1; i <= count; ++i) {
         auto e = luaToAssEntry(L, i);
         // Find suitable insertion place matching section or append to end
@@ -556,28 +677,42 @@ int LuaAssFileBridge::append(lua_State *L) {
         }
         m_lines.insert(m_lines.begin() + place, std::move(e));
     }
+    if (count > 0) m_modified = true;
     return 0;
 }
 
 int LuaAssFileBridge::insert(lua_State *L) {
-    m_modified = true;
-    int before = (int)lua_tointeger(L, 1);
+    if (m_readOnly) return luaL_error(L, "Subtitles are read-only in macro state callbacks");
+    int before = checkedIndex(L, 1, 1, static_cast<int>(m_lines.size()) + 1);
     if (before < 1 || before > (int)m_lines.size() + 1) {
         return luaL_error(L, "Out of range line index in subtitles.insert: %d", before);
     }
     int count = lua_gettop(L);
+    for (int i = 2; i <= count; ++i) validateEntry(L, i);
     size_t pos = before - 1;
     for (int i = 2; i <= count; ++i) {
         m_lines.insert(m_lines.begin() + pos, luaToAssEntry(L, i));
         pos++;
     }
+    if (count > 1) m_modified = true;
     return 0;
 }
 
 int LuaAssFileBridge::del(lua_State *L) {
-    m_modified = true;
+    if (m_readOnly) return luaL_error(L, "Subtitles are read-only in macro state callbacks");
     int top = lua_gettop(L);
     if (top == 0) return 0;
+
+    // Preflight the whole list before creating a vector or deleting any row.
+    if (top == 1 && lua_istable(L, 1)) {
+        for (int i = 1; i <= static_cast<int>(lua_objlen(L, 1)); ++i) {
+            lua_rawgeti(L, 1, i);
+            checkedIndex(L, -1, 1, static_cast<int>(m_lines.size()));
+            lua_pop(L, 1);
+        }
+    } else {
+        for (int i = 1; i <= top; ++i) checkedIndex(L, i, 1, static_cast<int>(m_lines.size()));
+    }
 
     std::vector<int> to_del;
     if (top == 1 && lua_istable(L, 1)) {
@@ -601,16 +736,18 @@ int LuaAssFileBridge::del(lua_State *L) {
             m_lines.erase(m_lines.begin() + idx);
         }
     }
+    if (!to_del.empty()) m_modified = true;
     return 0;
 }
 
 int LuaAssFileBridge::deleteRange(lua_State *L) {
-    m_modified = true;
-    int a = std::max<int>(1, (int)lua_tointeger(L, 1)) - 1;
-    int b = std::min<int>((int)m_lines.size(), (int)lua_tointeger(L, 2));
+    if (m_readOnly) return luaL_error(L, "Subtitles are read-only in macro state callbacks");
+    int a = checkedIndex(L, 1, 1, static_cast<int>(m_lines.size())) - 1;
+    int b = checkedIndex(L, 2, 1, static_cast<int>(m_lines.size()));
     if (a >= b) return 0;
 
     m_lines.erase(m_lines.begin() + a, m_lines.begin() + b);
+    m_modified = true;
     return 0;
 }
 
@@ -628,9 +765,11 @@ int LuaAssFileBridge::setUndoPoint(lua_State *L) {
     auto bridge = static_cast<LuaAssFileBridge *>(lua_touserdata(L, -1));
     lua_pop(L, 1);
 
-    if (bridge && lua_isstring(L, 1)) {
-        bridge->m_undoDescription = QString::fromUtf8(lua_tostring(L, 1));
-        bridge->m_modified = true;
+    if (bridge && bridge->m_readOnly) return luaL_error(L, "Undo points are unavailable in macro state callbacks");
+    if (bridge && bridge->m_modified) {
+        const char *description = luaL_checkstring(L, 1);
+        bridge->m_pendingCommits.push_back({QString::fromUtf8(description), bridge->m_lines});
+        bridge->m_modified = false;
     }
     return 0;
 }
@@ -704,7 +843,7 @@ int LuaAssFileBridge::parseKaraokeData(lua_State *L) {
         return luaL_error(L, "Subtitle line must be a dialogue line");
     }
 
-    auto sylList = AegisubCoreBridge::parseKaraokeLine(e.text, e.startTime, e.endTime, false);
+    auto sylList = AegisubCoreBridge::parseKaraokeLine(e.text, e.startTime, e.endTime, false, false);
 
     // Build Lua result table: index 0 (empty compatibility entry) + 1..N
     lua_newtable(L);
@@ -735,10 +874,12 @@ int LuaAssFileBridge::parseKaraokeData(lua_State *L) {
         lua_pushstring(L, s["tagType"].toString().toUtf8().constData());
         lua_setfield(L, -2, "tag");
 
-        lua_pushstring(L, s["textWithTags"].toString().toUtf8().constData());
+        const auto taggedText = s["textWithTags"].toString().toUtf8();
+        lua_pushlstring(L, taggedText.constData(), taggedText.size());
         lua_setfield(L, -2, "text");
 
-        lua_pushstring(L, s["text"].toString().toUtf8().constData());
+        const auto strippedText = s["text"].toString().toUtf8();
+        lua_pushlstring(L, strippedText.constData(), strippedText.size());
         lua_setfield(L, -2, "text_stripped");
 
         lua_rawseti(L, -2, i + 1);

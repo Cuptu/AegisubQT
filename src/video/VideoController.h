@@ -33,6 +33,8 @@
 #include <QString>
 #include <QTimer>
 #include <QSet>
+#include <QVariantMap>
+#include <libaegisub/vfr.h>
 #include <memory>
 #include "AstraCoreBridge.h"
 #include "VideoProvider.h"
@@ -48,6 +50,7 @@ class VideoController : public QObject {
     Q_PROPERTY(double fps READ fps NOTIFY videoInfoChanged)
     Q_PROPERTY(double duration READ duration NOTIFY videoInfoChanged)
     Q_PROPERTY(int totalFrames READ totalFrames NOTIFY videoInfoChanged)
+    Q_PROPERTY(QVariantMap videoDetails READ videoDetails NOTIFY videoInfoChanged)
     Q_PROPERTY(double currentTime READ currentTime NOTIFY positionChanged)
     Q_PROPERTY(int currentFrame READ currentFrame NOTIFY positionChanged)
     Q_PROPERTY(bool isPlaying READ isPlaying NOTIFY playbackStateChanged)
@@ -66,7 +69,9 @@ class VideoController : public QObject {
     Q_PROPERTY(bool hasCustomKeyframes READ hasCustomKeyframes NOTIFY keyframesChanged)
     Q_PROPERTY(QString keyframesPath READ keyframesPath NOTIFY keyframesChanged)
     Q_PROPERTY(bool hasTimecodes READ hasTimecodes NOTIFY timecodesChanged)
+    Q_PROPERTY(bool hasCustomTimecodes READ hasCustomTimecodes NOTIFY timecodesChanged)
     Q_PROPERTY(QString timecodesPath READ timecodesPath NOTIFY timecodesChanged)
+    Q_PROPERTY(QVariantMap exportFramerateContext READ exportFramerateContext NOTIFY timecodesChanged)
 
 public:
     explicit VideoController(QObject *parent = nullptr);
@@ -84,6 +89,7 @@ public:
     Q_INVOKABLE void setScrubbing(bool on);
 
     int totalFrames() const { return m_totalFrames; }
+    QVariantMap videoDetails() const;
     double currentTime() const { return m_currentTime; }
     int currentFrame() const { return m_currentFrame; }
     bool isPlaying() const { return m_isPlaying; }
@@ -105,11 +111,16 @@ public:
     bool hasCustomKeyframes() const { return m_hasCustomKeyframes; }
     QString keyframesPath() const { return m_keyframesPath; }
     bool hasTimecodes() const { return m_hasTimecodes; }
+    bool hasCustomTimecodes() const { return m_hasCustomTimecodes; }
     QString timecodesPath() const { return m_timecodesPath; }
     const QVector<double>& timecodes() const { return m_timecodes; }
+    QVariantMap exportFramerateContext() const;
 
     double frameToTime(int frame) const;
     int timeToFrame(double sec) const;
+    Q_INVOKABLE int timeAtFrameMs(int frame, int timeType = 0) const;
+    Q_INVOKABLE int frameAtTimeMs(int ms, int timeType = 0) const;
+    Q_INVOKABLE QVariantMap currentSceneBoundsMs() const;
 
     VideoProvider* provider() const { return m_provider.get(); }
 
@@ -180,6 +191,7 @@ private:
     int m_height = 480;
     double m_fps = 23.976;
     double m_duration = 0.0;
+    double m_nativeDuration = 0.0;
     int m_totalFrames = 0;
     int m_currentFrame = 0;
     int m_lastRequestedFrame = -1;
@@ -198,6 +210,13 @@ private:
     bool m_hasTimecodes = false;
     QString m_timecodesPath;
     QVector<double> m_timecodes;
+    QVector<double> m_nativeTimecodes;
+    agi::vfr::Framerate m_nativeFramerate;
+    agi::vfr::Framerate m_overrideFramerate;
+    bool m_hasCustomTimecodes = false;
+    const agi::vfr::Framerate &activeFramerate() const {
+        return m_hasCustomTimecodes ? m_overrideFramerate : m_nativeFramerate;
+    }
 
     int m_activeSubStart = 0;
     int m_activeSubEnd = 5000;

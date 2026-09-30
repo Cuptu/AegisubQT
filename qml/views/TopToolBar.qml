@@ -182,7 +182,8 @@ ToolBar {
             enabled: !!(toolBarRoot.videoCtrl && toolBarRoot.videoCtrl.hasVideo)
             onClicked: {
                 if (toolBarRoot.project) {
-                    toolBarRoot.project.snapToKeyframes(toolBarRoot.project.snapPoints);
+                    if (toolBarRoot.videoCtrl)
+                        toolBarRoot.project.snapToKeyframes(toolBarRoot.videoCtrl.currentSceneBoundsMs());
                 }
             }
         }

@@ -17,6 +17,7 @@ set(LIBAEGISUB_SOURCES
     src/fs.cpp
     src/io.cpp
     src/util.cpp
+    src/uuencode.cpp
 )
 
 add_library(libaegisub STATIC ${LIBAEGISUB_SOURCES})

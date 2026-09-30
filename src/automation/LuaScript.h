@@ -32,6 +32,8 @@
 #include <lua.hpp>
 #include <QString>
 #include <QStringList>
+#include <QVariantList>
+#include <QVariantMap>
 #include <vector>
 #include "LuaAssFileBridge.h"
 
@@ -45,6 +47,35 @@ struct LuaMacro {
     QString description;
     int runRef = LUA_NOREF;
     int valRef = LUA_NOREF;
+    int toggleRef = LUA_NOREF;
+};
+struct LuaExportFilter {
+    int id = 0;
+    QString name;
+    QString description;
+    int priority = 0;
+    int runRef = LUA_NOREF;
+    int configRef = LUA_NOREF;
+};
+struct LuaMacroState {
+    bool enabled = false;
+    bool checkable = false;
+    bool checked = false;
+    QString description;
+    QString error;
+};
+struct LuaMacroSelection {
+    bool hasSelection = false;
+    bool hasActive = false;
+    std::vector<int> selectedLines;
+    int activeLine = 0;
+};
+struct LuaVideoContext {
+    bool available = false;
+    int width = 0;
+    int height = 0;
+    double aspectRatio = 0;
+    int aspectRatioType = 0;
 };
 
 /// Encapsulates an isolated Lua execution context for an Automation 4 script.
@@ -66,13 +97,26 @@ public:
     QString errorString() const { return m_errorMsg; }
 
     const std::vector<LuaMacro> &macros() const { return m_macros; }
+    const std::vector<LuaExportFilter> &filters() const { return m_filters; }
+    bool filterConfig(int filterId, const LuaAssFileBridge &source, const QVariantMap &settings,
+                      QVariantList &controlsOut, QString &errOut);
+    // Commit output only after a successful call; retained Lua userdata expires
+    // with the temporary export copy and cannot mutate the editor document.
+    bool runFilter(int filterId, std::vector<AssEntryData> &lines, int resX, int resY,
+                   const QVariantMap &settings, QString &errOut);
+    void setVideoContext(const LuaVideoContext &context) { m_videoContext = context; }
+    LuaMacroState macroState(int macroId, LuaAssFileBridge &bridge,
+                            const std::vector<int> &selectedLines, int activeLine);
 
     /// Execute a registered macro against the provided subtitle bridge.
     /// Invariant: Passes (subtitles, selected_lines_table, active_line_index) to the Lua function.
-    bool runMacro(int macroId, LuaAssFileBridge &bridge, const std::vector<int> &selectedLines, int activeLine, QString &errOut);
+    bool runMacro(int macroId, LuaAssFileBridge &bridge, const std::vector<int> &selectedLines, int activeLine, QString &errOut,
+                  LuaMacroSelection *selectionOut = nullptr);
 
     /// Lua C-function callback for aegisub.register_macro().
     static int luaRegisterMacro(lua_State *L);
+    static int luaRegisterFilter(lua_State *L);
+    static int luaVideoSize(lua_State *L);
 
 private:
     void initLuaState();
@@ -80,6 +124,7 @@ private:
 
     QString m_filepath;
     QStringList m_includePaths;
+    LuaVideoContext m_videoContext;
     lua_State *m_L = nullptr;
 
     QString m_name;
@@ -90,7 +135,9 @@ private:
     QString m_errorMsg;
 
     std::vector<LuaMacro> m_macros;
+    std::vector<LuaExportFilter> m_filters;
     static inline int s_nextMacroId = 1;
+    static inline int s_nextFilterId = 1;
 };
 
 } // namespace Automation

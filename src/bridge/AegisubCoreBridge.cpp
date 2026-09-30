@@ -4,6 +4,12 @@
 // Aegisub Project http://www.aegisub.org/
 
 #include "AegisubCoreBridge.h"
+#include "MediaTools.h"
+#include "AppPaths.h"
+#include "KaraokeParser.h"
+#include "ScreenColorPicker.h"
+#include <QScreen>
+#include <QPixmap>
 
 #include <libaegisub/ass/dialogue_parser.h>
 #include <libaegisub/ass/karaoke.h>
@@ -29,128 +35,53 @@
 #include <QDir>
 #include <algorithm>
 
-namespace {
+AegisubCoreBridge::AegisubCoreBridge(QObject *parent) : QObject(parent) {}
 
-using namespace agi::ass;
-namespace dt = DialogueTokenType;
-
-std::vector<KaraokeSyllable> parse_karaoke_syllables_from_tokens(std::string_view text, int line_start) {
-    auto tokens = TokenizeDialogueBody(text, false);
-    std::vector<KaraokeSyllable> syls;
-
-    KaraokeSyllable syl;
-    syl.start_time = line_start;
-    syl.duration = 0;
-    syl.tag_type = "\\k";
-
-    size_t pos = 0;
-    size_t i = 0;
-    const size_t n = tokens.size();
-
-    while (i < n) {
-        auto const& tok = tokens[i];
-        size_t len = tok.length;
-        std::string_view tok_str = text.substr(pos, len);
-
-        switch (tok.type) {
-            case dt::TEXT:
-            case dt::WORD:
-            case dt::LINE_BREAK:
-                syl.text += tok_str;
-                break;
-            case dt::COMMENT:
-            case dt::DRAWING_FULL:
-            case dt::DRAWING_CMD:
-            case dt::DRAWING_X:
-            case dt::DRAWING_Y:
-            case dt::DRAWING_ENDPOINT_X:
-            case dt::DRAWING_ENDPOINT_Y:
-                syl.ovr_tags[syl.text.size()] += tok_str;
-                break;
-            case dt::OVR_BEGIN: {
-                // Parse override block until OVR_END
-                size_t j = i + 1;
-                size_t block_pos = pos + len;
-                bool in_tag_group = false;
-
-                while (j < n && tokens[j].type != dt::OVR_END) {
-                    auto const& sub_tok = tokens[j];
-                    size_t sub_len = sub_tok.length;
-                    std::string_view sub_str = text.substr(block_pos, sub_len);
-
-                    if (sub_tok.type == dt::TAG_NAME && (sub_str.starts_with("k") || sub_str.starts_with("K"))) {
-                        // Found a karaoke tag
-                        if (in_tag_group) {
-                            syl.ovr_tags[syl.text.size()] += "}";
-                            in_tag_group = false;
-                        }
-
-                        std::string k_tag_name = std::string(sub_str);
-                        if (k_tag_name == "K") k_tag_name = "kf";
-
-                        // Collect argument and convert centiseconds to milliseconds
-                        int dur = 0;
-                        if (j + 1 < n && tokens[j + 1].type == dt::ARG) {
-                            ++j;
-                            size_t arg_len = tokens[j].length;
-                            std::string_view arg_str = text.substr(block_pos + sub_len, arg_len);
-                            block_pos += sub_len + arg_len;
-                            dur = std::atoi(std::string(arg_str).c_str()) * 10;
-                        } else {
-                            block_pos += sub_len;
-                        }
-
-                        if (syl.duration > 0 || !syl.text.empty()) {
-                            syls.push_back(syl);
-                            syl.text.clear();
-                            syl.ovr_tags.clear();
-                        }
-
-                        syl.tag_type = "\\" + k_tag_name;
-                        syl.start_time += syl.duration;
-                        syl.duration = dur;
-                    } else {
-                        // Regular tag or punctuation
-                        if (!in_tag_group) {
-                            syl.ovr_tags[syl.text.size()] += "{";
-                            in_tag_group = true;
-                        }
-                        syl.ovr_tags[syl.text.size()] += sub_str;
-                        block_pos += sub_len;
-                    }
-                    ++j;
-                }
-
-                if (in_tag_group) {
-                    syl.ovr_tags[syl.text.size()] += "}";
-                }
-
-                // Advance main loop past OVR_END
-                while (i < j && i < n) {
-                    pos += tokens[i].length;
-                    ++i;
-                }
-                if (i < n && tokens[i].type == dt::OVR_END) {
-                    pos += tokens[i].length;
-                    ++i;
-                }
-                continue;
-            }
-            default:
-                break;
-        }
-
-        pos += len;
-        ++i;
-    }
-
-    syls.push_back(syl);
-    return syls;
+void AegisubCoreBridge::cancelScreenColorPick() {
+    if (!screenPickSession_) return;
+    auto *session = screenPickSession_.data();
+    screenPickSession_.clear();
+    for (auto *window : session->findChildren<QWindow *>()) window->hide();
+    session->deleteLater();
+    emit screenColorPickCancelled();
 }
 
-} // anonymous namespace
-
-AegisubCoreBridge::AegisubCoreBridge(QObject *parent) : QObject(parent) {}
+bool AegisubCoreBridge::beginScreenColorPick() {
+    cancelScreenColorPick();
+    // Capture every screen before creating any overlay, including negative origins.
+    QList<QPair<QScreen *, QImage>> screens;
+    for (auto *screen : QGuiApplication::screens()) {
+        auto pixels = screen->grabWindow(0).toImage();
+        if (pixels.isNull()) {
+            emit screenColorPickFailed(tr("Screen capture is unavailable. Check screen recording permissions."));
+            return false;
+        }
+        screens.append({screen, pixels});
+    }
+    if (screens.isEmpty()) {
+        emit screenColorPickFailed(tr("No screen is available for colour picking."));
+        return false;
+    }
+    auto *session = new QObject(this);
+    screenPickSession_ = session;
+    const QPointer<QObject> guard(session);
+    auto finish = [this, guard](QColor color) {
+        if (!guard || screenPickSession_ != guard) return;
+        screenPickSession_.clear();
+        for (auto *window : guard->findChildren<QWindow *>()) window->hide();
+        guard->deleteLater();
+        if (color.isValid()) emit screenColorPicked(color);
+        else emit screenColorPickCancelled();
+    };
+    for (const auto &screen : screens) {
+        auto *window = new ScreenPickWindow(screen.first, screen.first->geometry(), screen.second, finish);
+        window->QObject::setParent(session);
+        connect(screen.first, &QObject::destroyed, session, [finish] { finish({}); });
+        window->show();
+        window->requestActivate();
+    }
+    return true;
+}
 
 QList<QVariantMap> AegisubCoreBridge::tokenizeLine(const QString &text, bool karaokeTemplater) {
     QList<QVariantMap> result;
@@ -167,15 +98,14 @@ QList<QVariantMap> AegisubCoreBridge::tokenizeLine(const QString &text, bool kar
     return result;
 }
 
-QList<QVariantMap> AegisubCoreBridge::parseKaraokeLine(const QString &text, int startTime, int endTime, bool autoSplit) {
+QList<QVariantMap> AegisubCoreBridge::parseKaraokeLine(const QString &text, int startTime, int endTime, bool autoSplit, bool normalize) {
     QList<QVariantMap> result;
-    QByteArray utf8 = text.toUtf8();
-    std::string_view sv(utf8.constData(), utf8.size());
-
-    auto syls = parse_karaoke_syllables_from_tokens(sv, startTime);
+    std::vector<agi::ass::KaraokeSyllable> syls;
+    try { syls = KaraokeParser::parse(text, startTime); }
+    catch (const std::exception &) { return {}; }
 
     agi::ass::Karaoke kara;
-    kara.SetLine(std::move(syls), autoSplit, endTime > startTime ? std::optional<int>(endTime) : std::nullopt);
+    kara.SetLine(std::move(syls), autoSplit, normalize ? std::optional<int>(endTime) : std::nullopt);
 
     result.reserve(static_cast<qsizetype>(kara.size()));
     for (auto const& syl : kara) {
@@ -301,8 +231,15 @@ void AegisubCoreBridge::launchNewInstance() {
     QProcess::startDetached(QCoreApplication::applicationFilePath(), {});
 }
 
-void AegisubCoreBridge::setClipboardText(const QString &text) {
-    QGuiApplication::clipboard()->setText(text);
+bool AegisubCoreBridge::setClipboardText(const QString &text) {
+    auto *clipboard = QGuiApplication::clipboard();
+    clipboard->setText(text);
+    return clipboard->text().replace(QStringLiteral("\r\n"), QStringLiteral("\n")) ==
+           QString(text).replace(QStringLiteral("\r\n"), QStringLiteral("\n"));
+}
+
+QString AegisubCoreBridge::clipboardText() {
+    return QGuiApplication::clipboard()->text();
 }
 
 bool AegisubCoreBridge::copyImageFileToClipboard(const QString &imagePath) {
@@ -323,9 +260,15 @@ QVariant AegisubCoreBridge::getSetting(const QString &key, const QVariant &defau
     return settings.value(key, defaultValue);
 }
 
+QString AegisubCoreBridge::localFilePath(const QUrl &url) {
+    return url.isLocalFile() ? url.toLocalFile() : QString();
+}
+
 QString AegisubCoreBridge::resolveUserPath(const QString &path) {
+    if (path.startsWith(QStringLiteral("file:"), Qt::CaseInsensitive))
+        return localFilePath(QUrl(path));
     if (path.startsWith(QStringLiteral("?user"), Qt::CaseInsensitive)) {
-        const QString userDir = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+        const QString userDir = AppPaths::dataDirectory();
         return QDir::cleanPath(userDir + path.mid(QStringLiteral("?user").size()));
     }
     return path;
@@ -383,7 +326,12 @@ QString AegisubCoreBridge::extractSubtitlesFromVideo(const QString &videoPath)
         QStringLiteral("aegisubqt_subs_%1_%2.ass").arg(stem).arg(QDateTime::currentMSecsSinceEpoch()));
     QFile::remove(outPath);
 
-    const int code = QProcess::execute(QStringLiteral("ffmpeg"),
+    const QString ffmpeg = MediaTools::ffmpegPath();
+    if (ffmpeg.isEmpty()) {
+        qWarning() << "Cannot extract container subtitles: ffmpeg is missing";
+        return QString();
+    }
+    const int code = QProcess::execute(ffmpeg,
         { QStringLiteral("-y"), QStringLiteral("-hide_banner"), QStringLiteral("-loglevel"), QStringLiteral("error"),
           QStringLiteral("-i"), localPath, QStringLiteral("-map"), QStringLiteral("0:s:0"), outPath });
     if (code != 0 || !QFileInfo::exists(outPath) || QFileInfo(outPath).size() == 0) {

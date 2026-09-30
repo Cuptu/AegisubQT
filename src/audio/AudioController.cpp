@@ -29,6 +29,7 @@
 
 #include "AudioController.h"
 #include "AudioSliceDevice.h"
+#include "AudioClipWriter.h"
 #include "AegisubCoreBridge.h"
 #include <QAudioSink>
 #include <QAudioFormat>
@@ -46,6 +47,7 @@
 #include <QThreadPool>
 #include <QRunnable>
 #include <QDebug>
+#include <QCoreApplication>
 
 namespace {
 
@@ -935,12 +937,16 @@ void AudioController::loadAudio(const QString &path, int targetSampleRate)
     if (clean.startsWith(QLatin1String("file:///"))) clean = QUrl(clean).toLocalFile();
     else if (clean.startsWith(QLatin1String("file://"))) clean = QUrl(clean).toLocalFile();
 
+    // Every request supersedes pending work, including a missing/invalid path.
+    const uint64_t reqId = ++m_audioLoadRequestId;
     if (clean.isEmpty() || !QFile::exists(clean)) {
         qWarning() << "[AudioController] loadAudio failed: file does not exist:" << clean;
+        m_isLoadingAudio = false;
+        Q_EMIT audioInfoChanged();
+        Q_EMIT audioError(tr("Failed to load audio: %1").arg(clean));
         return;
     }
 
-    const uint64_t reqId = ++m_audioLoadRequestId;
     m_isLoadingAudio = true;
     Q_EMIT audioInfoChanged();
 
@@ -952,42 +958,49 @@ void AudioController::loadAudio(const QString &path, int targetSampleRate)
     QThreadPool::globalInstance()->start(QRunnable::create([guard, reqId, clean, targetSampleRate]() {
         AudioPcmProvider localProvider;
         // Explicitly report decode failure instead of falling back to silent synthetic audio.
-        const bool ok = localProvider.loadAudioFile(clean, targetSampleRate);
+        bool ok = localProvider.loadAudioFile(clean, targetSampleRate);
 
         const auto &samples = localProvider.samples();
         const int sr = localProvider.sampleRate();
         QVector<float> peaks;
         if (sr > 0 && !samples.empty()) {
-            const int samplesPerBucket = sr / 100; // 10ms per bucket
-            const int totalBuckets = static_cast<int>(samples.size() / samplesPerBucket);
-            peaks.resize(totalBuckets);
-            for (int b = 0; b < totalBuckets; ++b) {
-                float maxVal = 0.0f;
-                const size_t startIdx = static_cast<size_t>(b) * samplesPerBucket;
-                const size_t endIdx = std::min(samples.size(), startIdx + samplesPerBucket);
-                for (size_t i = startIdx; i < endIdx; ++i) {
-                    const float v = std::abs(static_cast<int>(samples[i])) / 32768.0f;
-                    if (v > maxVal) maxVal = v;
+            // Exact 10ms buckets, including the partial final bucket. Integer
+            // sr/100 steps drift for rates such as 11025Hz and drop tail samples.
+            const uint64_t seconds = samples.size() / sr;
+            const uint64_t remainder = samples.size() % sr;
+            const uint64_t bucketCount = seconds > uint64_t(INT_MAX) / 100 ? uint64_t(INT_MAX) + 1
+                : seconds * 100 + (remainder * 100 + sr - 1) / sr;
+            if (bucketCount > INT_MAX) {
+                ok = false;
+            } else {
+                const int totalBuckets = static_cast<int>(bucketCount);
+                peaks.resize(totalBuckets);
+                for (int b = 0; b < totalBuckets; ++b) {
+                    float maxVal = 0.0f;
+                    const size_t startIdx = (uint64_t(b) * sr + 99) / 100;
+                    const size_t endIdx = std::min(samples.size(), size_t((uint64_t(b + 1) * sr + 99) / 100));
+                    for (size_t i = startIdx; i < endIdx; ++i) {
+                        const float v = std::abs(static_cast<int>(samples[i])) / 32768.0f;
+                        if (v > maxVal) maxVal = v;
+                    }
+                    peaks[b] = maxVal;
                 }
-                peaks[b] = maxVal;
             }
         }
 
-        AudioController *self = guard.data();
-        if (!self) {
-            return; // Controller destroyed during decode; discard result.
-        }
-        QMetaObject::invokeMethod(self, [self, reqId, clean, ok, provider = std::move(localProvider), peaks = std::move(peaks)]() mutable {
+        // Resolve the controller only on the GUI thread. A raw pointer read on
+        // the worker could be destroyed before invokeMethod queues its result.
+        QMetaObject::invokeMethod(QCoreApplication::instance(), [guard, reqId, clean, ok, provider = std::move(localProvider), peaks = std::move(peaks)]() mutable {
+            AudioController *self = guard.data();
+            if (!self) return;
             if (self->m_audioLoadRequestId.load() != reqId) {
                 return; // Discard superseded audio loading job
             }
 
             if (!ok) {
-                // Decode failure: clear loading state and report error without corrupting subtitle UI state.
+                // Keep the last successfully loaded provider, peaks, spectrum,
+                // path and duration as one coherent source on failed replacement.
                 self->m_isLoadingAudio = false;
-                self->m_hasAudio = false;
-                self->m_audioPath.clear();
-                self->m_audioDuration = 0.0;
                 Q_EMIT self->audioInfoChanged();
                 Q_EMIT self->audioError(QStringLiteral("Failed to load audio: %1").arg(clean));
                 return;
@@ -1027,6 +1040,7 @@ bool AudioController::openAudioFromVideo(const QString &customVideoPath)
 
     if (clean.isEmpty() || !QFile::exists(clean)) {
         qWarning() << "[AudioController] openAudioFromVideo failed: media file not found:" << clean;
+        loadAudio(clean, 0);
         return false;
     }
 
@@ -1099,20 +1113,26 @@ void AudioController::closeAudio()
     Q_EMIT playbackChanged();
 }
 
+QVariantMap AudioController::saveAudioClip(const QUrl &destination, qint64 startMs, qint64 endMs) const
+{
+    return AudioClipWriter::save(m_pcmProvider, destination, startMs, endMs);
+}
+
 QVariantList AudioController::getWaveformPeaks(int startMs, int endMs, int pixelWidth)
 {
     QVariantList res;
-    if (pixelWidth <= 0) return res;
+    if (pixelWidth <= 0 || endMs <= startMs) return res;
 
-    double msPerPixel = static_cast<double>(endMs - startMs) / pixelWidth;
+    const double span = double(endMs) - double(startMs);
+    res.reserve(pixelWidth);
     for (int x = 0; x < pixelWidth; ++x) {
-        double curMs = startMs + x * msPerPixel;
-        int bucket = static_cast<int>(curMs / 10.0);
+        const double left = double(startMs) + span * x / pixelWidth;
+        const double right = double(startMs) + span * (x + 1) / pixelWidth;
+        const int first = int(std::clamp(std::floor(left / 10.0), 0.0, double(m_peaks.size())));
+        const int last = int(std::clamp(std::ceil(right / 10.0), 0.0, double(m_peaks.size())));
         float peak = 0.0f;
-        if (bucket >= 0 && bucket < m_peaks.size()) {
-            peak = m_peaks[bucket];
-        } else {
-            peak = 0.02f;
+        for (int bucket = first; bucket < last; ++bucket) {
+            peak = std::max(peak, m_peaks[bucket]);
         }
         float avg = peak * 0.55f;
         QVariantMap map;

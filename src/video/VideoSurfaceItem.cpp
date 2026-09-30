@@ -76,9 +76,6 @@ QSGNode *VideoSurfaceItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData
         QSGTexture *tex = window()->createTextureFromImage(img);
         if (tex) {
             tex->setFiltering(QSGTexture::Linear);
-            if (node->texture()) {
-                delete node->texture();
-            }
             node->setTexture(tex);
         } else {
             delete node;

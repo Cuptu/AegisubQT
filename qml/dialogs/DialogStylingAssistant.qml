@@ -19,11 +19,43 @@ NativeDialogFrame {
     property string currentLineTime: "0:00:01.00 - 0:00:04.00"
     property string currentStyle: "Default"
     property string currentText: qsTr("Current subtitle line text.")
+    property alias scrollToCurrent: scrollCheck.checked
+    property alias seekVideo: seekCheck.checked
+    signal previewRequested()
+
+    function previewLine() {
+        if (visible) previewRequested();
+    }
+    onOpened: { txtStyleName.text = currentStyle; txtStyleName.forceActiveFocus(); previewLine(); }
+    onCurrentLineNumberChanged: {
+        txtStyleName.text = currentStyle;
+        if (visible) { txtStyleName.forceActiveFocus(); previewLine(); }
+    }
+    onCurrentStyleChanged: txtStyleName.text = currentStyle
+
+    Shortcut { sequence: "PgUp"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.prevRequested() }
+    Shortcut { sequence: "PgDown"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.nextRequested() }
+    Shortcut { sequence: "F1"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.playAudioRequested() }
+    Shortcut { sequence: "F2"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.playVideoRequested() }
+    Shortcut { sequence: "F8"; context: Qt.WindowShortcut; enabled: dialog.visible; onActivated: dialog.acceptCurrent(false) }
+
+    function handleKey(event) {
+        if (event.modifiers !== Qt.NoModifier) return;
+        if (event.key === Qt.Key_PageUp) prevRequested();
+        else if (event.key === Qt.Key_PageDown) nextRequested();
+        else if (event.key === Qt.Key_F1) playAudioRequested();
+        else if (event.key === Qt.Key_F2) playVideoRequested();
+        else if (event.key === Qt.Key_F8) acceptCurrent(false);
+        else if (event.key === Qt.Key_Return || event.key === Qt.Key_Enter) acceptCurrent();
+        else return;
+        event.accepted = true;
+    }
 
     property var availableStyles: (typeof nativeSubtitleModel !== "undefined" && nativeSubtitleModel && nativeSubtitleModel.styleNames.length > 0) ? nativeSubtitleModel.styleNames : ["Default"]
 
     // Emitted when selected style is applied to current dialogue row
     signal styleApplied(string styleName)
+    signal styleRejected(string styleName)
 
     // Navigation and playback signals
     signal prevRequested()
@@ -31,9 +63,15 @@ NativeDialogFrame {
     signal playAudioRequested()
     signal playVideoRequested()
 
-    function acceptCurrent() {
+    function acceptCurrent(autoNext) {
+        if (availableStyles.indexOf(txtStyleName.text) < 0) {
+            styleRejected(txtStyleName.text);
+            txtStyleName.forceActiveFocus();
+            return;
+        }
         dialog.styleApplied(txtStyleName.text);
-        dialog.nextRequested();
+        if (autoNext !== false) dialog.nextRequested();
+        else previewLine();
     }
 
     ColumnLayout {
@@ -140,9 +178,10 @@ NativeDialogFrame {
                         anchors.fill: parent
                         NativeTextBox {
                             id: txtStyleName
+                            objectName: "styling-input"
                             text: dialog.currentStyle
                             Layout.fillWidth: true
-                            Keys.onReturnPressed: dialog.acceptCurrent()
+                            Keys.onPressed: (event) => dialog.handleKey(event)
                         }
                     }
                 }
@@ -164,6 +203,8 @@ NativeDialogFrame {
 
                             Text { text: qsTr("Accept changes:"); font.pixelSize: 11; color: "#555555" }
                             Text { text: "Enter"; font.pixelSize: 11; font.bold: true }
+                            Text { text: qsTr("Preview changes:"); font.pixelSize: 11; color: "#555555" }
+                            Text { text: "F8"; font.pixelSize: 11; font.bold: true }
 
                             Text { text: qsTr("Previous line:"); font.pixelSize: 11; color: "#555555" }
                             Text { text: "Page Up"; font.pixelSize: 11; font.bold: true }
@@ -181,8 +222,18 @@ NativeDialogFrame {
                         Item { Layout.fillHeight: true }
 
                         NativeCheckBox {
+                            id: scrollCheck
+                            objectName: "styling-scroll"
                             text: qsTr("Scroll to current line")
                             checked: true
+                            onToggled: dialog.previewLine()
+                        }
+                        NativeCheckBox {
+                            id: seekCheck
+                            objectName: "styling-seek"
+                            text: qsTr("Seek video to line start")
+                            checked: true
+                            onToggled: dialog.previewLine()
                         }
                     }
                 }

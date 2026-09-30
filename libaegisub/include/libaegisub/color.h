@@ -16,6 +16,7 @@ struct Color {
     Color() = default;
     Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a = 0);
     Color(std::string_view str);
+    static bool TryParse(Color &result, std::string_view str);
 
     bool operator==(Color const&) const noexcept = default;
 

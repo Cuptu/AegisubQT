@@ -48,7 +48,8 @@ struct AssStyleExtents {
 };
 
 /// Calculate typographic bounding dimensions (width, height, descent, external leading)
-/// matching VSFilter / GDI rasterization metrics.
+/// using VSFilter's GDI metrics on Windows and normalized 64x Qt font metrics
+/// on POSIX. Different platform font engines need not produce identical widths.
 bool CalculateTextExtents(const AssStyleExtents &style, const QString &text, double &width, double &height, double &descent, double &extlead);
 
 } // namespace Automation

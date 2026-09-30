@@ -57,6 +57,7 @@ class VideoDisplayController : public QObject {
     Q_PROPERTY(qreal preferredBoxHeight READ preferredBoxHeight NOTIFY layoutChanged)
     Q_PROPERTY(qreal contentZoom READ contentZoom WRITE setContentZoom NOTIFY layoutChanged)
     Q_PROPERTY(qreal arOverride READ arOverride WRITE setArOverride NOTIFY layoutChanged)
+    Q_PROPERTY(int arOverrideType READ arOverrideType NOTIFY layoutChanged)
     Q_PROPERTY(qreal panX READ panX NOTIFY layoutChanged)
     Q_PROPERTY(qreal panY READ panY NOTIFY layoutChanged)
     Q_PROPERTY(qreal videoLeft READ videoLeft NOTIFY layoutChanged)
@@ -89,6 +90,8 @@ public:
     // Aspect ratio override (upstream Video > Override Aspect Ratio):
     // 0 keeps the native frame ratio; >0 forces display to the given w/h ratio.
     qreal arOverride() const { return m_arOverride; }
+    int arOverrideType() const { return m_arOverrideType; }
+    Q_INVOKABLE void setAspectRatio(int type, qreal custom = 0);
     qreal panX() const { return m_panX; }
     qreal panY() const { return m_panY; }
     qreal videoLeft() const { return m_videoRect.left(); }
@@ -169,6 +172,7 @@ private:
     qreal m_contentZoom = 1.0;
     // 0 = native aspect; positive values force the display ratio (upstream Override AR).
     qreal m_arOverride = 0.0;
+    int m_arOverrideType = 0;
     qreal m_panX = 0.0;
     qreal m_panY = 0.0;
     QRectF m_videoRect;

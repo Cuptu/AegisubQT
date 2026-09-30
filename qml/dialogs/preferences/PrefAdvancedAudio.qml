@@ -34,7 +34,7 @@ Flickable {
         id: cacheFolderDialog
         title: qsTr("Select Cache Directory")
         onAccepted: {
-            txtAudioCachePath.text = selectedFolder.toString().replace("file:///", "");
+            txtAudioCachePath.text = aegisubCore.localFilePath(selectedFolder);
             root.changed();
         }
     }

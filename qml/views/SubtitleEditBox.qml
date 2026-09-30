@@ -4,6 +4,7 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import QtQuick.Dialogs as PlatformDialogs
 import "../controls"
 import "../project/AssUtils.js" as AssUtils
 
@@ -26,8 +27,116 @@ Rectangle {
     readonly property string editFontFamily: "Microsoft YaHei UI"
     readonly property int uiFontSize: 12
     readonly property int textEditFontSize: 13
+    property bool syncingFromProject: false
+    property bool frameMode: false
+    readonly property bool frameAvailable: !!videoCtrl && !!videoCtrl.hasTimecodes
+
+    onFrameModeChanged: syncTimingFromProject()
+    onFrameAvailableChanged: {
+        if (!frameAvailable) frameMode = false;
+        syncTimingFromProject();
+    }
 
     signal statusMessage(string text)
+    property alias fontDialog: fontDialog
+
+    function finishFormatting(result) {
+        if (!result || !result.success) return;
+        syncFromProject();
+        subtitleEditArea.select(result.selectionStart, result.selectionEnd);
+        subtitleEditArea.forceActiveFocus();
+    }
+    function toggleFormatting(tag) {
+        if (!project || !project.subtitleModel) return;
+        finishFormatting(project.subtitleModel.toggleInlineFormatting(project.selectedIndices,
+            project.currentSelectedIndex, subtitleEditArea.selectionStart, subtitleEditArea.selectionEnd, tag));
+    }
+    function chooseFont() {
+        if (!project || !project.subtitleModel) return;
+        var state = project.subtitleModel.inlineFormattingState(project.currentSelectedIndex, subtitleEditArea.cursorPosition);
+        if (!state.font) return;
+        var font = Qt.font({family: state.font, pointSize: state.size, bold: state.b,
+            italic: state.i, underline: state.u, strikeout: state.s});
+        fontDialog.context = {model: project.subtitleModel, row: project.currentSelectedIndex,
+            text: subtitleEditArea.text, start: subtitleEditArea.selectionStart, end: subtitleEditArea.selectionEnd,
+            indices: project.selectedIndices.slice(), initialFont: font};
+        fontDialog.selectedFont = font;
+        fontDialog.open();
+    }
+    PlatformDialogs.FontDialog {
+        id: fontDialog
+        parentWindow: editBoxRoot.Window.window
+        title: qsTr("Select font face and size")
+        property var context: null
+        onRejected: context = null
+        onAccepted: {
+            var saved = context;
+            context = null;
+            if (!saved || saved.model !== project.subtitleModel || saved.row !== project.currentSelectedIndex
+                || saved.text !== project.subtitleModel.get(saved.row).text) return;
+            if (selectedFont.toString() === saved.initialFont.toString()) return;
+            editBoxRoot.finishFormatting(saved.model.applyInlineFont(saved.indices, saved.row,
+                saved.start, saved.end, selectedFont));
+        }
+    }
+
+    function syncTimingFromProject() {
+        if (!project || !project.subtitleModel) return;
+        var row = project.currentSelectedIndex;
+        if (row < 0 || row >= project.subtitleModel.count) return;
+        var model = project.subtitleModel;
+        var start = model.getLineStartMs(row);
+        var end = model.getLineEndMs(row);
+        if (frameMode && frameAvailable) {
+            var first = videoCtrl.frameAtTimeMs(start, 1);
+            var last = videoCtrl.frameAtTimeMs(end, 2);
+            startTimeField.text = String(first);
+            endTimeField.text = String(last);
+            durationField.text = String(Math.max(0, last - first + 1));
+        } else {
+            var line = model.get(row);
+            startTimeField.text = line.start;
+            endTimeField.text = line.end;
+            durationField.text = AssUtils.msToAss(Math.max(0, end - start));
+        }
+    }
+
+    function commitTiming(field, value) {
+        if (!project || !project.subtitleModel || syncingFromProject) return;
+        var model = project.subtitleModel;
+        var row = project.currentSelectedIndex;
+        if (row < 0 || row >= model.count) return;
+        var start = model.getLineStartMs(row);
+        var end = model.getLineEndMs(row);
+        var number;
+        if (frameMode && frameAvailable) {
+            if (!/^\d+$/.test(value)) { syncTimingFromProject(); return; }
+            number = Number(value);
+            if (!Number.isSafeInteger(number) || number > 2147483647 || (field === "duration" && number < 1)) {
+                syncTimingFromProject(); return;
+            }
+            if (field === "duration") {
+                number += videoCtrl.frameAtTimeMs(start, 1) - 1;
+                if (number > 2147483647) { syncTimingFromProject(); return; }
+            }
+            number = videoCtrl.timeAtFrameMs(number, field === "start" ? 1 : 2);
+        } else {
+            if (!/^\d+:[0-5]\d:[0-5]\d\.\d{2}$/.test(value)) { syncTimingFromProject(); return; }
+            number = AssUtils.assToMs(value);
+            if (field === "duration") number += start;
+        }
+        if (!Number.isFinite(number) || number < 0 || number > 2147483647) {
+            syncTimingFromProject(); return;
+        }
+        if (field === "start") { start = number; end = Math.max(start, end); }
+        else { end = number; start = Math.min(start, end); }
+        if (start !== model.getLineStartMs(row) || end !== model.getLineEndMs(row)) {
+            project.pushUndo(qsTr("change timing"));
+            model.setLineTimes(row, start, end);
+            project.dataModified();
+        }
+        syncTimingFromProject();
+    }
 
     function getCleanLongestLine(txt) {
         if (!txt) return 0;
@@ -44,11 +153,8 @@ Rectangle {
         if (!project || !project.subtitleModel || project.currentSelectedIndex < 0 || project.currentSelectedIndex >= project.subtitleModel.count) return;
         var item = project.subtitleModel.get(project.currentSelectedIndex);
         if (!item) return;
-        startTimeField.text = item.start || "";
-        endTimeField.text = item.end || "";
-        var sMs = AssUtils.assToMs(item.start);
-        var eMs = AssUtils.assToMs(item.end);
-        durationField.text = AssUtils.msToAss(Math.max(0, eMs - sMs));
+        syncingFromProject = true;
+        syncTimingFromProject();
         layerSpinMid.value = item.layer || 0;
         marginLeft.text = "" + (item.marginLeft || 0);
         marginRight.text = "" + (item.marginRight || 0);
@@ -59,6 +165,19 @@ Rectangle {
         var sIdx = styleCombo.model.indexOf(item.style || "Default");
         if (sIdx >= 0) styleCombo.currentIndex = sIdx;
         subtitleEditArea.text = item.text || "";
+        syncingFromProject = false;
+    }
+
+    function setEditedProperty(name, value, description) {
+        if (syncingFromProject || !project || !project.subtitleModel || project.currentSelectedIndex < 0 ||
+                project.currentSelectedIndex >= project.subtitleModel.count)
+            return false;
+        var oldValue = project.subtitleModel.get(project.currentSelectedIndex)[name];
+        if (oldValue === value) return false;
+        project.pushUndo(description);
+        if (!project.subtitleModel.setProperty(project.currentSelectedIndex, name, value)) return false;
+        project.dataModified();
+        return true;
     }
 
     Connections {
@@ -69,6 +188,21 @@ Rectangle {
         function onLineSelected(idx, item) {
             editBoxRoot.syncFromProject();
         }
+        function onSearchMatchFound(row, start, length) {
+            if (row !== editBoxRoot.project.currentSelectedIndex) return;
+            subtitleEditArea.select(start, start + length);
+            subtitleEditArea.forceActiveFocus();
+        }
+    }
+
+    Connections {
+        target: editBoxRoot.videoCtrl
+        function onTimecodesChanged() { editBoxRoot.syncTimingFromProject(); }
+    }
+    Connections {
+        target: editBoxRoot.project ? editBoxRoot.project.subtitleModel : null
+        function onDataChanged() { editBoxRoot.syncTimingFromProject(); }
+        function onModelReset() { editBoxRoot.syncFromProject(); }
     }
 
     Component.onCompleted: {
@@ -120,11 +254,7 @@ Rectangle {
                 ToolTip.text: qsTr("Comment this line out. Commented lines don't show up on screen.")
                 ToolTip.visible: hovered
                 onToggled: {
-                    if (project && project.subtitleModel && project.currentSelectedIndex >= 0) {
-                        project.pushUndo(qsTr("toggle comment"));
-                        project.subtitleModel.setProperty(project.currentSelectedIndex, "isComment", checked);
-                        project.dataModified();
-                    }
+                    editBoxRoot.setEditedProperty("isComment", checked, qsTr("toggle comment"));
                 }
             }
 
@@ -137,11 +267,7 @@ Rectangle {
                 ToolTip.text: qsTr("Style for this line")
                 ToolTip.visible: hovered
                 onActivated: (idx) => {
-                    if (project && project.subtitleModel) {
-                        project.pushUndo(qsTr("change style"));
-                        project.subtitleModel.setProperty(project.currentSelectedIndex, "style", currentText);
-                        project.dataModified();
-                    }
+                    editBoxRoot.setEditedProperty("style", currentText, qsTr("change style"));
                 }
             }
 
@@ -187,11 +313,7 @@ Rectangle {
                 ToolTip.text: qsTr("Actor name for this speech. This is only for reference, and is mainly useless.")
                 ToolTip.visible: hovered
                 onAccepted: {
-                    if (project && project.subtitleModel && project.currentSelectedIndex >= 0) {
-                        project.pushUndo(qsTr("change actor"));
-                        project.subtitleModel.setProperty(project.currentSelectedIndex, "actor", editText);
-                        project.dataModified();
-                    }
+                    editBoxRoot.setEditedProperty("actor", editText, qsTr("change actor"));
                 }
             }
 
@@ -206,11 +328,7 @@ Rectangle {
                 ToolTip.text: qsTr("Effect for this line. This can be used to store extra information for karaoke scripts, or for the effects supported by the renderer.")
                 ToolTip.visible: hovered
                 onAccepted: {
-                    if (project && project.subtitleModel && project.currentSelectedIndex >= 0) {
-                        project.pushUndo(qsTr("change effect"));
-                        project.subtitleModel.setProperty(project.currentSelectedIndex, "effect", editText);
-                        project.dataModified();
-                    }
+                    editBoxRoot.setEditedProperty("effect", editText, qsTr("change effect"));
                 }
             }
 
@@ -269,8 +387,7 @@ Rectangle {
                 ToolTip.text: qsTr("Layer number"); ToolTip.visible: hovered
                 onValueModified: {
                     if (editBoxRoot.project && editBoxRoot.project.currentSelectedIndex >= 0) {
-                        editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "layer", value);
-                        editBoxRoot.project.dataModified();
+                        editBoxRoot.setEditedProperty("layer", value, qsTr("change layer"));
                     }
                 }
             }
@@ -278,7 +395,8 @@ Rectangle {
             // Start timestamp
             TextField {
                 id: startTimeField
-                text: (project.subtitleModel.count > 0 && project.currentSelectedIndex < project.subtitleModel.count && project.subtitleModel.get(project.currentSelectedIndex)) ? project.subtitleModel.get(project.currentSelectedIndex).start : ""
+                objectName: "editor-start-time"
+                text: ""
                 implicitWidth: 70
                 implicitHeight: 21
                 font.pixelSize: editBoxRoot.uiFontSize
@@ -295,19 +413,15 @@ Rectangle {
                 }
                 ToolTip.text: qsTr("Start time"); ToolTip.visible: hovered
                 onEditingFinished: {
-                    if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "start", text);
-                    var sMs = AssUtils.assToMs(text);
-                    var eMs = AssUtils.assToMs(endTimeField.text);
-                    durationField.text = AssUtils.msToAss(Math.max(0, eMs - sMs));
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.commitTiming("start", text);
                 }
             }
 
             // End timestamp
             TextField {
                 id: endTimeField
-                text: (project.subtitleModel.count > 0 && project.currentSelectedIndex < project.subtitleModel.count && project.subtitleModel.get(project.currentSelectedIndex)) ? project.subtitleModel.get(project.currentSelectedIndex).end : ""
+                objectName: "editor-end-time"
+                text: ""
                 implicitWidth: 70
                 implicitHeight: 21
                 font.pixelSize: editBoxRoot.uiFontSize
@@ -324,18 +438,14 @@ Rectangle {
                 }
                 ToolTip.text: qsTr("End time"); ToolTip.visible: hovered
                 onEditingFinished: {
-                    if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "end", text);
-                    var sMs = AssUtils.assToMs(startTimeField.text);
-                    var eMs = AssUtils.assToMs(text);
-                    durationField.text = AssUtils.msToAss(Math.max(0, eMs - sMs));
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.commitTiming("end", text);
                 }
             }
 
             // Duration field: bidirectionally syncs with end timestamp
             TextField {
                 id: durationField
+                objectName: "editor-duration"
                 text: "0:00:05.00"
                 implicitWidth: 70
                 implicitHeight: 21
@@ -354,12 +464,7 @@ Rectangle {
                 }
                 ToolTip.text: qsTr("Line duration"); ToolTip.visible: hovered
                 onEditingFinished: {
-                    if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    var durMs = AssUtils.assToMs(text);
-                    var sMs = AssUtils.assToMs(startTimeField.text);
-                    endTimeField.text = AssUtils.msToAss(sMs + durMs);
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "end", endTimeField.text);
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.commitTiming("duration", text);
                 }
             }
 
@@ -384,8 +489,7 @@ Rectangle {
                 ToolTip.text: qsTr("Left Margin (0 = default from style)"); ToolTip.visible: hovered
                 onEditingFinished: {
                     if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "marginLeft", parseInt(text, 10) || 0);
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.setEditedProperty("marginLeft", parseInt(text, 10) || 0, qsTr("change left margin"));
                 }
             }
             TextField {
@@ -408,8 +512,7 @@ Rectangle {
                 ToolTip.text: qsTr("Right Margin (0 = default from style)"); ToolTip.visible: hovered
                 onEditingFinished: {
                     if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "marginRight", parseInt(text, 10) || 0);
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.setEditedProperty("marginRight", parseInt(text, 10) || 0, qsTr("change right margin"));
                 }
             }
             TextField {
@@ -432,8 +535,7 @@ Rectangle {
                 ToolTip.text: qsTr("Vertical Margin (0 = default from style)"); ToolTip.visible: hovered
                 onEditingFinished: {
                     if (!editBoxRoot.project || editBoxRoot.project.currentSelectedIndex < 0) return;
-                    editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "marginVert", parseInt(text, 10) || 0);
-                    editBoxRoot.project.dataModified();
+                    editBoxRoot.setEditedProperty("marginVert", parseInt(text, 10) || 0, qsTr("change vertical margin"));
                 }
             }
 
@@ -450,6 +552,7 @@ Rectangle {
                 id: fb
                 property string svgIcon: ""
                 implicitWidth: 20
+                focusPolicy: Qt.NoFocus
                 implicitHeight: 20
                 padding: 1
 
@@ -469,12 +572,12 @@ Rectangle {
                 }
             }
 
-            Win32FormatBtn { svgIcon: "../../assets/icons_native/button_bold_16.png"; ToolTip.text: qsTr("Toggle bold (\\b) for the current selection or at the current cursor position") + " (Ctrl+B)"; ToolTip.visible: hovered; onClicked: subtitleEditArea.insert(subtitleEditArea.cursorPosition, "{\\b1}") }
-            Win32FormatBtn { svgIcon: "../../assets/icons_native/button_italics_16.png"; ToolTip.text: qsTr("Toggle italics (\\i) for the current selection or at the current cursor position") + " (Ctrl+I)"; ToolTip.visible: hovered; onClicked: subtitleEditArea.insert(subtitleEditArea.cursorPosition, "{\\i1}") }
-            Win32FormatBtn { svgIcon: "../../assets/icons_native/button_underline_16.png"; ToolTip.text: qsTr("Toggle underline (\\u) for the current selection or at the current cursor position") + " (Ctrl+U)"; ToolTip.visible: hovered; onClicked: subtitleEditArea.insert(subtitleEditArea.cursorPosition, "{\\u1}") }
-            Win32FormatBtn { svgIcon: "../../assets/icons_native/button_strikeout_16.png"; ToolTip.text: qsTr("Toggle strikeout (\\s) for the current selection or at the current cursor position") + " (Ctrl+S)"; ToolTip.visible: hovered; onClicked: subtitleEditArea.insert(subtitleEditArea.cursorPosition, "{\\s1}") }
+            Win32FormatBtn { objectName: "editor-bold"; svgIcon: "../../assets/icons_native/button_bold_16.png"; ToolTip.text: qsTr("Toggle bold (\\b) for the current selection or at the current cursor position") + " (Ctrl+B)"; ToolTip.visible: hovered; onClicked: editBoxRoot.toggleFormatting("b") }
+            Win32FormatBtn { objectName: "editor-italic"; svgIcon: "../../assets/icons_native/button_italics_16.png"; ToolTip.text: qsTr("Toggle italics (\\i) for the current selection or at the current cursor position") + " (Ctrl+I)"; ToolTip.visible: hovered; onClicked: editBoxRoot.toggleFormatting("i") }
+            Win32FormatBtn { objectName: "editor-underline"; svgIcon: "../../assets/icons_native/button_underline_16.png"; ToolTip.text: qsTr("Toggle underline (\\u) for the current selection or at the current cursor position") + " (Ctrl+U)"; ToolTip.visible: hovered; onClicked: editBoxRoot.toggleFormatting("u") }
+            Win32FormatBtn { objectName: "editor-strikeout"; svgIcon: "../../assets/icons_native/button_strikeout_16.png"; ToolTip.text: qsTr("Toggle strikeout (\\s) for the current selection or at the current cursor position"); ToolTip.visible: hovered; onClicked: editBoxRoot.toggleFormatting("s") }
 
-            Win32FormatBtn { svgIcon: "../../assets/icons_native/button_fontname_16.png"; ToolTip.text: qsTr("Select a font face and size"); ToolTip.visible: hovered; onClicked: subtitleEditArea.insert(subtitleEditArea.cursorPosition, "{\\fn}") }
+            Win32FormatBtn { objectName: "editor-font"; svgIcon: "../../assets/icons_native/button_fontname_16.png"; ToolTip.text: qsTr("Select a font face and size"); ToolTip.visible: hovered; onClicked: editBoxRoot.chooseFont() }
 
             // ASS color override buttons: primary (\c), secondary (\2c), outline (\3c), shadow (\4c)
             Win32FormatBtn {
@@ -552,7 +655,9 @@ Rectangle {
             // Time vs frame display toggle
             RadioButton {
                 id: radioTime
-                text: qsTr("T&ime"); checked: true
+                objectName: "editor-time-mode"
+                text: qsTr("T&ime"); checked: !editBoxRoot.frameMode
+                onClicked: editBoxRoot.frameMode = false
                 ToolTip.text: qsTr("Time by h:mm:ss.cs"); ToolTip.visible: hovered
                 font.pixelSize: editBoxRoot.uiFontSize
                 font.family: editBoxRoot.editFontFamily
@@ -567,7 +672,10 @@ Rectangle {
             }
             RadioButton {
                 id: radioFrame
-                text: qsTr("F&rame"); enabled: !!editBoxRoot.videoCtrl
+                objectName: "editor-frame-mode"
+                text: qsTr("F&rame"); enabled: editBoxRoot.frameAvailable
+                checked: editBoxRoot.frameMode
+                onClicked: editBoxRoot.frameMode = true
                 ToolTip.text: qsTr("Time by frame number"); ToolTip.visible: hovered
                 font.pixelSize: editBoxRoot.uiFontSize
                 font.family: editBoxRoot.editFontFamily
@@ -721,10 +829,11 @@ Rectangle {
                     wrapMode: TextArea.Wrap
                     selectByMouse: true
                     padding: 4
+                    persistentSelection: true
                     background: null
                     onTextChanged: {
-                        if (editBoxRoot.project.currentSelectedIndex < editBoxRoot.project.subtitleModel.count && editBoxRoot.project.currentSelectedIndex >= 0) {
-                            editBoxRoot.project.subtitleModel.setProperty(editBoxRoot.project.currentSelectedIndex, "text", text)
+                        if (!editBoxRoot.syncingFromProject && editBoxRoot.project.currentSelectedIndex < editBoxRoot.project.subtitleModel.count && editBoxRoot.project.currentSelectedIndex >= 0) {
+                            editBoxRoot.setEditedProperty("text", text, qsTr("edit text"))
                             if (editBoxRoot.videoCtrl) {
                                 var item = editBoxRoot.project.subtitleModel.get(editBoxRoot.project.currentSelectedIndex)
                                 editBoxRoot.videoCtrl.parseAndSetActiveSubtitle(item.start, item.end, text)
@@ -732,7 +841,10 @@ Rectangle {
                         }
                     }
                     Keys.onPressed: (event) => {
-                        if (event.text === "\\") {
+                        if (event.modifiers === Qt.ControlModifier && (event.key === Qt.Key_B || event.key === Qt.Key_I || event.key === Qt.Key_U)) {
+                            editBoxRoot.toggleFormatting(event.key === Qt.Key_B ? "b" : event.key === Qt.Key_I ? "i" : "u");
+                            event.accepted = true;
+                        } else if (event.text === "\\") {
                             tagAssistPopup.open();
                         } else if (event.key === Qt.Key_Menu || (event.modifiers & Qt.ShiftModifier && event.key === Qt.Key_F10)) {
                             editAreaContextMenu.popup();

@@ -6,14 +6,22 @@
 #include "SpectrogramItem.h"
 #include <QPainter>
 #include <QQuickWindow>
+#include <QCoreApplication>
+#include <QPointer>
 #include <QSGGeometryNode>
 #include <QSGSimpleTextureNode>
 #include <QSGTexture>
 #include <cmath>
+#include <climits>
 #include <cstring>
 #include <algorithm>
+#include <limits>
 
 namespace {
+struct AudioRootNode : QSGNode {
+    explicit AudioRootNode(bool spectral) : spectrum(spectral) {}
+    bool spectrum;
+};
 inline quint64 bitsOf(double v)
 {
     quint64 u = 0;
@@ -32,10 +40,18 @@ SpectrogramItem::SpectrogramItem(QQuickItem *parent)
     : QQuickItem(parent)
 {
     setFlag(ItemHasContents, true);
+    const QPointer<SpectrogramItem> guard(this);
+    m_spectrumWindow = std::make_shared<AsyncSpectrumWindow>([guard] {
+        // Resolve the item guard only on its GUI thread; the worker owns no UI object.
+        if (auto *app = QCoreApplication::instance()) {
+            QMetaObject::invokeMethod(app, [guard] { if (guard) guard->update(); }, Qt::QueuedConnection);
+        }
+    });
 }
 
 SpectrogramItem::~SpectrogramItem()
 {
+    m_spectrumWindow->stop(); // No wait: an in-flight job retains its PCM and cache.
     // QSGTexture must be destroyed while render context is valid.
     // deleteLater defers cleanup to the render thread event loop.
     if (m_stftGpuTexture) m_stftGpuTexture->deleteLater();
@@ -99,18 +115,27 @@ void SpectrogramItem::setAudioController(AudioController *ctrl)
         }
 
         m_audioController = ctrl;
+        ++m_audioGeneration;
+        m_spectrumWindow->invalidate();
+        m_waveKey = ~quint64(0);
 
         if (m_audioController) {
             connect(m_audioController, &AudioController::scrollChanged, this, [this]() { update(); });
             connect(m_audioController, &AudioController::zoomChanged, this, [this]() { update(); });
             connect(m_audioController, &AudioController::selectionChanged, this, [this]() { update(); });
             connect(m_audioController, &AudioController::verticalZoomChanged, this, [this]() { update(); });
-            connect(m_audioController, &AudioController::spectrumModeChanged, this, [this]() { update(); });
+            connect(m_audioController, &AudioController::spectrumModeChanged, this, [this]() {
+                m_spectrumWindow->invalidate();
+                update();
+            });
             connect(m_audioController, &AudioController::audioInfoChanged, this, [this]() {
+                ++m_audioGeneration;
+                m_spectrumWindow->invalidate();
                 // Invalidate textures when audio source or spectrum settings change.
                 m_lastStftRevision = ~quint64(0);
                 m_rulerKey = ~quint64(0);
                 m_markerKey = ~quint64(0);
+                m_waveKey = ~quint64(0);
                 update();
             });
             connect(m_audioController, &AudioController::keyframesChanged, this, [this]() {
@@ -119,6 +144,7 @@ void SpectrogramItem::setAudioController(AudioController *ctrl)
             });
             connect(m_audioController, &AudioController::positionChanged, this, [this]() { update(); });
             connect(m_audioController, &AudioController::cursorChanged, this, [this]() { update(); });
+            connect(m_audioController, &QObject::destroyed, this, [this]() { setAudioController(nullptr); });
         }
 
         Q_EMIT audioControllerChanged();
@@ -451,6 +477,7 @@ void SpectrogramItem::renderMarkersOverlayImage(int width, int height)
                 painter.setFont(font);
                 QFontMetrics fm(font);
                 const int tw = fm.horizontalAdvance(label);
+                if (width < tw + 4) return;
                 const int lx = std::clamp(cursorPx - tw / 2, 2, width - tw - 2);
                 const int ly = audioTop + 2 + fm.ascent();
 
@@ -476,25 +503,36 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
         return nullptr;
     }
 
+    const bool spectrum = m_audioController->spectrumMode();
+    if (oldNode && static_cast<AudioRootNode *>(oldNode)->spectrum != spectrum) {
+        delete oldNode;
+        oldNode = nullptr;
+    }
     QSGNode *root = oldNode;
     QSGGeometryNode *audioNode = nullptr;
+    QSGSimpleTextureNode *waveNode = nullptr;
     QSGSimpleTextureNode *rulerNode = nullptr;
     QSGSimpleTextureNode *markerNode = nullptr;
 
     if (!root) {
-        root = new QSGNode();
+        root = new AudioRootNode(spectrum);
 
         // 1. Spectrogram scene graph node.
-        audioNode = new QSGGeometryNode();
-        QSGGeometry *geom = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
-        geom->setDrawingMode(QSGGeometry::DrawTriangleStrip);
-        audioNode->setGeometry(geom);
-        audioNode->setFlag(QSGNode::OwnsGeometry);
+        if (spectrum) {
+            audioNode = new QSGGeometryNode();
+            QSGGeometry *geom = new QSGGeometry(QSGGeometry::defaultAttributes_TexturedPoint2D(), 4);
+            geom->setDrawingMode(QSGGeometry::DrawTriangleStrip);
+            audioNode->setGeometry(geom);
+            audioNode->setFlag(QSGNode::OwnsGeometry);
 
-        auto *mat = new SpectrogramShaderMaterial();
-        audioNode->setMaterial(mat);
-        audioNode->setFlag(QSGNode::OwnsMaterial);
-        root->appendChildNode(audioNode);
+            auto *mat = new SpectrogramShaderMaterial();
+            audioNode->setMaterial(mat);
+            audioNode->setFlag(QSGNode::OwnsMaterial);
+            root->appendChildNode(audioNode);
+        } else {
+            waveNode = new QSGSimpleTextureNode();
+            root->appendChildNode(waveNode);
+        }
 
         // 2. Timeline ruler node (top 17px).
         rulerNode = new QSGSimpleTextureNode();
@@ -504,7 +542,8 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
         markerNode = new QSGSimpleTextureNode();
         root->appendChildNode(markerNode);
     } else {
-        audioNode = static_cast<QSGGeometryNode*>(root->childAtIndex(0));
+        if (spectrum) audioNode = static_cast<QSGGeometryNode*>(root->childAtIndex(0));
+        else waveNode = static_cast<QSGSimpleTextureNode*>(root->childAtIndex(0));
         rulerNode = static_cast<QSGSimpleTextureNode*>(root->childAtIndex(1));
         markerNode = (root->childCount() > 2) ? static_cast<QSGSimpleTextureNode*>(root->childAtIndex(2)) : nullptr;
     }
@@ -514,78 +553,130 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
     const int audioH = std::max(1, h - 17);
     const qreal dpr = window()->devicePixelRatio();
 
-    auto &stftCore = const_cast<AegisubStftCore&>(m_audioController->stftCore());
-    const int scrollLeft = m_audioController->scrollLeft();
-    const double msPerPx = m_audioController->msPerPixel();
-    const int sr = stftCore.sampleRate();
-    const int hop = stftCore.hopSamples();
-    if (sr <= 0 || hop <= 0) {
-        return root;
-    }
-
-    const int visCenterMs = static_cast<int>((scrollLeft + w * 0.5) * msPerPx);
-    const int visCenterFrame = (visCenterMs * sr / 1000) / hop;
-    const int visSpanFrames = static_cast<int>((w * msPerPx * sr / 1000) / hop);
-
-    // Maintain sliding window across visible span; recomputation occurs on boundary crossing.
-    stftCore.ensureWindow(m_audioController->pcmProvider(), visCenterFrame, visSpanFrames);
-
-    // Re-upload STFT power texture when the underlying buffer revision changes
-    // or the GPU texture was released (e.g. via releaseResources) and needs recreation.
-    if ((m_lastStftRevision != stftCore.revision() || !m_stftGpuTexture) && !stftCore.stftTexture().isNull()) {
-        m_lastStftRevision = stftCore.revision();
-        if (m_stftGpuTexture) {
-            m_stftGpuTexture->deleteLater();
-            m_stftGpuTexture = nullptr;
+    if (spectrum) {
+        const auto &stftCore = m_audioController->stftCore();
+        const int scrollLeft = m_audioController->scrollLeft();
+        const double msPerPx = m_audioController->msPerPixel();
+        const int sr = stftCore.sampleRate();
+        const int hop = stftCore.hopSamples();
+        if (sr <= 0 || hop <= 0) {
+            return root;
         }
-        m_stftGpuTexture = window()->createTextureFromImage(stftCore.stftTexture(), QQuickWindow::TextureIsOpaque);
-        // Nearest-neighbor horizontal sampling matches Aegisub column-wise STFT indexing.
-        // Vertical interpolation or interval maximum evaluation is performed in shader.
-        m_stftGpuTexture->setFiltering(QSGTexture::Nearest);
-        m_stftGpuTexture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
-        m_stftGpuTexture->setVerticalWrapMode(QSGTexture::ClampToEdge);
+
+        const double centerFrame = (scrollLeft + w * 0.5) * msPerPx * sr / (1000.0 * hop);
+        const double spanFrames = w * msPerPx * sr / (1000.0 * hop);
+        const int visCenterFrame = static_cast<int>(std::clamp(centerFrame, 0.0,
+            static_cast<double>(std::numeric_limits<int>::max())));
+        const int visSpanFrames = static_cast<int>(std::clamp(spanFrames, 0.0,
+            static_cast<double>(std::numeric_limits<int>::max())));
+
+        // Copy immutable PCM ownership and submit a replaceable request. FFT/cache work
+        // runs on the worker, outside the scene graph synchronization/render phase.
+        m_spectrumWindow->request({m_audioController->pcmProvider(), m_audioGeneration,
+            stftCore.derivationSize, stftCore.derivationDist, visCenterFrame, visSpanFrames});
+        const auto spectrumWindow = m_spectrumWindow->result();
+        if (!spectrumWindow || spectrumWindow->image.isNull()) {
+            delete root;
+            return nullptr; // Never draw an old window for the newly requested viewport.
+        }
+
+        // Re-upload STFT power texture when the underlying buffer revision changes
+        // or the GPU texture was released (e.g. via releaseResources) and needs recreation.
+        if (m_lastStftRevision != spectrumWindow->imageRevision || !m_stftGpuTexture) {
+            m_lastStftRevision = spectrumWindow->imageRevision;
+            if (m_stftGpuTexture) {
+                m_stftGpuTexture->deleteLater();
+                m_stftGpuTexture = nullptr;
+            }
+            m_stftGpuTexture = window()->createTextureFromImage(spectrumWindow->image, QQuickWindow::TextureIsOpaque);
+            // Nearest-neighbor horizontal sampling matches Aegisub column-wise STFT indexing.
+            // Vertical interpolation or interval maximum evaluation is performed in shader.
+            m_stftGpuTexture->setFiltering(QSGTexture::Nearest);
+            m_stftGpuTexture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
+            m_stftGpuTexture->setVerticalWrapMode(QSGTexture::ClampToEdge);
+        }
+
+        if (!stftCore.paletteTexture().isNull() && !m_paletteGpuTexture) {
+            m_paletteGpuTexture = window()->createTextureFromImage(stftCore.paletteTexture());
+            m_paletteGpuTexture->setFiltering(QSGTexture::Linear);
+            m_paletteGpuTexture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
+            m_paletteGpuTexture->setVerticalWrapMode(QSGTexture::ClampToEdge);
+        }
+
+        if (!m_stftGpuTexture || !m_paletteGpuTexture) {
+            delete root;
+            return nullptr; // Return early if texture buffers are not ready.
+        }
+
+        auto *mat = static_cast<SpectrogramShaderMaterial*>(audioNode->material());
+        mat->setStftTexture(m_stftGpuTexture);
+        mat->setPaletteTexture(m_paletteGpuTexture);
+
+        QRectF audioRect(0, 17, w, audioH);
+        QSGGeometry::updateTexturedRectGeometry(audioNode->geometry(), audioRect, QRectF(0, 0, 1, 1));
+        audioNode->markDirty(QSGNode::DirtyGeometry);
+
+        mat->viewportWidth = static_cast<float>(w);
+        mat->viewportHeight = static_cast<float>(audioH);
+        mat->scrollLeft = static_cast<float>(scrollLeft);
+        mat->msPerPixel = static_cast<float>(msPerPx);
+        mat->sampleRate = static_cast<float>(sr);
+        mat->hopSamples = static_cast<float>(hop);
+        mat->totalFrames = static_cast<float>(stftCore.totalFrames());
+        mat->nbrBins = static_cast<float>(stftCore.nbrBins());
+        mat->maxFreq = stftCore.maxFreq;
+        mat->freqRef = stftCore.freqRef;
+        mat->posFref = stftCore.posFref;
+        mat->amplitudeScale = static_cast<float>(m_audioController->amplitudeScale());
+        mat->selStartMs = static_cast<float>(m_audioController->selectionStart());
+        mat->selEndMs = static_cast<float>(m_audioController->selectionEnd());
+        mat->windowStartFrame = static_cast<float>(spectrumWindow->start);
+        mat->windowFrameCount = static_cast<float>(spectrumWindow->count);
+        mat->windowFrameStep = static_cast<float>(spectrumWindow->step);
+        // Vertical sampling branch depends on physical device pixels matching Aegisub viewport.
+        mat->viewportDeviceHeight = static_cast<float>(audioH * dpr);
+        audioNode->markDirty(QSGNode::DirtyMaterial);
+    } else {
+        // The waveform uses interval maxima, so short pulses survive zoom-out.
+        quint64 waveKey = rulerStateKey(w);
+        hashMix(waveKey, h);
+        hashMix(waveKey, bitsOf(dpr));
+        hashMix(waveKey, bitsOf(m_audioController->amplitudeScale()));
+        hashMix(waveKey, m_audioController->selectionStart());
+        hashMix(waveKey, m_audioController->selectionEnd());
+        if (waveKey != m_waveKey || !waveNode->texture()) {
+            m_waveKey = waveKey;
+            // Keep the same ruler/marker layers and avoid STFT work in waveform mode.
+            QImage waveform(QSize(qMax(1, int(std::ceil(w * dpr))), qMax(1, int(std::ceil(audioH * dpr)))),
+                QImage::Format_ARGB32_Premultiplied);
+            waveform.setDevicePixelRatio(dpr);
+            waveform.fill(QColor(8, 4, 13));
+            const double left = double(m_audioController->scrollLeft()) * m_audioController->msPerPixel();
+            const double right = left + w * m_audioController->msPerPixel();
+            const int start = int(std::clamp(std::floor(left), double(INT_MIN), double(INT_MAX)));
+            const int end = int(std::clamp(std::ceil(right), double(INT_MIN), double(INT_MAX)));
+            const auto peaks = m_audioController->getWaveformPeaks(start, end, w);
+            QPainter painter(&waveform);
+            painter.setRenderHint(QPainter::Antialiasing, false);
+            const double center = audioH * 0.5;
+            const double scale = m_audioController->amplitudeScale();
+            for (int x = 0; x < peaks.size(); ++x) {
+                const double magnitude = std::clamp(peaks[x].toMap().value("peak").toDouble() * scale, 0.0, 1.0);
+                const double time = left + x * m_audioController->msPerPixel();
+                const bool selected = time >= m_audioController->selectionStart() && time < m_audioController->selectionEnd();
+                painter.setPen(selected ? QColor(205, 240, 226) : QColor(89, 145, 220));
+                painter.drawLine(QPointF(x, center - magnitude * center), QPointF(x, center + magnitude * center));
+            }
+            painter.end();
+            auto *previousTexture = waveNode->texture();
+            waveNode->setOwnsTexture(false);
+            waveNode->setTexture(window()->createTextureFromImage(waveform, QQuickWindow::TextureIsOpaque));
+            delete previousTexture;
+            waveNode->setOwnsTexture(true);
+            waveNode->setRect(0, 17, w, audioH);
+            waveNode->markDirty(QSGNode::DirtyMaterial | QSGNode::DirtyGeometry);
+        }
     }
-
-    if (!stftCore.paletteTexture().isNull() && !m_paletteGpuTexture) {
-        m_paletteGpuTexture = window()->createTextureFromImage(stftCore.paletteTexture());
-        m_paletteGpuTexture->setFiltering(QSGTexture::Linear);
-        m_paletteGpuTexture->setHorizontalWrapMode(QSGTexture::ClampToEdge);
-        m_paletteGpuTexture->setVerticalWrapMode(QSGTexture::ClampToEdge);
-    }
-
-    if (!m_stftGpuTexture || !m_paletteGpuTexture) {
-        delete root;
-        return nullptr; // Return early if texture buffers are not ready.
-    }
-
-    auto *mat = static_cast<SpectrogramShaderMaterial*>(audioNode->material());
-    mat->setStftTexture(m_stftGpuTexture);
-    mat->setPaletteTexture(m_paletteGpuTexture);
-
-    QRectF audioRect(0, 17, w, audioH);
-    QSGGeometry::updateTexturedRectGeometry(audioNode->geometry(), audioRect, QRectF(0, 0, 1, 1));
-    audioNode->markDirty(QSGNode::DirtyGeometry);
-
-    mat->viewportWidth = static_cast<float>(w);
-    mat->viewportHeight = static_cast<float>(audioH);
-    mat->scrollLeft = static_cast<float>(scrollLeft);
-    mat->msPerPixel = static_cast<float>(msPerPx);
-    mat->sampleRate = static_cast<float>(sr);
-    mat->hopSamples = static_cast<float>(hop);
-    mat->totalFrames = static_cast<float>(stftCore.totalFrames());
-    mat->nbrBins = static_cast<float>(stftCore.nbrBins());
-    mat->maxFreq = stftCore.maxFreq;
-    mat->freqRef = stftCore.freqRef;
-    mat->posFref = stftCore.posFref;
-    mat->amplitudeScale = static_cast<float>(m_audioController->amplitudeScale());
-    mat->selStartMs = static_cast<float>(m_audioController->selectionStart());
-    mat->selEndMs = static_cast<float>(m_audioController->selectionEnd());
-    mat->windowStartFrame = static_cast<float>(stftCore.windowStartFrame());
-    mat->windowFrameCount = static_cast<float>(stftCore.windowFrameCount());
-    mat->windowFrameStep = static_cast<float>(stftCore.windowFrameStep());
-    // Vertical sampling branch depends on physical device pixels matching Aegisub viewport.
-    mat->viewportDeviceHeight = static_cast<float>(audioH * dpr);
-    audioNode->markDirty(QSGNode::DirtyMaterial);
 
     // Reuse cached ruler texture if layout and timing parameters remain unchanged.
     const quint64 rKey = rulerStateKey(w);
@@ -593,9 +684,6 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
         m_rulerKey = rKey;
         renderTimelineRulerImage(w);
         QSGTexture *rulerTex = window()->createTextureFromImage(m_rulerImage);
-        if (rulerNode->texture() && rulerNode->texture() != rulerTex) {
-            delete rulerNode->texture();
-        }
         rulerNode->setTexture(rulerTex);
         rulerNode->setOwnsTexture(true);
         rulerNode->setRect(0, 0, w, 17);
@@ -609,9 +697,6 @@ QSGNode *SpectrogramItem::updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData 
             m_markerKey = mKey;
             renderMarkersOverlayImage(w, h);
             QSGTexture *markerTex = window()->createTextureFromImage(m_markerImage, QQuickWindow::TextureHasAlphaChannel);
-            if (markerNode->texture() && markerNode->texture() != markerTex) {
-                delete markerNode->texture();
-            }
             markerNode->setTexture(markerTex);
             markerNode->setOwnsTexture(true);
             markerNode->setRect(0, 0, w, h);

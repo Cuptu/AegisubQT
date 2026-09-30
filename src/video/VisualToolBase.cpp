@@ -30,6 +30,7 @@
 #include "VisualToolBase.h"
 #include "VideoDisplayController.h"
 
+
 QPointF VisualToolBase::toScriptCoords(const QPointF &pt) const
 {
     if (!m_parent) return pt;
@@ -54,48 +55,6 @@ QPointF VisualToolBase::fromScriptCoords(const QPointF &pt) const
     qreal cx = (pt.x() * vRect.width() / res.x()) + vRect.left();
     qreal cy = (pt.y() * vRect.height() / res.y()) + vRect.top();
     return QPointF(cx, cy);
-}
-
-QString VisualToolBase::setOverrideTag(const QString &text, const QString &tag, const QString &val)
-{
-    QString removeTag;
-    if (tag == "\\pos") removeTag = "\\move";
-    else if (tag == "\\move") removeTag = "\\pos";
-    else if (tag == "\\frz") removeTag = "\\fr";
-    else if (tag == "\\1c") removeTag = "\\c";
-    else if (tag == "\\clip") removeTag = "\\iclip";
-    else if (tag == "\\iclip") removeTag = "\\clip";
-
-    // Check if line already starts with an override block {...}
-    int firstBrace = text.indexOf('{');
-    int closeBrace = text.indexOf('}');
-
-    if (firstBrace == 0 && closeBrace > firstBrace) {
-        QString block = text.mid(1, closeBrace - 1);
-        QString rest = text.mid(closeBrace + 1);
-
-        // Strip existing target tag and mutually exclusive conflicts
-        auto removeSpecificTag = [&](const QString &t) {
-            if (t.isEmpty()) return;
-            // Remove parenthesized tags: \pos(...), \move(...), \org(...), \clip(...)
-            QString escaped = QRegularExpression::escape(t);
-            QRegularExpression reParen(escaped + "\\s*\\([^\\)]*\\)");
-            block.remove(reParen);
-            // Remove numeric value tags: \frz<val>, \fr<val>, \fscx<val>
-            QRegularExpression reValue(escaped + "[\\+\\-]?[0-9\\.]+");
-            block.remove(reValue);
-        };
-
-        removeSpecificTag(tag);
-        removeSpecificTag(removeTag);
-
-        // Append new tag at the end of the leading block
-        block += tag + val;
-        return QString("{%1}%2").arg(block, rest);
-    } else {
-        // No leading override block; prepend one
-        return QString("{%1%2}%3").arg(tag, val, text);
-    }
 }
 
 bool VisualToolBase::getLinePosition(const QString &text, const QPointF &scriptRes, QPointF &pos)

@@ -196,8 +196,8 @@ Item {
                         width: 21
                         height: 10
                         anchors.horizontalCenter: parent.horizontalCenter
-                        // fracFromTop: (50 - zoomLevel) / 80.0
-                        property real fracFromTop: audioController ? ((50.0 - audioController.zoomLevel) / 80.0) : 0.625
+                        // fracFromTop: (30 - zoomLevel) / 80.0
+                        property real fracFromTop: audioController ? ((30.0 - audioController.zoomLevel) / 80.0) : 0.375
                         y: Math.max(3, Math.min(parent.height - height - 3, 3 + fracFromTop * (parent.height - height - 6)))
                         color: "#007ad9"
                         border.color: "#005bb5"
@@ -220,7 +220,7 @@ Item {
                                     var range = drag.maximumY - drag.minimumY;
                                     if (range > 0) {
                                         var frac = (parent.y - drag.minimumY) / range;
-                                        var lvl = Math.round(50.0 - frac * 80.0);
+                                        var lvl = Math.round(30.0 - frac * 80.0);
                                         audioController.setZoomLevel(lvl);
                                     }
                                 }

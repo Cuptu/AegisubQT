@@ -29,54 +29,91 @@
 
 #include "AstraVideoProvider.h"
 #include "AstraCoreBridge.h"
-#include <QRunnable>
-#include <QPointer>
-#include <QDebug>
+#include <QThreadPool>
+#include <algorithm>
+#include <atomic>
+#include <mutex>
 #include <cmath>
+#include <utility>
 
-AstraVideoProvider::AstraVideoProvider(QObject *parent)
-    : VideoProvider(parent)
-{
-}
+struct AstraVideoProvider::WorkerState : std::enable_shared_from_this<WorkerState> {
+    AstraCoreBridge *bridge = nullptr;
+    QString path;
+    int width = 0, height = 0;
+    void *session = nullptr;
+    std::mutex sessionMutex;
+    std::atomic<bool> stopping{false};
+    std::atomic<bool> scrubMode{false};
+    std::atomic<uint64_t> latestRequest{0};
+    std::mutex requestMutex;
+    int pendingFrame = 0;
+    double pendingTime = 0;
+    bool hasPending = false, decodeInFlight = false;
 
-AstraVideoProvider::~AstraVideoProvider()
-{
-    close();
-}
+    // The receiver is read only while holding this gate. close() clears it
+    // before QObject destruction, so workers cannot enqueue into a dead object.
+    // All provider access is confined to the queued callback on its GUI thread.
+    std::mutex deliveryMutex;
+    AstraVideoProvider *receiver = nullptr;
+
+    ~WorkerState() {
+        if (!session) return;
+        auto *nativeBridge = bridge;
+        void *nativeSession = session;
+        // Even a session with no active decoder may take time to close. Its
+        // final shared reference can be released on the GUI thread, so always
+        // defer the native close. QCoreApplication drains the global pool on
+        // shutdown before the process-static bridge unloads its library.
+        if (auto *pool = QThreadPool::globalInstance())
+            pool->start([nativeBridge, nativeSession] { nativeBridge->closeVideoSession(nativeSession); });
+        else
+            nativeBridge->closeVideoSession(nativeSession); // application already destroyed
+    }
+
+    template<class Callback> void post(Callback callback) {
+        std::lock_guard<std::mutex> lock(deliveryMutex);
+        if (!receiver || stopping.load()) return;
+        auto *target = receiver;
+        std::weak_ptr<WorkerState> generation = shared_from_this();
+        QMetaObject::invokeMethod(target, [target, generation, callback = std::move(callback)]() mutable {
+            auto state = generation.lock();
+            if (!state || state->stopping.load() || target->m_state != state) return;
+            callback(target, *state);
+        }, Qt::QueuedConnection);
+    }
+};
+
+AstraVideoProvider::AstraVideoProvider(QObject *parent) : VideoProvider(parent) {}
+AstraVideoProvider::~AstraVideoProvider() { close(); }
 
 bool AstraVideoProvider::open(const QString &source)
 {
     close();
-    m_sync = std::make_shared<WorkerSync>();
-    m_sourcePath = source;
-
-    AstraCoreBridge *bridge = AstraCoreBridge::instance();
+    auto *bridge = AstraCoreBridge::instance();
     if (!bridge || !bridge->isAvailable()) {
         Q_EMIT providerError(QStringLiteral("AstraCore native library is not available."));
         return false;
     }
-
     MediaInfo info;
-    if (!bridge->probe(m_sourcePath, info) || !info.hasVideo) {
-        Q_EMIT providerError(QStringLiteral("Failed to probe video stream from: ") + m_sourcePath);
+    if (!bridge->probe(source, info) || !info.hasVideo) {
+        Q_EMIT providerError(QStringLiteral("Failed to probe video stream from: ") + source);
         return false;
     }
-
+    auto state = std::make_shared<WorkerState>();
+    state->bridge = bridge;
+    state->path = source;
+    state->width = info.width;
+    state->height = info.height;
+    state->receiver = this;
+    state->session = bridge->openVideoSession(source);
+    m_state = std::move(state);
+    m_sourcePath = source;
     m_width = info.width;
     m_height = info.height;
     m_fps = info.fps > 0.0 ? info.fps : 23.976;
     m_duration = info.duration;
     m_totalFrames = static_cast<int>(std::round(m_duration * m_fps));
-
-    // Probe HDR10 / PQ / HLG color properties
-    bridge->probeHdr(m_sourcePath, m_isHdr, m_bitDepth, m_colorPrimaries, m_colorTransfer);
-
-    // Open persistent decoding session for fast sequential and scrubbing playback
-    {
-        std::lock_guard<std::mutex> lock(m_sessionMutex);
-        m_videoSession = bridge->openVideoSession(m_sourcePath);
-    }
-
+    bridge->probeHdr(source, m_isHdr, m_bitDepth, m_colorPrimaries, m_colorTransfer, &m_colorSpace, &m_colorRange);
     m_loaded = true;
     Q_EMIT providerLoaded();
     return true;
@@ -84,55 +121,38 @@ bool AstraVideoProvider::open(const QString &source)
 
 void AstraVideoProvider::close()
 {
-    m_sync->stopping.store(true);
-    // Invalidate inflight decoding tasks by incrementing the sequence token.
-    m_latestFrameRequestId.fetch_add(1, std::memory_order_relaxed);
-
-    {
-        std::lock_guard<std::mutex> lock(m_requestMutex);
-        m_hasPending = false;
+    if (m_state) {
+        m_state->stopping.store(true);
+        {
+            std::lock_guard<std::mutex> lock(m_state->deliveryMutex);
+            m_state->receiver = nullptr;
+        }
+        // Active or queued tasks retain only this old generation's state.
+        // No native call or worker completion is waited for by the GUI.
+        m_state.reset();
     }
-
-    // Wait for in-flight workers to exit safely before invalidating the session
-    {
-        std::unique_lock<std::mutex> lk(m_sync->mutex);
-        m_sync->cv.wait(lk, [this]() {
-            return m_sync->activeWorkers == 0;
-        });
-    }
-
-    void *sessionToClose = nullptr;
-    {
-        std::lock_guard<std::mutex> lock(m_sessionMutex);
-        sessionToClose = m_videoSession;
-        m_videoSession = nullptr;
-    }
-    if (sessionToClose) {
-        AstraCoreBridge::instance()->closeVideoSession(sessionToClose);
-    }
-
     {
         std::lock_guard<std::mutex> lock(m_cacheMutex);
         m_cachedKeyframes.clear();
         m_cachedTimecodes.clear();
     }
-
     m_loaded = false;
     m_sourcePath.clear();
-    m_width = 0;
-    m_height = 0;
+    m_width = m_height = m_totalFrames = 0;
     m_duration = 0.0;
-    m_totalFrames = 0;
+    m_fps = 23.976;
+    m_isHdr = false;
+    m_bitDepth = 8;
+    m_colorPrimaries = m_colorTransfer = 0;
+    m_colorSpace = -1;
+    m_colorRange = 0;
 }
 
-QVector<int64_t> AstraVideoProvider::getKeyframes() const
-{
+QVector<int64_t> AstraVideoProvider::getKeyframes() const {
     std::lock_guard<std::mutex> lock(m_cacheMutex);
     return m_cachedKeyframes;
 }
-
-QVector<double> AstraVideoProvider::getTimecodes() const
-{
+QVector<double> AstraVideoProvider::getTimecodes() const {
     std::lock_guard<std::mutex> lock(m_cacheMutex);
     return m_cachedTimecodes;
 }
@@ -140,202 +160,115 @@ QVector<double> AstraVideoProvider::getTimecodes() const
 QImage AstraVideoProvider::getFrame(int frameNumber, double timeSeconds)
 {
     Q_UNUSED(frameNumber);
-    if (!m_loaded) return QImage();
-
-    double actualSec = 0.0;
-    std::lock_guard<std::mutex> lock(m_sessionMutex);
-    if (m_videoSession) {
-        return AstraCoreBridge::instance()->grabSessionFrame(m_videoSession, timeSeconds, m_width, m_height, &actualSec);
-    }
-    return AstraCoreBridge::instance()->grabFrameImage(m_sourcePath, timeSeconds, m_width, m_height, &actualSec);
+    auto state = m_state;
+    if (!m_loaded || !state) return {};
+    double actual = 0;
+    std::lock_guard<std::mutex> lock(state->sessionMutex);
+    if (state->session)
+        return state->bridge->grabSessionFrame(state->session, timeSeconds, state->width, state->height, &actual);
+    return state->bridge->grabFrameImage(state->path, timeSeconds, state->width, state->height, &actual);
 }
 
 void AstraVideoProvider::requestFrameAsync(int frameNumber, double timeSeconds)
 {
-    if (!m_loaded) return;
-
-    // Coalesce requests: at most one decode job in flight, keeping only the latest target frame.
+    auto state = m_state;
+    if (!m_loaded || !state || state->stopping.load()) return;
     {
-        std::lock_guard<std::mutex> lock(m_requestMutex);
-        m_pendingFrame = frameNumber;
-        m_pendingTime = timeSeconds;
-        m_hasPending = true;
-        ++m_latestFrameRequestId;
-        if (m_decodeInFlight) return;   // Decode active; worker will pick up newest frame on loop completion.
-        m_decodeInFlight = true;
+        std::lock_guard<std::mutex> lock(state->requestMutex);
+        state->pendingFrame = frameNumber;
+        state->pendingTime = timeSeconds;
+        state->hasPending = true;
+        ++state->latestRequest;
+        if (state->decodeInFlight) return;
+        state->decodeInFlight = true;
     }
-
     startDecodeLoop();
 }
 
 void AstraVideoProvider::setScrubMode(bool on)
 {
-    m_scrubMode.store(on, std::memory_order_relaxed);
+    if (m_state) m_state->scrubMode.store(on, std::memory_order_relaxed);
 }
 
 void AstraVideoProvider::startDecodeLoop()
 {
-    if (m_sync->stopping.load()) return;
-    const QString path = m_sourcePath;
-    const int targetWidth = m_width;
-    const int targetHeight = m_height;
-    QPointer<AstraVideoProvider> self(this);
-    auto sync = m_sync;
-
-    {
-        std::lock_guard<std::mutex> lk(sync->mutex);
-        sync->activeWorkers++;
-    }
-
-    QThreadPool::globalInstance()->start(QRunnable::create([self, sync, path, targetWidth, targetHeight]() {
-        struct WorkerGuard {
-            std::shared_ptr<WorkerSync> s;
-            ~WorkerGuard() {
-                if (s) {
-                    std::lock_guard<std::mutex> lk(s->mutex);
-                    s->activeWorkers--;
-                    s->cv.notify_all();
-                }
-            }
-        } guard{sync};
-
-        // Loop until all pending requests are drained: converges to latest frame during active scrubbing.
-        while (self && !sync->stopping.load()) {
-            int frameNumber = 0;
-            double timeSeconds = 0.0;
+    auto state = m_state;
+    if (!state) return;
+    QThreadPool::globalInstance()->start([state] {
+        // The worker accesses shared native/request state, never the provider.
+        // Every open gets new coalescing flags, fixing all stopped-loop exits.
+        for (;;) {
+            int frameNumber;
+            double timeSeconds;
+            uint64_t requestId;
             {
-                std::lock_guard<std::mutex> lock(self->m_requestMutex);
-                if (!self->m_hasPending || sync->stopping.load()) {
-                    self->m_decodeInFlight = false;
+                std::lock_guard<std::mutex> lock(state->requestMutex);
+                if (state->stopping.load() || !state->hasPending) {
+                    state->decodeInFlight = false;
                     return;
                 }
-                frameNumber = self->m_pendingFrame;
-                timeSeconds = self->m_pendingTime;
-                self->m_hasPending = false;
+                frameNumber = state->pendingFrame;
+                timeSeconds = state->pendingTime;
+                requestId = state->latestRequest.load(std::memory_order_relaxed);
+                state->hasPending = false;
             }
-
-            if (sync->stopping.load()) return;
-
-            double actualPts = 0.0;
+            int width = state->width, height = state->height;
+            if (state->scrubMode.load(std::memory_order_relaxed) && width > 480) {
+                height = std::max(1, static_cast<int>(std::lround(double(height) * 480.0 / width)));
+                width = 480;
+            }
+            double actualPts = 0;
             QImage frame;
-            // Downscale frame during scrubbing: clamp width to 480 maintaining aspect ratio for faster decode.
-            int targetW = targetWidth;
-            int targetH = targetHeight;
-            if (self->m_scrubMode.load(std::memory_order_relaxed) && targetWidth > 480) {
-                targetW = 480;
-                targetH = std::max(1, static_cast<int>(std::lround(double(targetHeight) * 480.0 / double(targetWidth))));
-            }
             {
-                std::lock_guard<std::mutex> lock(self->m_sessionMutex);
-                if (self->m_videoSession && !sync->stopping.load()) {
-                    frame = AstraCoreBridge::instance()->grabSessionFrame(
-                        self->m_videoSession, timeSeconds, targetW, targetH, &actualPts);
-                }
+                std::lock_guard<std::mutex> lock(state->sessionMutex);
+                if (state->session && !state->stopping.load())
+                    frame = state->bridge->grabSessionFrame(state->session, timeSeconds, width, height, &actualPts);
             }
-            if (frame.isNull() && !sync->stopping.load()) {
-                frame = AstraCoreBridge::instance()->grabFrameImage(
-                    path, timeSeconds, targetW, targetH, &actualPts);
-            }
-
-            // Dispatch decoded frame: provides continuous visual feedback during scrubbing.
-            // Stale frames are filtered upstream by frameNumber sequence tokens.
-            if (frame.isNull() || sync->stopping.load()) continue;
-
-            QMetaObject::invokeMethod(self, [self, sync, frameNumber, frame, actualPts]() {
-                if (self && !sync->stopping.load()) {
-                    Q_EMIT self->frameReady(frameNumber, frame, actualPts);
-                }
-            }, Qt::QueuedConnection);
+            if (frame.isNull() && !state->stopping.load())
+                frame = state->bridge->grabFrameImage(state->path, timeSeconds, width, height, &actualPts);
+            if (frame.isNull() || state->stopping.load()) continue;
+            state->post([requestId, frameNumber, frame, actualPts](AstraVideoProvider *provider, WorkerState &generation) {
+                // Delivery-time checking also handles a newer request at the
+                // same frame number, including full-resolution scrub release.
+                if (generation.latestRequest.load(std::memory_order_relaxed) == requestId)
+                    Q_EMIT provider->frameReady(frameNumber, frame, actualPts);
+            });
         }
-    }));
+    });
 }
 
 void AstraVideoProvider::extractKeyframesAsync()
 {
-    if (!m_loaded || m_sync->stopping.load()) return;
-
-    const QString path = m_sourcePath;
-    QPointer<AstraVideoProvider> self(this);
-    auto sync = m_sync;
-
-    {
-        std::lock_guard<std::mutex> lk(sync->mutex);
-        sync->activeWorkers++;
-    }
-
-    QThreadPool::globalInstance()->start(QRunnable::create([self, sync, path]() {
-        struct WorkerGuard {
-            std::shared_ptr<WorkerSync> s;
-            ~WorkerGuard() {
-                if (s) {
-                    std::lock_guard<std::mutex> lk(s->mutex);
-                    s->activeWorkers--;
-                    s->cv.notify_all();
-                }
+    auto state = m_state;
+    if (!m_loaded || !state || state->stopping.load()) return;
+    QThreadPool::globalInstance()->start([state] {
+        if (state->stopping.load()) return;
+        QVector<int64_t> indices;
+        auto timestamps = state->bridge->extractKeyframes(state->path, &indices);
+        state->post([indices, timestamps](AstraVideoProvider *provider, WorkerState &) {
+            {
+                std::lock_guard<std::mutex> lock(provider->m_cacheMutex);
+                provider->m_cachedKeyframes = indices;
             }
-        } guard{sync};
-
-        if (!self || sync->stopping.load()) return;
-
-        QVector<int64_t> frameIndices;
-        QVector<double> timestamps = AstraCoreBridge::instance()->extractKeyframes(path, &frameIndices);
-
-        if (!self || sync->stopping.load()) return;
-
-        {
-            std::lock_guard<std::mutex> lock(self->m_cacheMutex);
-            self->m_cachedKeyframes = frameIndices;
-        }
-
-        QMetaObject::invokeMethod(self, [self, sync, frameIndices, timestamps]() {
-            if (self && !sync->stopping.load()) {
-                Q_EMIT self->keyframesReady(frameIndices, timestamps);
-            }
-        }, Qt::QueuedConnection);
-    }));
+            Q_EMIT provider->keyframesReady(indices, timestamps);
+        });
+    });
 }
 
 void AstraVideoProvider::extractTimecodesAsync()
 {
-    if (!m_loaded || m_sync->stopping.load()) return;
-
-    const QString path = m_sourcePath;
+    auto state = m_state;
+    if (!m_loaded || !state || state->stopping.load()) return;
     const int maxFrames = m_totalFrames > 0 ? m_totalFrames + 100 : 500000;
-    QPointer<AstraVideoProvider> self(this);
-    auto sync = m_sync;
-
-    {
-        std::lock_guard<std::mutex> lk(sync->mutex);
-        sync->activeWorkers++;
-    }
-
-    QThreadPool::globalInstance()->start(QRunnable::create([self, sync, path, maxFrames]() {
-        struct WorkerGuard {
-            std::shared_ptr<WorkerSync> s;
-            ~WorkerGuard() {
-                if (s) {
-                    std::lock_guard<std::mutex> lk(s->mutex);
-                    s->activeWorkers--;
-                    s->cv.notify_all();
-                }
+    QThreadPool::globalInstance()->start([state, maxFrames] {
+        if (state->stopping.load()) return;
+        auto timecodes = state->bridge->extractTimecodes(state->path, QString(), maxFrames);
+        state->post([timecodes](AstraVideoProvider *provider, WorkerState &) {
+            {
+                std::lock_guard<std::mutex> lock(provider->m_cacheMutex);
+                provider->m_cachedTimecodes = timecodes;
             }
-        } guard{sync};
-
-        if (!self || sync->stopping.load()) return;
-
-        QVector<double> timecodes = AstraCoreBridge::instance()->extractTimecodes(path, QString(), maxFrames);
-
-        if (!self || sync->stopping.load()) return;
-
-        {
-            std::lock_guard<std::mutex> lock(self->m_cacheMutex);
-            self->m_cachedTimecodes = timecodes;
-        }
-
-        QMetaObject::invokeMethod(self, [self, sync, timecodes]() {
-            if (self && !sync->stopping.load()) {
-                Q_EMIT self->timecodesReady(timecodes);
-            }
-        }, Qt::QueuedConnection);
-    }));
+            Q_EMIT provider->timecodesReady(timecodes);
+        });
+    });
 }

@@ -61,6 +61,10 @@ public:
     virtual int bitDepth() const { return 8; }
     virtual int colorPrimaries() const { return 0; }
     virtual int colorTransfer() const { return 0; }
+    /// FFmpeg AVColorSpace value when known; -1 when unavailable.
+    virtual int colorSpace() const { return -1; }
+    /// FFmpeg AVColorRange value when known; 0 means unspecified or unavailable.
+    virtual int colorRange() const { return 0; }
 
     virtual QVector<int64_t> getKeyframes() const = 0;
     virtual QVector<double> getTimecodes() const = 0;

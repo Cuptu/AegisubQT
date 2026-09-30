@@ -28,19 +28,18 @@
 // Aegisub Project http://www.aegisub.org/
 
 #include "LuaModules.h"
+#include "AutomationFileSystem.h"
 
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
-#include <QRegularExpression>
 #include <QGuiApplication>
 #include <QClipboard>
 #include <QDebug>
 
 #include <filesystem>
-#include <chrono>
+#include <memory>
 #include <cstring>
-#include <climits>
 
 extern "C" int luaopen_lpeg(lua_State *L);
 
@@ -117,168 +116,7 @@ static int luaopen_unicode_impl(lua_State *L) {
     return 1;
 }
 
-// -------------------------------------------------------------
-// re_impl
-// -------------------------------------------------------------
-struct u32regex {
-    QRegularExpression re;
-};
-
-struct agi_re_match {
-    QString qstr;
-    QRegularExpressionMatch m;
-    int range[2];
-};
-
-struct agi_re_flag {
-    const char *name;
-    int value;
-};
-
-static const agi_re_flag regex_flags[] = {
-    {"ICASE", 1},
-    {"NOSUB", 2},
-    {"COLLATE", 4},
-    {"NEWLINE_ALT", 8},
-    {"NO_MOD_M", 16},
-    {"NO_MOD_S", 32},
-    {"MOD_S", 64},
-    {"MOD_X", 128},
-    {"NO_EMPTY_SUBEXPRESSIONS", 256},
-    {nullptr, 0}
-};
-
-static const agi_re_flag *get_regex_flags() {
-    return regex_flags;
-}
-
-static u32regex *regex_compile(const char *pattern, int flags, char **err) {
-    if (!pattern) {
-        *err = strdup_malloc("Null regex pattern");
-        return nullptr;
-    }
-    QRegularExpression::PatternOptions opts = QRegularExpression::NoPatternOption;
-    if (flags & 1) opts |= QRegularExpression::CaseInsensitiveOption;
-    if (flags & 64) opts |= QRegularExpression::DotMatchesEverythingOption;
-    if (flags & 128) opts |= QRegularExpression::ExtendedPatternSyntaxOption;
-    if (!(flags & 16)) opts |= QRegularExpression::MultilineOption;
-
-    auto u = new u32regex();
-    u->re = QRegularExpression(QString::fromUtf8(pattern), opts);
-    if (!u->re.isValid()) {
-        *err = strdup_malloc(u->re.errorString().toUtf8().constData());
-        delete u;
-        return nullptr;
-    }
-    return u;
-}
-
-static void regex_free(u32regex *re) {
-    delete re;
-}
-
-static void match_free(agi_re_match *m) {
-    delete m;
-}
-
-static int *regex_search(u32regex *re, const char *str, size_t len, size_t start, char **err) {
-    if (!re || !str) return nullptr;
-    QString qstr = QString::fromUtf8(str, (int)len);
-    int u16_start = (start > 0) ? QString::fromUtf8(str, (int)start).size() : 0;
-    QRegularExpressionMatch m = re->re.match(qstr, u16_start);
-    if (!m.hasMatch()) return nullptr;
-
-    int match_u16_start = m.capturedStart();
-    int match_u16_end = m.capturedEnd();
-
-    int byte_first = qstr.left(match_u16_start).toUtf8().size() + 1; // 1-based index
-    int byte_last = qstr.left(match_u16_end).toUtf8().size();
-
-    int *res = static_cast<int *>(malloc(sizeof(int) * 2));
-    if (!res) return nullptr;
-    res[0] = byte_first;
-    res[1] = byte_last;
-    return res;
-}
-
-static agi_re_match *regex_match(u32regex *re, const char *str, size_t len, int start, char **err) {
-    if (!re || !str) return nullptr;
-    QString qstr = QString::fromUtf8(str, (int)len);
-    int u16_start = (start > 0) ? QString::fromUtf8(str, start).size() : 0;
-    QRegularExpressionMatch m = re->re.match(qstr, u16_start);
-    if (!m.hasMatch()) return nullptr;
-
-    auto result = new agi_re_match();
-    result->qstr = qstr;
-    result->m = m;
-    result->range[0] = 0;
-    result->range[1] = 0;
-    return result;
-}
-
-static int *regex_get_match(agi_re_match *m, size_t idx) {
-    if (!m || !m->m.hasMatch()) return nullptr;
-    if (idx > (size_t)m->m.lastCapturedIndex()) return nullptr;
-    int u16_start = m->m.capturedStart((int)idx);
-    int u16_end = m->m.capturedEnd((int)idx);
-    if (u16_start < 0 || u16_end < 0) return nullptr;
-
-    m->range[0] = m->qstr.left(u16_start).toUtf8().size() + 1;
-    m->range[1] = m->qstr.left(u16_end).toUtf8().size();
-    return m->range;
-}
-
-static char *regex_replace(u32regex *re, const char *replacement, const char *str, size_t len, int max_count, char **err) {
-    if (!re || !str || !replacement) return nullptr;
-    QString qstr = QString::fromUtf8(str, (int)len);
-    QString qrepl = QString::fromUtf8(replacement);
-
-    if (max_count <= 0) max_count = INT_MAX;
-    int count = 0;
-    int offset = 0;
-    QString result;
-
-    while (count < max_count) {
-        QRegularExpressionMatch m = re->re.match(qstr, offset);
-        if (!m.hasMatch()) break;
-        result.append(qstr.mid(offset, m.capturedStart() - offset));
-
-        QString sub = qrepl;
-        for (int i = m.lastCapturedIndex(); i >= 0; --i) {
-            sub.replace(QString("\\%1").arg(i), m.captured(i));
-            sub.replace(QString("$%1").arg(i), m.captured(i));
-        }
-        result.append(sub);
-        offset = m.capturedEnd();
-        count++;
-        if (m.capturedLength() == 0) {
-            if (offset < qstr.length()) {
-                result.append(qstr.at(offset));
-                offset++;
-            } else {
-                break;
-            }
-        }
-    }
-    result.append(qstr.mid(offset));
-    QByteArray utf8 = result.toUtf8();
-    return strndup_malloc(utf8.constData(), utf8.size());
-}
-
-static int luaopen_re_impl(lua_State *L) {
-    do_register_lib_table(L, {"agi_re_match", "u32regex"});
-    lua_createtable(L, 0, 8);
-    do_register_lib_function(L, "search",     "int * (*)(u32regex *, const char *, size_t, size_t, char **)", (void*)regex_search);
-    do_register_lib_function(L, "match",      "agi_re_match * (*)(u32regex *, const char *, size_t, int, char **)", (void*)regex_match);
-    do_register_lib_function(L, "get_match",  "int * (*)(agi_re_match *, size_t)", (void*)regex_get_match);
-    do_register_lib_function(L, "replace",    "char * (*)(u32regex *, const char *, const char *, size_t, int, char **)", (void*)regex_replace);
-    do_register_lib_function(L, "compile",    "u32regex * (*)(const char *, int, char **)", (void*)regex_compile);
-    do_register_lib_function(L, "get_flags",  "const agi_re_flag * (*)()", (void*)get_regex_flags);
-    do_register_lib_function(L, "match_free", "void (*)(agi_re_match *)", (void*)match_free);
-    do_register_lib_function(L, "regex_free", "void (*)(u32regex *)", (void*)regex_free);
-    lua_remove(L, -2); // remove ffi.cast
-    return 1;
-}
+int luaopen_re_impl(lua_State *L);
 
 // -------------------------------------------------------------
 // lfs_impl
@@ -286,126 +124,76 @@ static int luaopen_re_impl(lua_State *L) {
 struct DirectoryIterator {
     std::filesystem::directory_iterator it;
     std::filesystem::directory_iterator end;
-    bool closed = false;
 };
 
-static std::filesystem::path to_fs_path(const char *str) {
-    if (!str) return std::filesystem::path();
-#ifdef _WIN32
-    return std::filesystem::path(QString::fromUtf8(str).toStdWString());
-#else
-    return std::filesystem::path(str);
-#endif
-}
-
-static std::string from_fs_path(const std::filesystem::path &p) {
-#ifdef _WIN32
-    return QString::fromStdWString(p.wstring()).toUtf8().toStdString();
-#else
-    return p.string();
-#endif
+// Every filesystem operation reports failures through the FFI error argument.
+// No native exception may escape into a LuaJIT frame.
+template<class Function>
+auto filesystem_call(char **err, Function function) -> decltype(function()) {
+    try { return function(); }
+    catch (const std::exception &exception) { *err = strdup_malloc(exception.what()); }
+    catch (...) { *err = strdup_malloc("Unknown filesystem error"); }
+    return {};
 }
 
 static DirectoryIterator *lfs_dir_new(const char *path, char **err) {
-    try {
-        auto d = new DirectoryIterator();
-        std::error_code ec;
-        d->it = std::filesystem::directory_iterator(to_fs_path(path), ec);
-        if (ec) {
-            const char *safePath = path ? path : "";
-            *err = strdup_malloc(("cannot open " + std::string(safePath) + ": " + ec.message()).c_str());
-            delete d;
-            return nullptr;
-        }
-        return d;
-    } catch (const std::exception &e) {
-        *err = strdup_malloc(e.what());
-        return nullptr;
-    }
+    return filesystem_call(err, [&]() -> DirectoryIterator * {
+        auto result = std::make_unique<DirectoryIterator>();
+        std::error_code error;
+        result->it = std::filesystem::directory_iterator(FileSystem::path(path), error);
+        if (error) throw std::runtime_error("cannot open " + std::string(path) + ": " + error.message());
+        return result.release();
+    });
 }
 
 static char *lfs_dir_next(DirectoryIterator *it, char **err) {
-    if (!it || it->closed || it->it == it->end) return nullptr;
-    try {
-        std::string filename = from_fs_path(it->it->path().filename());
+    if (!it || it->it == it->end) return nullptr;
+    return filesystem_call(err, [&]() -> char * {
+        const auto filename = FileSystem::utf8(it->it->path().filename());
         ++it->it;
-        return strdup_malloc(filename.c_str());
-    } catch (const std::exception &e) {
-        *err = strdup_malloc(e.what());
-        return nullptr;
-    }
+        return strndup_malloc(filename.data(), filename.size());
+    });
 }
 
-static void lfs_dir_close(DirectoryIterator *it, char **err) {
-    if (it) it->closed = true;
+static void lfs_dir_close(DirectoryIterator *it, char **) {
+    if (it) it->it = std::filesystem::directory_iterator();
 }
 
-static void lfs_dir_free(DirectoryIterator *it, char **err) {
-    delete it;
-}
+static void lfs_dir_free(DirectoryIterator *it, char **) { delete it; }
 
 static const char *lfs_get_mode(const char *path, char **err) {
-    std::error_code ec;
-    auto status = std::filesystem::status(to_fs_path(path), ec);
-    if (ec || status.type() == std::filesystem::file_type::not_found) return nullptr;
-    switch (status.type()) {
-        case std::filesystem::file_type::regular: return "file";
-        case std::filesystem::file_type::directory: return "directory";
-        case std::filesystem::file_type::symlink: return "link";
-        default: return "other";
-    }
+    return filesystem_call(err, [&] { return FileSystem::mode(FileSystem::path(path)); });
 }
 
 static int64_t lfs_get_mtime(const char *path, char **err) {
-    std::error_code ec;
-    auto lwt = std::filesystem::last_write_time(to_fs_path(path), ec);
-    if (ec) return 0;
-    auto sctp = std::chrono::time_point_cast<std::chrono::system_clock::duration>(
-        lwt - std::filesystem::file_time_type::clock::now() + std::chrono::system_clock::now()
-    );
-    return std::chrono::duration_cast<std::chrono::seconds>(sctp.time_since_epoch()).count();
+    return filesystem_call(err, [&] { return FileSystem::modification(FileSystem::path(path)); });
 }
 
 static uint64_t lfs_get_size(const char *path, char **err) {
-    std::error_code ec;
-    auto sz = std::filesystem::file_size(to_fs_path(path), ec);
-    return ec ? 0 : sz;
+    return filesystem_call(err, [&] { return FileSystem::size(FileSystem::path(path)); });
 }
 
 static bool lfs_chdir(const char *dir, char **err) {
-    std::error_code ec;
-    std::filesystem::current_path(to_fs_path(dir), ec);
-    if (ec) { *err = strdup_malloc(ec.message().c_str()); return false; }
-    return true;
+    return filesystem_call(err, [&] { std::filesystem::current_path(FileSystem::path(dir)); return true; });
 }
 
 static char *lfs_currentdir(char **err) {
-    std::error_code ec;
-    auto p = std::filesystem::current_path(ec);
-    if (ec) { *err = strdup_malloc(ec.message().c_str()); return nullptr; }
-    std::string s = from_fs_path(p);
-    return strdup_malloc(s.c_str());
+    return filesystem_call(err, [&] {
+        const auto result = FileSystem::utf8(std::filesystem::current_path());
+        return strndup_malloc(result.data(), result.size());
+    });
 }
 
 static bool lfs_mkdir(const char *dir, char **err) {
-    std::error_code ec;
-    std::filesystem::create_directory(to_fs_path(dir), ec);
-    if (ec) { *err = strdup_malloc(ec.message().c_str()); return false; }
-    return true;
+    return filesystem_call(err, [&] { FileSystem::mkdir(FileSystem::path(dir)); return true; });
 }
 
 static bool lfs_rmdir(const char *dir, char **err) {
-    std::error_code ec;
-    std::filesystem::remove(to_fs_path(dir), ec);
-    if (ec) { *err = strdup_malloc(ec.message().c_str()); return false; }
-    return true;
+    return filesystem_call(err, [&] { FileSystem::remove(FileSystem::path(dir)); return true; });
 }
 
 static bool lfs_touch(const char *path, char **err) {
-    std::error_code ec;
-    std::filesystem::last_write_time(to_fs_path(path), std::filesystem::file_time_type::clock::now(), ec);
-    if (ec) { *err = strdup_malloc(ec.message().c_str()); return false; }
-    return true;
+    return filesystem_call(err, [&] { FileSystem::touch(FileSystem::path(path)); return true; });
 }
 
 static int luaopen_lfs_impl(lua_State *L) {
@@ -533,7 +321,9 @@ bool load_script_file(lua_State *L, const QString &filepath, QString &errorMsg) 
     return true;
 }
 
-static int custom_module_loader(lua_State *L) {
+// A negative result leaves an error string on the Lua stack. The thin Lua
+// callback raises it only after all path/file temporaries have been destroyed.
+static int prepare_module_load(lua_State *L) {
     const char *modname = lua_tostring(L, 1);
     if (!modname) return 1;
 
@@ -563,7 +353,8 @@ static int custom_module_loader(lua_State *L) {
             if (load_script_file(L, filename, err)) {
                 return 1;
             } else {
-                return luaL_error(L, "Error loading module '%s':\n%s", filename.toUtf8().constData(), err.toUtf8().constData());
+                lua_pushfstring(L, "Error loading module '%s':\n%s", filename.toUtf8().constData(), err.toUtf8().constData());
+                return -1;
             }
         }
     }
@@ -572,9 +363,19 @@ static int custom_module_loader(lua_State *L) {
     return 1;
 }
 
-static int custom_lua_include(lua_State *L) {
+static int custom_module_loader(lua_State *L) {
+    const int result = prepare_module_load(L);
+    return result < 0 ? lua_error(L) : result;
+}
+
+// Finish Qt object lifetimes before raising a Lua error or executing Lua code.
+// LuaJIT's error unwinder must not cross live C++ objects owned by the loader.
+static bool prepare_lua_include(lua_State *L) {
     const char *filename_c = lua_tostring(L, 1);
-    if (!filename_c) return luaL_error(L, "include() requires a string filename");
+    if (!filename_c) {
+        lua_pushliteral(L, "include() requires a string filename");
+        return false;
+    }
     QString filename = QString::fromUtf8(filename_c);
 
     lua_getfield(L, LUA_REGISTRYINDEX, "include_paths");
@@ -616,14 +417,20 @@ static int custom_lua_include(lua_State *L) {
     }
 
     if (targetPath.isEmpty()) {
-        return luaL_error(L, "Lua include not found: %s", filename_c);
+        lua_pushfstring(L, "Lua include not found: %s", filename_c);
+        return false;
     }
 
     QString err;
     if (!load_script_file(L, targetPath, err)) {
-        return luaL_error(L, "Error loading Lua include '%s':\n%s", targetPath.toUtf8().constData(), err.toUtf8().constData());
+        lua_pushfstring(L, "Error loading Lua include '%s':\n%s", targetPath.toUtf8().constData(), err.toUtf8().constData());
+        return false;
     }
+    return true;
+}
 
+static int custom_lua_include(lua_State *L) {
+    if (!prepare_lua_include(L)) return lua_error(L);
     int pretop = lua_gettop(L) - 1;
     lua_call(L, 0, LUA_MULTRET);
     return lua_gettop(L) - pretop;
@@ -644,11 +451,18 @@ bool install_script_loaders(lua_State *L, const QStringList &include_paths) {
     for (const QString &p : include_paths) {
         pPath += QString("%1/?.lua;%1/?/init.lua;").arg(p);
     }
-    lua_getfield(L, -1, "path");
-    if (lua_isstring(L, -1)) {
-        pPath += QString::fromUtf8(lua_tostring(L, -1));
+    // Do not inherit Lua's ./?.lua paths or LUA_PATH/LUA_CPATH. Native and
+    // Lua modules resolve only in the configured include/script directories.
+    QString cPath;
+    for (const auto &path : include_paths) {
+#ifdef Q_OS_WIN
+        cPath += path + "/?.dll;";
+#else
+        cPath += path + "/?.so;";
+#endif
     }
-    lua_pop(L, 1);
+    lua_pushstring(L, cPath.toUtf8().constData());
+    lua_setfield(L, -2, "cpath");
 
     lua_pushstring(L, pPath.toUtf8().constData());
     lua_setfield(L, -2, "path");

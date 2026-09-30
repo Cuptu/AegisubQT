@@ -13,6 +13,7 @@
 #include <QImage>
 #include "AudioController.h"
 #include "SpectrogramShaderMaterial.h"
+#include "AsyncSpectrumWindow.h"
 
 class SpectrogramItem : public QQuickItem {
     Q_OBJECT
@@ -25,6 +26,8 @@ public:
 
     AudioController* audioController() const { return m_audioController; }
     void setAudioController(AudioController *ctrl);
+    // Immutable CPU window, also available for diagnostics without accessing GPU nodes.
+    std::shared_ptr<const AsyncSpectrumWindow::Result> spectrumResult() const { return m_spectrumWindow->result(); }
 
 protected:
     QSGNode *updatePaintNode(QSGNode *oldNode, UpdatePaintNodeData *data) override;
@@ -42,6 +45,8 @@ private:
     quint64 markerStateKey(int width, int height) const;
 
     AudioController *m_audioController = nullptr;
+    std::shared_ptr<AsyncSpectrumWindow> m_spectrumWindow;
+    quint64 m_audioGeneration = 0;
 
     // GPU texture caches.
     QSGTexture *m_stftGpuTexture = nullptr;
@@ -51,6 +56,7 @@ private:
     // State hashes for caching ruler and marker overlay textures.
     quint64 m_rulerKey = ~quint64(0);
     quint64 m_markerKey = ~quint64(0);
+    quint64 m_waveKey = ~quint64(0);
 
     QImage m_rulerImage;
     QImage m_markerImage;

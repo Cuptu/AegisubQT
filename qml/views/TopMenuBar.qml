@@ -28,6 +28,7 @@ MenuBar {
     signal jumpToLineEndRequested()
     signal cycleTagHidingRequested()
     signal openSubtitlesRequested()
+    signal openSubtitlesWithCharsetRequested()
     signal saveSubtitlesRequested()
     signal saveSubtitlesAsRequested()
     signal openVideoRequested()
@@ -130,7 +131,7 @@ MenuBar {
             icon.source: "../../assets/icons_native/open_toolbutton_16.png"
             onTriggered: menuBarRoot.openSubtitlesRequested()
         }
-        Action { text: qsTr("Open Subtitles with &Charset..."); icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: menuBarRoot.openSubtitlesRequested() }
+        Action { text: qsTr("Open Subtitles with &Charset..."); icon.source: "../../assets/icons_native/open_toolbutton_16.png"; onTriggered: menuBarRoot.openSubtitlesWithCharsetRequested() }
         Action {
             text: qsTr("Open Subtitles from &Video"); icon.source: "../../assets/icons_native/open_toolbutton_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
@@ -300,11 +301,11 @@ MenuBar {
         }
         Action {
             text: qsTr("Split lines before current frame") + "\tCtrl+D"; enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo && menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
-            onTriggered: menuBarRoot.project.splitLineAtFrame(-1, menuBarRoot.videoCtrl ? menuBarRoot.videoCtrl.currentTime : 0)
+            onTriggered: menuBarRoot.project.splitLineAtFrame(-1, menuBarRoot.videoCtrl)
         }
         Action {
             text: qsTr("Split lines after current frame") + "\tCtrl+Shift+D"; enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo && menuBarRoot.project && menuBarRoot.project.selectedIndices.length > 0)
-            onTriggered: menuBarRoot.project.splitLineAtFrame(1, menuBarRoot.videoCtrl ? menuBarRoot.videoCtrl.currentTime : 0)
+            onTriggered: menuBarRoot.project.splitLineAtFrame(1, menuBarRoot.videoCtrl)
         }
         Action {
             text: qsTr("De&lete Lines") + "\tCtrl+Delete"
@@ -344,7 +345,7 @@ MenuBar {
             Action { text: qsTr("&Style"); onTriggered: menuBarRoot.project.sortLines("style", false) }
             Action { text: qsTr("Act&or"); onTriggered: menuBarRoot.project.sortLines("actor", false) }
             Action { text: qsTr("E&ffect"); onTriggered: menuBarRoot.project.sortLines("effect", false) }
-            Action { text: qsTr("&Layer"); onTriggered: menuBarRoot.project.sortByColumn(1) }
+            Action { text: qsTr("&Layer"); onTriggered: menuBarRoot.project.sortLines("layer", false) }
         }
         NativeMenu {
             title: qsTr("Sort Selected Lines")
@@ -354,7 +355,7 @@ MenuBar {
             Action { text: qsTr("&Style"); onTriggered: menuBarRoot.project.sortLines("style", true) }
             Action { text: qsTr("Act&or"); onTriggered: menuBarRoot.project.sortLines("actor", true) }
             Action { text: qsTr("E&ffect"); onTriggered: menuBarRoot.project.sortLines("effect", true) }
-            Action { text: qsTr("&Layer"); onTriggered: menuBarRoot.project.sortByColumn(1) }
+            Action { text: qsTr("&Layer"); onTriggered: menuBarRoot.project.sortLines("layer", true) }
         }
         Action {
             text: qsTr("Swap Lines"); icon.source: "../../assets/icons_native/arrow_sort_16.png"
@@ -392,7 +393,7 @@ MenuBar {
             text: qsTr("Snap to &Scene") + "\tCtrl+Shift+D"
             icon.source: "../../assets/icons_native/snap_subs_to_scene_16.png"
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
-            onTriggered: menuBarRoot.project.snapToKeyframes(menuBarRoot.project.snapPoints)
+            onTriggered: if (menuBarRoot.videoCtrl) menuBarRoot.project.snapToKeyframes(menuBarRoot.videoCtrl.currentSceneBoundsMs())
         }
         Action {
             text: qsTr("Shift to &Current Frame"); icon.source: "../../assets/icons_native/shift_to_frame_16.png"
@@ -461,7 +462,7 @@ MenuBar {
         }
         Action {
             text: qsTr("Close Timecodes File"); icon.source: "../../assets/icons_native/close_timecodes_menu_16.png"
-            enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasTimecodes)
+            enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasCustomTimecodes)
             onTriggered: {
                 if (menuBarRoot.videoCtrl) menuBarRoot.videoCtrl.closeTimecodesFile();
                 menuBarRoot.statusMessage(qsTr("Timecode file closed"));
@@ -564,23 +565,23 @@ MenuBar {
             enabled: !!(menuBarRoot.videoCtrl && menuBarRoot.videoCtrl.hasVideo)
             Action {
                 text: qsTr("&Default"); checkable: true
-                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverride === 0
-                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(0)
+                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverrideType === 0
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setAspectRatio(0)
             }
             Action {
                 text: qsTr("&Fullscreen (4:3)"); checkable: true
-                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 4/3) < 0.01
-                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(4/3)
+                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverrideType === 1
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setAspectRatio(1)
             }
             Action {
                 text: qsTr("&Widescreen (16:9)"); checkable: true
-                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 16/9) < 0.01
-                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(16/9)
+                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverrideType === 2
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setAspectRatio(2)
             }
             Action {
                 text: qsTr("&Cinematic (2.35)"); checkable: true
-                checked: menuBarRoot.videoDisplayCtrl && Math.abs(menuBarRoot.videoDisplayCtrl.arOverride - 2.35) < 0.01
-                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setArOverride(2.35)
+                checked: menuBarRoot.videoDisplayCtrl && menuBarRoot.videoDisplayCtrl.arOverrideType === 3
+                onTriggered: if (menuBarRoot.videoDisplayCtrl) menuBarRoot.videoDisplayCtrl.setAspectRatio(3)
             }
             Action {
                 text: qsTr("C&ustom...")
@@ -714,6 +715,10 @@ MenuBar {
     // Automation menu
     NativeMenu {
         id: autoMenu
+        onAboutToShow: {
+            if (typeof automationManager !== "undefined" && menuBarRoot.project)
+                automationManager.refreshMacroStates(menuBarRoot.project, menuBarRoot.project.currentSelectedIndex, menuBarRoot.project.selectedIndices);
+        }
         title: qsTr("A&utomation")
         Action { text: qsTr("&Automation..."); icon.source: "../../assets/icons_native/automation_toolbutton_16.png"; onTriggered: if (dialogs) dialogs.dlgAutomation.open() }
         Action {
@@ -729,6 +734,10 @@ MenuBar {
             onObjectRemoved: (index, object) => autoMenu.removeAction(object)
             delegate: Action {
                 text: modelData.name
+                enabled: modelData.enabled
+                checkable: modelData.checkable
+                checked: modelData.checked
+                property string helpText: modelData.description
                 onTriggered: {
                     if (typeof automationManager !== "undefined" && menuBarRoot.project) {
                         automationManager.runMacro(modelData.id, menuBarRoot.project, menuBarRoot.project.currentSelectedIndex, menuBarRoot.project.selectedIndices);

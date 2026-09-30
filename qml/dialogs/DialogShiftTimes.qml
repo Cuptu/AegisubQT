@@ -18,29 +18,21 @@ NativeDialogFrame {
     implicitHeight: 380
 
     // Emitted when user confirms timestamp adjustment:
-    // amountMs: positive millisecond delta
+    // amount: positive milliseconds or frames according to byFrames
     // isForward: true to shift forward (later), false backward (earlier)
     // affectMode: 0 = all rows, 1 = selected rows, 2 = selected onward
     // timeType: 0 = start & end, 1 = start only, 2 = end only
-    signal shiftTimesRequested(int amountMs, bool isForward, int affectMode, int timeType)
-
-    property var historyList: [
-        { text: "500ms forward, s+e, all", ms: 500, forward: true, affect: 0, time: 0 },
-        { text: "200ms backward, s+e, sel", ms: 200, forward: false, affect: 1, time: 0 }
-    ]
-
-    function getFrameMs() {
-        if (typeof videoController !== "undefined" && videoController && videoController.fps > 0) {
-            return 1000.0 / videoController.fps;
-        }
-        return 41.7083;
-    }
+    signal shiftTimesRequested(int amount, bool isForward, int affectMode, int timeType, bool byFrames)
+    property var videoCtrl: null
+    property var historyList: []
 
     function applyHistory(idx) {
         if (idx >= 0 && idx < historyList.length) {
             var item = historyList[idx];
-            txtTime.text = formatMs(item.ms);
-            txtFrames.text = Math.round(item.ms / getFrameMs()).toString();
+            radByFrames.checked = !!item.byFrames;
+            radByTime.checked = !item.byFrames;
+            if (item.byFrames) txtFrames.text = item.amount.toString();
+            else txtTime.text = formatMs(item.amount);
             radForward.checked = item.forward;
             radBackward.checked = !item.forward;
             if (item.affect === 0) radAll.checked = true;
@@ -78,18 +70,20 @@ NativeDialogFrame {
     }
 
     function doShift() {
-        var ms = radByTime.checked ? parseMs(txtTime.text) : Math.round((parseInt(txtFrames.text) || 0) * getFrameMs());
+        var byFrames = radByFrames.checked;
+        if (byFrames && (!videoCtrl || !videoCtrl.hasVideo)) return;
+        var amount = Math.max(0, byFrames ? (parseInt(txtFrames.text) || 0) : parseMs(txtTime.text));
         var isFwd = radForward.checked;
         var affect = radAll.checked ? 0 : (radSelected.checked ? 1 : 2);
         var tType = radBothTimes.checked ? 0 : (radStartOnly.checked ? 1 : 2);
 
         // Append shift configuration to session history
-        var histDesc = (radByTime.checked ? (ms + "ms") : (txtFrames.text + " frames")) + " " + (isFwd ? "forward" : "backward") + ", " + (tType === 0 ? "s+e" : (tType === 1 ? "s" : "e")) + ", " + (affect === 0 ? "all" : (affect === 1 ? "sel" : "onward"));
+        var histDesc = (byFrames ? (amount + " frames") : (amount + "ms")) + " " + (isFwd ? "forward" : "backward") + ", " + (tType === 0 ? "s+e" : (tType === 1 ? "s" : "e")) + ", " + (affect === 0 ? "all" : (affect === 1 ? "sel" : "onward"));
         var newHist = [].concat(dialog.historyList);
-        newHist.unshift({ text: histDesc, ms: ms, forward: isFwd, affect: affect, time: tType });
+        newHist.unshift({ text: histDesc, amount: amount, byFrames: byFrames, forward: isFwd, affect: affect, time: tType });
         dialog.historyList = newHist;
 
-        dialog.shiftTimesRequested(ms, isFwd, affect, tType);
+        dialog.shiftTimesRequested(amount, isFwd, affect, tType, byFrames);
         dialog.close();
     }
 
@@ -139,6 +133,7 @@ NativeDialogFrame {
                             NativeRadioButton {
                                 id: radByFrames
                                 text: qsTr("&Frames:")
+                                enabled: !!(dialog.videoCtrl && dialog.videoCtrl.hasVideo)
                             }
                             NativeTextBox {
                                 id: txtFrames

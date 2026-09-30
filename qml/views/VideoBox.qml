@@ -770,10 +770,10 @@ Item {
                         visible: clipOverlay.hasClip
 
                         // Corner drag handle pins
-                        Rectangle { width: 8; height: 8; anchors.centerIn: parent.topLeft; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
-                        Rectangle { width: 8; height: 8; anchors.centerIn: parent.topRight; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
-                        Rectangle { width: 8; height: 8; anchors.centerIn: parent.bottomLeft; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
-                        Rectangle { width: 8; height: 8; anchors.centerIn: parent.bottomRight; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
+                        Rectangle { width: 8; height: 8; x: -width / 2; y: -height / 2; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
+                        Rectangle { width: 8; height: 8; x: parent.width - width / 2; y: -height / 2; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
+                        Rectangle { width: 8; height: 8; x: -width / 2; y: parent.height - height / 2; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
+                        Rectangle { width: 8; height: 8; x: parent.width - width / 2; y: parent.height - height / 2; color: "#ffff00"; border.color: "#000000"; border.width: 1 }
 
                         // Clip dimensions badge
                         Rectangle {
@@ -1731,7 +1731,7 @@ Item {
                 itemText: qsTr("Reset Video &Pan")
                 onTriggered: {
                     if (typeof videoDisplayController !== "undefined") {
-                        videoDisplayController.resetPanZoom();
+                        videoDisplayController.resetContentZoom();
                     }
                     videoController.setZoom("100%");
                 }

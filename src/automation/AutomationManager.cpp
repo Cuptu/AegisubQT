@@ -29,7 +29,10 @@
 
 #include "AutomationManager.h"
 #include "LuaScript.h"
+#include "FramerateExport.h"
+#include <libaegisub/color.h>
 #include "SubtitleModel.h"
+#include "../bridge/AppPaths.h"
 
 #include <QCoreApplication>
 #include <QDir>
@@ -38,8 +41,58 @@
 #include <QMetaObject>
 #include <QUrl>
 #include <QStandardPaths>
+#include <algorithm>
+#include <cmath>
+#include <limits>
+#include <QSet>
+#include <optional>
 
 namespace Automation {
+
+// Built-in IDs occupy a separate namespace from registered Lua filters.
+static constexpr int FixStylesFilterId = -1;
+static constexpr int FramerateFilterId = -2;
+
+static double defaultInputFps(const QVariantMap &context) {
+    const double fps = context.value("inputFps").toDouble();
+    return std::isfinite(fps) && fps > 0 ? QString::number(fps, 'f', 3).toDouble() : 23.976;
+}
+
+static std::pair<agi::vfr::Framerate, agi::vfr::Framerate> exportRates(const QVariantMap &settings,
+                                                                 const QVariantMap &context) {
+    auto fps = [&](const char *name) {
+        const auto value = settings.value(name, defaultInputFps(context));
+        if (value.typeId() == QMetaType::Bool) throw std::invalid_argument("Invalid framerate value");
+        bool ok = false;
+        const double number = value.toDouble(&ok);
+        if (!ok || !std::isfinite(number) || number <= 0 || number > 1000)
+            throw std::invalid_argument("Framerate must be greater than zero and at most 1000");
+        return agi::vfr::Framerate(number);
+    };
+    auto input = fps("inputFps");
+    agi::vfr::Framerate output;
+    const auto mode = settings.value("outputMode", context.value("isVfr").toBool() ? "Variable" : "Constant").toString();
+    if (mode == "Constant") output = fps("outputFps");
+    else if (mode == "Variable") {
+        if (!context.value("isVfr").toBool()) throw std::invalid_argument("No variable-framerate timecodes are loaded");
+        const auto times = context.value("timecodes").toList();
+        if (times.size() < 2 || times.size() > 10'000'000) throw std::invalid_argument("Invalid variable-framerate timecodes");
+        std::vector<int> milliseconds;
+        milliseconds.reserve(times.size());
+        for (const auto &time : times) {
+            bool ok = false;
+            const double number = time.toDouble(&ok);
+            if (!ok || !std::isfinite(number) || number < 0 || number > std::numeric_limits<int>::max() || std::floor(number) != number)
+                throw std::invalid_argument("Invalid variable-framerate timestamp");
+            milliseconds.push_back(static_cast<int>(number));
+        }
+        output = agi::vfr::Framerate(std::move(milliseconds));
+    } else throw std::invalid_argument("Invalid framerate output mode");
+    const auto reverse = settings.value("reverse", false);
+    if (reverse.typeId() != QMetaType::Bool) throw std::invalid_argument("Invalid reverse-transformation value");
+    if (reverse.toBool()) std::swap(input, output);
+    return {std::move(input), std::move(output)};
+}
 
 static AutomationManager *s_instance = nullptr;
 
@@ -57,15 +110,12 @@ AutomationManager::AutomationManager(QObject *parent)
 
     // Detect include paths
     QString appDir = QCoreApplication::applicationDirPath();
-    QString currentDir = QDir::currentPath();
 
     QStringList candidateInclude = {
-        currentDir + "/automation/include",
         appDir + "/automation/include",
-        appDir + "/../automation/include",
         appDir + "/../Resources/automation/include",
         appDir + "/../share/AegisubQT/automation/include",
-        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/automation/include"
+        AppPaths::dataDirectory() + "/automation/include"
     };
 
     for (const QString &p : candidateInclude) {
@@ -82,8 +132,9 @@ AutomationManager::~AutomationManager() {
 }
 
 void AutomationManager::addIncludePath(const QString &path) {
-    if (!m_includePaths.contains(path)) {
-        m_includePaths.append(path);
+    const auto canonical = QFileInfo(path).canonicalFilePath();
+    if (!canonical.isEmpty() && QDir(canonical).exists() && !m_includePaths.contains(canonical)) {
+        m_includePaths.append(canonical);
     }
 }
 
@@ -98,6 +149,17 @@ QVariantList AutomationManager::macros() const {
 void AutomationManager::updateMacroList() {
     m_cachedScripts.clear();
     m_cachedMacros.clear();
+    m_cachedFilters.clear();
+    m_cachedFilters.append(QVariantMap{
+        {"id", FixStylesFilterId}, {"name", tr("Fix Styles")},
+        {"description", tr("Replace styles that are not defined in the file with Default.")},
+        {"priority", -5000}, {"hasConfig", false}, {"isBuiltin", true},
+        {"scriptName", tr("Built-in")}, {"scriptPath", QString()}});
+    m_cachedFilters.append(QVariantMap{
+        {"id", FramerateFilterId}, {"name", tr("Transform Framerate")},
+        {"description", tr("Transform subtitle times, including animations, fades and karaoke, between constant or variable framerates.")},
+        {"priority", 1000}, {"hasConfig", true}, {"isBuiltin", true},
+        {"scriptName", tr("Built-in")}, {"scriptPath", QString()}});
 
     for (size_t i = 0; i < m_entries.size(); ++i) {
         const auto &entry = m_entries[i];
@@ -117,11 +179,20 @@ void AutomationManager::updateMacroList() {
         m_cachedScripts.append(sMap);
 
         if (s->isLoaded()) {
+            for (const auto &filter : s->filters()) {
+                m_cachedFilters.append(QVariantMap{
+                    {"id", filter.id}, {"name", filter.name}, {"description", filter.description},
+                    {"priority", filter.priority}, {"hasConfig", filter.configRef != LUA_NOREF},
+                    {"scriptName", s->name()}, {"scriptPath", s->filepath()}});
+            }
             for (const auto &m : s->macros()) {
                 QVariantMap mMap;
                 mMap["id"] = m.id;
                 mMap["name"] = m.name;
                 mMap["description"] = m.description;
+                mMap["enabled"] = false;
+                mMap["checkable"] = m.toggleRef != LUA_NOREF;
+                mMap["checked"] = false;
                 mMap["scriptName"] = s->name();
                 mMap["scriptPath"] = s->filepath();
                 m_cachedMacros.append(mMap);
@@ -129,57 +200,72 @@ void AutomationManager::updateMacroList() {
         }
     }
 
+    std::stable_sort(m_cachedFilters.begin(), m_cachedFilters.end(), [](const QVariant &a, const QVariant &b) {
+        return a.toMap().value("priority").toInt() > b.toMap().value("priority").toInt();
+    });
     emit scriptsChanged();
     emit macrosChanged();
+    emit filtersChanged();
+}
+
+LuaVideoContext AutomationManager::videoContext() const {
+    LuaVideoContext context;
+    if (!m_video || !m_video->property("hasVideo").toBool()) return context;
+    context.width = m_video->property("videoWidth").toInt();
+    context.height = m_video->property("videoHeight").toInt();
+    context.available = context.width > 0 && context.height > 0;
+    if (!context.available) return context;
+    const double override = m_videoDisplay ? m_videoDisplay->property("arOverride").toDouble() : 0;
+    context.aspectRatio = override > 0 ? override : static_cast<double>(context.width) / context.height;
+    context.aspectRatioType = m_videoDisplay ? m_videoDisplay->property("arOverrideType").toInt() : 0;
+    return context;
 }
 
 void AutomationManager::scanAutoloadFolder() {
     QString appDir = QCoreApplication::applicationDirPath();
-    QString currentDir = QDir::currentPath();
 
     QStringList candidateAutoload = {
-        currentDir + "/automation/autoload",
         appDir + "/automation/autoload",
-        appDir + "/../automation/autoload",
         appDir + "/../Resources/automation/autoload",
         appDir + "/../share/AegisubQT/automation/autoload",
-        QStandardPaths::writableLocation(QStandardPaths::AppDataLocation) + "/automation/autoload"
+        AppPaths::dataDirectory() + "/automation/autoload"
     };
 
-    QString autoloadDir;
-    for (const QString &p : candidateAutoload) {
-        if (QDir(p).exists()) {
-            autoloadDir = QDir::cleanPath(p);
-            break;
-        }
+    QStringList autoloadDirectories;
+    for (const auto &path : candidateAutoload) {
+        const auto canonical = QFileInfo(path).canonicalFilePath();
+        if (!canonical.isEmpty() && QDir(canonical).exists() && !autoloadDirectories.contains(canonical))
+            autoloadDirectories.append(canonical);
     }
-
-    if (autoloadDir.isEmpty()) {
+    if (autoloadDirectories.isEmpty()) {
         qWarning() << "[AutomationManager] No autoload folder found";
+        updateMacroList();
         return;
     }
 
-    qInfo() << "[AutomationManager] Scanning autoload folder:" << autoloadDir;
-    QDir dir(autoloadDir);
-    QStringList files = dir.entryList({"*.lua", "*.moon"}, QDir::Files, QDir::Name);
+    for (const QString &autoloadDir : autoloadDirectories) {
+        qInfo() << "[AutomationManager] Scanning autoload folder:" << autoloadDir;
+        QDir dir(autoloadDir);
+        QStringList files = dir.entryList({"*.lua", "*.moon"}, QDir::Files, QDir::Name);
 
-    for (const QString &f : files) {
-        QString fullPath = dir.filePath(f);
-        // Avoid duplicate
-        bool exists = false;
-        for (const auto &e : m_entries) {
-            if (e.script->filepath() == fullPath) {
-                exists = true;
-                break;
+        for (const QString &f : files) {
+            QString fullPath = QFileInfo(dir.filePath(f)).canonicalFilePath();
+            // Avoid duplicate
+            bool exists = false;
+            for (const auto &e : m_entries) {
+                if (e.script->filepath() == fullPath) {
+                    exists = true;
+                    break;
+                }
+            }
+            if (!exists) {
+                auto s = std::make_unique<LuaScript>(fullPath, m_includePaths);
+                s->setVideoContext(videoContext());
+                s->load();
+                m_entries.push_back({std::move(s), true});
             }
         }
-        if (!exists) {
-            auto s = std::make_unique<LuaScript>(fullPath, m_includePaths);
-            s->load();
-            m_entries.push_back({std::move(s), true});
-        }
     }
-
     updateMacroList();
 }
 
@@ -192,6 +278,7 @@ bool AutomationManager::addScript(const QString &filepath, bool isGlobal) {
     if (!QFileInfo::exists(cleanPath)) return false;
 
     auto s = std::make_unique<LuaScript>(cleanPath, m_includePaths);
+    s->setVideoContext(videoContext());
     bool ok = s->load();
     m_entries.push_back({std::move(s), isGlobal});
     updateMacroList();
@@ -207,6 +294,7 @@ void AutomationManager::removeScript(int index) {
 
 void AutomationManager::reloadScript(int index) {
     if (index >= 0 && index < (int)m_entries.size()) {
+        m_entries[index].script->setVideoContext(videoContext());
         m_entries[index].script->reload();
         updateMacroList();
     }
@@ -214,6 +302,7 @@ void AutomationManager::reloadScript(int index) {
 
 void AutomationManager::reloadAll() {
     for (auto &e : m_entries) {
+        e.script->setVideoContext(videoContext());
         e.script->reload();
     }
     updateMacroList();
@@ -242,28 +331,15 @@ static QString msToAssTime(int ms) {
     return QString::asprintf("%d:%02d:%02d.%02d", h, m, s, cs);
 }
 
-bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int activeIndex, const QVariantList &selectedIndices) {
-    // Locate the script containing this macro
-    LuaScript *targetScript = nullptr;
-    QString macroName;
-    for (const auto &entry : m_entries) {
-        for (const auto &m : entry.script->macros()) {
-            if (m.id == macroId) {
-                targetScript = entry.script.get();
-                macroName = m.name;
-                break;
-            }
-        }
-        if (targetScript) break;
-    }
-
-    if (!targetScript) {
-        qWarning() << "[AutomationManager] Macro id" << macroId << "not found";
-        return false;
-    }
-
-    qInfo() << "[AutomationManager] Running macro:" << macroName << "(id:" << macroId << ")";
-
+struct MacroInput {
+    SubtitleModel *model;
+    std::vector<AssEntryData> lines;
+    int resX, resY;
+    std::vector<int> luaSelected;
+    int luaActive;
+};
+static MacroInput macroInput(QObject *subtitleProject, SubtitleModel *fallbackModel,
+                             int activeIndex, const QVariantList &selectedIndices) {
     // Resolve native SubtitleModel: direct pointer, QML wrapper property, or registered instance
     SubtitleModel *model = qobject_cast<SubtitleModel *>(subtitleProject);
     if (!model && subtitleProject) {
@@ -274,7 +350,7 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
         }
     }
     if (!model) {
-        model = m_subtitleModel;
+        model = fallbackModel;
     }
 
     // Prepare ASS lines
@@ -285,10 +361,6 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
     if (model) {
         // 1. Script Info from native model
         QVariantMap info = model->scriptInfo();
-        if (info.isEmpty()) info = SubtitleModel::defaultScriptInfo();
-        if (!info.contains(QStringLiteral("ScriptType"))) {
-            info[QStringLiteral("ScriptType")] = QStringLiteral("v4.00+");
-        }
         resX = info.value(QStringLiteral("PlayResX"), 1920).toInt();
         resY = info.value(QStringLiteral("PlayResY"), 1080).toInt();
         if (resX <= 0) resX = 1920;
@@ -300,7 +372,6 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
 
         // 2. Styles from native model
         QVariantList stylesList = model->styles();
-        if (stylesList.isEmpty()) stylesList = SubtitleModel::defaultStyles();
 
         for (const auto &v : stylesList) {
             QVariantMap st = v.toMap();
@@ -350,6 +421,7 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
             dia.margin_b = item.marginVert;
             dia.text = item.text;
             dia.comment = item.isComment;
+            dia.extra = item.extra;
             lines.push_back(std::move(dia));
         }
     } else {
@@ -389,6 +461,7 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
                     dia.margin_b = dia.margin_t;
                     dia.text = map.value("text", "").toString();
                     dia.comment = map.value("comment", false).toBool();
+                    dia.extra = assExtraFromVariant(map.value("extra"));
                     lines.push_back(std::move(dia));
                 }
             }
@@ -402,21 +475,266 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
         }
     }
 
-    // Map selected indices to 1-based Lua indices
     std::vector<int> luaSelected;
-    if (selectedIndices.isEmpty()) {
-        luaSelected.push_back(activeIndex + headerOffset + 1);
-    } else {
-        for (const QVariant &v : selectedIndices) {
-            luaSelected.push_back(v.toInt() + headerOffset + 1);
+    const int count = static_cast<int>(lines.size()) - headerOffset;
+    for (const auto &value : selectedIndices) {
+        const int row = value.toInt();
+        if (row >= 0 && row < count) luaSelected.push_back(row + headerOffset + 1);
+    }
+    const int luaActive = activeIndex >= 0 && activeIndex < count ? activeIndex + headerOffset + 1 : 0;
+    if (luaSelected.empty() && luaActive) luaSelected.push_back(luaActive);
+    return {model, std::move(lines), resX, resY, std::move(luaSelected), luaActive};
+}
+
+static void applyAssEntries(SubtitleModel &model, const std::vector<AssEntryData> &updated) {
+    // 1. Dialogue lines
+    std::vector<SubtitleLine> updatedLines;
+    updatedLines.reserve(updated.size());
+    int lineNum = 1;
+    for (const auto &item : updated) {
+        if (item.entryClass != AssEntryClass::Dialogue) continue;
+        SubtitleLine dl;
+        dl.lineNumber = lineNum++;
+        dl.layer = item.layer;
+        dl.setStartMs(item.startTime);
+        dl.setEndMs(item.endTime);
+        dl.style = item.style;
+        dl.actor = item.actor;
+        dl.effect = item.effect;
+        dl.marginLeft = item.margin_l;
+        dl.marginRight = item.margin_r;
+        dl.marginVert = item.margin_t;
+        dl.text = item.text;
+        dl.isComment = item.comment;
+        dl.extra = item.extra;
+        dl.updateCps();
+        updatedLines.push_back(std::move(dl));
+    }
+    model.setRawLines(std::move(updatedLines));
+
+    // 2. Styles (sync if modified or added by macro)
+    QVariantList updatedStyles;
+    for (const auto &item : updated) {
+        if (item.entryClass != AssEntryClass::Style) continue;
+        QVariantMap st;
+        st[QStringLiteral("name")] = item.styleName;
+        st[QStringLiteral("font")] = item.fontName;
+        st[QStringLiteral("size")] = item.fontSize;
+        st[QStringLiteral("primary")] = item.color1;
+        st[QStringLiteral("secondary")] = item.color2;
+        st[QStringLiteral("outline")] = item.color3;
+        st[QStringLiteral("shadow")] = item.color4;
+        st[QStringLiteral("bold")] = item.bold;
+        st[QStringLiteral("italic")] = item.italic;
+        st[QStringLiteral("underline")] = item.underline;
+        st[QStringLiteral("strikeout")] = item.strikeout;
+        st[QStringLiteral("scaleX")] = item.scaleX;
+        st[QStringLiteral("scaleY")] = item.scaleY;
+        st[QStringLiteral("spacing")] = item.spacing;
+        st[QStringLiteral("angle")] = item.angle;
+        st[QStringLiteral("borderStyle")] = item.borderStyle;
+        st[QStringLiteral("outlineWidth")] = item.outline;
+        st[QStringLiteral("shadowDepth")] = item.shadow;
+        st[QStringLiteral("alignment")] = item.align;
+        st[QStringLiteral("marginL")] = item.marginL;
+        st[QStringLiteral("marginR")] = item.marginR;
+        st[QStringLiteral("marginV")] = item.marginV;
+        st[QStringLiteral("encoding")] = item.encoding;
+        updatedStyles.append(st);
+    }
+    if (updatedStyles != model.styles()) {
+        model.setStyles(updatedStyles);
+    }
+
+    // 3. Script Info (sync if modified or added by macro)
+    const QVariantMap originalInfo = model.scriptInfo();
+    QVariantMap updatedInfo;
+    for (const auto &item : updated) {
+        if (item.entryClass != AssEntryClass::Info) continue;
+        // Rebuild the final set, so deleted keys stay deleted. Preserve
+        // native QVariant types for values whose text is unchanged.
+        updatedInfo[item.key] = originalInfo.contains(item.key) &&
+                originalInfo.value(item.key).toString() == item.value
+            ? originalInfo.value(item.key) : QVariant(item.value);
+    }
+    if (updatedInfo != originalInfo) {
+        model.setScriptInfo(updatedInfo);
+    }
+}
+
+QVariantMap AutomationManager::normalizeConfigColor(const QString &text, bool withAlpha) const {
+    const auto bytes = text.toUtf8();
+    agi::Color color;
+    if (!agi::Color::TryParse(color, std::string_view(bytes.constData(), bytes.size())))
+        return {{"success", false}, {"message", tr("Invalid color: %1").arg(text)}};
+    return {{"success", true}, {"value", QString::fromStdString(color.GetHexFormatted(withAlpha))}};
+}
+
+QVariantMap AutomationManager::exportFilterConfig(int filterId, QObject *subtitleProject,
+                                                   const QVariantMap &settings) {
+    auto input = macroInput(subtitleProject, m_subtitleModel, -1, {});
+    if (!input.model) return {{"success", false}, {"message", tr("No subtitle document is open")}};
+    if (filterId == FixStylesFilterId) return {{"success", true}, {"controls", QVariantList{}}, {"message", QString()}};
+    if (filterId == FramerateFilterId) {
+        const auto context = m_video ? m_video->property("exportFramerateContext").toMap() : QVariantMap{};
+        const auto defaultFps = defaultInputFps(context);
+        const auto mode = context.value("isVfr").toBool() ? "Variable" : "Constant";
+        QVariantList controls{
+            QVariantMap{{"class", "label"}, {"label", tr("Input framerate:")}, {"x", 0}, {"y", 0}},
+            QVariantMap{{"class", "floatedit"}, {"name", "inputFps"}, {"value", settings.value("inputFps", defaultFps)}, {"min", 1e-9}, {"max", 1000}, {"x", 1}, {"y", 0}},
+            QVariantMap{{"class", "button"}, {"label", tr("From video")}, {"target", "inputFps"}, {"value", context.value("outputFps")}, {"enabled", context.value("available").toBool()}, {"x", 2}, {"y", 0}},
+            QVariantMap{{"class", "label"}, {"label", tr("Output:")}, {"x", 0}, {"y", 1}},
+            QVariantMap{{"class", "dropdown"}, {"name", "outputMode"}, {"items", context.value("isVfr").toBool() ? QVariantList{"Constant", "Variable"} : QVariantList{"Constant"}}, {"value", settings.value("outputMode", mode)}, {"x", 1}, {"y", 1}},
+            QVariantMap{{"class", "floatedit"}, {"name", "outputFps"}, {"value", settings.value("outputFps", defaultFps)}, {"min", 1e-9}, {"max", 1000}, {"nativeEnabledWhen", QVariantMap{{"field", "outputMode"}, {"value", "Constant"}}}, {"x", 2}, {"y", 1}},
+            QVariantMap{{"class", "checkbox"}, {"name", "reverse"}, {"label", tr("Reverse transformation")}, {"value", settings.value("reverse", false)}, {"x", 0}, {"y", 2}, {"width", 3}}
+        };
+        return {{"success", true}, {"controls", controls}, {"message", QString()}};
+    }
+    LuaAssFileBridge source(nullptr, std::move(input.lines), input.resX, input.resY);
+    for (auto &entry : m_entries) {
+        for (const auto &filter : entry.script->filters()) {
+            if (filter.id != filterId) continue;
+            entry.script->setVideoContext(videoContext());
+            QVariantList controls;
+            QString error;
+            const bool success = entry.script->filterConfig(filterId, source, settings, controls, error);
+            return {{"success", success}, {"controls", controls}, {"message", error}};
         }
     }
-    int luaActive = activeIndex + headerOffset + 1;
+    return {{"success", false}, {"message", tr("Export filter is no longer available")}};
+}
+
+QVariantMap AutomationManager::exportSubtitles(const QString &filePath, const QString &charset,
+                                               const QVariantList &pipeline, QObject *subtitleProject) {
+    auto fail = [](const QString &error) -> QVariantMap {
+        return {{"success", false}, {"message", error}};
+    };
+    auto input = macroInput(subtitleProject, m_subtitleModel, -1, {});
+    if (!input.model) return fail(tr("No subtitle document is open"));
+    struct Step { LuaScript *script; int id; QString name; QVariantMap settings; std::optional<std::pair<agi::vfr::Framerate, agi::vfr::Framerate>> rates; };
+    std::vector<Step> steps;
+    for (const auto &value : pipeline) {
+        if (value.typeId() != QMetaType::QVariantMap) return fail(tr("Invalid export filter selection"));
+        const auto step = value.toMap();
+        const auto idValue = step.value("id");
+        const int type = idValue.typeId();
+        const double number = idValue.toDouble();
+        if ((type != QMetaType::Int && type != QMetaType::Double && type != QMetaType::LongLong) ||
+            !std::isfinite(number) || std::floor(number) != number || number == 0 || number < std::numeric_limits<int>::min() ||
+            number > std::numeric_limits<int>::max()) return fail(tr("Invalid export filter ID"));
+        if (step.contains("settings") && step.value("settings").typeId() != QMetaType::QVariantMap)
+            return fail(tr("Invalid export filter settings"));
+        const int id = static_cast<int>(number);
+        if (id == FixStylesFilterId) {
+            steps.push_back({nullptr, id, tr("Fix Styles"), {}});
+            continue;
+        }
+        if (id == FramerateFilterId) {
+            try {
+                const auto context = m_video ? m_video->property("exportFramerateContext").toMap() : QVariantMap{};
+                steps.push_back({nullptr, id, tr("Transform Framerate"), {}, exportRates(step.value("settings").toMap(), context)});
+            } catch (const std::exception &error) { return fail(QString::fromUtf8(error.what())); }
+            continue;
+        }
+        bool found = false;
+        for (auto &entry : m_entries) {
+            for (const auto &filter : entry.script->filters()) {
+                if (filter.id != id) continue;
+                steps.push_back({entry.script.get(), id, filter.name, step.value("settings").toMap()});
+                found = true;
+                break;
+            }
+            if (found) break;
+        }
+        if (!found) return fail(tr("Export filter is no longer available"));
+    }
+    auto lines = std::move(input.lines);
+    for (auto &step : steps) {
+        if (step.id == FramerateFilterId) {
+            QString error;
+            if (!FramerateExport::transform(lines, step.rates->first, step.rates->second, error))
+                return fail(tr("Export filter '%1' failed: %2").arg(step.name, error));
+            continue;
+        }
+        if (step.id == FixStylesFilterId) {
+            QSet<QString> styles;
+            for (const auto &line : lines)
+                if (line.entryClass == AssEntryClass::Style) styles.insert(line.styleName.toLower());
+            for (auto &line : lines)
+                if (line.entryClass == AssEntryClass::Dialogue && !styles.contains(line.style.toLower()))
+                    line.style = QStringLiteral("Default");
+            continue;
+        }
+        step.script->setVideoContext(videoContext());
+        QString error;
+        if (!step.script->runFilter(step.id, lines, input.resX, input.resY, step.settings, error))
+            return fail(tr("Export filter '%1' failed: %2").arg(step.name, error));
+    }
+    SubtitleModel transformed;
+    applyAssEntries(transformed, lines);
+    if (!input.model->exportToFile(filePath, charset, transformed))
+        return fail(tr("Could not export subtitles. Check the filename (.ass or .srt), encoding and write permissions."));
+    return {{"success", true}, {"message", tr("Subtitles exported to %1").arg(filePath)}};
+}
+
+void AutomationManager::refreshMacroStates(QObject *subtitleProject, int activeIndex, const QVariantList &selectedIndices) {
+    auto input = macroInput(subtitleProject, m_subtitleModel, activeIndex, selectedIndices);
+    LuaAssFileBridge source(nullptr, std::move(input.lines), input.resX, input.resY);
+    bool changed = false;
+    for (auto &entry : m_entries) {
+        entry.script->setVideoContext(videoContext());
+        for (const auto &macro : entry.script->macros()) {
+            const auto state = entry.script->macroState(macro.id, source, input.luaSelected, input.luaActive);
+            for (auto &value : m_cachedMacros) {
+                auto map = value.toMap();
+                if (map.value("id").toInt() != macro.id) continue;
+                map["enabled"] = state.enabled;
+                map["checkable"] = state.checkable;
+                map["checked"] = state.checked;
+                map["description"] = state.description;
+                if (map != value.toMap()) { value = map; changed = true; }
+                break;
+            }
+        }
+    }
+    if (changed) emit macrosChanged();
+}
+
+bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int activeIndex, const QVariantList &selectedIndices) {
+    // Locate the script containing this macro
+    LuaScript *targetScript = nullptr;
+    QString macroName;
+    for (const auto &entry : m_entries) {
+        for (const auto &m : entry.script->macros()) {
+            if (m.id == macroId) {
+                targetScript = entry.script.get();
+                macroName = m.name;
+                break;
+            }
+        }
+        if (targetScript) break;
+    }
+
+    if (!targetScript) {
+        qWarning() << "[AutomationManager] Macro id" << macroId << "not found";
+        return false;
+    }
+
+    qInfo() << "[AutomationManager] Running macro:" << macroName << "(id:" << macroId << ")";
+
+    auto input = macroInput(subtitleProject, m_subtitleModel, activeIndex, selectedIndices);
+    auto *model = input.model;
+    auto &lines = input.lines;
+    const int resX = input.resX, resY = input.resY;
+    const auto &luaSelected = input.luaSelected;
+    const int luaActive = input.luaActive;
 
     // Create bridge & run macro
     LuaAssFileBridge bridge(nullptr, std::move(lines), resX, resY);
     QString err;
-    bool ok = targetScript->runMacro(macroId, bridge, luaSelected, luaActive, err);
+    LuaMacroSelection selection;
+    targetScript->setVideoContext(videoContext());
+    bool ok = targetScript->runMacro(macroId, bridge, luaSelected, luaActive, err, &selection);
 
     if (!ok) {
         qWarning() << "[AutomationManager] Macro execution error:" << err;
@@ -425,112 +743,48 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
         return false;
     }
 
+    const std::vector<AssEntryData> updated = bridge.getLines();
     // Apply back modified lines to model or project
     if (bridge.isModified()) {
-        std::vector<AssEntryData> updated = bridge.getLines();
-        QString undoMsg = bridge.undoDescription();
-        if (undoMsg.isEmpty()) {
-            undoMsg = QString("Macro: %1").arg(macroName);
-        }
+        QString undoMsg;
+        auto applyCommit = [&](const std::vector<AssEntryData> &updated, const QString &description) {
+            undoMsg = description;
+            if (model) {
+                // Preserve the before-state for this Lua checkpoint
+                model->pushUndo(undoMsg, activeIndex, selectedIndices);
 
-        if (model) {
-            // Push atomic undo point on native model
-            model->pushUndo(undoMsg, activeIndex, selectedIndices);
+                applyAssEntries(*model, updated);
+            } else if (subtitleProject) {
+                // Legacy wrappers can expose the same undo API as SubtitleProject.
+                QMetaObject::invokeMethod(subtitleProject, "pushUndo", Q_ARG(QVariant, QVariant(description)));
+                QVariantList outList;
+                for (const auto &item : updated) {
+                    if (item.entryClass != AssEntryClass::Dialogue) continue;
 
-            // 1. Dialogue lines
-            std::vector<SubtitleLine> updatedLines;
-            updatedLines.reserve(updated.size());
-            int lineNum = 1;
-            for (const auto &item : updated) {
-                if (item.entryClass != AssEntryClass::Dialogue) continue;
-                SubtitleLine dl;
-                dl.lineNumber = lineNum++;
-                dl.layer = item.layer;
-                dl.setStartMs(item.startTime);
-                dl.setEndMs(item.endTime);
-                dl.style = item.style;
-                dl.actor = item.actor;
-                dl.effect = item.effect;
-                dl.marginLeft = item.margin_l;
-                dl.marginRight = item.margin_r;
-                dl.marginVert = item.margin_t;
-                dl.text = item.text;
-                dl.isComment = item.comment;
-                dl.updateCps();
-                updatedLines.push_back(std::move(dl));
-            }
-            model->setRawLines(std::move(updatedLines));
-
-            // 2. Styles (sync if modified or added by macro)
-            QVariantList updatedStyles;
-            for (const auto &item : updated) {
-                if (item.entryClass != AssEntryClass::Style) continue;
-                QVariantMap st;
-                st[QStringLiteral("name")] = item.styleName;
-                st[QStringLiteral("font")] = item.fontName;
-                st[QStringLiteral("size")] = item.fontSize;
-                st[QStringLiteral("primary")] = item.color1;
-                st[QStringLiteral("secondary")] = item.color2;
-                st[QStringLiteral("outline")] = item.color3;
-                st[QStringLiteral("shadow")] = item.color4;
-                st[QStringLiteral("bold")] = item.bold;
-                st[QStringLiteral("italic")] = item.italic;
-                st[QStringLiteral("underline")] = item.underline;
-                st[QStringLiteral("strikeout")] = item.strikeout;
-                st[QStringLiteral("scaleX")] = item.scaleX;
-                st[QStringLiteral("scaleY")] = item.scaleY;
-                st[QStringLiteral("spacing")] = item.spacing;
-                st[QStringLiteral("angle")] = item.angle;
-                st[QStringLiteral("borderStyle")] = item.borderStyle;
-                st[QStringLiteral("outlineWidth")] = item.outline;
-                st[QStringLiteral("shadowDepth")] = item.shadow;
-                st[QStringLiteral("alignment")] = item.align;
-                st[QStringLiteral("marginL")] = item.marginL;
-                st[QStringLiteral("marginR")] = item.marginR;
-                st[QStringLiteral("marginV")] = item.marginV;
-                st[QStringLiteral("encoding")] = item.encoding;
-                updatedStyles.append(st);
-            }
-            if (!updatedStyles.isEmpty() && updatedStyles != model->styles()) {
-                model->setStyles(updatedStyles);
-            }
-
-            // 3. Script Info (sync if modified or added by macro)
-            QVariantMap updatedInfo = model->scriptInfo();
-            bool infoModified = false;
-            for (const auto &item : updated) {
-                if (item.entryClass != AssEntryClass::Info) continue;
-                if (updatedInfo.value(item.key).toString() != item.value) {
-                    updatedInfo[item.key] = item.value;
-                    infoModified = true;
+                    QVariantMap m;
+                    m["layer"] = item.layer;
+                    m["start"] = msToAssTime(item.startTime);
+                    m["end"] = msToAssTime(item.endTime);
+                    m["cps"] = "0";
+                    m["style"] = item.style;
+                    m["actor"] = item.actor;
+                    m["effect"] = item.effect;
+                    m["marginLeft"] = item.margin_l;
+                    m["marginRight"] = item.margin_r;
+                    m["marginVert"] = item.margin_t;
+                    m["text"] = item.text;
+                    m["comment"] = item.comment;
+                    m["extra"] = assExtraToVariant(item.extra);
+                    outList.append(m);
                 }
+                QMetaObject::invokeMethod(subtitleProject, "setAllSubtitleLines", Q_ARG(QVariant, outList));
             }
-            if (infoModified) {
-                model->setScriptInfo(updatedInfo);
-            }
-        } else if (subtitleProject) {
-            // Legacy path
-            QVariantList outList;
-            for (const auto &item : updated) {
-                if (item.entryClass != AssEntryClass::Dialogue) continue;
 
-                QVariantMap m;
-                m["layer"] = item.layer;
-                m["start"] = msToAssTime(item.startTime);
-                m["end"] = msToAssTime(item.endTime);
-                m["cps"] = "0";
-                m["style"] = item.style;
-                m["actor"] = item.actor;
-                m["effect"] = item.effect;
-                m["marginLeft"] = item.margin_l;
-                m["marginRight"] = item.margin_r;
-                m["marginVert"] = item.margin_t;
-                m["text"] = item.text;
-                m["comment"] = item.comment;
-                outList.append(m);
-            }
-            QMetaObject::invokeMethod(subtitleProject, "setAllSubtitleLines", Q_ARG(QVariant, outList));
-        }
+        };
+        // Lua only publishes checkpoints after the whole callback succeeds.
+        // Each checkpoint gets its own native before-state and undo label.
+        for (const auto &commit : bridge.pendingCommits()) applyCommit(commit.lines, commit.description);
+        if (bridge.hasUncommittedChanges()) applyCommit(updated, QString("Macro: %1").arg(macroName));
 
         emit macroExecuted(macroName, true, undoMsg);
         emit statusMessage(undoMsg);
@@ -540,6 +794,43 @@ bool AutomationManager::runMacro(int macroId, QObject *subtitleProject, int acti
         emit statusMessage(noModMsg);
     }
 
+    if (selection.hasSelection || selection.hasActive || bridge.isModified()) {
+        // Lua indices address the whole final ASS file. Build a mapping rather
+        // than subtracting the old header offset after rows have been deleted.
+        std::vector<int> rows(updated.size(), -1);
+        int count = 0;
+        for (size_t i = 0; i < updated.size(); ++i)
+            if (updated[i].entryClass == AssEntryClass::Dialogue) rows[i] = count++;
+        auto mapIndex = [&](int index) -> int {
+            if (index >= 1 && index <= static_cast<int>(rows.size()) && rows[index - 1] >= 0)
+                return rows[index - 1];
+            qWarning() << "[AutomationManager] Ignoring macro index outside final dialogue rows:" << index;
+            return -1;
+        };
+        std::vector<int> selected;
+        if (selection.hasSelection) {
+            for (int index : selection.selectedLines) {
+                const int row = mapIndex(index);
+                if (row >= 0) selected.push_back(row);
+            }
+        } else {
+            for (const auto &index : selectedIndices)
+                if (index.toInt() >= 0 && index.toInt() < count) selected.push_back(index.toInt());
+        }
+        std::sort(selected.begin(), selected.end());
+        selected.erase(std::unique(selected.begin(), selected.end()), selected.end());
+        int active = count ? std::clamp(activeIndex, 0, count - 1) : -1;
+        if (selection.hasActive) {
+            const int row = mapIndex(selection.activeLine);
+            if (row >= 0) active = row;
+        }
+        if (selected.empty() && active >= 0) selected.push_back(active);
+        if (!selected.empty() && std::find(selected.begin(), selected.end(), active) == selected.end())
+            active = selected.front();
+        QVariantList finalSelection;
+        for (int row : selected) finalSelection.append(row);
+        emit macroSelectionChanged(subtitleProject ? subtitleProject : model, active, finalSelection);
+    }
     return true;
 }
 

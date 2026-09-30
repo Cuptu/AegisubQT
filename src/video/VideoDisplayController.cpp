@@ -185,10 +185,23 @@ void VideoDisplayController::toggleMoveOrPos()
 
 void VideoDisplayController::setArOverride(qreal ar)
 {
-    // Sanitize: ratios below 0.05 are treated as invalid; 0 restores the native frame ratio.
-    const qreal clamped = (ar > 0.05) ? ar : 0.0;
-    if (clamped == m_arOverride) return;
-    m_arOverride = clamped;
+    setAspectRatio(ar > 0.05 ? 4 : 0, ar);
+}
+
+void VideoDisplayController::setAspectRatio(int type, qreal custom)
+{
+    qreal ratio = 0;
+    switch (type) {
+    case 0: break;
+    case 1: ratio = 4.0 / 3.0; break;
+    case 2: ratio = 16.0 / 9.0; break;
+    case 3: ratio = 2.35; break;
+    case 4: if (!std::isfinite(custom) || custom <= 0.05) return; ratio = custom; break;
+    default: return;
+    }
+    if (ratio == m_arOverride && type == m_arOverrideType) return;
+    m_arOverride = ratio;
+    m_arOverrideType = type;
     recalculateVideoLayout();
 }
 

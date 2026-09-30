@@ -31,7 +31,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qt5compat qtshadertools qtmultimedia
           cache: true
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
@@ -67,7 +67,7 @@ jobs:
 
   linux:
     name: Linux (tar.xz)
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -82,14 +82,14 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qt5compat qtshadertools qtmultimedia
           cache: true
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
       - name: Setup build tools
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential ninja-build libxcb-cursor0 file
+          sudo apt-get install -y build-essential ninja-build libxcb-cursor0 file libicu-dev pkg-config ffmpeg libavformat-dev libavcodec-dev libavutil-dev libswresample-dev libswscale-dev
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
@@ -97,11 +97,14 @@ jobs:
       - name: Build
         run: cmake --build build --parallel
 
+      - name: Test native media backend
+        run: ctest --test-dir build --output-on-failure -R '^astra_native_'
+
       - name: Stage install tree
         run: cmake --install build --prefix staging
 
       - name: Create tarball
-        run: tar -C staging -cJf AegisubQT-${{ steps.ver.outputs.version }}.tar.xz bin share
+        run: tar -C staging -cJf AegisubQT-${{ steps.ver.outputs.version }}.tar.xz bin lib share
 
       - name: Upload tarball
         uses: actions/upload-artifact@v4
@@ -137,9 +140,18 @@ jobs:
 
           # Deploy Qt runtime and plugins into AppDir
           ./linuxdeploy --appdir AppDir \
+            --library AppDir/usr/lib/libAstraCore.Native.so \
+            --executable "$(command -v ffmpeg)" \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \
             --plugin qt
+
+          cp build/third_party/astracore/astra_native_dynamic_load AppDir/usr/bin/
+          cmake -DLOADER="$PWD/AppDir/usr/bin/astra_native_dynamic_load" \
+            -DNATIVE="$PWD/AppDir/usr/lib/libAstraCore.Native.so" \
+            -DFFMPEG_EXECUTABLE="$PWD/AppDir/usr/bin/ffmpeg" \
+            -DWORK_DIR="$RUNNER_TEMP/deployed-native-media" -P cmake/VerifyNativeMedia.cmake
+          rm AppDir/usr/bin/astra_native_dynamic_load
 
           # Strip binaries and prune unused QML styles
           strip --strip-unneeded AppDir/usr/bin/* AppDir/usr/lib/*.so* AppDir/usr/plugins/*/*.so 2>/dev/null || true
@@ -177,6 +189,12 @@ jobs:
         id: ver
         run: echo "version=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
 
+      - name: Install build dependencies
+        run: |
+          brew install ninja icu4c pkg-config ffmpeg
+          echo "ICU_ROOT=$(brew --prefix icu4c)" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$(brew --prefix ffmpeg)/lib/pkgconfig:${PKG_CONFIG_PATH:-}" >> "$GITHUB_ENV"
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -186,7 +204,7 @@ jobs:
         uses: jurplel/install-qt-action@v4
         with:
           version: "6.11.2"
-          modules: qtshadertools qtmultimedia
+          modules: qt5compat qtshadertools qtmultimedia
           cache: true
           aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
 
@@ -195,6 +213,9 @@ jobs:
 
       - name: Build
         run: cmake --build build --parallel
+
+      - name: Test native media backend
+        run: ctest --test-dir build --output-on-failure -R '^astra_native_'
 
       # macdeployqt only deploys Qt modules; the app's own QML/assets/automation/
       # locale payloads must be staged into Contents/Resources manually. main.cpp
@@ -221,6 +242,15 @@ jobs:
       - name: Deploy Qt runtime, sign bundle and create dmg
         run: |
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
+          cmake -DBUNDLE="$PWD/build/AegisubQT.app" \
+            -DFFMPEG_EXECUTABLE="$(command -v ffmpeg)" \
+            -DMEDIA_LIBRARY_DIRS="$(brew --prefix ffmpeg)/lib" -P cmake/DeployMacMedia.cmake
+          cp build/third_party/astracore/astra_native_dynamic_load build/AegisubQT.app/Contents/MacOS/
+          cmake -DLOADER="$PWD/build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load" \
+            -DNATIVE="$PWD/build/AegisubQT.app/Contents/Frameworks/libAstraCore.Native.dylib" \
+            -DFFMPEG_EXECUTABLE="$PWD/build/AegisubQT.app/Contents/MacOS/ffmpeg" \
+            -DWORK_DIR="$RUNNER_TEMP/deployed-native-media" -P cmake/VerifyNativeMedia.cmake
+          rm build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load
           xattr -cr build/AegisubQT.app
           # Thin universal binaries to pure arm64 to remove dead x86_64 slices
           find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -type f \( -name "*.dylib" -o -perm +111 \) 2>/dev/null | while IFS= read -r f; do

@@ -101,10 +101,7 @@ public:
     }
 
     bool reset() override {
-        QMutexLocker locker(&m_mutex);
-        m_pos = 0;
-        QIODevice::reset();
-        return true;
+        return seek(0);
     }
 
 private:
@@ -193,10 +190,7 @@ public:
     }
 
     bool reset() override {
-        QMutexLocker locker(&m_mutex);
-        m_pos = 0;
-        QIODevice::reset();
-        return true;
+        return seek(0);
     }
 
 private:

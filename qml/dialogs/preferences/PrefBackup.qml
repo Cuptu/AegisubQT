@@ -53,7 +53,7 @@ Flickable {
         title: qsTr("Select Directory")
         onAccepted: {
             if (root.activeFolderTarget) {
-                root.activeFolderTarget.text = selectedFolder.toString().replace("file:///", "");
+                root.activeFolderTarget.text = aegisubCore.localFilePath(selectedFolder);
                 root.changed();
             }
         }

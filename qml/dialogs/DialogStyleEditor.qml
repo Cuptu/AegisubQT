@@ -46,6 +46,13 @@ NativeDialogFrame {
     property real rotationAngle: 0
     property real spacingPx: 0
     property int encodingCode: 1
+    property var encodingCodes: [0, 1, 128, 134, 136]
+    property var saveHandler: null
+    property var loadedStyle: null
+    property string errorMessage: ""
+    property var pendingStyle: null
+    property bool pendingClose: false
+    property alias renamePrompt: renamePrompt
 
     // Emitted when style properties are applied or saved
     signal styleSaved(var styleData)
@@ -55,6 +62,10 @@ NativeDialogFrame {
 
     function loadStyle(styleItem, isStorage) {
         if (!styleItem) return;
+        loadedStyle = Object.assign({}, styleItem);
+        renamePrompt.close();
+        pendingStyle = null;
+        errorMessage = "";
         dialog.styleName = styleItem.name || "Default";
         txtStyleName.text = dialog.styleName;
         if (styleItem.font) {
@@ -68,7 +79,7 @@ NativeDialogFrame {
                 cmbFont.currentIndex = fList.length - 1;
             }
         }
-        if (styleItem.size !== undefined) spinFontSize.value = Math.round(styleItem.size);
+        if (styleItem.size !== undefined) spinFontSize.value = styleItem.size;
         chkBold.checked = !!styleItem.bold;
         chkItalic.checked = !!styleItem.italic;
         chkUnderline.checked = !!styleItem.underline;
@@ -97,19 +108,32 @@ NativeDialogFrame {
         spinMarginV.value = mV;
 
         if (styleItem.alignment !== undefined) dialog.alignment = styleItem.alignment;
-        if (styleItem.outlineWidth !== undefined) spinOutline.value = Math.round(styleItem.outlineWidth);
+        if (styleItem.outlineWidth !== undefined) spinOutline.value = styleItem.outlineWidth;
         var shDist = (styleItem.shadowDistance !== undefined) ? styleItem.shadowDistance : ((styleItem.shadowDepth !== undefined) ? styleItem.shadowDepth : 2.0);
-        spinShadow.value = Math.round(shDist);
+        spinShadow.value = shDist;
 
         if (styleItem.borderStyle === 3) radOpaqueBox.checked = true;
         else radOutline.checked = true;
 
-        if (styleItem.scaleX !== undefined) spinScaleX.value = Math.round(styleItem.scaleX);
-        if (styleItem.scaleY !== undefined) spinScaleY.value = Math.round(styleItem.scaleY);
+        if (styleItem.scaleX !== undefined) spinScaleX.value = styleItem.scaleX;
+        if (styleItem.scaleY !== undefined) spinScaleY.value = styleItem.scaleY;
         var rot = (styleItem.angle !== undefined) ? styleItem.angle : ((styleItem.rotation !== undefined) ? styleItem.rotation : 0);
-        spinRotation.value = Math.round(rot);
-        if (styleItem.spacing !== undefined) spinSpacing.value = Math.round(styleItem.spacing);
-        if (styleItem.encoding !== undefined) cmbEncoding.currentIndex = Math.max(0, styleItem.encoding);
+        spinRotation.value = rot;
+        if (styleItem.spacing !== undefined) spinSpacing.value = styleItem.spacing;
+        if (styleItem.encoding !== undefined) {
+            var code = Number(styleItem.encoding);
+            var encodingIndex = dialog.encodingCodes.indexOf(code);
+            if (encodingIndex < 0) {
+                var codes = dialog.encodingCodes.slice();
+                codes.push(code);
+                dialog.encodingCodes = codes;
+                var labels = cmbEncoding.model.slice();
+                labels.push(code + " - Other");
+                cmbEncoding.model = labels;
+                encodingIndex = codes.length - 1;
+            }
+            cmbEncoding.currentIndex = encodingIndex;
+        }
     }
 
     function saveStyle(closeAfter) {
@@ -119,7 +143,7 @@ NativeDialogFrame {
         var shaAss = (typeof aegisubCore !== "undefined" && aegisubCore) ? aegisubCore.formatAssStyleColor(shadowColor) : "&H00000000";
 
         var data = {
-            name: txtStyleName.text || "Default",
+            name: txtStyleName.text,
             font: cmbFont.currentText || "Arial",
             size: spinFontSize.value,
             bold: chkBold.checked,
@@ -148,10 +172,60 @@ NativeDialogFrame {
             angle: spinRotation.value,
             rotation: spinRotation.value,
             spacing: spinSpacing.value,
-            encoding: cmbEncoding.currentIndex
+            encoding: dialog.encodingCodes[cmbEncoding.currentIndex]
         };
-        dialog.styleSaved(data);
-        if (closeAfter) dialog.close();
+        data = Object.assign({}, loadedStyle || {}, data);
+        // Keep existing legacy aliases when present, but do not add redundant
+        // fields to a canonical style merely by opening and applying it.
+        var aliases = ["outlineColor", "shadowColor", "marginLeft", "marginRight", "marginVert", "shadowDistance", "rotation"];
+        for (var i = 0; i < aliases.length; ++i)
+            if (!loadedStyle || loadedStyle[aliases[i]] === undefined) delete data[aliases[i]];
+        finishSave(data, closeAfter, undefined);
+    }
+
+    function finishSave(data, closeAfter, updateReferences) {
+        var result = saveHandler ? saveHandler(data, updateReferences) : {success:true};
+        if (!result.success) { errorMessage = result.message; return; }
+        if (result.needsConfirmation) {
+            errorMessage = "";
+            pendingStyle = data;
+            pendingClose = closeAfter;
+            renamePrompt.open();
+            return;
+        }
+        errorMessage = "";
+        styleName = data.name;
+        loadedStyle = Object.assign({}, data);
+        styleSaved(data);
+        if (closeAfter) close();
+    }
+    function answerRename(updateReferences) {
+        var data = pendingStyle;
+        var closeAfter = pendingClose;
+        renamePrompt.close();
+        if (data) finishSave(data, closeAfter, updateReferences);
+    }
+    onClosed: renamePrompt.close()
+    Popup {
+        id: renamePrompt
+        objectName: "style-rename-prompt"
+        x: (parent.width - width) / 2
+        y: (parent.height - height) / 2
+        width: Math.min(480, parent.width - 20)
+        height: 150
+        modal: true
+        focus: true
+        closePolicy: Popup.CloseOnEscape
+        onClosed: dialog.pendingStyle = null
+        contentItem: ColumnLayout {
+            Text { text: qsTr("Change all references to this style in the script to the new name?"); wrapMode: Text.Wrap; Layout.fillWidth: true; font.family: uiTheme.uiFont }
+            RowLayout {
+                Item { Layout.fillWidth: true }
+                NativeButton { objectName: "style-rename-yes"; text: qsTr("Yes"); onClicked: dialog.answerRename(true) }
+                NativeButton { objectName: "style-rename-no"; text: qsTr("No"); onClicked: dialog.answerRename(false) }
+                NativeButton { objectName: "style-rename-cancel"; text: qsTr("Cancel"); onClicked: renamePrompt.close() }
+            }
+        }
     }
 
     ColumnLayout {
@@ -173,6 +247,7 @@ NativeDialogFrame {
                     anchors.fill: parent
                     NativeTextBox {
                         id: txtStyleName
+                        objectName: "style-editor-name"
                         text: dialog.styleName
                         Layout.fillWidth: true
                     }
@@ -199,6 +274,7 @@ NativeDialogFrame {
                         id: spinFontSize
                         Layout.preferredWidth: 60
                         from: 1; to: 500; value: dialog.fontSize
+                        decimals: 3
                     }
 
                     NativeCheckBox { id: chkBold; text: "B"; font.bold: true; checked: dialog.isBold }
@@ -336,12 +412,12 @@ NativeDialogFrame {
 
                     RowLayout {
                         Text { text: qsTr("Outline") + ":"; font.pixelSize: 11 }
-                        NativeSpinBox { id: spinOutline; Layout.fillWidth: true; from: 0; to: 100; value: Math.round(dialog.outlineWidth) }
+                        NativeSpinBox { id: spinOutline; Layout.fillWidth: true; from: 0; to: 100; value: dialog.outlineWidth; decimals: 3 }
                     }
 
                     RowLayout {
                         Text { text: qsTr("Shadow") + ":"; font.pixelSize: 11 }
-                        NativeSpinBox { id: spinShadow; Layout.fillWidth: true; from: 0; to: 100; value: Math.round(dialog.shadowDistance) }
+                        NativeSpinBox { id: spinShadow; Layout.fillWidth: true; from: 0; to: 100; value: dialog.shadowDistance; decimals: 3 }
                     }
                 }
             }
@@ -359,16 +435,16 @@ NativeDialogFrame {
                     rowSpacing: 4
 
                     Text { text: qsTr("Scale X %:"); font.pixelSize: 11 }
-                    NativeSpinBox { id: spinScaleX; Layout.fillWidth: true; from: 0; to: 1000; value: Math.round(dialog.scaleX) }
+                    NativeSpinBox { id: spinScaleX; Layout.fillWidth: true; from: 0; to: 1000; value: dialog.scaleX; decimals: 3 }
 
                     Text { text: qsTr("Scale Y %:"); font.pixelSize: 11 }
-                    NativeSpinBox { id: spinScaleY; Layout.fillWidth: true; from: 0; to: 1000; value: Math.round(dialog.scaleY) }
+                    NativeSpinBox { id: spinScaleY; Layout.fillWidth: true; from: 0; to: 1000; value: dialog.scaleY; decimals: 3 }
 
                     Text { text: qsTr("Rotation:"); font.pixelSize: 11 }
-                    NativeSpinBox { id: spinRotation; Layout.fillWidth: true; from: -360; to: 360; value: Math.round(dialog.rotationAngle) }
+                    NativeSpinBox { id: spinRotation; Layout.fillWidth: true; from: -360; to: 360; value: dialog.rotationAngle; decimals: 3 }
 
                     Text { text: qsTr("Spacing:"); font.pixelSize: 11 }
-                    NativeSpinBox { id: spinSpacing; Layout.fillWidth: true; from: -100; to: 100; value: Math.round(dialog.spacingPx) }
+                    NativeSpinBox { id: spinSpacing; Layout.fillWidth: true; from: -100; to: 100; value: dialog.spacingPx; decimals: 3 }
 
                     Text { text: qsTr("Encoding:"); font.pixelSize: 11 }
                     NativeComboBox {
@@ -410,6 +486,8 @@ NativeDialogFrame {
             }
         }
 
+        Text { objectName: "style-editor-error"; text: dialog.errorMessage; visible: text.length > 0; color: "#b00020"; wrapMode: Text.Wrap; Layout.fillWidth: true }
+
         // Dialog action buttons
         RowLayout {
             Layout.fillWidth: true
@@ -418,17 +496,20 @@ NativeDialogFrame {
             Item { Layout.fillWidth: true }
 
             NativeButton {
+                objectName: "style-editor-apply"
                 text: qsTr("Apply"); Layout.preferredWidth: 75
                 onClicked: dialog.saveStyle(false)
             }
 
             NativeButton {
+                objectName: "style-editor-ok"
                 text: qsTr("OK"); isDefault: true
                 Layout.preferredWidth: 75
                 onClicked: dialog.saveStyle(true)
             }
 
             NativeButton {
+                objectName: "style-editor-cancel"
                 text: qsTr("Cancel"); Layout.preferredWidth: 75
                 onClicked: dialog.close()
             }

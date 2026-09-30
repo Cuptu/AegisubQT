@@ -39,7 +39,7 @@ Flickable {
         id: dictFolderDialog
         title: qsTr("Select Dictionaries Directory")
         onAccepted: {
-            txtDictPath.text = selectedFolder.toString().replace("file:///", "");
+            txtDictPath.text = aegisubCore.localFilePath(selectedFolder);
             root.changed();
         }
     }

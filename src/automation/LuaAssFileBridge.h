@@ -35,6 +35,7 @@
 #include <QMap>
 #include <vector>
 #include <memory>
+#include "../model/AssExtraData.h"
 
 namespace Automation {
 
@@ -90,7 +91,12 @@ struct AssEntryData {
     int margin_b = 0;
     QString effect;
     QString text;
-    QMap<QString, QString> extra;
+    AssExtraData extra;
+};
+
+struct LuaAssCommit {
+    QString description;
+    std::vector<AssEntryData> lines;
 };
 
 class LuaAssFileBridge {
@@ -99,13 +105,17 @@ public:
     ~LuaAssFileBridge();
 
     void setLuaState(lua_State *L);
+    void setReadOnly(bool readOnly) { m_readOnly = readOnly; }
 
     // Push the userdata 'subtitles' object onto Lua stack
     void pushToStack();
 
     std::vector<AssEntryData> getLines() const { return m_lines; }
-    QString undoDescription() const { return m_undoDescription; }
-    bool isModified() const { return m_modified; }
+    const std::vector<LuaAssCommit> &pendingCommits() const { return m_pendingCommits; }
+    bool hasUncommittedChanges() const { return m_modified; }
+    bool isModified() const { return m_modified || !m_pendingCommits.empty(); }
+    int resolutionX() const { return m_resX; }
+    int resolutionY() const { return m_resY; }
 
     static LuaAssFileBridge *getBridge(lua_State *L, int idx);
 
@@ -136,8 +146,10 @@ private:
     std::vector<AssEntryData> m_lines;
     int m_resX = 1920;
     int m_resY = 1080;
-    QString m_undoDescription;
+    std::vector<LuaAssCommit> m_pendingCommits;
     bool m_modified = false;
+    bool m_readOnly = false;
+    QMap<QPair<QByteArray, QByteArray>, int> m_extraIds;
     std::shared_ptr<bool> m_alive;
 };
 

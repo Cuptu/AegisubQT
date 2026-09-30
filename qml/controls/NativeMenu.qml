@@ -5,8 +5,8 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
 
-// Native Windows 10 styled popup menu control with rectangular geometry,
-// crisp elevation drop shadow, DWM downward slide animation, and icon gutter.
+// Windows-style Qt Quick popup menu with rectangular geometry,
+// drawn drop shadows, a Qt Quick slide animation, and an icon gutter.
 Menu {
     id: nMenu
     implicitWidth: 250
@@ -39,7 +39,7 @@ Menu {
     background: Item {
         implicitWidth: 250
 
-        // Soft Windows DWM elevation drop shadow on right and bottom edges
+        // Drawn drop shadow on the right and bottom edges
         Rectangle {
             x: 1; y: 2
             width: parent.width + 3; height: parent.height + 3
@@ -71,6 +71,9 @@ Menu {
 
     delegate: MenuItem {
         id: menuItem
+        ToolTip.visible: hovered && action && action.helpText !== undefined && action.helpText !== ""
+        ToolTip.text: action && action.helpText !== undefined ? action.helpText : ""
+        ToolTip.delay: 500
         implicitHeight: 25
         implicitWidth: nMenu.width
 

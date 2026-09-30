@@ -89,6 +89,7 @@ void Save(agi::fs::path const& filename, std::vector<int> const& keyframes) {
     for (int kf : keyframes) {
         of << kf << "\n";
     }
+    file.Commit();
 }
 
 std::vector<int> Load(agi::fs::path const& filename) {

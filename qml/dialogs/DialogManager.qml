@@ -7,6 +7,7 @@
 import QtQuick
 import QtQuick.Controls
 import "../project/AssUtils.js" as AssUtils
+import "../project/TranslationUtils.js" as TranslationUtils
 
 Item {
     id: manager
@@ -17,11 +18,48 @@ Item {
     property var videoCtrl: null
     property var audioCtrl: null
 
+    function previewAssistant(scroll, seek) {
+        var row = project.currentSelectedIndex;
+        if (!project.subtitleModel || row < 0 || row >= project.subtitleModel.count) return;
+        if (scroll) project.ensureRowVisible(row);
+        if (seek && videoCtrl) videoCtrl.seekTime(project.subtitleModel.getLineStartMs(row) / 1000.0);
+    }
+    function playAssistantVideo() {
+        var row = project.currentSelectedIndex;
+        var model = project.subtitleModel;
+        if (!videoCtrl || !model || row < 0 || row >= model.count) return;
+        videoCtrl.setActiveSubtitle(model.getLineStartMs(row), model.getLineEndMs(row), model.get(row).text);
+        videoCtrl.playCurrentLine();
+    }
+    function playAssistantAudio() {
+        var row = project.currentSelectedIndex;
+        var model = project.subtitleModel;
+        if (audioCtrl && model && row >= 0 && row < model.count)
+            audioCtrl.playRange(model.getLineStartMs(row), model.getLineEndMs(row));
+    }
+    function navigateTranslation(dialog, direction, closeAtEnd) {
+        var model = project.subtitleModel;
+        if (!model) return;
+        for (var row = project.currentSelectedIndex + direction; row >= 0 && row < model.count; row += direction) {
+            var parts = TranslationUtils.blocks(model.get(row).text);
+            var block = direction > 0 ? TranslationUtils.firstPlain(parts)
+                : TranslationUtils.nextPlain(parts, parts.length, -1);
+            if (block < 0 && direction < 0) block = TranslationUtils.firstPlain(parts);
+            if (block < 0) continue;
+            project.selectRow(row, false, false);
+            dialog.resetForLine();
+            dialog.blockIndex = block;
+            return;
+        }
+        if (closeAtEnd) dialog.close();
+    }
+
     // Emitted to broadcast informational status notifications to the main window
     signal statusMessage(string msg)
     signal saveConfirmed()
     signal discardConfirmed()
     signal cancelled()
+    signal restoreAutosaveRequested(string path)
 
     // Reusable lazy dialog loader encapsulating on-demand component instantiation
     component LazyDialog: Loader {
@@ -89,11 +127,15 @@ Item {
         id: _dlgShiftTimes
         sourceComponent: Component {
             DialogShiftTimes {
-                onShiftTimesRequested: (amountMs, isForward, affectMode, timeType) => {
-                    var signedMs = isForward ? amountMs : -amountMs;
+                videoCtrl: manager.videoCtrl
+                onShiftTimesRequested: (amount, isForward, affectMode, timeType, byFrames) => {
+                    var signedAmount = isForward ? amount : -amount;
                     var shiftStart = (timeType === 0 || timeType === 1);
                     var shiftEnd = (timeType === 0 || timeType === 2);
-                    manager.project.shiftTimes(signedMs, shiftStart, shiftEnd, affectMode);
+                    if (byFrames)
+                        manager.project.shiftTimesByFrames(signedAmount, shiftStart, shiftEnd, affectMode, manager.videoCtrl);
+                    else
+                        manager.project.shiftTimes(signedAmount, shiftStart, shiftEnd, affectMode);
                 }
             }
         }
@@ -115,7 +157,7 @@ Item {
     LazyDialog {
         id: _dlgVideoDetails
         sourceComponent: Component {
-            DialogVideoDetails {}
+            DialogVideoDetails { videoCtrl: manager.videoCtrl; project: manager.project }
         }
     }
 
@@ -176,17 +218,24 @@ Item {
                 secondaryColor: _dlgStyleEditor.secondaryColor
                 outlineColor: _dlgStyleEditor.outlineColor
                 shadowColor: _dlgStyleEditor.shadowColor
-                onStyleSaved: (styleData) => {
+                saveHandler: function(styleData, updateReferences) {
                     if (_dlgStyleEditor.isStorage) {
-                        if (typeof styleStorageManager !== "undefined" && styleStorageManager) {
-                            styleStorageManager.updateStyle(styleStorageManager.currentCatalog, _dlgStyleEditor.styleIndex, styleData);
-                        }
+                        if (typeof styleStorageManager === "undefined" || !styleStorageManager)
+                            return {success:false, message:qsTr("Style storage is unavailable")};
+                        styleStorageManager.updateStyle(styleStorageManager.currentCatalog, _dlgStyleEditor.styleIndex, styleData);
                     } else {
-                        if (typeof nativeSubtitleModel !== "undefined" && nativeSubtitleModel) {
-                            nativeSubtitleModel.setStyle(_dlgStyleEditor.styleIndex, styleData);
-                        }
+                        if (!manager.project || !manager.project.subtitleModel)
+                            return {success:false, message:qsTr("No subtitle document is open")};
+                        var model = manager.project.subtitleModel;
+                        var plan = model.styleEditPlan(_dlgStyleEditor.styleIndex, styleData);
+                        if (!plan.success) return plan;
+                        if (plan.needsConfirmation && updateReferences === undefined) return plan;
+                        var result = model.editStyle(_dlgStyleEditor.styleIndex, styleData, updateReferences === true,
+                            manager.project.currentSelectedIndex, manager.project.selectedIndices);
+                        if (!result.success) return result;
                     }
                     manager.statusMessage(qsTr("Style [") + styleData.name + qsTr("] updated"));
+                    return {success:true};
                 }
                 onOpenColorPickerRequested: (propName, col) => {
                     _dlgColorPicker.targetProp = "style_" + propName;
@@ -216,6 +265,9 @@ Item {
         id: _dlgStylingAssistant
         sourceComponent: Component {
             DialogStylingAssistant {
+                availableStyles: manager.project.subtitleModel ? manager.project.subtitleModel.styleNames : []
+                onPreviewRequested: manager.previewAssistant(scrollToCurrent, seekVideo)
+                onStyleRejected: (styleName) => manager.statusMessage(qsTr("Style does not exist: %1").arg(styleName))
                 currentLineNumber: manager.project.currentSelectedIndex + 1
                 currentLineTime: (manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) ?
                     (manager.project.subtitleModel.get(manager.project.currentSelectedIndex).start + " - " + manager.project.subtitleModel.get(manager.project.currentSelectedIndex).end) : ""
@@ -226,24 +278,20 @@ Item {
 
                 onStyleApplied: (styleName) => {
                     if (manager.project.currentSelectedIndex >= 0 && manager.project.currentSelectedIndex < manager.project.subtitleModel.count) {
-                        manager.project.subtitleModel.setProperty(manager.project.currentSelectedIndex, "style", styleName);
+                        if (manager.project.subtitleModel.get(manager.project.currentSelectedIndex).style !== styleName) {
+                            manager.project.pushUndo(qsTr("apply style"));
+                            manager.project.subtitleModel.setProperty(manager.project.currentSelectedIndex, "style", styleName);
+                        }
                         manager.statusMessage(qsTr("Applied style to line #%1: %2").arg(manager.project.currentSelectedIndex + 1).arg(styleName));
                     }
                 }
                 onPrevRequested: manager.project.selectRow(Math.max(0, manager.project.currentSelectedIndex - 1), false, false)
                 onNextRequested: manager.project.selectRow(Math.min(manager.project.subtitleModel.count - 1, manager.project.currentSelectedIndex + 1), false, false)
                 onPlayAudioRequested: {
-                    if (manager.audioCtrl && manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) {
-                        var it = manager.project.subtitleModel.get(manager.project.currentSelectedIndex);
-                        manager.audioCtrl.playRange(AssUtils.assToMs(it.start), AssUtils.assToMs(it.end));
-                    }
+                    manager.playAssistantAudio();
                 }
                 onPlayVideoRequested: {
-                    if (manager.videoCtrl && manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) {
-                        var it = manager.project.subtitleModel.get(manager.project.currentSelectedIndex);
-                        manager.videoCtrl.seekTime(AssUtils.assToMs(it.start) / 1000.0);
-                        manager.videoCtrl.play();
-                    }
+                    manager.playAssistantVideo();
                 }
             }
         }
@@ -265,8 +313,9 @@ Item {
                 currentColor: _dlgColorPicker.currentColor
                 onDropperActivated: {
                     _dlgColorPicker.dropperActivated();
-                    manager.statusMessage(qsTr("Colour picker activated (click anywhere on the video to pick a colour)"));
+                    manager.statusMessage(qsTr("Click a screen pixel to pick its colour; Esc or right-click cancels."));
                 }
+                onDropperError: (message) => manager.statusMessage(message)
                 onColorSelected: (col) => {
                     _dlgColorPicker.colorSelected(col);
                     if (targetProp === "style_primary") _dlgStyleEditor.primaryColor = col;
@@ -295,8 +344,15 @@ Item {
         id: _dlgTimingProcessor
         sourceComponent: Component {
             DialogTimingProcessor {
-                onTimingProcessRequested: (leadIn, leadOut, gapThresh, bias, selectedOnly, allowedStyles) => {
-                    manager.project.processTiming(leadIn, leadOut, gapThresh, bias, selectedOnly, allowedStyles);
+                project: manager.project
+                videoCtrl: manager.videoCtrl
+                processHandler: function(options) {
+                    if (manager.videoCtrl && options.keyframesEnabled) {
+                        options.keyframes = manager.videoCtrl.keyframeList;
+                        options.frameCount = manager.videoCtrl.totalFrames;
+                        options.framerate = manager.videoCtrl.exportFramerateContext;
+                    }
+                    return manager.project.processTiming(options);
                 }
             }
         }
@@ -309,14 +365,16 @@ Item {
             DialogResample {
                 project: manager.project
                 videoCtrl: manager.videoCtrl
-                onResampleRequested: (srcW, srcH, dstW, dstH, resampleMargins) => {
-                    if (manager.project) {
-                        manager.project.setScriptInfo("PlayResX", dstW);
-                        manager.project.setScriptInfo("PlayResY", dstH);
+                onResampleRequested: settings => {
+                    if (!manager.project || !manager.project.subtitleModel) {
+                        errorMessage = qsTr("No subtitle document is open");
+                        return;
                     }
-                    var rx = dstW / srcW;
-                    var ry = dstH / srcH;
-                    manager.statusMessage(qsTr("Resolution resampled: ") + srcW + "x" + srcH + " ➔ " + dstW + "x" + dstH + " (X: " + rx.toFixed(2) + ", Y: " + ry.toFixed(2) + ")");
+                    var result = manager.project.subtitleModel.resampleResolution(settings,
+                        manager.project.currentSelectedIndex, manager.project.selectedIndices);
+                    if (!result.success) { errorMessage = result.message; return; }
+                    manager.statusMessage(qsTr("Resolution resampled: ") + settings.sourceX + "x" + settings.sourceY + " ➔ " + settings.destX + "x" + settings.destY);
+                    close();
                 }
             }
         }
@@ -341,6 +399,7 @@ Item {
         id: _dlgTranslation
         sourceComponent: Component {
             DialogTranslation {
+                onPreviewRequested: manager.previewAssistant(false, true)
                 currentLineNumber: manager.project.currentSelectedIndex + 1
                 totalLines: manager.project.subtitleModel.count
                 currentLineTime: (manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) ?
@@ -349,35 +408,32 @@ Item {
                     manager.project.subtitleModel.get(manager.project.currentSelectedIndex).text : ""
 
                 onAuditionRequested: {
-                    if (manager.audioCtrl && manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) {
-                        var it = manager.project.subtitleModel.get(manager.project.currentSelectedIndex);
-                        manager.audioCtrl.playRange(AssUtils.assToMs(it.start), AssUtils.assToMs(it.end));
-                    }
+                    manager.playAssistantAudio();
                 }
                 onPlayAudioRequested: {
-                    if (manager.audioCtrl && manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) {
-                        var it = manager.project.subtitleModel.get(manager.project.currentSelectedIndex);
-                        manager.audioCtrl.playRange(AssUtils.assToMs(it.start), AssUtils.assToMs(it.end));
-                    }
+                    manager.playAssistantAudio();
                 }
                 onPlayVideoRequested: {
-                    if (manager.videoCtrl && manager.project.subtitleModel.count > manager.project.currentSelectedIndex && manager.project.currentSelectedIndex >= 0) {
-                        var it = manager.project.subtitleModel.get(manager.project.currentSelectedIndex);
-                        manager.videoCtrl.seekTime(AssUtils.assToMs(it.start) / 1000.0);
-                        manager.videoCtrl.play();
-                    }
+                    manager.playAssistantVideo();
                 }
-                onPrevRequested: manager.project.selectRow(Math.max(0, manager.project.currentSelectedIndex - 1), false, false)
-                onNextRequested: manager.project.selectRow(Math.min(manager.project.subtitleModel.count - 1, manager.project.currentSelectedIndex + 1), false, false)
-                onCommitRequested: (text, autoNext) => {
-                    if (manager.project.subtitleModel.count === 0 || manager.project.currentSelectedIndex < 0) return;
-                    if (text.length > 0) {
-                        manager.project.subtitleModel.setProperty(manager.project.currentSelectedIndex, "text", text);
-                        manager.statusMessage(qsTr("Translation committed for line #%1").arg(manager.project.currentSelectedIndex + 1));
+                onPrevRequested: manager.navigateTranslation(this, -1, false)
+                onNextRequested: {
+                    manager.navigateTranslation(this, 1, closeAfterLast);
+                }
+                onCommitRequested: (text, blockIndex, autoNext) => {
+                    var model = manager.project.subtitleModel;
+                    var row = manager.project.currentSelectedIndex;
+                    if (!model || row < 0 || row >= model.count) return;
+                    var original = model.get(row).text;
+                    var translated = TranslationUtils.replaceBlock(original, blockIndex, text);
+                    if (translated === null) return;
+                    if (translated !== original) {
+                        manager.project.pushUndo(qsTr("translate line"));
+                        model.setProperty(row, "text", translated);
                     }
-                    if (autoNext && manager.project.currentSelectedIndex < manager.project.subtitleModel.count - 1) {
-                        manager.project.selectRow(manager.project.currentSelectedIndex + 1, false, false);
-                    }
+                    setCommittedSource(translated);
+                    manager.statusMessage(qsTr("Translation committed for line #%1").arg(row + 1));
+                    if (autoNext) advanceAfterCommit();
                 }
             }
         }
@@ -400,7 +456,7 @@ Item {
         id: _dlgJumpTo
         sourceComponent: Component {
             DialogJumpTo {
-                fps: (manager.videoCtrl && manager.videoCtrl.fps > 0) ? manager.videoCtrl.fps : 23.976
+                videoCtrl: manager.videoCtrl
                 onJumpRequested: (frame, timeStr, timeSec) => {
                     if (manager.videoCtrl) manager.videoCtrl.seekTime(timeSec);
                     manager.statusMessage(qsTr("Jumped to frame #") + frame + " (" + timeStr + ")");
@@ -544,9 +600,7 @@ Item {
         id: _dlgExport
         sourceComponent: Component {
             DialogExport {
-                onExportRequested: (filters, charset) => {
-                    manager.project.exportFiltered(filters, charset);
-                }
+                project: manager.project
                 onStatusMessage: (msg) => manager.statusMessage(msg)
             }
         }
@@ -558,7 +612,7 @@ Item {
         sourceComponent: Component {
             DialogAutosave {
                 onRestoreAutosaveRequested: (path) => {
-                    manager.statusMessage(qsTr("Restored project snapshot: ") + path);
+                    manager.restoreAutosaveRequested(path);
                 }
                 onStatusMessage: (msg) => manager.statusMessage(msg)
             }

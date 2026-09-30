@@ -52,6 +52,7 @@ public:
     void Save(agi::fs::path const& file, int length = -1) const;
 
     bool IsVFR() const { return timecodes.size() > 1; }
+    const std::vector<int> &Timecodes() const { return timecodes; }
     bool IsLoaded() const { return numerator > 0; }
     double FPS() const { return denominator ? double(numerator) / denominator : 0.0; }
     bool NeedsDropFrames() const { return drop; }

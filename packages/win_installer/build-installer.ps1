@@ -48,6 +48,10 @@ foreach ($lang in @("ChineseSimplified", "ChineseTraditional")) {
 
 Write-Host "[2/5] Copying application payload"
 Copy-Item -LiteralPath $ExePath -Destination $StagingDir
+$regexDlls = @(Get-ChildItem -LiteralPath $BuildRoot -Filter 'icu*.dll' | Where-Object { $_.Name -match '^icu(dt|in|uc)\d+\.dll$' })
+if ($regexDlls.Count -lt 3) { throw 'The build payload is missing the ICU data/i18n/uc runtime DLLs.' }
+$regexDlls | Copy-Item -Destination $StagingDir
+Copy-Item -LiteralPath (Join-Path $BuildRoot 'licenses') -Destination $StagingDir -Recurse
 foreach ($dir in @("qml", "assets", "automation")) {
     Copy-Item -Path (Join-Path $BuildRoot $dir) -Destination $StagingDir -Recurse
 }
@@ -60,7 +64,7 @@ if (!$windeployqt) {
     $qtBin = Split-Path (Split-Path (Get-ChildItem "$BuildRoot\CMakeCache.txt" -ErrorAction SilentlyContinue) -Parent) -Parent
     throw "windeployqt.exe not found on PATH"
 }
-& $windeployqt --release --compiler-runtime --no-opengl-sw --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
+& $windeployqt --release --compiler-runtime --no-opengl-sw --include-plugins qoffscreen --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
 
 # Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.

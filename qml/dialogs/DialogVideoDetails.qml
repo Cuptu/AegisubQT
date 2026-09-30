@@ -15,16 +15,21 @@ NativeDialogFrame {
     implicitWidth: 460
     implicitHeight: 380
 
-    // Video stream metadata properties exposed for display
-    property string fileName: "sample_video.mp4"
-    property real fps: 23.976
-    property int widthVal: 1920
-    property int heightVal: 1080
-    property int frameCount: 1440
-    property string lengthStr: "0:01:00.00"
-    property string colorMatrix: "TV.709"
-    property string colorRange: "Limited"
-    property string decoderName: "FFmpegSource"
+    property var videoCtrl: null
+    property var project: null
+    property var details: ({hasVideo: false})
+    property string scriptMatrix: "None"
+
+    function refreshDetails() {
+        details = videoCtrl ? videoCtrl.videoDetails : {hasVideo: false};
+        scriptMatrix = project ? String(project.getScriptInfo("YCbCr Matrix", "None")) : "None";
+    }
+    onAboutToShow: refreshDetails()
+    Connections {
+        target: dialog.videoCtrl
+        function onVideoInfoChanged() { dialog.refreshDetails(); }
+        function onTimecodesChanged() { dialog.refreshDetails(); }
+    }
 
     ColumnLayout {
         anchors.fill: parent
@@ -44,28 +49,28 @@ NativeDialogFrame {
                 rowSpacing: 4
 
                 Text { text: qsTr("File name:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.fileName; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-file"; text: dialog.details.hasVideo ? dialog.details.fileName : qsTr("No video open"); readOnly: true; Layout.fillWidth: true }
 
                 Text { text: "FPS:"; font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.fps.toFixed(3); readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-fps"; text: dialog.details.hasVideo ? Number(dialog.details.fps).toFixed(3) : "—"; readOnly: true; Layout.fillWidth: true }
 
                 Text { text: qsTr("Resolution:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.widthVal + "×" + dialog.heightVal + " (16:9)"; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-resolution"; text: dialog.details.hasVideo ? dialog.details.width + "×" + dialog.details.height + " (" + dialog.details.aspectRatio + ")" : "—"; readOnly: true; Layout.fillWidth: true }
 
                 Text { text: qsTr("Length:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.frameCount + " " + qsTr("frames") + " (" + dialog.lengthStr + ")"; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-length"; text: dialog.details.hasVideo ? dialog.details.frameCount + " " + qsTr("frames") + " (" + dialog.details.length + ")" : "—"; readOnly: true; Layout.fillWidth: true }
 
                 Text { text: qsTr("Color matrix:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.colorMatrix; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-matrix"; text: dialog.details.hasVideo ? dialog.details.colorMatrix : "—"; readOnly: true; Layout.fillWidth: true }
 
-                Text { text: qsTr("Override matrix:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.colorMatrix; readOnly: true; Layout.fillWidth: true }
+                Text { text: qsTr("Script matrix:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
+                NativeTextBox { objectName: "video-details-script-matrix"; text: dialog.scriptMatrix; readOnly: true; Layout.fillWidth: true }
 
                 Text { text: qsTr("Color range:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.colorRange; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-range"; text: dialog.details.hasVideo ? dialog.details.colorRange : "—"; readOnly: true; Layout.fillWidth: true }
 
                 Text { text: qsTr("Decoder:"); font.pixelSize: 12; font.family: uiTheme.uiFont }
-                NativeTextBox { text: dialog.decoderName; readOnly: true; Layout.fillWidth: true }
+                NativeTextBox { objectName: "video-details-decoder"; text: dialog.details.hasVideo ? dialog.details.decoder : "—"; readOnly: true; Layout.fillWidth: true }
             }
         }
 

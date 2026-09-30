@@ -2,10 +2,11 @@
 // SPDX-License-Identifier: MIT
 
 // SubtitleProject: Central coordinator for subtitle document state, selection, and undo context.
-// All subtitle dialogue data storage, Copy-on-Write undo stacks, ASS file parser/serializer,
+// Subtitle dialogue storage, document snapshot undo stacks, ASS file parser/serializer,
 // timing engines, line manipulation algorithms, and query engines are backed by native C++ SubtitleModel.
 
 import QtQuick
+import "AssUtils.js" as AssUtils
 
 QtObject {
     id: project
@@ -27,6 +28,8 @@ QtObject {
     // Last search parameters backing Edit > Find Next (upstream edit/find_next).
     property string lastFindQuery: ""
     property var lastFindOptions: null
+    property int lastFindRow: -1
+    property int lastFindEnd: 0
 
     // Undo / Redo history delegated directly to native C++ SubtitleModel
     readonly property bool canUndo: subtitleModel ? subtitleModel.canUndo : false
@@ -106,30 +109,28 @@ QtObject {
         dataModified();
     }
 
-    // [Attachments] Embedded font and graphic attachments metadata model
-    property ListModel attachmentModel: ListModel {
-        ListElement { filename: "SourceHanSans-Medium.otf"; sizeStr: "8.4 MB"; typeStr: "[Fonts]" }
-        ListElement { filename: "watermark_logo.png"; sizeStr: "42.1 KB"; typeStr: "[Graphics]" }
+    property ListModel attachmentModel: ListModel {}
+
+    function refreshAttachments() {
+        attachmentModel.clear();
+        if (!subtitleModel) return;
+        var items = subtitleModel.attachments();
+        for (var i = 0; i < items.length; ++i) attachmentModel.append(items[i]);
     }
 
-    function addAttachment(filename, sizeStr, typeStr) {
-        attachmentModel.append({
-            filename: filename,
-            sizeStr: sizeStr,
-            typeStr: typeStr
-        });
-        // Attachment edits bypass the model API; flagged manually (attachments belong to AssFile in legacy Aegisub)
-        if (subtitleModel) subtitleModel.markModified();
-        dataModified();
+    function addAttachment(path, isFont) {
+        return subtitleModel ? subtitleModel.addAttachmentFile(path, isFont) : false;
     }
 
     function removeAttachment(index) {
-        if (index >= 0 && index < attachmentModel.count) {
-            attachmentModel.remove(index);
-            if (subtitleModel) subtitleModel.markModified();
-            dataModified();
-        }
+        return subtitleModel ? subtitleModel.removeAttachment(index) : false;
     }
+
+    function extractAttachment(index, folder) {
+        return subtitleModel ? subtitleModel.extractAttachment(index, folder) : false;
+    }
+
+    Component.onCompleted: refreshAttachments()
 
     // Boundary timestamps of non-selected dialogue lines used as waveform snap markers
     readonly property var snapPoints: subtitleModel ? subtitleModel.getSnapPoints(currentSelectedIndex) : []
@@ -137,7 +138,23 @@ QtObject {
     // Project mutation and selection notifications
     signal statusMessage(string msg)
     signal lineSelected(int index, var item)
+    signal ensureRowVisible(int index)
+    signal searchMatchFound(int row, int start, int length)
     signal dataModified()
+
+    property Connections automationConnections: Connections {
+        target: (typeof automationManager !== "undefined") ? automationManager : null
+        function onMacroSelectionChanged(targetProject, activeIndex, indices) {
+            if (targetProject !== project && targetProject !== subtitleModel) return;
+            if (activeIndex < 0) {
+                currentSelectedIndex = -1;
+                selectedIndices = [];
+                return;
+            }
+            project.selectRow(activeIndex, false, false);
+            project.selectedIndices = indices.slice();
+        }
+    }
 
     // QtObject has no default child property; Connections must be declared as a named property
     property Connections modelConnections: Connections {
@@ -146,6 +163,7 @@ QtObject {
             // C++ model tracks modified status internally via commitId; QML only triggers UI refresh
             project.dataModified();
         }
+        function onAttachmentsChanged() { project.refreshAttachments(); }
     }
 
     function isRowSelected(idx) {
@@ -214,9 +232,8 @@ QtObject {
             if (vMs >= s && vMs <= e) visible.push(i);
         }
         if (visible.length > 0) {
+            selectRow(visible[0], false, false);
             selectedIndices = visible;
-            currentSelectedIndex = visible[0];
-            selectRow(currentSelectedIndex, false, false);
             statusMessage(qsTr("Selected %1 lines visible in the current video frame").arg(visible.length));
         } else {
             statusMessage(qsTr("No lines visible in the current video frame"));
@@ -266,20 +283,25 @@ QtObject {
         pushUndo(qsTr("duplicate lines"));
         var newSel = subtitleModel.duplicateSelectedLines(selectedIndices);
         if (newSel.length > 0) {
-            selectedIndices = newSel;
-            currentSelectedIndex = newSel[0];
             selectRow(newSel[0], false, false);
+            selectedIndices = newSel;
             statusMessage(qsTr("Duplicated ") + newSel.length + qsTr(" lines"));
             dataModified();
         }
     }
 
-    function splitLineAtFrame(shift, videoTime, videoFps) {
-        if (!subtitleModel || subtitleModel.count === 0) return;
+    function splitLineAtFrame(shift, videoCtrl) {
+        if (!subtitleModel || subtitleModel.count === 0 || !videoCtrl || !videoCtrl.hasVideo ||
+                selectedIndices.length === 0) return;
+        var frame = videoCtrl.currentFrame;
+        var firstEnd = videoCtrl.timeAtFrameMs(frame + (shift < 0 ? -1 : 0), 2);
+        var secondStart = videoCtrl.timeAtFrameMs(frame + (shift < 0 ? 0 : 1), 1);
         pushUndo(qsTr("split line"));
-        var frameTime = Math.round((videoTime || 0) * 1000.0);
-        subtitleModel.splitLineAtFrame(currentSelectedIndex, shift, frameTime, videoFps || 24.0);
-        selectRow(currentSelectedIndex + 1, false, false);
+        var newRows = subtitleModel.splitLinesAtFrame(selectedIndices, firstEnd, secondStart,
+            videoCtrl.timeAtFrameMs(frame, 1), videoCtrl.timeAtFrameMs(frame, 2), videoCtrl.timeAtFrameMs(frame));
+        if (newRows.length === 0) return;
+        selectRow(newRows[0], false, false);
+        selectedIndices = newRows;
         statusMessage(qsTr("Split line at current video frame"));
         dataModified();
     }
@@ -323,29 +345,40 @@ QtObject {
     }
 
     function cutSelectedLines(copyHelper) {
-        copySelectedLines(copyHelper);
-        deleteSelectedLines();
+        if (copySelectedLines(copyHelper)) deleteSelectedLines();
     }
 
     function copySelectedLines(copyHelper) {
-        if (!subtitleModel || selectedIndices.length === 0) return;
+        if (!subtitleModel || selectedIndices.length === 0) return false;
         var sorted = selectedIndices.slice().sort(function(a, b) { return a - b; });
         var copied = [];
-        var textLines = [];
         for (var i = 0; i < sorted.length; ++i) {
             var it = subtitleModel.get(sorted[i]);
+            if (!it || it.lineNumber === undefined) continue;
             copied.push(it);
-            textLines.push("Dialogue: " + (it.layer || 0) + "," + it.start + "," + it.end + "," + (it.style || "Default") + "," + (it.actor || "") + "," + (it.marginLeft || 0) + "," + (it.marginRight || 0) + "," + (it.marginVert || 0) + "," + (it.effect || "") + "," + it.text);
         }
+        if (!copied.length) return false;
         internalSubClipboard = copied;
+        var serialized = subtitleModel.serializeClipboardLines(sorted);
         if (copyHelper && typeof copyHelper.copyText === "function") {
-            copyHelper.copyText(textLines.join("\n"));
+            copyHelper.copyText(serialized);
+        } else if (typeof aegisubCore !== "undefined" && aegisubCore) {
+            if (!aegisubCore.setClipboardText(serialized)) {
+                statusMessage(qsTr("Unable to write to the system clipboard"));
+                return false;
+            }
         }
         statusMessage(qsTr("Copied ") + copied.length + qsTr(" lines"));
+        return true;
     }
 
     function pasteLines(pasteOver, pastedData, allowedFields) {
-        var toPaste = (pastedData && pastedData.length > 0) ? pastedData : internalSubClipboard;
+        if (!subtitleModel) return;
+        var toPaste;
+        if (pastedData && pastedData.length > 0) toPaste = pastedData;
+        else if (typeof aegisubCore !== "undefined" && aegisubCore)
+            toPaste = subtitleModel.parseClipboardLines(aegisubCore.clipboardText());
+        else toPaste = internalSubClipboard;
         if (!toPaste || toPaste.length === 0 || !subtitleModel) return;
         pushUndo(pasteOver ? qsTr("paste over") : qsTr("paste lines"));
 
@@ -378,7 +411,7 @@ QtObject {
             return;
         }
 
-        var insertPos = currentSelectedIndex >= 0 ? (currentSelectedIndex + 1) : subtitleModel.count;
+        var insertPos = currentSelectedIndex >= 0 ? currentSelectedIndex : subtitleModel.count;
         var newSel = [];
         for (var i = 0; i < toPaste.length; ++i) {
             subtitleModel.insert(insertPos + i, toPaste[i]);
@@ -456,10 +489,12 @@ QtObject {
 
     function recombineSelectedLines() {
         if (!subtitleModel || selectedIndices.length < 2) return;
-        pushUndo(qsTr("recombine lines"));
-        subtitleModel.recombineSelectedLines(selectedIndices);
-        selectRow(currentSelectedIndex, false, false);
-        statusMessage(qsTr("Made ") + selectedIndices.length + qsTr(" line times continuous"));
+        var result = subtitleModel.recombineSelectedLines(selectedIndices, currentSelectedIndex);
+        if (!result.success) { statusMessage(result.message); return; }
+        if (!result.changed) return;
+        selectedIndices = result.selectedIndices;
+        currentSelectedIndex = result.selectedIndex;
+        statusMessage(qsTr("Recombined selected lines"));
         dataModified();
     }
 
@@ -473,20 +508,47 @@ QtObject {
         dataModified();
     }
 
-    function processTiming(leadIn, leadOut, gapThresh, bias, selectedOnly, allowedStyles) {
-        if (!subtitleModel || subtitleModel.count === 0) return 0;
-        pushUndo(qsTr("timing post-processor"));
-        var modifiedCount = subtitleModel.processTiming(leadIn, leadOut, gapThresh, bias, selectedOnly, selectedIndices, allowedStyles || []);
-        selectRow(currentSelectedIndex, false, false);
-        dataModified();
-        return modifiedCount;
+    function processTiming(options) {
+        if (!subtitleModel || subtitleModel.count === 0) return {success: true, changed: false, modifiedCount: 0};
+        var result = subtitleModel.processTiming(options, selectedIndices, currentSelectedIndex);
+        if (!result.success) { statusMessage(result.message); return result; }
+        if (result.changed) dataModified();
+        return result;
     }
 
     function shiftTimes(amountMs, shiftStart, shiftEnd, affectMode) {
         if (!subtitleModel || subtitleModel.count === 0) return;
         pushUndo(qsTr("shift times"));
         subtitleModel.shiftTimes(amountMs, shiftStart, shiftEnd, affectMode, selectedIndices);
+        var selection = selectedIndices.slice();
         selectRow(currentSelectedIndex, false, false);
+        selectedIndices = selection;
+        dataModified();
+    }
+
+    function shiftTimesByFrames(amount, shiftStart, shiftEnd, affectMode, videoCtrl) {
+        if (!subtitleModel || !videoCtrl || !videoCtrl.hasVideo || !amount) return;
+        var changes = [];
+        var firstSelected = selectedIndices.length ? Math.min.apply(null, selectedIndices) : subtitleModel.count;
+        for (var row = 0; row < subtitleModel.count; ++row) {
+            if (affectMode === 1 && selectedIndices.indexOf(row) === -1) continue;
+            if (affectMode === 2 && row < firstSelected) continue;
+            var start = subtitleModel.getLineStartMs(row);
+            var end = subtitleModel.getLineEndMs(row);
+            var newStart = shiftStart ? Math.max(0, videoCtrl.timeAtFrameMs(videoCtrl.frameAtTimeMs(start, 1) + amount, 1)) : start;
+            var newEnd = shiftEnd ? Math.max(0, videoCtrl.timeAtFrameMs(videoCtrl.frameAtTimeMs(end, 2) + amount, 2)) : end;
+            if (newStart !== start || newEnd !== end) changes.push({row: row, start: newStart, end: newEnd});
+        }
+        if (!changes.length) return;
+        pushUndo(qsTr("shift times by frames"));
+        for (var i = 0; i < changes.length; ++i) {
+            var change = changes[i];
+            if (shiftStart) subtitleModel.setProperty(change.row, "start", AssUtils.msToAss(change.start));
+            if (shiftEnd) subtitleModel.setProperty(change.row, "end", AssUtils.msToAss(change.end));
+        }
+        var selection = selectedIndices.slice();
+        selectRow(currentSelectedIndex, false, false);
+        selectedIndices = selection;
         dataModified();
     }
 
@@ -495,9 +557,8 @@ QtObject {
         if (!subtitleModel || subtitleModel.count === 0) return;
         var finalSel = subtitleModel.selectLines(action, fldIdx, mode, invert, matchCase, comments, dialogues, query, selectedIndices);
         if (finalSel.length > 0) {
-            selectedIndices = finalSel;
-            currentSelectedIndex = finalSel[0];
             selectRow(finalSel[0], false, false);
+            selectedIndices = finalSel;
             statusMessage(qsTr("Selected ") + finalSel.length + qsTr(" lines"));
         } else {
             selectedIndices = [];
@@ -508,11 +569,15 @@ QtObject {
 
     function findAndReplace(query, replaceWith, options, replaceAll) {
         if (!subtitleModel || subtitleModel.count === 0 || !query) return 0;
+        options = Object.assign({}, options || {});
+        options.selectedIndices = selectedIndices.slice();
         // Record search parameters so Edit > Find Next can repeat them (upstream edit/find_next).
         lastFindQuery = query;
-        lastFindOptions = options || {};
+        lastFindOptions = options;
+        lastFindRow = -1;
+        lastFindEnd = 0;
         pushUndo(qsTr("replace"));
-        var count = subtitleModel.findAndReplace(query, replaceWith, options || {}, replaceAll, currentSelectedIndex);
+        var count = subtitleModel.findAndReplace(query, replaceWith, options, replaceAll, currentSelectedIndex);
         if (count > 0) {
             statusMessage(qsTr("Replaced ") + count + qsTr(" matches"));
             dataModified();
@@ -527,16 +592,21 @@ QtObject {
     // Upstream Subtitle > Split by Karaoke: one line per karaoke syllable.
     function splitSelectedByKaraoke() {
         if (!subtitleModel || selectedIndices.length === 0) return;
-        pushUndo(qsTr("split by karaoke"));
-        subtitleModel.splitSelectedByKaraoke(selectedIndices);
-        selectRow(currentSelectedIndex, false, false);
+        var result = subtitleModel.splitSelectedByKaraoke(selectedIndices, currentSelectedIndex);
+        if (!result.success) { statusMessage(result.message); return; }
+        if (!result.changed) return;
+        selectRow(result.activeIndex, false, false);
+        selectedIndices = result.selectedIndices;
         statusMessage(qsTr("Split selected lines by karaoke syllables"));
         dataModified();
     }
 
-    // Subtitle export filter pipeline stub
-    function exportFiltered(filters, charset) {
-        statusMessage(qsTr("Subtitles exported: charset [") + charset + qsTr("], filters [") + filters.join(", ") + "]");
+    function exportFiltered(path, filters, charset) {
+        if (typeof automationManager === "undefined")
+            return {success: false, message: qsTr("Automation manager is unavailable")};
+        var result = automationManager.exportSubtitles(path, charset, filters, project);
+        statusMessage(result.message);
+        return result;
     }
 
     // Serialization interface for C++ backend controllers and automation macro scripts
@@ -551,45 +621,25 @@ QtObject {
         dataModified();
     }
 
-    // Snaps selected lines to nearest video keyframes
-    function snapToKeyframes(points) {
-        if (!subtitleModel || !points || points.length === 0) return;
-        pushUndo(qsTr("Snap to keyframes"));
-        var threshold = 500;
+    // Set selected lines to the scene containing the current video frame.
+    function snapToKeyframes(bounds) {
+        if (!subtitleModel || !bounds || bounds.start === undefined || bounds.end === undefined ||
+                bounds.end <= bounds.start) return;
         var changed = false;
         var indices = selectedIndices && selectedIndices.length > 0 ? selectedIndices : [currentSelectedIndex];
         for (var i = 0; i < indices.length; ++i) {
             var row = indices[i];
-            var start = subtitleModel.getLineStartMs(row);
-            var end = subtitleModel.getLineEndMs(row);
-            var bestStart = start;
-            var bestEnd = end;
-            var minStartDiff = threshold + 1;
-            var minEndDiff = threshold + 1;
-            for (var p = 0; p < points.length; ++p) {
-                var pt = points[p];
-                var ds = Math.abs(pt - start);
-                if (ds < minStartDiff) {
-                    minStartDiff = ds;
-                    bestStart = pt;
-                }
-                var de = Math.abs(pt - end);
-                if (de < minEndDiff) {
-                    minEndDiff = de;
-                    bestEnd = pt;
-                }
-            }
-            if (bestStart !== start || bestEnd !== end) {
-                if (bestStart < bestEnd) {
-                    subtitleModel.setProperty(row, "start", AssUtils.msToAss(bestStart));
-                    subtitleModel.setProperty(row, "end", AssUtils.msToAss(bestEnd));
-                    changed = true;
-                }
-            }
+            if (row < 0 || row >= subtitleModel.count) continue;
+            if (subtitleModel.getLineStartMs(row) === bounds.start &&
+                    subtitleModel.getLineEndMs(row) === bounds.end) continue;
+            if (!changed) pushUndo(qsTr("Snap to scene"));
+            subtitleModel.setProperty(row, "start", AssUtils.msToAss(bounds.start));
+            subtitleModel.setProperty(row, "end", AssUtils.msToAss(bounds.end));
+            changed = true;
         }
         if (changed) {
             dataModified();
-            statusMessage(qsTr("Snapped to keyframes"));
+            statusMessage(qsTr("Snapped to scene"));
         }
     }
 
@@ -597,20 +647,49 @@ QtObject {
     // When called without arguments (Edit > Find Next) it repeats the last search.
     function findNext(query, options) {
         if (!subtitleModel) return -1;
+        var newSearch = false;
         if (!query) {
             query = lastFindQuery;
             options = lastFindOptions || {};
+        } else {
+            // Dialog buttons pass the query every time. Only changed search
+            // criteria start over; repeated clicks continue the same search.
+            var requested = options || {};
+            var previous = lastFindOptions || {};
+            newSearch = query !== lastFindQuery;
+            var defaults = {matchCase: false, useRegex: false, skipComments: true,
+                            skipTags: false, selectedOnly: false, field: "text"};
+            for (var key in defaults) {
+                var nextValue = requested[key] === undefined ? defaults[key] : requested[key];
+                var oldValue = previous[key] === undefined ? defaults[key] : previous[key];
+                if (nextValue !== oldValue) newSearch = true;
+            }
+            lastFindQuery = query;
+            options = Object.assign({}, requested);
+            if (newSearch) {
+                lastFindRow = -1;
+                lastFindEnd = 0;
+            } else {
+                options.selectedIndices = previous.selectedIndices;
+            }
         }
         if (!query) {
             statusMessage(qsTr("Not found: %1").arg(""));
             return -1;
         }
-        var startIdx = (currentSelectedIndex >= 0) ? (currentSelectedIndex + 1) : 0;
-        var found = subtitleModel.findNext(query, options || {}, startIdx);
-        if (found >= 0) {
-            selectRow(found, false, false);
-            statusMessage(qsTr("Found on line %1").arg(found + 1));
-            return found;
+        options = Object.assign({}, options || {});
+        if (newSearch || !options.selectedIndices) options.selectedIndices = selectedIndices.slice();
+        lastFindOptions = options;
+        var startRow = lastFindRow >= 0 ? lastFindRow : Math.max(0, currentSelectedIndex);
+        var startOffset = lastFindRow >= 0 ? lastFindEnd : 0;
+        var match = subtitleModel.findNextMatch(query, options, startRow, startOffset);
+        if (match.row !== undefined) {
+            lastFindRow = match.row;
+            lastFindEnd = match.start + Math.max(1, match.length);
+            selectRow(match.row, false, false);
+            searchMatchFound(match.row, match.start, match.length);
+            statusMessage(qsTr("Found on line %1").arg(match.row + 1));
+            return match.row;
         } else {
             statusMessage(qsTr("Not found: %1").arg(query));
             return -1;
@@ -619,6 +698,8 @@ QtObject {
 
     // Creates a new blank subtitle project document
     function fileNew() {
+        lastFindRow = -1;
+        lastFindEnd = 0;
         if (subtitleModel) {
             subtitleModel.newDocument();
         }
@@ -630,14 +711,17 @@ QtObject {
     }
 
     // Opens and parses an ASS subtitle file from disk
-    function openSubtitles(filePath) {
+    function openSubtitles(filePath, charset) {
         if (!filePath || !subtitleModel) return false;
         var cleanPath = filePath;
-        var ok = subtitleModel.loadFromFile(cleanPath);
+        var ok = charset ? subtitleModel.loadFromFileWithCharset(cleanPath, charset)
+                         : subtitleModel.loadFromFile(cleanPath);
         if (!ok) {
             statusMessage(qsTr("Failed to open file: ") + cleanPath);
             return false;
         }
+        lastFindRow = -1;
+        lastFindEnd = 0;
         currentFileName = subtitleModel.fileName;
         selectRow(0, false, false);
         statusMessage(qsTr("Opened subtitles: ") + currentFileName);

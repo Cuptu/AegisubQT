@@ -10,6 +10,8 @@
 #include <QColor>
 #include <QList>
 #include <QVariantMap>
+#include <QUrl>
+#include <QPointer>
 
 namespace agi::ass {
     struct KaraokeSyllable;
@@ -48,11 +50,24 @@ class AegisubCoreBridge : public QObject {
 public:
     explicit AegisubCoreBridge(QObject *parent = nullptr);
 
+    Q_INVOKABLE bool beginScreenColorPick();
+    Q_INVOKABLE void cancelScreenColorPick();
+
+signals:
+    void screenColorPicked(const QColor &color);
+    void screenColorPickCancelled();
+    void screenColorPickFailed(const QString &message);
+
+private:
+    QPointer<QObject> screenPickSession_;
+
+public:
+
     /// Tokenize dialogue text into syntax tokens (text, override tags, arguments, drawings).
     Q_INVOKABLE static QList<QVariantMap> tokenizeLine(const QString &text, bool karaokeTemplater = false);
 
     /// Parse dialogue text into structured karaoke syllables with timing in milliseconds.
-    Q_INVOKABLE static QList<QVariantMap> parseKaraokeLine(const QString &text, int startTime = 0, int endTime = 0, bool autoSplit = false);
+    Q_INVOKABLE static QList<QVariantMap> parseKaraokeLine(const QString &text, int startTime = 0, int endTime = 0, bool autoSplit = false, bool normalize = true);
 
     /// Load video keyframe indices from file.
     Q_INVOKABLE static QList<int> loadKeyframes(const QString &filePath);
@@ -93,7 +108,8 @@ public:
     Q_INVOKABLE static void launchNewInstance();
 
     /// Place plain text on the system clipboard.
-    Q_INVOKABLE static void setClipboardText(const QString &text);
+    Q_INVOKABLE static bool setClipboardText(const QString &text);
+    Q_INVOKABLE static QString clipboardText();
 
     /// Load an image file and place it on the system clipboard. False when unreadable.
     Q_INVOKABLE static bool copyImageFileToClipboard(const QString &imagePath);
@@ -101,6 +117,10 @@ public:
     /// Generic application settings access (QSettings "Aegisub"/"Aegisub").
     Q_INVOKABLE static void setSetting(const QString &key, const QVariant &value);
     Q_INVOKABLE static QVariant getSetting(const QString &key, const QVariant &defaultValue = QVariant());
+
+    /// Convert a FolderDialog file URL to a native filesystem path without
+    /// losing root separators or percent-encoded characters.
+    Q_INVOKABLE static QString localFilePath(const QUrl &url);
 
     /// Resolves the "?user" placeholder (Aegisub user directory convention) to the
     /// writable per-application data location, mirroring upstream path semantics.

@@ -20,6 +20,13 @@ Rectangle {
     clip: true
 
     required property var project
+    Connections {
+        target: gridAreaRoot.project
+        function onEnsureRowVisible(index) {
+            if (index >= 0 && index < gridView.count)
+                gridView.positionViewAtIndex(index, ListView.Contain);
+        }
+    }
     property var videoCtrl: null
 
     signal statusMessage(string text)
@@ -389,6 +396,7 @@ Rectangle {
 
             ListView {
                 id: gridView
+                objectName: "subtitle-grid-list"
                 anchors.fill: parent
                 model: gridAreaRoot.project.subtitleModel
                 boundsBehavior: Flickable.StopAtBounds
@@ -997,18 +1005,18 @@ Rectangle {
             ContextMenuItem {
                 itemText: qsTr("Split lines before current frame")
                 itemShortcut: "Ctrl-D"
+                enabled: !!(gridAreaRoot.videoCtrl && gridAreaRoot.videoCtrl.hasVideo)
                 onTriggered: {
-                    var vTime = gridAreaRoot.videoCtrl ? gridAreaRoot.videoCtrl.currentTime : 0;
-                    gridAreaRoot.project.splitLineAtFrame(-1, vTime);
+                    gridAreaRoot.project.splitLineAtFrame(-1, gridAreaRoot.videoCtrl);
                 }
             }
             // Split lines after current frame
             ContextMenuItem {
                 itemText: qsTr("Split lines after current frame")
                 itemShortcut: "Ctrl-Shift-D"
+                enabled: !!(gridAreaRoot.videoCtrl && gridAreaRoot.videoCtrl.hasVideo)
                 onTriggered: {
-                    var vTime = gridAreaRoot.videoCtrl ? gridAreaRoot.videoCtrl.currentTime : 0;
-                    gridAreaRoot.project.splitLineAtFrame(1, vTime);
+                    gridAreaRoot.project.splitLineAtFrame(1, gridAreaRoot.videoCtrl);
                 }
             }
 

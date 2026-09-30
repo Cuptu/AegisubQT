@@ -10,7 +10,7 @@
 [![Status](https://img.shields.io/badge/Status-Release--Ready-10B981?style=flat-square&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS-0078D4?style=flat-square&logo=windows&logoColor=white&labelColor=1F2937)](https://github.com/Cuptu/AegisubQT)
 [![Language](https://img.shields.io/badge/Language-C%2B%2B%2020-00599C?style=flat-square&logo=c%2B%2B&logoColor=white&labelColor=1F2937)](https://en.cppreference.com/w/cpp/20)
-[![Qt](https://img.shields.io/badge/Qt-6.11%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
+[![Qt](https://img.shields.io/badge/Qt-6.11.2%2B%20Quick-41CD52?style=flat-square&logo=qt&logoColor=white&labelColor=1F2937)](https://www.qt.io/)
 [![Lua](https://img.shields.io/badge/Automation-LuaJIT%202.1-000080?style=flat-square&logo=lua&logoColor=white&labelColor=1F2937)](https://luajit.org/)
 [![License](https://img.shields.io/badge/License-BSD--3--Clause%20%2F%20MIT-F59E0B?style=flat-square&labelColor=1F2937)](./LICENSE)
 
@@ -170,21 +170,44 @@ AegisubQT/
 ## 4. Build & Compilation Guide
 
 ### Prerequisites
+- **Automation regex**: ICU development libraries (`libicu-dev` on Debian/Ubuntu, `brew install icu4c` and `ICU_ROOT=$(brew --prefix icu4c)` on macOS). CMake fetches a pinned standalone Boost.Regex source archive. On MSVC x64, it fetches the official ICU 78.3 runtime/development archive if ICU is not installed; Windows packages include its DLLs and licenses. An offline configure can set `FETCHCONTENT_SOURCE_DIR_AEGISUB_BOOST_REGEX` and `ICU_ROOT` to local copies.
 - **Compiler**: Visual Studio 2022 (MSVC v143 x64) or modern Clang / GCC supporting C++20.
-- **Framework**: Qt 6.8+ (with `Qt6::Core`, `Qt6::Gui`, `Qt6::Quick`, `Qt6::Qml`, `Qt6::QuickControls2`, `Qt6::ShaderTools`, `Qt6::Multimedia`).
-- **Build System**: CMake 3.20+ and Ninja.
+- **Framework**: Qt 6.11.2+ (with `Qt6::Core`, `Qt6::Core5Compat`, `Qt6::Gui`, `Qt6::Quick`, `Qt6::Qml`, `Qt6::QuickControls2`, `Qt6::ShaderTools`, `Qt6::Multimedia`, `Qt6::LinguistTools`).
+- **Build System**: CMake 3.20+, Ninja (or Visual Studio on Windows), and Git. Unix LuaJIT builds also require GNU make. Initialize the LuaJIT submodule before configuring.
 
 ### Build Commands
 ```cmd
 :: Initialize MSVC 64-bit developer environment
 call "C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
 
-:: Configure
-cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release
+:: Initialize source dependencies and configure the Qt installation prefix
+git submodule update --init --recursive
+cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH=C:/Qt
 
-:: Compile (produces build/AegisubQT.exe and deploys runtime DLLs & assets)
-ninja -C build
+:: Compile the application and copy its QML/assets/automation/translations
+cmake --build build --parallel
+
+:: Deploy the Qt runtime for a standalone Windows directory
+windeployqt --release --compiler-runtime --qmldir qml --dir build build\AegisubQT.exe
 ```
+
+The compiled executable is not a complete media distribution: Astra backend dependencies and the FFmpeg command-line tool must also be deployed. Use the packaging scripts when producing release payloads, and validate the result outside the source checkout.
+
+For Windows media deployment, configure `-DAEGISUB_MEDIA_RUNTIME_DIR=C:/media-runtime` with the FFmpeg DLLs required by the shipped Astra bridge. CMake scans the bridge and CLI dependencies recursively, fails on missing dependencies, and copies the closure into the build payload's `assets/bin`; the Windows packaging scripts include this directory. Set `-DAEGISUB_FFMPEG_EXECUTABLE=C:/ffmpeg/bin/ffmpeg.exe` when the complete CLI lives elsewhere. The CLI must provide `pcm_s16le` encoding for audio extraction. The application prefers its bundled executable over system PATH. Record the runtime versions, source and license material with the release; this setting does not download media dependencies or build the Unix Astra backend.
+
+To build the updated AstraCore backend from source on Windows, also set `-DAEGISUB_BUILD_NATIVE_MEDIA=ON -DASTRA_FFMPEG_SDK=C:/ffmpeg-sdk` with an FFmpeg 6.1+ SDK containing headers and MSVC import libraries. Point `AEGISUB_MEDIA_RUNTIME_DIR` to that same SDK's `bin` directory and `AEGISUB_FFMPEG_EXECUTABLE` to its `ffmpeg.exe`. The build deploys the compiled backend and matching FFmpeg dependency closure together. This backend exposes the video stream's color matrix and range to Video Details; the older prebuilt bridge reports an unavailable range as Unknown.
+
+Linux/macOS builds enable `AEGISUB_BUILD_NATIVE_MEDIA` by default and build the bundled AstraCore source with an FFmpeg 6.1+ SDK. Ubuntu 24.04 requires `pkg-config ffmpeg libavformat-dev libavcodec-dev libavutil-dev libswresample-dev libswscale-dev`. On macOS install `pkg-config ffmpeg` with Homebrew and export `PKG_CONFIG_PATH="$(brew --prefix ffmpeg)/lib/pkgconfig:${PKG_CONFIG_PATH:-}"` before configuring. CMake installs the native library into `lib` on Linux or `AegisubQT.app/Contents/Frameworks` on macOS. Native CTests generate real media with the FFmpeg CLI and exercise probe, audio extraction, decoding, repeated seeking, scaling, timestamps and keyframes. Release packaging must also carry the native library's FFmpeg dependency closure; installing the native library alone does not make a self-contained distribution.
+
+The bundled AstraCore backend is GPLv3. See `third_party/astracore/LICENSE` and `PROVENANCE.md`; a combined application distribution must comply with GPLv3 and provide all required corresponding source, including the application, backend and build changes. Other components retain their individual licenses.
+
+Unix release workflows explicitly deploy the dynamically loaded native backend and the FFmpeg CLI. Linux AppImage deployment seeds `libAstraCore.Native.so` into linuxdeploy's dependency scan; distro tarballs also include the installed `lib` directory. On macOS, `cmake/DeployMacMedia.cmake` runs after macdeployqt and before signing to copy third-party dependencies and repair Mach-O references. `cmake/VerifyNativeMedia.cmake` then generates media with the bundled CLI and dynamically loads the deployed backend from an independent check executable, with injected library paths cleared. Linux verification rejects FFmpeg libraries resolved outside the payload.
+
+Release builds load application QML only from the executable/install/bundle directories. For source editing, configure with `-DAEGISUB_DEVELOPMENT_QML=ON`; this explicitly enables the configured checkout’s QML directory.
+
+Automation scans all installed/bundled autoload directories plus the user data directory's `automation/autoload`. Includes and Lua/native modules resolve from configured include directories and the explicitly loaded script's directory. The process working directory and inherited `LUA_PATH`/`LUA_CPATH` do not add implicit script search paths. Put personal shared modules in the user data directory's `automation/include`.
+
+AstraCore loads from canonical application paths (`assets/bin` or beside the executable), the macOS bundle's Frameworks directory, or a Linux install prefix's `lib` directory when the executable is in `bin`. It does not load a backend from the working directory or a bare system-search name; links escaping the application/install root are rejected. Windows resolves dependencies for each load from the native DLL directory, the executable directory and System32, without changing process-global DLL search directories. Deploy the complete dependency closure into the application payload.
 
 ### macOS Installation & Launch Notes
 Because open-source release artifacts are ad-hoc signed without a paid Apple Developer ID notarization ticket, when opening the downloaded DMG and dragging the app into `/Applications`:

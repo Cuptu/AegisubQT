@@ -30,10 +30,8 @@
 #pragma once
 
 #include "VideoProvider.h"
-#include <atomic>
+#include <memory>
 #include <mutex>
-#include <condition_variable>
-#include <QThreadPool>
 
 /// Hardware-accelerated and zero-copy video provider backed by AstraCore Native C ABI.
 /// Offloads frame decoding, packet demuxing, and keyframe scanning to a worker thread pool,
@@ -60,6 +58,8 @@ public:
     int bitDepth() const override { return m_bitDepth; }
     int colorPrimaries() const override { return m_colorPrimaries; }
     int colorTransfer() const override { return m_colorTransfer; }
+    int colorSpace() const override { return m_colorSpace; }
+    int colorRange() const override { return m_colorRange; }
 
     QVector<int64_t> getKeyframes() const override;
     QVector<double> getTimecodes() const override;
@@ -83,35 +83,17 @@ private:
     int m_bitDepth = 8;
     int m_colorPrimaries = 0;
     int m_colorTransfer = 0;
+    int m_colorSpace = -1;
+    int m_colorRange = 0;
 
     mutable std::mutex m_cacheMutex;
     QVector<int64_t> m_cachedKeyframes;
     QVector<double> m_cachedTimecodes;
 
-    // Sequence token used to drop obsolete frame decode jobs during rapid scrub operations.
-    std::atomic<uint64_t> m_latestFrameRequestId{0};
-
-    // Persistent native decoding session for low-latency scrubbing.
-    void *m_videoSession = nullptr;
-    mutable std::mutex m_sessionMutex;
-
-    // Frame request coalescing (for scrubbing): ensures at most one decode job is in-flight,
-    // retaining only the newest target frame to prevent thread pool starvation and stale backlogs.
+    // Each open owns an independent generation. Workers retain its native
+    // resources after close, without retaining or accessing this QObject.
+    struct WorkerState;
+    std::shared_ptr<WorkerState> m_state;
     void startDecodeLoop();
     void setScrubMode(bool on) override;
-    std::mutex m_requestMutex;
-    int m_pendingFrame = 0;
-    double m_pendingTime = 0.0;
-    bool m_hasPending = false;
-    bool m_decodeInFlight = false;
-    // Decodes downscaled proxy frames during active scrubbing (max width 480); restored on release.
-    std::atomic<bool> m_scrubMode{false};
-
-    struct WorkerSync {
-        std::mutex mutex;
-        std::condition_variable cv;
-        int activeWorkers = 0;
-        std::atomic<bool> stopping{false};
-    };
-    std::shared_ptr<WorkerSync> m_sync = std::make_shared<WorkerSync>();
 };

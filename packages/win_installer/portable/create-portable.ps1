@@ -1,7 +1,7 @@
 # AegisubQT portable package build script.
 # Mirrors the upstream Aegisub packages/win_installer/portable/create-portable.ps1:
 # deploys the Qt runtime alongside the app payload, marks the tree as portable
-# (portable.txt keeps all settings in a local ini) and zips it up.
+# (portable.txt keeps settings, style catalogs, scripts and cache local) and zips it up.
 #
 # Output: <build>\AegisubQT-<version>-portable.zip
 
@@ -38,6 +38,10 @@ New-Item -ItemType Directory -Path $StagingDir | Out-Null
 
 Write-Host "[2/5] Copying application payload"
 Copy-Item -LiteralPath $ExePath -Destination $StagingDir
+$regexDlls = @(Get-ChildItem -LiteralPath $BuildRoot -Filter 'icu*.dll' | Where-Object { $_.Name -match '^icu(dt|in|uc)\d+\.dll$' })
+if ($regexDlls.Count -lt 3) { throw 'The build payload is missing the ICU data/i18n/uc runtime DLLs.' }
+$regexDlls | Copy-Item -Destination $StagingDir
+Copy-Item -LiteralPath (Join-Path $BuildRoot 'licenses') -Destination $StagingDir -Recurse
 foreach ($dir in @("qml", "assets", "automation")) {
     Copy-Item -Path (Join-Path $BuildRoot $dir) -Destination $StagingDir -Recurse
 }
@@ -53,7 +57,7 @@ $windeployqt = (Get-Command windeployqt.exe -ErrorAction SilentlyContinue).Sourc
 if (!$windeployqt) {
     throw "windeployqt.exe not found on PATH"
 }
-& $windeployqt --release --compiler-runtime --no-opengl-sw --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
+& $windeployqt --release --compiler-runtime --no-opengl-sw --include-plugins qoffscreen --qmldir "$QmlSourceDir" --dir "$StagingDir" (Join-Path $StagingDir "AegisubQT.exe")
 if ($LASTEXITCODE -ne 0) { throw "windeployqt failed (exit $LASTEXITCODE)" }
 
 # Prune standalone VC redistributable installers deployed by windeployqt; app-local CRT DLLs are deployed directly below.
@@ -87,7 +91,8 @@ if ($missing.Count -gt 0) {
 }
 
 Write-Host "[4/5] Writing portable marker"
-# main.cpp keeps all QSettings in a local ini when this marker sits next to the exe.
+# QSettings and style catalogs live beside the executable; user scripts and
+# backups use data/, while audio extraction uses cache/.
 Set-Content -LiteralPath (Join-Path $StagingDir "portable.txt") -Value "AegisubQT portable mode"
 
 Write-Host "[5/5] Creating portable zip"

@@ -29,6 +29,8 @@
 
 #include "AudioPcmProvider.h"
 #include "AstraCoreBridge.h"
+#include "MediaTools.h"
+#include "AppPaths.h"
 #include <QFile>
 #include <QFileInfo>
 #include <QDir>
@@ -39,6 +41,7 @@
 #include <QCryptographicHash>
 #include <QDateTime>
 #include <algorithm>
+#include <limits>
 #include <cstring>
 
 namespace {
@@ -62,7 +65,7 @@ bool AudioPcmProvider::loadAudioFile(const QString &filePath, int targetSampleRa
 
     QFileInfo fi(filePath);
     // Locate standard platform cache directory (Windows: %LOCALAPPDATA%, macOS: ~/Library/Caches, Linux: ~/.cache).
-    const QString cacheRoot = QStandardPaths::writableLocation(QStandardPaths::CacheLocation);
+    const QString cacheRoot = AppPaths::cacheDirectory();
     QDir cacheDir(cacheRoot + QStringLiteral("/audio"));
     cacheDir.mkpath(QStringLiteral("."));
 
@@ -87,7 +90,12 @@ bool AudioPcmProvider::loadAudioFile(const QString &filePath, int targetSampleRa
                 args << "-ar" << QString::number(targetSampleRate);
             }
             args << targetWav;
-            int res = QProcess::execute("ffmpeg", args);
+            const QString ffmpeg = MediaTools::ffmpegPath();
+            if (ffmpeg.isEmpty()) {
+                qWarning() << "[AudioPcmProvider] ffmpeg is missing from the application payload and system PATH";
+                return false;
+            }
+            int res = QProcess::execute(ffmpeg, args);
             if (res != 0 || !QFile::exists(targetWav)) {
                 qWarning() << "[AudioPcmProvider] audio extraction failed, code:" << res;
                 return false;
@@ -127,10 +135,11 @@ bool AudioPcmProvider::loadWav(const QString &filePath)
         return false;
     }
 
-    int audioFormat = 1;
-    int channels = 1;
-    int sampleRate = 16000;
-    int bitsPerSample = 16;
+    int audioFormat = 0;
+    int channels = 0;
+    int sampleRate = 0;
+    int bitsPerSample = 0;
+    bool hasFormat = false;
     size_t pcmOffset = 0;
     uint32_t pcmBytes = 0;
 
@@ -160,10 +169,15 @@ bool AudioPcmProvider::loadWav(const QString &filePath)
                     fmt = subFmt;
                 }
             }
+            if (sr == 0 || sr > static_cast<uint32_t>(std::numeric_limits<int>::max())) {
+                file->unmap(raw);
+                return false;
+            }
             audioFormat = fmt;
             channels = ch;
             sampleRate = sr;
             bitsPerSample = bits;
+            hasFormat = true;
         } else if (std::strcmp(chunkId, "data") == 0) {
             pcmOffset = offset;
             pcmBytes = std::min<uint32_t>(chunkSize, static_cast<uint32_t>(fileSize - offset));
@@ -176,7 +190,7 @@ bool AudioPcmProvider::loadWav(const QString &filePath)
         offset += step;
     }
 
-    if (pcmOffset == 0 || pcmBytes == 0 || channels <= 0) {
+    if (!hasFormat || pcmOffset == 0 || pcmBytes == 0 || channels <= 0) {
         file->unmap(raw);
         qWarning() << "AudioPcmProvider: missing or empty data chunk in WAV:" << filePath;
         return false;

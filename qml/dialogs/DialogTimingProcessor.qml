@@ -16,16 +16,13 @@ NativeDialogFrame {
     width: implicitWidth
     height: implicitHeight
     implicitWidth: 560
-    implicitHeight: 460
+    implicitHeight: 480
 
-    // Emitted when batch timing processing is requested:
-    // leadIn: lead-in milliseconds to expand start time
-    // leadOut: lead-out milliseconds to expand end time
-    // gapThresh: maximum gap threshold for snapping adjacent lines (0 to disable)
-    // bias: gap distribution ratio between start and end (0.0 to 1.0)
-    // selectedOnly: restrict processing to highlighted rows
-    // allowedStyles: array of style names to include in batch processing
-    signal timingProcessRequested(int leadIn, int leadOut, int gapThresh, real bias, bool selectedOnly, var allowedStyles)
+    property var project: null
+    property var videoCtrl: null
+    property var processHandler: null
+    property string errorMessage: ""
+    signal timingProcessRequested(var options)
 
     property var stylesModel: [
         { name: "Default", checked: true },
@@ -34,14 +31,21 @@ NativeDialogFrame {
         { name: "Title", checked: true }
     ]
 
-    Component.onCompleted: {
-        if (typeof nativeSubtitleModel !== "undefined" && nativeSubtitleModel && nativeSubtitleModel.styleNames.length > 0) {
+    function refreshStyles() {
+        var model = project ? project.subtitleModel :
+                    ((typeof nativeSubtitleModel !== "undefined") ? nativeSubtitleModel : null);
+        if (model && model.styleNames.length > 0) {
             var list = [];
-            for (var i = 0; i < nativeSubtitleModel.styleNames.length; ++i) {
-                list.push({ name: nativeSubtitleModel.styleNames[i], checked: true });
+            for (var i = 0; i < model.styleNames.length; ++i) {
+                list.push({ name: model.styleNames[i], checked: true });
             }
             dialog.stylesModel = list;
-        }
+        } else dialog.stylesModel = [];
+    }
+    onAboutToShow: {
+        refreshStyles();
+        if (!chkKeysEnable.enabled) chkKeysEnable.checked = false;
+        errorMessage = "";
     }
 
     function checkAll(chk) {
@@ -53,18 +57,34 @@ NativeDialogFrame {
     }
 
     function doProcess(isOk) {
-        var leadIn = chkLeadIn.checked ? spinLeadIn.value : 0;
-        var leadOut = chkLeadOut.checked ? spinLeadOut.value : 0;
-        var gapThresh = chkAdjEnable.checked ? spinAdjGap.value : 0;
-        var bias = sliderBias.value;
-        var selectedOnly = chkSelectionOnly.checked;
-
         var allowed = [];
         for (var i = 0; i < stylesModel.length; ++i) {
             if (stylesModel[i].checked) allowed.push(stylesModel[i].name);
         }
 
-        dialog.timingProcessRequested(leadIn, leadOut, gapThresh, bias, selectedOnly, allowed);
+        var options = {
+            leadIn: chkLeadIn.checked ? spinLeadIn.value : 0,
+            leadOut: chkLeadOut.checked ? spinLeadOut.value : 0,
+            adjacentEnabled: chkAdjEnable.checked,
+            maxGap: spinAdjGap.value,
+            maxOverlap: spinAdjOverlap.value,
+            bias: sliderBias.value,
+            selectedOnly: chkSelectionOnly.checked,
+            allowedStyles: allowed,
+            keyframesEnabled: chkKeysEnable.checked && chkKeysEnable.enabled,
+            beforeStart: spinBeforeStart.value,
+            afterStart: spinAfterStart.value,
+            beforeEnd: spinBeforeEnd.value,
+            afterEnd: spinAfterEnd.value
+        };
+        if (allowed.length === 0 || !(options.leadIn > 0 || options.leadOut > 0 || options.adjacentEnabled || options.keyframesEnabled)) {
+            errorMessage = qsTr("Select at least one style and timing operation");
+            return;
+        }
+        var result = processHandler ? processHandler(options) : {success: true};
+        if (!result.success) { errorMessage = result.message || qsTr("Timing processing failed"); return; }
+        errorMessage = "";
+        dialog.timingProcessRequested(options);
         if (isOk) dialog.close();
     }
 
@@ -160,6 +180,7 @@ NativeDialogFrame {
                         anchors.fill: parent
                         NativeCheckBox {
                             id: chkSelectionOnly
+                            objectName: "timing-selection-only"
                             text: qsTr("Only affect selected lines"); checked: false
                         }
                     }
@@ -266,6 +287,8 @@ NativeDialogFrame {
                         NativeCheckBox {
                             id: chkKeysEnable
                             text: qsTr("Enable"); checked: false
+                            enabled: !!(dialog.videoCtrl && dialog.videoCtrl.hasKeyframes &&
+                                        dialog.videoCtrl.exportFramerateContext.available)
                         }
 
                         GridLayout {
@@ -292,6 +315,13 @@ NativeDialogFrame {
         }
 
         // Dialog action buttons
+        Text {
+            text: dialog.errorMessage
+            visible: text.length > 0
+            color: "#b00020"
+            wrapMode: Text.Wrap
+            Layout.fillWidth: true
+        }
         RowLayout {
             Layout.fillWidth: true
             spacing: 6

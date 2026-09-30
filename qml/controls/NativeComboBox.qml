@@ -4,7 +4,7 @@
 import QtQuick
 import QtQuick.Controls
 
-// Native Windows 10 styled dropdown combo box with rectangular geometry, crisp borders, and DWM animation.
+// Windows-style Qt Quick combo box with rectangular geometry and drawn borders.
 ComboBox {
     id: combo
     implicitHeight: 22

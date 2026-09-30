@@ -101,17 +101,8 @@ void DummyVideoProvider::close()
 
 QVector<int64_t> DummyVideoProvider::getKeyframes() const
 {
-    QVector<int64_t> kf;
-    if (m_totalFrames <= 0) return kf;
-
-    kf.append(0);
-    int step = static_cast<int>(5.0 * m_fps);
-    if (step > 0) {
-        for (int f = step; f < m_totalFrames; f += step) {
-            kf.append(f);
-        }
-    }
-    return kf;
+    // A generated solid-colour video has no encoded keyframe table.
+    return {};
 }
 
 QVector<double> DummyVideoProvider::getTimecodes() const

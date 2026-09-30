@@ -9,6 +9,7 @@
 #include <cctype>
 #include <charconv>
 #include <cstdlib>
+#include <cstdint>
 
 namespace {
 
@@ -22,6 +23,7 @@ unsigned char hex_val(char c) {
 bool parse_css_color(agi::Color &dst, std::string_view str) {
     if (str.starts_with("#")) {
         str.remove_prefix(1);
+        if (!std::all_of(str.begin(), str.end(), [](unsigned char c) { return std::isxdigit(c) != 0; })) return false;
         if (str.size() == 3) {
             unsigned char r = hex_val(str[0]) * 16 + hex_val(str[0]);
             unsigned char g = hex_val(str[1]) * 16 + hex_val(str[1]);
@@ -45,43 +47,47 @@ bool parse_css_color(agi::Color &dst, std::string_view str) {
         return false;
     }
 
-    if (str.starts_with("rgb(") && str.ends_with(")")) {
-        auto inner = str.substr(4, str.size() - 5);
+    const bool alpha = str.starts_with("rgba(");
+    if ((alpha || str.starts_with("rgb(")) && str.ends_with(")")) {
+        const auto prefix = alpha ? 5 : 4;
+        auto inner = str.substr(prefix, str.size() - prefix - 1);
         std::vector<std::string> parts;
         agi::Split(parts, inner, ',');
-        if (parts.size() == 3) {
-            int r = std::atoi(parts[0].c_str());
-            int g = std::atoi(parts[1].c_str());
-            int b = std::atoi(parts[2].c_str());
-            dst = agi::Color(static_cast<unsigned char>(std::clamp(r, 0, 255)),
-                             static_cast<unsigned char>(std::clamp(g, 0, 255)),
-                             static_cast<unsigned char>(std::clamp(b, 0, 255)), 0);
-            return true;
+        if (parts.size() != (alpha ? 4 : 3)) return false;
+        unsigned char channels[4]{};
+        for (size_t i = 0; i < parts.size(); ++i) {
+            const auto value = agi::Trim(parts[i]);
+            if (value.empty() || value.size() > 3) return false;
+            unsigned number = 0;
+            const auto [end, error] = std::from_chars(value.data(), value.data() + value.size(), number);
+            if (error != std::errc() || end != value.data() + value.size() || number > 255) return false;
+            channels[i] = static_cast<unsigned char>(number);
         }
-    } else if (str.starts_with("rgba(") && str.ends_with(")")) {
-        auto inner = str.substr(5, str.size() - 6);
-        std::vector<std::string> parts;
-        agi::Split(parts, inner, ',');
-        if (parts.size() == 4) {
-            int r = std::atoi(parts[0].c_str());
-            int g = std::atoi(parts[1].c_str());
-            int b = std::atoi(parts[2].c_str());
-            int a = std::atoi(parts[3].c_str());
-            dst = agi::Color(static_cast<unsigned char>(std::clamp(r, 0, 255)),
-                             static_cast<unsigned char>(std::clamp(g, 0, 255)),
-                             static_cast<unsigned char>(std::clamp(b, 0, 255)),
-                             static_cast<unsigned char>(std::clamp(a, 0, 255)));
-            return true;
-        }
+        dst = agi::Color(channels[0], channels[1], channels[2], channels[3]);
+        return true;
     }
 
     return false;
 }
 
 bool parse_ass_color(agi::Color &dst, std::string_view str) {
+    const bool has_ass_prefix = str.starts_with('&') || str.starts_with('H') || str.starts_with('h') || str.ends_with('&');
     if (str.starts_with('&')) str.remove_prefix(1);
     if (str.starts_with('H') || str.starts_with('h')) str.remove_prefix(1);
     if (str.ends_with('&')) str.remove_suffix(1);
+
+    // Bare SSA numbers are decimal, even when every digit is also a hex digit.
+    if (!has_ass_prefix && !str.empty()) {
+        const auto number = str.starts_with('+') ? str.substr(1) : str;
+        int64_t decimal = 0;
+        const auto [end, error] = std::from_chars(number.data(), number.data() + number.size(), decimal, 10);
+        if (error == std::errc() && end == number.data() + number.size() && decimal >= INT32_MIN && decimal <= UINT32_MAX) {
+            const auto abgr = static_cast<uint32_t>(decimal);
+            dst = agi::Color(abgr & 0xFF, (abgr >> 8) & 0xFF,
+                             (abgr >> 16) & 0xFF, (abgr >> 24) & 0xFF);
+            return true;
+        }
+    }
 
     bool all_hex = !str.empty();
     for (char c : str) {
@@ -113,25 +119,6 @@ bool parse_ass_color(agi::Color &dst, std::string_view str) {
         return true;
     }
 
-    // SSA decimal integer
-    bool all_dec = !str.empty();
-    for (char c : str) {
-        if (!std::isdigit(static_cast<unsigned char>(c)) && c != '-') {
-            all_dec = false;
-            break;
-        }
-    }
-    if (all_dec) {
-        int64_t val = std::atoll(std::string(str).c_str());
-        unsigned int abgr = static_cast<unsigned int>(val);
-        unsigned char r = abgr & 0xFF;
-        unsigned char g = (abgr >> 8) & 0xFF;
-        unsigned char b = (abgr >> 16) & 0xFF;
-        unsigned char a = (abgr >> 24) & 0xFF;
-        dst = agi::Color(r, g, b, a);
-        return true;
-    }
-
     return false;
 }
 
@@ -143,9 +130,15 @@ Color::Color(unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 : r(r), g(g), b(b), a(a) { }
 
 Color::Color(std::string_view str) {
+    TryParse(*this, str);
+}
+
+bool Color::TryParse(Color &result, std::string_view str) {
     str = agi::Trim(str);
-    if (parse_css_color(*this, str)) return;
-    if (parse_ass_color(*this, str)) return;
+    Color parsed;
+    if (!parse_css_color(parsed, str) && !parse_ass_color(parsed, str)) return false;
+    result = parsed;
+    return true;
 }
 
 std::string Color::GetAssStyleFormatted() const {
