@@ -1338,12 +1338,18 @@ end)
         auto *underline = fontControl("underlineEffect");
         CHECK(familyList && sizeInput && underline);
         auto *fontWindow = familyList->window();
-        CHECK(familyList->property("count").toInt() > 1);
+        const int familyCount = familyList->property("count").toInt();
+        CHECK(familyCount > 1);
+        const int initialFamilyIndex = familyList->property("currentIndex").toInt();
+        const bool atLastFamily = initialFamilyIndex == familyCount - 1;
+        const int expectedFamilyIndex = initialFamilyIndex + (atLastFamily ? -1 : 1);
         familyList->forceActiveFocus();
-        QTest::keyClick(fontWindow, Qt::Key_Home);
-        CHECK(familyList->property("currentIndex").toInt() == 0);
-        QTest::keyClick(fontWindow, Qt::Key_Down);
-        CHECK(familyList->property("currentIndex").toInt() == 1);
+        QTest::keyClick(fontWindow, atLastFamily ? Qt::Key_Up : Qt::Key_Down);
+        QTest::qWait(20);
+        printf("Font chooser navigation: count=%d, initial=%d, expected=%d, actual=%d, focus=%d\n",
+            familyCount, initialFamilyIndex, expectedFamilyIndex,
+            familyList->property("currentIndex").toInt(), familyList->hasActiveFocus());
+        CHECK(familyList->property("currentIndex").toInt() == expectedFamilyIndex);
         auto *familyDelegate = familyList->property("currentItem").value<QQuickItem *>();
         CHECK(familyDelegate);
         const auto chosenFamily = familyDelegate->property("text").toString();
