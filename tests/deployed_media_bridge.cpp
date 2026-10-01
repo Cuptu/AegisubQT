@@ -10,12 +10,19 @@ int main(int argc, char **argv) {
     if (argc != 2) return 2;
 #ifdef Q_OS_WIN
     const QDir runtime(QCoreApplication::applicationDirPath() + "/assets/bin");
+    const QString executable = QStringLiteral("ffmpeg.exe");
 #else
     const QDir runtime(QCoreApplication::applicationDirPath() + "/../Resources/astracore");
+    const QString executable = QStringLiteral("ffmpeg");
 #endif
     const QString media = app.arguments().at(1);
-    if (QFileInfo(MediaTools::ffmpegPath()).canonicalFilePath()
-        != QFileInfo(runtime.filePath("ffmpeg")).canonicalFilePath()) return 3;
+    const QString expected = QFileInfo(runtime.filePath(executable)).canonicalFilePath();
+    const QString actual = QFileInfo(MediaTools::ffmpegPath()).canonicalFilePath();
+    if (expected.isEmpty() || actual != expected) {
+        std::fprintf(stderr, "FFmpeg path mismatch: '%s' != '%s'\n",
+            actual.toUtf8().constData(), expected.toUtf8().constData());
+        return 3;
+    }
     AstraCoreBridge bridge;
     MediaInfo info;
     if (!bridge.isAvailable() || bridge.abiVersion() != 5
