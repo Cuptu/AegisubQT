@@ -36,6 +36,8 @@ jobs:
 
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
+        env:
+          AQT_CONFIG: ${{ runner.os == 'Windows' && format('{0}/.github/aqt-windows.ini', github.workspace) || '' }}
         with:
           version: "6.11.2"
           modules: qt5compat qtshadertools qtmultimedia
