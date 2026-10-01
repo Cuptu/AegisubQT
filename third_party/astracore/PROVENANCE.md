@@ -2,7 +2,13 @@
 
 Upstream: https://github.com/Cuptu/AstraCore
 
-Source and header revision: `71dcc0724bfcf0dfb7fe75968392b367c27f2eac`.
+Source and header revision: `01c2d2efcd8a0cdd0d0fba48ae21317cdc63fb78`.
+macOS builds also build this pinned upstream revision's complete runtime and
+preserve it under `Contents/Frameworks/astracore`, including ffmpeg, ffprobe,
+libmpv, all FFmpeg libraries, transitive dependencies, licenses and its hash
+manifest. The application resolves its native backend and CLI from this directory.
+CI and release workflows verify the complete payload again after copying the
+application out of the final DMG. See `upstream-revision.txt` for the shared pin.
 The persistent video-session implementation and prior integration fixes are now
 committed upstream. The original import used a local uncommitted session change
 on base `b8aed2520502633f7128657760b02e039cf93599`; this copy has been refreshed

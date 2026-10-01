@@ -160,6 +160,10 @@ jobs:
           path: dist_win/
           if-no-files-found: error
 
+      - name: Build and verify pinned AstraCore runtime (macOS)
+        if: runner.os == 'macOS'
+        run: bash .github/scripts/BuildMacAstraCore.sh
+
       # Stage resources, deploy Qt runtime, ad-hoc sign, and verify bundle on macOS.
       - name: Deploy Qt runtime and verify bundle (macOS)
         if: runner.os == 'macOS'
@@ -181,18 +185,10 @@ jobs:
             cp build/AegisubQT.app/Contents/MacOS/locale/*.qm build/AegisubQT.app/Contents/Resources/locale/
           fi
           macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
-          cmake -DBUNDLE="$PWD/build/AegisubQT.app" \
-            -DFFMPEG_EXECUTABLE="$(command -v ffmpeg)" \
-            -DMEDIA_LIBRARY_DIRS="$(brew --prefix ffmpeg)/lib" -P cmake/DeployMacMedia.cmake
-          cp build/third_party/astracore/astra_native_dynamic_load build/AegisubQT.app/Contents/MacOS/
-          cmake -DLOADER="$PWD/build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load" \
-            -DNATIVE="$PWD/build/AegisubQT.app/Contents/Frameworks/libAstraCore.Native.dylib" \
-            -DFFMPEG_EXECUTABLE="$PWD/build/AegisubQT.app/Contents/MacOS/ffmpeg" \
-            -DWORK_DIR="$RUNNER_TEMP/deployed-native-media" -P cmake/VerifyNativeMedia.cmake
-          rm build/AegisubQT.app/Contents/MacOS/astra_native_dynamic_load
+          bash .github/scripts/DeployMacAstraCore.sh "$PWD/build/AegisubQT.app"
           xattr -cr build/AegisubQT.app
           # Thin universal binaries to pure arm64 to remove dead x86_64 slices
-          find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -type f \( -name "*.dylib" -o -perm +111 \) 2>/dev/null | while IFS= read -r f; do
+          find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.dylib" -o -perm +111 \) -print 2>/dev/null | while IFS= read -r f; do
             if [ ! -L "$f" ] && lipo -info "$f" 2>/dev/null | grep -q "x86_64"; then
               if lipo -thin arm64 "$f" -output "${f}.arm64" 2>/dev/null; then
                 mv "${f}.arm64" "$f"
@@ -203,7 +199,7 @@ jobs:
           done
 
           # Strip non-global symbols from Mach-O dynamic libraries and frameworks before signing
-          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/Frameworks -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
           find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
           strip -x build/AegisubQT.app/Contents/MacOS/AegisubQT 2>/dev/null || true
 
@@ -217,14 +213,14 @@ jobs:
           rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Timeline 2>/dev/null || true
 
           # Remove redundant developer metadata and intermediate build files
-          find build/AegisubQT.app -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -delete 2>/dev/null || true
+          find build/AegisubQT.app -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -exec rm -f {} + 2>/dev/null || true
           find build/AegisubQT.app/Contents/Frameworks -type d -name "Headers" -exec rm -rf {} + 2>/dev/null || true
 
           # Clean up any non-binary resource directories from Contents/MacOS that violate bundle layout
           rm -rf build/AegisubQT.app/Contents/MacOS/{assets,automation,qml,locale} 2>/dev/null || true
 
           if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
-            find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
+            find build/AegisubQT.app/Contents/Frameworks -path "*/Frameworks/astracore" -prune -o -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
             for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
               if [ -d "$fw" ]; then
                 codesign --force --timestamp=none --sign - "$fw"
@@ -255,6 +251,10 @@ jobs:
           ln -s /Applications dmg_staging/Applications
           hdiutil create -volname "AegisubQT" -srcfolder dmg_staging -ov -format UDZO build/AegisubQT-macos-arm64.dmg
           rm -rf dmg_staging
+
+      - name: Verify complete AstraCore payload in final DMG (macOS)
+        if: runner.os == 'macOS'
+        run: bash .github/scripts/VerifyMacDmg.sh build/AegisubQT-macos-arm64.dmg
 
       - name: Upload artifact (macOS)
         if: runner.os == 'macOS'

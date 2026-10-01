@@ -13,6 +13,12 @@ inline QString ffmpegPath() {
     const QString name = QStringLiteral("ffmpeg");
 #endif
     const QDir app(QCoreApplication::applicationDirPath());
+#ifdef Q_OS_MACOS
+    if (app.dirName() == "MacOS") {
+        const QFileInfo bundled(app.filePath("../Frameworks/astracore/" + name));
+        if (bundled.isFile() && bundled.isExecutable()) return bundled.absoluteFilePath();
+    }
+#endif
     const QStringList locations = {app.filePath(name), app.filePath("assets/bin/" + name),
                                    app.filePath("tools/" + name),
                                    app.filePath("../libexec/AegisubQT/" + name)};
