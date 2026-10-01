@@ -627,6 +627,9 @@ end)
     }
     {
         SubtitleModel resampled;
+        auto resampleStyle = resampled.styles().first().toMap();
+        resampleStyle["size"] = 20.0;
+        resampled.setStyles({resampleStyle});
         resampled.setScriptInfo({{"PlayResX", 1920}, {"PlayResY", 1080}, {"LayoutResX", 1920}, {"LayoutResY", 1080}});
         auto row = resampled.get(0);
         row["text"] = "{\\pos(100,200)\\move(10,20,30,40,100,200)\\clip(0,0,100,200)\\t(100,200,\\fs30)\\bord2\\p1}m 0 0 l 100 200{\\p0}text";
