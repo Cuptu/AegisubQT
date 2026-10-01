@@ -21,12 +21,21 @@ Window {
     minimumHeight: 160
     color: "#000000"
 
+    readonly property var controller: typeof videoController !== "undefined" ? videoController : null
+
+    function synchronizePlayer() {
+        if (!visible || !controller || !detachedPlayer.hasVideo) return;
+        detachedPlayer.position = Math.round(controller.currentTime * 1000.0);
+        if (controller.isPlaying) detachedPlayer.play();
+        else detachedPlayer.pause();
+    }
+
     // Local mirror player: decodes the active video and reports its timeline
     // position back into VideoController (same protocol as the main VideoBox).
     MediaPlayer {
         id: detachedPlayer
         source: {
-            if (typeof videoController === "undefined" || !videoController || !videoController.hasVideo || videoController.isDummy) return "";
+            if (!detachedWindow.visible || !detachedWindow.controller || !detachedWindow.controller.hasVideo || detachedWindow.controller.isDummy) return "";
             var p = videoController.videoPath;
             if (!p) return "";
             if (p.startsWith("file:///")) return p;
@@ -37,6 +46,7 @@ Window {
             return "file://" + p.replace(/\\/g, "/");
         }
         videoOutput: detachedOutput
+        onHasVideoChanged: detachedWindow.synchronizePlayer()
         audioOutput: AudioOutput {
             muted: (typeof audioController !== "undefined" && audioController && audioController.hasAudio && audioController.isPlaying)
         }
@@ -53,20 +63,39 @@ Window {
         }
     }
 
-    VideoOutput {
-        id: detachedOutput
-        anchors.fill: parent
-        fillMode: VideoOutput.PreserveAspectFit
-    }
-
-    SubtitleSurface {
-        x: detachedOutput.contentRect.x
-        y: detachedOutput.contentRect.y
-        width: detachedOutput.contentRect.width
-        height: detachedOutput.contentRect.height
+    Rectangle {
+        id: frame
+        objectName: "detached-video-frame"
+        readonly property real aspect: detachedWindow.controller && detachedWindow.controller.videoWidth > 0 && detachedWindow.controller.videoHeight > 0
+            ? detachedWindow.controller.videoWidth / detachedWindow.controller.videoHeight : 1
+        width: Math.min(parent.width, parent.height * aspect)
+        height: width / aspect
+        anchors.centerIn: parent
+        visible: detachedWindow.controller && detachedWindow.controller.hasVideo
+        color: detachedWindow.controller && detachedWindow.controller.isDummy
+            ? detachedWindow.controller.dummyColor : "#000000"
         clip: true
-        controller: typeof videoController !== "undefined" ? videoController : null
-        model: detachedWindow.subtitleModel
+
+        VideoSurface {
+            objectName: "detached-native-video"
+            anchors.fill: parent
+            controller: detachedWindow.controller
+            visible: detachedWindow.controller && !detachedWindow.controller.isDummy && (!detachedPlayer.hasVideo
+                || detachedPlayer.playbackState === MediaPlayer.StoppedState)
+        }
+        VideoOutput {
+            id: detachedOutput
+            anchors.fill: parent
+            fillMode: VideoOutput.Stretch
+            visible: detachedWindow.controller && !detachedWindow.controller.isDummy && detachedPlayer.hasVideo
+                && detachedPlayer.playbackState !== MediaPlayer.StoppedState
+        }
+        SubtitleSurface {
+            objectName: "detached-subtitles"
+            anchors.fill: parent
+            controller: detachedWindow.controller
+            model: detachedWindow.subtitleModel
+        }
     }
 
     Connections {
@@ -74,7 +103,7 @@ Window {
         property real lastResyncMs: 0
 
         function onPlaybackStateChanged() {
-            if (!detachedPlayer.hasVideo) return;
+            if (!detachedWindow.visible || !detachedPlayer.hasVideo) return;
             if (videoController.isPlaying) {
                 detachedPlayer.play();
             } else {
@@ -83,7 +112,7 @@ Window {
         }
 
         function onPositionChanged() {
-            if (!detachedPlayer.hasVideo) return;
+            if (!detachedWindow.visible || !detachedPlayer.hasVideo) return;
             var targetMs = Math.round(videoController.currentTime * 1000.0);
             if (detachedPlayer.playbackState !== MediaPlayer.PlayingState) {
                 // Paused or stopped: follow the timeline exactly (scrubbing mirror).
@@ -102,12 +131,8 @@ Window {
     }
 
     onVisibleChanged: {
-        if (visible && detachedPlayer.hasVideo) {
-            detachedPlayer.position = Math.round(videoController.currentTime * 1000.0);
-            if (videoController.isPlaying) {
-                detachedPlayer.play();
-            }
-        }
+        if (visible) synchronizePlayer();
+        else detachedPlayer.pause();
     }
 
     onClosing: (close) => {

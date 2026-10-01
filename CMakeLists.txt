@@ -520,6 +520,11 @@ if(BUILD_TESTING)
     endif()
     add_test(NAME automation_export_filters COMMAND automation_export_filters_test)
     set_tests_properties(automation_export_filters PROPERTIES TIMEOUT 30 ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software")
+    add_executable(detached_video_test tests/detached_video.cpp tests/audio_clip_ui_stubs.h)
+    target_link_libraries(detached_video_test PRIVATE Qt6::Quick Qt6::Test)
+    target_compile_definitions(detached_video_test PRIVATE QML_SOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/qml")
+    add_test(NAME detached_video COMMAND detached_video_test)
+    set_tests_properties(detached_video PROPERTIES TIMEOUT 30 ENVIRONMENT "QT_QPA_PLATFORM=offscreen;QT_QUICK_BACKEND=software")
 endif()
 
 target_link_libraries(AegisubQT PRIVATE
