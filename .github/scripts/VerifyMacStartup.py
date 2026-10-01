@@ -23,16 +23,16 @@ with tempfile.TemporaryDirectory(prefix="Aegisub startup 核验 ") as work:
     (work / "qml/Main.qml").write_text(
         'import QtQml; QtObject { Component.onCompleted: { '
         'console.error("AEGISUB_UNTRUSTED_CWD_QML_EXECUTED"); Qt.quit() } }', encoding="utf-8")
-    for platform in ("offscreen", "cocoa"):
+    for backend in ("software", "default"):
         env = dict(os.environ)
         for key in list(env):
             if key.startswith(("DYLD_", "QML_", "QML2_", "QT_", "LUA_", "LUAJIT_")):
                 env.pop(key)
         env.update(PATH="/usr/bin:/bin:/usr/sbin:/sbin", HOME=str(work),
-                   QT_QPA_PLATFORM=platform)
-        if platform == "offscreen":
+                   QT_QPA_PLATFORM="cocoa")
+        if backend == "software":
             env["QT_QUICK_BACKEND"] = "software"
-        log = work / f"startup-{platform}.log"
+        log = work / f"startup-cocoa-{backend}.log"
         with log.open("wb") as output:
             process = subprocess.Popen([str(bundle / "Contents/MacOS/AegisubQT")],
                                        cwd=work, env=env, stdout=output, stderr=output)
@@ -53,5 +53,5 @@ with tempfile.TemporaryDirectory(prefix="Aegisub startup 核验 ") as work:
         print(text, flush=True)
         if not survived or "QML loaded. Root objects count: 1" not in text or \
                 "AEGISUB_UNTRUSTED_CWD_QML_EXECUTED" in text:
-            raise SystemExit(f"Final DMG main application failed {platform} startup (exit {process.returncode})")
-        print(f"PASS final DMG isolated main application startup: {platform}", flush=True)
+            raise SystemExit(f"Final DMG main application failed cocoa/{backend} startup (exit {process.returncode})")
+        print(f"PASS final DMG isolated main application startup: cocoa/{backend}", flush=True)
