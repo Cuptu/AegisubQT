@@ -147,6 +147,7 @@ int main(int argc, char **argv) {
         return 0;
     }
     qmlRegisterType<TestVideoSurface>("Aegisub", 1, 0, "VideoSurface");
+    qmlRegisterType<TestVideoSurface>("Aegisub", 1, 0, "SubtitleSurface");
     qmlRegisterType<TestSpectrogramView>("Aegisub", 1, 0, "SpectrogramView");
 #ifdef Q_OS_WIN
     // The offscreen plugin does not enumerate Windows system fonts. Supply the
@@ -160,6 +161,26 @@ int main(int argc, char **argv) {
     const QStringList includes{root + "/include"};
     QTemporaryDir temporary;
     CHECK(temporary.isValid());
+    {
+        QTemporaryDir fixture;
+        const auto path = fixture.filePath("multiline.srt");
+        CHECK(writeScript(path, "1\n00:00:01,000 --> 00:00:02,000\n<i>one <i>nested</i></i>\ntwo\n\n"));
+        SubtitleModel imported;
+        CHECK(imported.loadFromFile(path));
+        CHECK(imported.get(0).value("text") == "{\\i1}one nested{\\i}\\Ntwo");
+        const auto style = imported.styles().first().toMap();
+        CHECK(style.value("font") == "Arial" && style.value("size").toDouble() == 48);
+        CHECK(style.value("alignment").toInt() == 2 && style.value("marginV").toInt() == 10);
+        imported.setScriptInfo({});
+        imported.initializeVideoResolution(1280,720);
+        CHECK(imported.scriptInfo().value("PlayResX").toInt() == 1280);
+        imported.initializeVideoResolution(1920,1080);
+        CHECK(imported.scriptInfo().value("PlayResY").toInt() == 720);
+        const auto before = imported.getAllLines();
+        CHECK(imported.previewAss().contains("{\\i1}one nested{\\i}\\Ntwo"));
+        CHECK(imported.getAllLines() == before);
+        puts("PASS SRT nested formatting/multiline, original default style and unset-only video resolution initialization");
+    }
     {
         SubtitleModel formatting;
         formatting.newDocument();
@@ -223,7 +244,7 @@ int main(int argc, char **argv) {
         CHECK(formatting.get(0).value("text") == "{note}{\\p1\\i1}m 0 0 l 1 1{\\p0}text");
         formatting.setProperty(0, "text", "word");
         formatting.clearUndo();
-        QFont selected("Arial", 20);
+        QFont selected("Arial", 48);
         selected.setBold(true);
         CHECK(!formatting.applyInlineFont({0}, 0, 0, 0, selected).value("changed").toBool());
         selected.setFamily("Comic Sans MS");
@@ -643,6 +664,9 @@ end)
         QVariantMap aspect{{"sourceX",640},{"sourceY",480},{"destX",1280},{"destY",720},{"mode",0}};
         CHECK(resampled.resampleResolution(aspect).value("success").toBool());
         CHECK(resampled.get(0).value("text") == "{\\pos(200,300)\\fscx133.333\\clip(m 0 0 l 200 300)\\p1}m 0 0 l 150 300");
+        auto resampleStyle = resampled.styles().first().toMap();
+        resampleStyle["size"] = 20.0;
+        resampled.setStyles({resampleStyle});
         resampled.undo();
         aspect["mode"] = 1;
         CHECK(resampled.resampleResolution(aspect).value("success").toBool());

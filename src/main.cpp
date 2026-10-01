@@ -40,6 +40,8 @@
 #include "VideoController.h"
 #include "VideoFrameImageProvider.h"
 #include "VideoSurfaceItem.h"
+#include "video/SubtitleSurfaceItem.h"
+#include <QTemporaryDir>
 #include "AudioController.h"
 #include "AudioDisplayController.h"
 #include "VideoDisplayController.h"
@@ -241,6 +243,29 @@ int main(int argc, char *argv[])
     app.setApplicationName("AegisubQT");
     app.setApplicationVersion("4.0.2");
     app.setOrganizationName("AegisubQT");
+    if (app.arguments().contains("--verify-subtitle-renderer")) {
+        QTemporaryDir directory;
+        QFile sample(directory.filePath("sample.srt"));
+        if (!sample.open(QIODevice::WriteOnly)) return 1;
+        sample.write("1\n00:00:01,000 --> 00:00:02,000\n<i>First line</i>\nSecond line\n\n");
+        sample.close();
+        SubtitleModel subtitles;
+        SubtitleRenderer renderer;
+        if (!renderer.available() || !subtitles.loadFromFile(sample.fileName())) {
+            qCritical() << "Subtitle renderer verification failed:" << renderer.error();
+            return 1;
+        }
+        subtitles.initializeVideoResolution(1280, 720);
+        if (!renderer.setDocument(subtitles.previewAss().toUtf8())) return 1;
+        auto image = renderer.render(1280,720,1000);
+        QRect pixels;
+        for (int y=0; y<image.height(); ++y)
+            for (int x=0; x<image.width(); ++x)
+                if (qAlpha(image.pixel(x,y))) pixels |= QRect(x,y,1,1);
+        if (pixels.isEmpty() || pixels.top() < 500 || pixels.bottom() >= 720) return 1;
+        qInfo() << "PASS packaged SRT import and libass subtitle rendering" << pixels;
+        return 0;
+    }
 
     // Portable mode: a "portable.txt" marker next to the executable keeps all
     // settings in an ini file beside the app instead of the platform store.
@@ -305,6 +330,7 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<SpectrogramItem>("Aegisub", 1, 0, "SpectrogramView");
     qmlRegisterType<VideoSurfaceItem>("Aegisub", 1, 0, "VideoSurface");
+    qmlRegisterType<SubtitleSurfaceItem>("Aegisub", 1, 0, "SubtitleSurface");
     qmlRegisterType<AegisubCoreBridge>("Aegisub", 1, 0, "AegisubCoreBridge");
 
     // Command-line options for media playback and rendering configuration.

@@ -5,6 +5,7 @@
 #include "ResolutionResampler.h"
 #include "InlineFormatting.h"
 #include "SrtExport.h"
+#include "SrtImport.h"
 #include "AegisubCoreBridge.h"
 #include <libaegisub/ass/time.h>
 #include <libaegisub/color.h>
@@ -123,8 +124,10 @@ QVariantMap SubtitleModel::defaultScriptInfo() {
     info[QStringLiteral("WrapStyle")] = QStringLiteral("0");
     info[QStringLiteral("ScaledBorderAndShadow")] = QStringLiteral("yes");
     info[QStringLiteral("YCbCr Matrix")] = QStringLiteral("None");
-    info[QStringLiteral("PlayResX")] = 1920;
-    info[QStringLiteral("PlayResY")] = 1080;
+    if (!AegisubCoreBridge::getSetting("Subtitle/Default Resolution/Auto", true).toBool()) {
+        info[QStringLiteral("PlayResX")] = AegisubCoreBridge::getSetting("Subtitle/Default Resolution/Width", 1280);
+        info[QStringLiteral("PlayResY")] = AegisubCoreBridge::getSetting("Subtitle/Default Resolution/Height", 720);
+    }
     return info;
 }
 
@@ -133,7 +136,7 @@ QVariantList SubtitleModel::defaultStyles() {
     QVariantMap st;
     st[QStringLiteral("name")] = QStringLiteral("Default");
     st[QStringLiteral("font")] = QStringLiteral("Arial");
-    st[QStringLiteral("size")] = 20.0;
+    st[QStringLiteral("size")] = 48.0;
     st[QStringLiteral("primary")] = QStringLiteral("&H00FFFFFF");
     st[QStringLiteral("secondary")] = QStringLiteral("&H000000FF");
     st[QStringLiteral("outline")] = QStringLiteral("&H00000000");
@@ -878,7 +881,7 @@ bool SubtitleModel::loadFromFileWithCharset(const QString &filePath, const QStri
             line.lineNumber = static_cast<int>(srtLines.size()) + 1;
             line.setStartMs(start);
             line.setEndMs(end);
-            line.text = body.join(QStringLiteral("\\N"));
+            line.text = SrtImport::toAss(body.join(QStringLiteral("\\N")));
             line.updateCps();
             srtLines.push_back(std::move(line));
         }
@@ -1097,12 +1100,27 @@ bool SubtitleModel::loadFromFileWithCharset(const QString &filePath, const QStri
     return true;
 }
 
-bool SubtitleModel::serializeDocument(const QString &target) const {
+QString SubtitleModel::previewAss() const {
+    QString result;
+    serializeDocument(QStringLiteral("preview.ass"), &result);
+    return result;
+}
+
+void SubtitleModel::initializeVideoResolution(int width, int height) {
+    if (width <= 0 || height <= 0 || m_scriptInfo.value("PlayResX").toInt() || m_scriptInfo.value("PlayResY").toInt()) return;
+    m_scriptInfo[QStringLiteral("PlayResX")] = width;
+    m_scriptInfo[QStringLiteral("PlayResY")] = height;
+    emit scriptInfoChanged();
+    emit contentModified();
+}
+
+bool SubtitleModel::serializeDocument(const QString &target, QString *preview) const {
     QString document;
     QTextStream out(&document, QIODevice::WriteOnly);
     auto writeDocument = [&]() {
         out.flush();
         if (out.status() != QTextStream::Ok) return false;
+        if (preview) { *preview = document; return true; }
         QTextCodec *codec = QTextCodec::codecForName(m_encodingName.toUtf8());
         if (!codec || !codec->canEncode(document)) return false;
         QByteArray encoded = codec->fromUnicode(document);

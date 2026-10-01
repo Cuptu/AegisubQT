@@ -9,9 +9,11 @@ import QtQuick
 import QtQuick.Controls
 import QtQuick.Window
 import QtMultimedia
+import Aegisub 1.0
 
 Window {
     id: detachedWindow
+    property var subtitleModel: null
     title: qsTr("AegisubQT - Detached Video")
     width: 640
     height: 360
@@ -57,11 +59,21 @@ Window {
         fillMode: VideoOutput.PreserveAspectFit
     }
 
+    SubtitleSurface {
+        x: detachedOutput.contentRect.x
+        y: detachedOutput.contentRect.y
+        width: detachedOutput.contentRect.width
+        height: detachedOutput.contentRect.height
+        clip: true
+        controller: typeof videoController !== "undefined" ? videoController : null
+        model: detachedWindow.subtitleModel
+    }
+
     Connections {
         target: typeof videoController !== "undefined" ? videoController : null
         property real lastResyncMs: 0
 
-        function onIsPlayingChanged() {
+        function onPlaybackStateChanged() {
             if (!detachedPlayer.hasVideo) return;
             if (videoController.isPlaying) {
                 detachedPlayer.play();

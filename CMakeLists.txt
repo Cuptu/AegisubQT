@@ -80,6 +80,9 @@ set(SOURCES
     src/video/VideoFrameImageProvider.h
     src/video/VideoSurfaceItem.h
     src/video/VideoSurfaceItem.cpp
+    src/video/SubtitleRenderer.cpp
+    src/video/SubtitleSurfaceItem.h
+    src/video/SubtitleSurfaceItem.cpp
     src/video/VideoController.h
     src/video/VideoController.cpp
     src/video/VideoDisplayController.h
@@ -472,6 +475,18 @@ add_dependencies(luajit luajit_build)
 add_dependencies(AegisubQT luajit_build)
 
 if(BUILD_TESTING)
+    add_executable(subtitle_renderer_test tests/subtitle_renderer.cpp src/video/SubtitleRenderer.cpp)
+    target_include_directories(subtitle_renderer_test PRIVATE src/video)
+    target_link_libraries(subtitle_renderer_test PRIVATE Qt6::Gui)
+    if(WIN32 AND AEGISUB_BUNDLED_ASTRA_RUNTIME)
+        add_test(NAME subtitle_renderer COMMAND subtitle_renderer_test "${AEGISUB_BUNDLED_ASTRA_RUNTIME}/libass-9.dll")
+    elseif(APPLE)
+        find_library(AEGISUB_TEST_LIBASS NAMES ass PATHS /opt/homebrew/lib /usr/local/lib)
+        add_test(NAME subtitle_renderer COMMAND subtitle_renderer_test "${AEGISUB_TEST_LIBASS}")
+    else()
+        add_test(NAME subtitle_renderer COMMAND subtitle_renderer_test)
+    endif()
+    set_tests_properties(subtitle_renderer PROPERTIES SKIP_RETURN_CODE 77 ENVIRONMENT "QT_QPA_PLATFORM=offscreen")
     add_executable(automation_export_filters_test tests/automation_export_filters.cpp
         tests/audio_clip_ui_stubs.h
         tests/editor_timeline.h
@@ -479,7 +494,7 @@ if(BUILD_TESTING)
         src/automation/LuaModules.cpp src/automation/LuaRegex.cpp
         src/automation/LuaTextExtents.cpp src/automation/lpeg/lpeg.c
         src/automation/AutomationManager.cpp src/model/SubtitleModel.cpp
-        src/bridge/AegisubCoreBridge.cpp)
+        src/bridge/AegisubCoreBridge.cpp src/video/SubtitleRenderer.cpp)
     target_include_directories(automation_export_filters_test PRIVATE
         src/automation src/model src/bridge ${LUAJIT_BUILD_DIR}/src ${LUAJIT_SRC_DIR}/src)
     target_link_libraries(automation_export_filters_test PRIVATE

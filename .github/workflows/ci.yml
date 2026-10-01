@@ -303,6 +303,7 @@ jobs:
           # Deploy Qt runtime and plugins into AppDir
           ./linuxdeploy --appdir AppDir \
             --library AppDir/usr/lib/libAstraCore.Native.so \
+            --library /usr/lib/x86_64-linux-gnu/libass.so.9 \
             --executable "$(command -v ffmpeg)" \
             --desktop-file AppDir/AegisubQT.desktop \
             --icon-file AppDir/AegisubQT.png \

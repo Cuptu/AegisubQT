@@ -169,6 +169,8 @@ public:
     Q_INVOKABLE bool loadFromFile(const QString &filePath);
     Q_INVOKABLE bool loadFromFileWithCharset(const QString &filePath, const QString &charset);
     Q_INVOKABLE bool saveToFile(const QString &filePath = QString());
+    QString previewAss() const;
+    Q_INVOKABLE void initializeVideoResolution(int width, int height);
     // Serialize transformed export content while preserving this document's
     // attachments/raw sections and leaving editor state and undo untouched.
     bool exportToFile(const QString &filePath, const QString &charset,
@@ -270,7 +272,7 @@ private:
     SubtitleLine parseDialogueLine(const QString &rawLine, bool isComment, int lineNumber) const;
     QString formatDialogueLine(const SubtitleLine &line) const;
     /// Serializes the current document to an ASS file without touching document state.
-    bool serializeDocument(const QString &target) const;
+    bool serializeDocument(const QString &target, QString *preview = nullptr) const;
     /// Synchronizes savedCommitId with current commitId upon successful file save.
     void markSaved();
     /// Resets modification tracking counters when creating a new document or loading from disk.

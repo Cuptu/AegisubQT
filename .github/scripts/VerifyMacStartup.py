@@ -33,6 +33,12 @@ with tempfile.TemporaryDirectory(prefix="Aegisub startup 核验 ") as work:
         if backend == "software":
             env["QT_QUICK_BACKEND"] = "software"
         log = work / f"startup-cocoa-{backend}.log"
+        verification = subprocess.run([str(bundle / "Contents/MacOS/AegisubQT"), "--verify-subtitle-renderer"],
+                                      cwd=work, env=env, capture_output=True, timeout=30)
+        verification_text = (verification.stdout + verification.stderr).decode("utf-8", errors="replace")
+        print(verification_text, flush=True)
+        if verification.returncode or "PASS packaged SRT import and libass subtitle rendering" not in verification_text:
+            raise SystemExit("Final DMG cannot import/render SRT with its packaged libass")
         with log.open("wb") as output:
             process = subprocess.Popen([str(bundle / "Contents/MacOS/AegisubQT")],
                                        cwd=work, env=env, stdout=output, stderr=output)

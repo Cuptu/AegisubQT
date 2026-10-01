@@ -416,6 +416,7 @@ ApplicationWindow {
     // Upstream "Detach Video": independent playback window mirroring the main video.
     DetachedVideoWindow {
         id: detachedVideoWindow
+        subtitleModel: subProject.subtitleModel
         visible: root.videoDetached && root.hasVideoLoaded
     }
 
@@ -503,6 +504,7 @@ ApplicationWindow {
             // Video pane (expanded on demand)
             VideoBox {
                 id: videoBox
+                subtitleModel: subProject.subtitleModel
                 visible: root.showVideo
                 Layout.preferredWidth: root.showVideo ? root.videoBoxWidth : 0
                 Layout.minimumWidth: root.showVideo ? 380 : 0

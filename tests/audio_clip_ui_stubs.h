@@ -7,9 +7,11 @@
 class TestVideoSurface : public QQuickItem {
     Q_OBJECT
     Q_PROPERTY(QObject *controller MEMBER controller)
+    Q_PROPERTY(QObject *model MEMBER model)
 public:
     using QQuickItem::QQuickItem;
     QObject *controller = nullptr;
+    QObject *model = nullptr;
 };
 
 class TestSpectrogramView : public QQuickItem {

@@ -11,6 +11,7 @@ import "../controls"
 
 Item {
     id: videoBox
+    property var subtitleModel: null
     implicitWidth: 414
     implicitHeight: 282
 
@@ -343,43 +344,10 @@ Item {
                         }
                     }
 
-                    // Subtitle preview layer with real-time \pos coordinates and \frz rotation
-                    Item {
-                        id: subItem
-                        property var posMatch: videoController.activeSubText.match(/\\pos\s*\(\s*([-\d\.]+)\s*,\s*([-\d\.]+)\s*\)/)
-                        property var frzMatch: videoController.activeSubText.match(/\\frz([-\d\.]+)/)
-                        property var fscxMatch: videoController.activeSubText.match(/\\fscx([-\d\.]+)/)
-                        property var fscyMatch: videoController.activeSubText.match(/\\fscy([-\d\.]+)/)
-
-                        property real scriptX: posMatch ? parseFloat(posMatch[1]) : (videoController.videoWidth * 0.5)
-                        property real scriptY: posMatch ? parseFloat(posMatch[2]) : (videoController.videoHeight - 30)
-                        property real frzAngle: frzMatch ? parseFloat(frzMatch[1]) : 0.0
-                        property real fscxScale: fscxMatch ? (parseFloat(fscxMatch[1]) / 100.0) : 1.0
-                        property real fscyScale: fscyMatch ? (parseFloat(fscyMatch[1]) / 100.0) : 1.0
-
-                        property real screenX: (videoController.videoWidth > 0) ? (scriptX / videoController.videoWidth) * videoScreen.width : videoScreen.width * 0.5
-                        property real screenY: (videoController.videoHeight > 0) ? (scriptY / videoController.videoHeight) * videoScreen.height : (videoScreen.height - 20)
-
-                        x: Math.round(screenX)
-                        y: Math.round(screenY)
-                        rotation: frzAngle
-                        transform: Scale {
-                            xScale: subItem.fscxScale
-                            yScale: subItem.fscyScale
-                        }
-
-                        Text {
-                            anchors.centerIn: parent
-                            text: videoController.activeSubText.replace(/\{[^\}]*\}/g, "")
-                            visible: text.length > 0
-                            font.pixelSize: Math.max(12, Math.round(videoScreen.height * 0.08))
-                            font.family: uiTheme.uiFont
-                            font.bold: true
-                            color: "#ffffff"
-                            style: Text.Outline
-                            styleColor: "#000000"
-                            horizontalAlignment: Text.AlignHCenter
-                        }
+                    SubtitleSurface {
+                        anchors.fill: parent
+                        controller: typeof videoController !== "undefined" ? videoController : null
+                        model: videoBox.subtitleModel
                     }
                 }
 

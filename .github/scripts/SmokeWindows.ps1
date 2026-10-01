@@ -50,6 +50,13 @@ try {
     $env:QT_QUICK_BACKEND = 'software'
     $stderr = Join-Path $cwd 'stderr.log'
     $stdout = Join-Path $cwd 'stdout.log'
+    $verify = Start-Process -FilePath $exe -ArgumentList '--verify-subtitle-renderer' -WorkingDirectory $cwd -WindowStyle Hidden -PassThru `
+        -RedirectStandardError $stderr -RedirectStandardOutput $stdout
+    if (!$verify.WaitForExit(30000)) { Stop-Process -Id $verify.Id; throw 'Subtitle renderer verification timed out.' }
+    if ($verify.ExitCode -ne 0) {
+        Get-Content -LiteralPath $stderr
+        throw 'Packaged SRT import/libass rendering verification failed.'
+    }
     $proc = Start-Process -FilePath $exe -WorkingDirectory $cwd -WindowStyle Hidden -PassThru `
         -RedirectStandardError $stderr -RedirectStandardOutput $stdout
     Start-Sleep -Seconds $Seconds
