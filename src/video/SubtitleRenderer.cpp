@@ -21,7 +21,7 @@ struct SubtitleRenderer::Impl {
     ASS_Renderer *renderer = nullptr;
     ASS_Track *track = nullptr;
     QString failure;
-#define ASS_FUNCTION(name) decltype(&name) name = nullptr;
+#define ASS_FUNCTION(name) decltype(&::name) name = nullptr;
     ASS_FUNCTION(ass_library_init)
     ASS_FUNCTION(ass_library_done)
     ASS_FUNCTION(ass_renderer_init)
