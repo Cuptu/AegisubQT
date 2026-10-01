@@ -12,6 +12,7 @@ hdiutil attach "$image" -readonly -nobrowse -mountpoint "$mount"
 ditto "$mount/AegisubQT.app" "$copy/AegisubQT.app"
 hdiutil detach "$mount"
 codesign --verify --deep --strict --verbose=2 "$copy/AegisubQT.app"
+python3 .github/scripts/VerifyMacStartup.py "$copy/AegisubQT.app"
 python3 "$ASTRACORE_CHECKOUT/scripts/verify-runtime.py" \
     --runtime-dir "$copy/AegisubQT.app/Contents/Resources/astracore"
 # Exercise the application's resolver and Qt bridge using only this payload.

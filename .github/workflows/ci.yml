@@ -181,7 +181,7 @@ jobs:
           trap 'echo "::error::Deploy failed on line $LINENO: $BASH_COMMAND"' ERR
           mkdir -p build/AegisubQT.app/Contents/Resources/locale
           cp packages/osx/Info.plist.in build/AegisubQT.app/Contents/Info.plist
-          cp -R qml assets automation build/AegisubQT.app/Contents/Resources/
+          cp -R assets automation build/AegisubQT.app/Contents/Resources/
           cp assets/icons_native/*.icns build/AegisubQT.app/Contents/Resources/
           # Copy compiled translation .qm files from whichever build tree location they reside
           if compgen -G "build/*.qm" > /dev/null; then
@@ -193,7 +193,7 @@ jobs:
           if compgen -G "build/AegisubQT.app/Contents/MacOS/locale/*.qm" > /dev/null; then
             cp build/AegisubQT.app/Contents/MacOS/locale/*.qm build/AegisubQT.app/Contents/Resources/locale/
           fi
-          macdeployqt build/AegisubQT.app -qmldir="$GITHUB_WORKSPACE/qml" -verbose=1
+          bash .github/scripts/DeployMacQml.sh "$PWD/build/AegisubQT.app"
           bash .github/scripts/DeployMacAstraCore.sh "$PWD/build/AegisubQT.app"
           xattr -cr build/AegisubQT.app
           # Thin universal binaries to pure arm64 to remove dead x86_64 slices
@@ -215,11 +215,7 @@ jobs:
           # Remove QML profiling/debugging dylibs not needed in production releases
           rm -rf build/AegisubQT.app/Contents/PlugIns/qmltooling 2>/dev/null || true
 
-          # Remove unused alternative mobile/desktop QML styles (AegisubQT uses native/custom style)
-          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Controls/{Material,Universal,Imagine,FluentWinUI3} 2>/dev/null || true
-          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/VirtualKeyboard 2>/dev/null || true
-          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick3D 2>/dev/null || true
-          rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Timeline 2>/dev/null || true
+          # Preserve all QML modules and styles selected by the deployment scanner.
 
           # Remove redundant developer metadata and intermediate build files
           find build/AegisubQT.app -path "*/Resources/astracore" -prune -o -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -exec rm -f {} + 2>/dev/null || true

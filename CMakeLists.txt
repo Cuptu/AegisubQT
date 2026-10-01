@@ -534,8 +534,10 @@ qt_add_lrelease(AegisubQT
 # (or into Contents/Resources for macOS app bundles).
 if(APPLE)
     set(AEGISUB_POST_BUILD_DEST "$<TARGET_BUNDLE_DIR:AegisubQT>/Contents/Resources")
+    set(AEGISUB_POST_BUILD_QML_DEST "${AEGISUB_POST_BUILD_DEST}/appqml")
 else()
     set(AEGISUB_POST_BUILD_DEST "$<TARGET_FILE_DIR:AegisubQT>")
+    set(AEGISUB_POST_BUILD_QML_DEST "${AEGISUB_POST_BUILD_DEST}/qml")
 endif()
 
 set(AEGISUB_POST_BUILD_COMMANDS
@@ -547,7 +549,7 @@ set(AEGISUB_POST_BUILD_COMMANDS
         "${AEGISUB_POST_BUILD_DEST}/automation"
     COMMAND ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_CURRENT_SOURCE_DIR}/qml"
-        "${AEGISUB_POST_BUILD_DEST}/qml"
+        "${AEGISUB_POST_BUILD_QML_DEST}"
     COMMAND ${CMAKE_COMMAND} -E make_directory "${AEGISUB_POST_BUILD_DEST}/locale"
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
         ${AEGISUB_QM_FILES}

@@ -445,6 +445,7 @@ int main(int argc, char *argv[])
         // Layout produced by `cmake --install`: exe in <prefix>/bin, QML in <prefix>/share/AegisubQT.
         app.applicationDirPath() + "/../share/AegisubQT/qml/Main.qml",
         // macOS .app bundle: resources live in Contents/Resources.
+        app.applicationDirPath() + "/../Resources/appqml/Main.qml",
         app.applicationDirPath() + "/../Resources/qml/Main.qml"
     };
 #ifdef AEGISUB_DEVELOPMENT_QML
