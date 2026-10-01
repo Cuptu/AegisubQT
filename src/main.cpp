@@ -247,7 +247,7 @@ int main(int argc, char *argv[])
         QTemporaryDir directory;
         QFile sample(directory.filePath("sample.srt"));
         if (!sample.open(QIODevice::WriteOnly)) return 1;
-        sample.write("1\n00:00:01,000 --> 00:00:02,000\n<i>First line</i>\nSecond line\n\n");
+        sample.write(QStringLiteral("1\n00:00:01,000 --> 00:00:02,000\n<i>第一行字幕</i>\n第二行字幕\n\n").toUtf8());
         sample.close();
         SubtitleModel subtitles;
         SubtitleRenderer renderer;
