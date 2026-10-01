@@ -32,9 +32,27 @@ int main(int argc, char **argv) {
     const QRect scaled = bounds(renderer.render(640,360,1000));
     CHECK(!scaled.isEmpty() && std::abs(scaled.center().x()-320) < 6 && scaled.bottom() < 360);
     CHECK(std::abs(scaled.height()*2-bottom.height()) < 6);
+    // SRT has no script coordinates: upstream initializes them from the video.
+    // Exercise different aspect ratios so a stale 1280x720 coordinate system
+    // cannot make the default style drift outside a portrait or SD video.
+    for (const QSize size : {QSize(640,480), QSize(1920,1080), QSize(720,1280)}) {
+        QByteArray initialized = header;
+        initialized.replace("PlayResX: 1280", "PlayResX: " + QByteArray::number(size.width()));
+        initialized.replace("PlayResY: 720", "PlayResY: " + QByteArray::number(size.height()));
+        CHECK(renderer.setDocument(initialized + "Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,First line\\NSecond line\n"));
+        const QRect caption = bounds(renderer.render(size.width(),size.height(),1000));
+        CHECK(!caption.isEmpty());
+        CHECK(QRect(QPoint(0,0),size).contains(caption));
+        CHECK(caption.top() > size.height()*0.6);
+        CHECK(std::abs(caption.center().x()-size.width()/2) < 10);
+        // MarginV is in script pixels; at native resolution it remains 10,
+        // independent of video height (the glyph's descender adds some space).
+        CHECK(size.height()-1-caption.bottom() >= 8);
+        CHECK(size.height()-1-caption.bottom() < 30);
+    }
     CHECK(renderer.setDocument(header + "Dialogue: 0,0:00:01.00,0:00:02.00,Default,,0,0,0,,edited\n"));
     CHECK(bounds(renderer.render(1280,720,1000)).height() < bottom.height());
     CHECK(renderer.render(0,720,1000).isNull());
-    puts("PASS real libass: multiline bottom alignment, margins, timed cues, ASS position, viewport scaling and edit refresh");
+    puts("PASS real libass: multiline bottom alignment, margins, SD/HD/portrait video initialization, timed cues, ASS position, viewport scaling and edit refresh");
     return 0;
 }
