@@ -118,11 +118,83 @@ static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
     return 0;
 }
 
+static int runClipboardTest(const QString &qmlRoot) {
+        auto *clipboard = QGuiApplication::clipboard();
+        auto savedClipboard = std::unique_ptr<QMimeData, std::function<void(QMimeData *)>>(
+            new QMimeData, [clipboard](QMimeData *data) { clipboard->setMimeData(data); });
+        if (const auto *previous = clipboard->mimeData())
+            for (const auto &format : previous->formats()) savedClipboard->setData(format, previous->data(format));
+        if (QCoreApplication::arguments().contains("--clipboard-write-only")) {
+            AegisubCoreBridge bridge;
+            const bool first = bridge.setClipboardText("first replacement");
+            const bool second = bridge.setClipboardText(QStringLiteral("second replacement\n尾 😀 "));
+            fprintf(stderr, "Sequential bridge writes: first=%d second=%d owns=%d length=%lld\n",
+                first, second, clipboard->ownsClipboard(), static_cast<long long>(clipboard->text().size()));
+            CHECK(first && second);
+            return 0;
+        }
+        SubtitleModel clipModel;
+        clipModel.setAllLines({QVariantMap{{"text", "keep,尾 "}, {"isComment", true}, {"layer", 2},
+            {"start", "0:00:01.00"}, {"end", "0:00:02.00"}, {"actor", "Actor"}, {"marginLeft", 12}},
+            QVariantMap{{"text", "other"}}});
+        clipModel.clearUndo();
+        const auto originalRows = clipModel.getAllLines();
+        AegisubCoreBridge clipboardBridge;
+        QQmlEngine clipEngine;
+        clipEngine.rootContext()->setContextProperty("aegisubCore", &clipboardBridge);
+        QQmlComponent clipProjectComponent(&clipEngine, QUrl::fromLocalFile(qmlRoot + "/project/SubtitleProject.qml"));
+        std::unique_ptr<QObject> clipProject(clipProjectComponent.create());
+        CHECK(clipProject && clipProject->setProperty("subtitleModel", QVariant::fromValue(&clipModel)));
+        CHECK(clipProject->setProperty("selectedIndices", QVariantList{0, 1}));
+        QQmlExpression copy(clipEngine.rootContext(), clipProject.get(), QStringLiteral("copySelectedLines(); true"));
+        CHECK(copy.evaluate().toBool() && !copy.hasError());
+        QCoreApplication::processEvents();
+        const auto clipboardCopy = clipboard->text().replace(QStringLiteral("\r\n"), QStringLiteral("\n"));
+        CHECK(clipboardCopy.startsWith("Comment: 2,0:00:01.00,0:00:02.00,Default,Actor,0012,0000,0000,,keep,尾 \nDialogue:"));
+        auto copied = clipModel.parseClipboardLines(clipboard->text());
+        CHECK(copied.size() == 2 && copied[0].toMap().value("isComment").toBool());
+        CHECK(copied[0].toMap().value("text") == QStringLiteral("keep,尾 "));
+        clipboard->setText(QStringLiteral("Comment: 3,0:00:04.00,0:00:05.00,Alt,B,1,2,3,fx,external,尾 \r\nplain text"));
+        QQmlExpression paste(clipEngine.rootContext(), clipProject.get(), QStringLiteral("pasteLines(false); true"));
+        CHECK(paste.evaluate().toBool() && !paste.hasError());
+        CHECK(clipModel.rowCount() == 4 && clipModel.get(0).value("isComment").toBool());
+        CHECK(clipModel.get(0).value("style") == "Alt" && clipModel.get(0).value("text") == QStringLiteral("external,尾 "));
+        CHECK(clipModel.getLineStartMs(0) == 4000 && clipModel.get(0).value("marginRight").toInt() == 2);
+        CHECK(clipModel.get(1).value("text") == "plain text" && clipModel.getLineEndMs(1) == 0);
+        CHECK(QMetaObject::invokeMethod(clipProject.get(), "undo"));
+        CHECK(clipModel.getAllLines() == originalRows);
+        clipboard->clear();
+        CHECK(paste.evaluate().toBool() && !paste.hasError());
+        CHECK(clipModel.getAllLines() == originalRows);
+        clipboard->setText("Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0,0,0,,replacement");
+        QQmlExpression over(clipEngine.rootContext(), clipProject.get(), QStringLiteral("pasteLines(true, null, ['text','isComment']); true"));
+        CHECK(over.evaluate().toBool() && !over.hasError());
+        CHECK(clipModel.get(0).value("text") == "replacement" && !clipModel.get(0).value("isComment").toBool());
+        CHECK(QMetaObject::invokeMethod(clipProject.get(), "undo"));
+        CHECK(clipModel.getAllLines() == originalRows);
+        CHECK(clipModel.parseClipboardLines("Dialogue: malformed")[0].toMap().value("text") == "Dialogue: malformed");
+        QQmlComponent blockedClipboardComponent(&clipEngine);
+        blockedClipboardComponent.setData("import QtQml; QtObject { function setClipboardText(text) { return false; } }", QUrl());
+        std::unique_ptr<QObject> blockedClipboard(blockedClipboardComponent.create());
+        CHECK(blockedClipboard);
+        clipEngine.rootContext()->setContextProperty("aegisubCore", blockedClipboard.get());
+        QQmlExpression failedCut(clipEngine.rootContext(), clipProject.get(), QStringLiteral("cutSelectedLines(); true"));
+        CHECK(failedCut.evaluate().toBool() && !failedCut.hasError());
+        CHECK(clipModel.getAllLines() == originalRows);
+        clipEngine.rootContext()->setContextProperty("aegisubCore", &clipboardBridge);
+        puts("PASS actual system clipboard copy/comment serialization, external ASS/plain paste, fields, trailing text, empty clipboard isolation, paste-over and undo");
+
+
+    return 0;
+}
+
 int main(int argc, char **argv) {
     QQuickStyle::setStyle("Aegisub");
     QQuickStyle::setFallbackStyle("Fusion");
     QCoreApplication::setAttribute(Qt::AA_DontUseNativeDialogs);
     QGuiApplication app(argc, argv);
+    if (app.arguments().contains("--clipboard-only") || app.arguments().contains("--clipboard-write-only"))
+        return runClipboardTest(QDir(QStringLiteral(AUTOMATION_SOURCE_DIR)).absoluteFilePath("../qml"));
     {
         QImage pixels(8, 6, QImage::Format_RGB32);
         pixels.fill(Qt::black);
@@ -1390,64 +1462,8 @@ QtObject {
         CHECK(media->property("seeks").toInt() == seeksBeforeReload + 1);
         puts("PASS original selection/video sync, actual grid mouse/double-click, anchored keyboard selection and same-row document reload");
     }
-    {
-        auto *clipboard = QGuiApplication::clipboard();
-        auto savedClipboard = std::unique_ptr<QMimeData, std::function<void(QMimeData *)>>(
-            new QMimeData, [clipboard](QMimeData *data) { clipboard->setMimeData(data); });
-        if (const auto *previous = clipboard->mimeData())
-            for (const auto &format : previous->formats()) savedClipboard->setData(format, previous->data(format));
-        SubtitleModel clipModel;
-        clipModel.setAllLines({QVariantMap{{"text", "keep,尾 "}, {"isComment", true}, {"layer", 2},
-            {"start", "0:00:01.00"}, {"end", "0:00:02.00"}, {"actor", "Actor"}, {"marginLeft", 12}},
-            QVariantMap{{"text", "other"}}});
-        clipModel.clearUndo();
-        const auto originalRows = clipModel.getAllLines();
-        AegisubCoreBridge clipboardBridge;
-        QQmlEngine clipEngine;
-        clipEngine.rootContext()->setContextProperty("aegisubCore", &clipboardBridge);
-        QQmlComponent clipProjectComponent(&clipEngine, QUrl::fromLocalFile(qmlRoot + "/project/SubtitleProject.qml"));
-        std::unique_ptr<QObject> clipProject(clipProjectComponent.create());
-        CHECK(clipProject && clipProject->setProperty("subtitleModel", QVariant::fromValue(&clipModel)));
-        CHECK(clipProject->setProperty("selectedIndices", QVariantList{0, 1}));
-        QQmlExpression copy(clipEngine.rootContext(), clipProject.get(), QStringLiteral("copySelectedLines(); true"));
-        CHECK(copy.evaluate().toBool() && !copy.hasError());
-        QCoreApplication::processEvents();
-        const auto clipboardCopy = clipboard->text().replace(QStringLiteral("\r\n"), QStringLiteral("\n"));
-        CHECK(clipboardCopy.startsWith("Comment: 2,0:00:01.00,0:00:02.00,Default,Actor,0012,0000,0000,,keep,尾 \nDialogue:"));
-        auto copied = clipModel.parseClipboardLines(clipboard->text());
-        CHECK(copied.size() == 2 && copied[0].toMap().value("isComment").toBool());
-        CHECK(copied[0].toMap().value("text") == QStringLiteral("keep,尾 "));
-        clipboard->setText(QStringLiteral("Comment: 3,0:00:04.00,0:00:05.00,Alt,B,1,2,3,fx,external,尾 \r\nplain text"));
-        QQmlExpression paste(clipEngine.rootContext(), clipProject.get(), QStringLiteral("pasteLines(false); true"));
-        CHECK(paste.evaluate().toBool() && !paste.hasError());
-        CHECK(clipModel.rowCount() == 4 && clipModel.get(0).value("isComment").toBool());
-        CHECK(clipModel.get(0).value("style") == "Alt" && clipModel.get(0).value("text") == QStringLiteral("external,尾 "));
-        CHECK(clipModel.getLineStartMs(0) == 4000 && clipModel.get(0).value("marginRight").toInt() == 2);
-        CHECK(clipModel.get(1).value("text") == "plain text" && clipModel.getLineEndMs(1) == 0);
-        CHECK(QMetaObject::invokeMethod(clipProject.get(), "undo"));
-        CHECK(clipModel.getAllLines() == originalRows);
-        clipboard->clear();
-        CHECK(paste.evaluate().toBool() && !paste.hasError());
-        CHECK(clipModel.getAllLines() == originalRows);
-        clipboard->setText("Dialogue: 0,0:00:00.00,0:00:00.00,Default,,0,0,0,,replacement");
-        QQmlExpression over(clipEngine.rootContext(), clipProject.get(), QStringLiteral("pasteLines(true, null, ['text','isComment']); true"));
-        CHECK(over.evaluate().toBool() && !over.hasError());
-        CHECK(clipModel.get(0).value("text") == "replacement" && !clipModel.get(0).value("isComment").toBool());
-        CHECK(QMetaObject::invokeMethod(clipProject.get(), "undo"));
-        CHECK(clipModel.getAllLines() == originalRows);
-        CHECK(clipModel.parseClipboardLines("Dialogue: malformed")[0].toMap().value("text") == "Dialogue: malformed");
-        QQmlComponent blockedClipboardComponent(&clipEngine);
-        blockedClipboardComponent.setData("import QtQml; QtObject { function setClipboardText(text) { return false; } }", QUrl());
-        std::unique_ptr<QObject> blockedClipboard(blockedClipboardComponent.create());
-        CHECK(blockedClipboard);
-        clipEngine.rootContext()->setContextProperty("aegisubCore", blockedClipboard.get());
-        QQmlExpression failedCut(clipEngine.rootContext(), clipProject.get(), QStringLiteral("cutSelectedLines(); true"));
-        CHECK(failedCut.evaluate().toBool() && !failedCut.hasError());
-        CHECK(clipModel.getAllLines() == originalRows);
-        clipEngine.rootContext()->setContextProperty("aegisubCore", &clipboardBridge);
-        puts("PASS actual system clipboard copy/comment serialization, external ASS/plain paste, fields, trailing text, empty clipboard isolation, paste-over and undo");
-        if (qEnvironmentVariableIsSet("AEGISUB_CLIPBOARD_ONLY")) return 0;
-    }
+    CHECK(runClipboardTest(qmlRoot) == 0);
+    if (qEnvironmentVariableIsSet("AEGISUB_CLIPBOARD_ONLY")) return 0;
     {
         SubtitleModel timingModel;
         timingModel.setAllLines({QVariantMap{{"text", "frame editor"}, {"start", "0:00:00.02"}, {"end", "0:00:00.16"}}});
