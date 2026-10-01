@@ -2,7 +2,7 @@
 
 Upstream: https://github.com/Cuptu/AstraCore
 
-Source and header revision: `01c2d2efcd8a0cdd0d0fba48ae21317cdc63fb78`.
+Source and header revision: `62e883d002dd060bcd74282154cfbdd8a1e834e8`.
 macOS builds also build this pinned upstream revision's complete runtime and
 preserve it under `Contents/Frameworks/astracore`, including ffmpeg, ffprobe,
 libmpv, all FFmpeg libraries, transitive dependencies, licenses and its hash
