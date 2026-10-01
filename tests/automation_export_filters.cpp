@@ -54,9 +54,21 @@ static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
                                  QVariantMap{{"text","{\\k10}a{\\k20}b"},{"start","0:00:00.00"},{"end","0:00:00.30"}}});
         karaokeRows.clearUndo();
         QQmlEngine::setObjectOwnership(&karaokeRows, QQmlEngine::CppOwnership);
+        QQmlComponent audioComponent(&engine);
+        audioComponent.setData(R"qml(import QtQml
+QtObject {
+    property int rangeStart: -1
+    property int rangeEnd: -1
+    property int playCalls: 0
+    function setKaraokePlaybackRange(start, end) { rangeStart = start; rangeEnd = end }
+    function playSelection() { playCalls++ }
+})qml", QUrl());
+        std::unique_ptr<QObject> audio(audioComponent.create());
+        CHECK(audio);
         QQmlComponent component(&engine, QUrl::fromLocalFile(qmlRoot + "/views/KaraokeTimingBar.qml"));
         std::unique_ptr<QObject> bar(component.createWithInitialProperties({
-            {"subtitleModel",QVariant::fromValue(&karaokeRows)}, {"currentIndex",0}, {"active",true}}));
+            {"subtitleModel",QVariant::fromValue(&karaokeRows)}, {"audioCtrl",QVariant::fromValue(audio.get())},
+            {"currentIndex",0}, {"active",true}}));
         if (!bar) for (const auto &error : component.errors()) fprintf(stderr,"%s\n",qPrintable(error.toString()));
         CHECK(bar);
         QQuickWindow karaokeWindow;
@@ -76,6 +88,15 @@ static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
             return result;
         };
         CHECK(duration(0) == 100 && duration(1) == 200);
+        CHECK(audio->property("rangeStart").toInt() == 1000 && audio->property("rangeEnd").toInt() == 1100);
+        QQmlExpression nextSyllable(engine.rootContext(), bar.get(), "navigate(1)");
+        CHECK(nextSyllable.evaluate().toBool() && !nextSyllable.hasError());
+        CHECK(bar->property("selectedSyllable").toInt() == 1 && audio->property("playCalls").toInt() == 1);
+        CHECK(audio->property("rangeStart").toInt() == 1100 && audio->property("rangeEnd").toInt() == 1300);
+        CHECK(nextSyllable.evaluate().toBool());
+        CHECK(audio->property("rangeStart").toInt() == 1300 && audio->property("rangeEnd").toInt() == 1500);
+        CHECK(!nextSyllable.evaluate().toBool());
+        CHECK(bar->setProperty("selectedSyllable", 0));
         QList<QQuickItem *> visualItems{item};
         QQuickItem *first = nullptr;
         for (qsizetype i = 0; i < visualItems.size(); ++i) {
@@ -116,6 +137,7 @@ static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
         CHECK(karaokeRows.get(0).value("text") == source);
         CHECK(bar->setProperty("active",false));
         CHECK(!bar->property("visible").toBool());
+        CHECK(audio->property("rangeStart").toInt() == -1);
         puts("PASS actual audio karaoke toolbar mouse boundary drag/apply, keyboard duration, source reload, row switch and single undo preserve tags/Unicode/spaces");
 
     return 0;
@@ -2575,6 +2597,12 @@ QtObject {
 QtObject {
     property bool hasAudio: false
     property int activeSubtitleIndex: -1
+    property bool karaokeMode: false
+    property int rangeStart: -1
+    property int rangeEnd: -1
+    property int playCalls: 0
+    function setKaraokePlaybackRange(start, end) { rangeStart = start; rangeEnd = end }
+    function playSelection() { playCalls++ }
     property int savedStart: -1
     property int savedEnd: -1
     function saveAudioClip(url, start, end) {
@@ -2586,6 +2614,18 @@ QtObject {
         CHECK(audioMock);
         engine.rootContext()->setContextProperty("nativeSubtitleModel", &uiClipRows);
         engine.rootContext()->setContextProperty("audioController", audioMock.get());
+        QQmlComponent navigationComponent(&engine);
+        navigationComponent.setData(R"qml(import QtQml
+QtObject {
+    property var extraSnapPoints: []
+    property bool horizontalCursor: false
+    signal nextLineRequested()
+    signal prevLineRequested()
+    function setViewportSize(width, height) {}
+})qml", QUrl());
+        std::unique_ptr<QObject> navigation(navigationComponent.create());
+        CHECK(navigation);
+        engine.rootContext()->setContextProperty("displayController", navigation.get());
         QQmlComponent mainComponent(&engine, QUrl::fromLocalFile(qmlRoot + "/Main.qml"));
         std::unique_ptr<QObject> mainWindow(mainComponent.create());
         if (!mainWindow) for (const auto &error : mainComponent.errors())
@@ -2598,6 +2638,10 @@ QtObject {
         CHECK(mainProject->setProperty("currentSelectedIndex", 1));
         CHECK(audioMock->property("activeSubtitleIndex").toInt() == 1);
         CHECK(mainProject->setProperty("currentSelectedIndex", 0));
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "nextLineRequested"));
+        CHECK(mainProject->property("currentSelectedIndex").toInt() == 1);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "prevLineRequested"));
+        CHECK(mainProject->property("currentSelectedIndex").toInt() == 0);
         auto *inlinePicker = mainWindow->property("dlgColorPicker").value<QObject *>();
         CHECK(inlinePicker && inlinePicker->setProperty("targetProp", "primary"));
         CHECK(QMetaObject::invokeMethod(inlinePicker, "colorAccepted", Q_ARG(QColor, QColor(17,34,51,85)),
@@ -2624,7 +2668,28 @@ QtObject {
         CHECK(mainWindow->property("pendingAudioClipRange").isNull());
         CHECK(QMetaObject::invokeMethod(clipPicker, "close"));
         puts("PASS actual Main Create Audio Clip selection, no-audio guard, save picker acceptance and cancellation");
+        uiClipRows.setAllLines({QVariantMap{{"start","0:00:00.00"},{"end","0:00:00.50"},{"text","{\\k10}a{\\k20}b{\\k20}c"}},
+                               QVariantMap{{"start","0:00:01.00"},{"end","0:00:01.30"},{"text","{\\k10}d{\\k20}e"}}});
+        CHECK(audioMock->setProperty("karaokeMode", true));
+        auto *bar = mainWindow->findChild<QObject *>("karaoke-timing-bar");
+        CHECK(bar);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "nextLineRequested"));
+        CHECK(mainProject->property("currentSelectedIndex").toInt() == 0 && bar->property("selectedSyllable").toInt() == 1);
+        CHECK(audioMock->property("rangeStart").toInt() == 100 && audioMock->property("rangeEnd").toInt() == 300);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "nextLineRequested"));
+        CHECK(bar->property("selectedSyllable").toInt() == 2);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "nextLineRequested"));
+        CHECK(mainProject->property("currentSelectedIndex").toInt() == 1 && bar->property("selectedSyllable").toInt() == 0);
+        CHECK(audioMock->property("rangeStart").toInt() == 1000 && audioMock->property("rangeEnd").toInt() == 1100);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "prevLineRequested"));
+        CHECK(mainProject->property("currentSelectedIndex").toInt() == 0 && bar->property("selectedSyllable").toInt() == 2);
+        CHECK(audioMock->property("rangeStart").toInt() == 300 && audioMock->property("rangeEnd").toInt() == 500);
+        CHECK(QMetaObject::invokeMethod(navigation.get(), "prevLineRequested"));
+        CHECK(bar->property("selectedSyllable").toInt() == 1);
+        CHECK(uiClipRows.getLineStartMs(0) == 0 && uiClipRows.getLineEndMs(0) == 500);
+        puts("PASS Main audio keyboard-signal routing: syllable next/previous, cross-row first/last syllable, exact primary playback range and unchanged dialogue bounds");
         mainWindow.reset();
+        engine.rootContext()->setContextProperty("displayController", QVariant());
         engine.rootContext()->setContextProperty("audioController", QVariant());
         engine.rootContext()->setContextProperty("nativeSubtitleModel", QVariant());
     }

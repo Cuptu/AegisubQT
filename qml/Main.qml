@@ -738,8 +738,8 @@ ApplicationWindow {
 
     Connections {
         target: typeof displayController !== "undefined" ? displayController : null
-        function onNextLineRequested() { subProject.selectRow(subProject.currentSelectedIndex + 1, false, false); }
-        function onPrevLineRequested() { subProject.selectRow(subProject.currentSelectedIndex - 1, false, false); }
+        function onNextLineRequested() { audioBox.navigateTiming(1); }
+        function onPrevLineRequested() { audioBox.navigateTiming(-1); }
     }
 
     Connections {

@@ -238,6 +238,15 @@ void AudioController::setSelectionStart(int startMs)
     setSelection(startMs, m_selectionEnd);
 }
 
+void AudioController::setKaraokePlaybackRange(int startMs, int endMs)
+{
+    if (startMs < 0 || endMs < startMs) startMs = endMs = -1;
+    if (m_karaokeStart == startMs && m_karaokeEnd == endMs) return;
+    m_karaokeStart = startMs;
+    m_karaokeEnd = endMs;
+    Q_EMIT selectionChanged();
+}
+
 void AudioController::setSelectionEnd(int endMs)
 {
     setSelection(m_selectionStart, endMs);
@@ -402,7 +411,9 @@ void AudioController::setKaraokeMode(bool val)
 {
     if (m_karaokeMode != val) {
         m_karaokeMode = val;
+        if (!val) m_karaokeStart = m_karaokeEnd = -1;
         Q_EMIT karaokeModeChanged();
+        Q_EMIT selectionChanged();
     }
 }
 
@@ -630,12 +641,14 @@ void AudioController::stop()
 
 void AudioController::playSelection()
 {
-    playRange(m_selectionStart, m_selectionEnd);
+    playRange(primaryStart(), primaryEnd());
 }
 
 void AudioController::playCurrentLine()
 {
-    if (m_videoController && m_videoController->activeSubEnd() > m_videoController->activeSubStart()) {
+    if (m_subtitleModel && m_activeSubtitleIndex >= 0 && m_activeSubtitleIndex < m_subtitleModel->rowCount()) {
+        playRange(m_subtitleModel->getLineStartMs(m_activeSubtitleIndex), m_subtitleModel->getLineEndMs(m_activeSubtitleIndex));
+    } else if (m_videoController && m_videoController->activeSubEnd() > m_videoController->activeSubStart()) {
         playRange(m_videoController->activeSubStart(), m_videoController->activeSubEnd());
     } else {
         playRange(m_selectionStart, m_selectionEnd);
@@ -644,35 +657,35 @@ void AudioController::playCurrentLine()
 
 void AudioController::play500msBefore()
 {
-    int start = std::max(0, m_selectionStart - 500);
-    int end = m_selectionStart;
+    int start = std::max(0, primaryStart() - 500);
+    int end = primaryStart();
     playRange(start, end);
 }
 
 void AudioController::play500msAfter()
 {
-    int start = m_selectionEnd;
-    int end = std::min(durationMs(), m_selectionEnd + 500);
+    int start = primaryEnd();
+    int end = std::min(durationMs(), primaryEnd() + 500);
     playRange(start, end);
 }
 
 void AudioController::playFirst500ms()
 {
-    int start = m_selectionStart;
-    int end = std::min(m_selectionEnd, m_selectionStart + 500);
+    int start = primaryStart();
+    int end = std::min(primaryEnd(), primaryStart() + 500);
     playRange(start, end);
 }
 
 void AudioController::playLast500ms()
 {
-    int start = std::max(m_selectionStart, m_selectionEnd - 500);
-    int end = m_selectionEnd;
+    int start = std::max(primaryStart(), primaryEnd() - 500);
+    int end = primaryEnd();
     playRange(start, end);
 }
 
 void AudioController::playToEnd()
 {
-    playRange(m_selectionStart, durationMs());
+    playRange(primaryStart(), durationMs());
 }
 
 void AudioController::commit()
@@ -748,8 +761,10 @@ void AudioController::setActiveSubtitleIndex(int index)
 {
     if (m_activeSubtitleIndex == index) return;
     m_activeSubtitleIndex = index;
+    m_karaokeStart = m_karaokeEnd = -1;
     ++m_overlayRevision;
     Q_EMIT drawOptionsChanged();
+    Q_EMIT selectionChanged();
 }
 
 void AudioController::setDrawSeconds(bool val)

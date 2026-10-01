@@ -66,6 +66,8 @@ class AudioController : public QObject {
     Q_PROPERTY(int selectionStart READ selectionStart WRITE setSelectionStart NOTIFY selectionChanged)
     Q_PROPERTY(int selectionEnd READ selectionEnd WRITE setSelectionEnd NOTIFY selectionChanged)
     Q_PROPERTY(int selectionDuration READ selectionDuration NOTIFY selectionChanged)
+    Q_PROPERTY(int primaryStart READ primaryStart NOTIFY selectionChanged)
+    Q_PROPERTY(int primaryEnd READ primaryEnd NOTIFY selectionChanged)
     Q_PROPERTY(double currentTime READ currentTime NOTIFY positionChanged)
     Q_PROPERTY(bool isPlaying READ isPlaying NOTIFY playbackChanged)
     Q_PROPERTY(int volume READ volume WRITE setVolume NOTIFY volumeChanged)
@@ -156,6 +158,8 @@ public:
 
     void setSubtitleModel(SubtitleModel *model);
     int activeSubtitleIndex() const { return m_activeSubtitleIndex; }
+    int primaryStart() const { return m_karaokeMode && m_karaokeStart >= 0 ? m_karaokeStart : m_selectionStart; }
+    int primaryEnd() const { return m_karaokeMode && m_karaokeStart >= 0 ? m_karaokeEnd : m_selectionEnd; }
     void setActiveSubtitleIndex(int index);
 
     // Viewport width in logical pixels reported by AudioDisplayController::setViewportSize,
@@ -179,6 +183,7 @@ public:
     AegisubStftCore& stftCore() { return m_stftCore; }
 
 public Q_SLOTS:
+    void setKaraokePlaybackRange(int startMs, int endMs);
     void setSelection(int startMs, int endMs);
     void setSelectionStart(int startMs);
     void setSelectionEnd(int endMs);
@@ -302,6 +307,8 @@ private:
     int m_scrollLeft = 0;
     int m_selectionStart = 2250;
     int m_selectionEnd = 7250;
+    int m_karaokeStart = -1;
+    int m_karaokeEnd = -1;
     double m_currentTime = 0.0;
     bool m_isPlaying = false;
     double m_playbackSpeed = 1.0;

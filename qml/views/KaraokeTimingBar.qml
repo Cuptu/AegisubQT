@@ -6,6 +6,7 @@ Rectangle {
     id: bar
     objectName: "karaoke-timing-bar"
     property var subtitleModel: null
+    property var audioCtrl: null
     property int currentIndex: -1
     property bool active: false
     property var snapshot: null
@@ -17,10 +18,12 @@ Rectangle {
     color: "#f7f9fa"
     border.color: "#d0d0d0"
 
-    function reload() {
+    function reload(preserveSelection) {
+        var previous = preserveSelection ? selectedSyllable : 0
         snapshot = null
         syllables = []
         selectedSyllable = 0
+        updatePrimaryRange()
         if (!active || !subtitleModel) return
         var result = subtitleModel.karaokeTiming(currentIndex)
         if (!result.success) return
@@ -31,7 +34,33 @@ Rectangle {
             copy.push({text: s.text, duration: s.duration})
         }
         syllables = copy
+        selectedSyllable = Math.min(previous, Math.max(0, syllables.length - 1))
+        updatePrimaryRange()
+        Qt.callLater(updatePrimaryRange)
     }
+    function updatePrimaryRange() {
+        if (!audioCtrl || typeof audioCtrl.setKaraokePlaybackRange !== "function") return
+        if (!active || !snapshot || !syllables.length) {
+            audioCtrl.setKaraokePlaybackRange(-1, -1)
+            return
+        }
+        var start = snapshot.startMs
+        for (var i = 0; i < selectedSyllable; ++i) start += syllables[i].duration
+        audioCtrl.setKaraokePlaybackRange(start, start + syllables[selectedSyllable].duration)
+    }
+    function playSelected() {
+        updatePrimaryRange()
+        if (audioCtrl && typeof audioCtrl.playSelection === "function") audioCtrl.playSelection()
+    }
+    function navigate(direction) {
+        var next = selectedSyllable + direction
+        if (!active || next < 0 || next >= syllables.length) return false
+        selectedSyllable = next
+        playSelected()
+        return true
+    }
+    onSelectedSyllableChanged: updatePrimaryRange()
+    onAudioCtrlChanged: updatePrimaryRange()
     function adjustDuration(index, duration) {
         if (syllables.length < 2 || index < 0 || index >= syllables.length) return
         if (!Number.isFinite(duration)) return
@@ -42,6 +71,7 @@ Rectangle {
         copy[index] = {text: copy[index].text, duration: value}
         copy[neighbor] = {text: copy[neighbor].text, duration: total - value}
         syllables = copy
+        updatePrimaryRange()
     }
     function apply() {
         if (!snapshot || !subtitleModel) return
@@ -58,7 +88,7 @@ Rectangle {
     Component.onCompleted: reload()
     Connections {
         target: bar.subtitleModel
-        function onContentModified() { bar.reload() }
+        function onContentModified() { bar.reload(true) }
         function onCountChanged() { bar.reload() }
     }
 

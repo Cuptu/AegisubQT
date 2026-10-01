@@ -18,6 +18,18 @@ Item {
     property var project: null
     signal statusMessage(string text)
 
+    function navigateTiming(direction) {
+        if (karaokeBar.navigate(direction)) return
+        if (!project || !project.subtitleModel) return
+        var next = project.currentSelectedIndex + direction
+        if (next >= 0 && next < project.subtitleModel.count) {
+            project.selectRow(next, false, false)
+            if (karaokeBar.active && direction < 0)
+                karaokeBar.selectedSyllable = Math.max(0, karaokeBar.syllables.length - 1)
+        }
+        if (karaokeBar.active) karaokeBar.playSelected()
+    }
+
     property color winBg: "#f0f0f0"
     property color winBorder: "#bebebe"
     property color winSunkenBorder: "#ababab"
@@ -403,7 +415,9 @@ Item {
         }
 
         KaraokeTimingBar {
+            id: karaokeBar
             Layout.fillWidth: true
+            audioCtrl: audioBox.controllerInstance
             subtitleModel: audioBox.project ? audioBox.project.subtitleModel : null
             currentIndex: audioBox.project ? audioBox.project.currentSelectedIndex : -1
             active: audioController ? audioController.karaokeMode : false
@@ -450,18 +464,14 @@ Item {
                 iconSrc: "../../assets/icons_native/button_prev_16.png"
                 tipText: qsTr("Previous line or syllable") + " (Z / Left)"
                 onClicked: {
-                    if (audioBox.project && audioBox.project.currentSelectedIndex > 0) {
-                        audioBox.project.selectRow(audioBox.project.currentSelectedIndex - 1, false, false);
-                    }
+                    audioBox.navigateTiming(-1)
                 }
             }
             AudioBtn {
                 iconSrc: "../../assets/icons_native/button_next_16.png"
                 tipText: qsTr("Next line or syllable") + " (X / Right)"
                 onClicked: {
-                    if (audioBox.project && audioBox.project.subtitleModel && audioBox.project.currentSelectedIndex < audioBox.project.subtitleModel.count - 1) {
-                        audioBox.project.selectRow(audioBox.project.currentSelectedIndex + 1, false, false);
-                    }
+                    audioBox.navigateTiming(1)
                 }
             }
             AudioBtn {
