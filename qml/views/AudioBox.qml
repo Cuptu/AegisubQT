@@ -22,6 +22,12 @@ Item {
     property color winBorder: "#bebebe"
     property color winSunkenBorder: "#ababab"
     property var controllerInstance: audioController
+    Binding {
+        target: audioBox.controllerInstance
+        property: "activeSubtitleIndex"
+        value: audioBox.project ? audioBox.project.currentSelectedIndex : -1
+        when: audioBox.controllerInstance && typeof audioBox.controllerInstance.activeSubtitleIndex !== "undefined"
+    }
 
     // Coordinate projection helpers: time (ms) <-> viewport pixel space
     function timeToPx(ms) {

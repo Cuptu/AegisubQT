@@ -1,4 +1,5 @@
 #include "AudioController.h"
+#include "SubtitleModel.h"
 #include "SpectrogramItem.h"
 #include <QQuickWindow>
 #include <QGuiApplication>
@@ -46,6 +47,35 @@ struct WorkerGate {
 };
 int main(int argc, char **argv) {
     QGuiApplication app(argc, argv);
+    {
+        SubtitleModel model;
+        model.setAllLines({QVariantMap{{"start","0:00:01.00"},{"end","0:00:01.50"},{"text","{\\k10}wrong{\\k40}row"}},
+            QVariantMap{{"start","0:00:01.00"},{"end","0:00:01.50"},{"text","{\\kf20}right{\\ko30}row"}},
+            QVariantMap{{"start","0:00:02.00"},{"end","0:00:03.00"},{"text","comment"},{"isComment",true}}});
+        AudioController overlay(nullptr);
+        overlay.setSubtitleModel(&model);
+        overlay.setKaraokeMode(true);
+        overlay.setActiveSubtitleIndex(1);
+        overlay.setSelection(1100, 1200);
+        const auto syllables = overlay.syllableMarks();
+        CHECK(syllables.size() == 2 && syllables[0].text == "right");
+        CHECK(syllables[0].startMs == 1000 && syllables[0].endMs == 1200 && syllables[1].endMs == 1500);
+        CHECK(overlay.inactiveLineBoundaries().size() == 1);
+        const auto revision = overlay.overlayRevision();
+        CHECK(model.setProperty(1, "text", "{\\kf10}edited{\\ko40}row"));
+        CHECK(overlay.overlayRevision() > revision && overlay.syllableMarks()[0].text == "edited");
+        CHECK(overlay.syllableMarks()[0].endMs == 1100);
+        overlay.setActiveSubtitleIndex(0);
+        CHECK(overlay.syllableMarks()[0].text == "wrong");
+        overlay.setActiveSubtitleIndex(99);
+        CHECK(overlay.syllableMarks().isEmpty());
+        overlay.setActiveSubtitleIndex(-1);
+        overlay.setSelection(1000, 1500);
+        CHECK(overlay.syllableMarks().isEmpty());
+        CHECK(overlay.inactiveLineBoundaries().size() == 2);
+        puts("PASS active-row karaoke/inactive overlays preserve original times during partial selection, distinguish equal-time rows, refresh edits and suppress comments");
+    }
+    if (app.arguments().contains("--audio-overlays-only")) return 0;
     if (!AstraCoreBridge::instance()->isAvailable()) {
 #ifdef AEGISUB_TEST_EXPECT_NATIVE
         CHECK(false); // A source-built runtime must have been deployed for this test.

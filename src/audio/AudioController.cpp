@@ -735,7 +735,19 @@ void AudioController::setSubtitleModel(SubtitleModel *model)
             ++m_overlayRevision;
             Q_EMIT drawOptionsChanged();
         });
+        connect(m_subtitleModel, &SubtitleModel::contentModified, this, [this]() {
+            ++m_overlayRevision;
+            Q_EMIT drawOptionsChanged();
+        });
     }
+    ++m_overlayRevision;
+    Q_EMIT drawOptionsChanged();
+}
+
+void AudioController::setActiveSubtitleIndex(int index)
+{
+    if (m_activeSubtitleIndex == index) return;
+    m_activeSubtitleIndex = index;
     ++m_overlayRevision;
     Q_EMIT drawOptionsChanged();
 }
@@ -814,21 +826,15 @@ QVector<AudioController::LineBoundaryMark> AudioController::inactiveLineBoundari
     const int rows = m_subtitleModel->rowCount();
     if (rows <= 0) return out;
 
-    // Identify active row: locates the line matching current selection start and end milliseconds.
-    int activeRow = -1;
-    for (int i = 0; i < rows; ++i) {
-        if (m_subtitleModel->getLineStartMs(i) == m_selectionStart
-            && m_subtitleModel->getLineEndMs(i) == m_selectionEnd) {
-            activeRow = i;
-            break;
-        }
-    }
+    // The active dialogue is independent of the audio playback/drag selection.
+    int activeRow = m_activeSubtitleIndex;
+    if (activeRow >= rows) activeRow = -1;
 
     auto appendRow = [&](int index) {
         if (index < 0 || index >= rows || index == activeRow) return;
         const QVariantMap line = m_subtitleModel->get(index);
         // Suppress boundaries for comment lines (matches native Audio/Display/Draw/Inactive Comments default).
-        if (line.value(QStringLiteral("comment")).toBool()) return;
+        if (line.value(QStringLiteral("isComment")).toBool()) return;
         LineBoundaryMark mark;
         // Dialogue start/end strings are ASS formatted; fetch raw millisecond integer values.
         mark.startMs = m_subtitleModel->getLineStartMs(index);
@@ -853,21 +859,16 @@ QVector<AudioController::SyllableMark> AudioController::syllableMarks() const
     QVector<SyllableMark> out;
     if (!m_karaokeMode || !m_subtitleModel) return out;
 
-    // Fetch text of the currently active dialogue row matching the selection.
-    QString text;
     const int rows = m_subtitleModel->rowCount();
-    for (int i = 0; i < rows; ++i) {
-        if (m_subtitleModel->getLineStartMs(i) == m_selectionStart
-            && m_subtitleModel->getLineEndMs(i) == m_selectionEnd) {
-            text = m_subtitleModel->get(i).value(QStringLiteral("text")).toString();
-            break;
-        }
-    }
+    if (m_activeSubtitleIndex < 0 || m_activeSubtitleIndex >= rows) return out;
+    const auto text = m_subtitleModel->get(m_activeSubtitleIndex).value(QStringLiteral("text")).toString();
+    const int startMs = m_subtitleModel->getLineStartMs(m_activeSubtitleIndex);
+    const int endMs = m_subtitleModel->getLineEndMs(m_activeSubtitleIndex);
     if (text.isEmpty() || !text.contains(QLatin1Char('\\'))) return out;
 
     // Parse syllables via native libaegisub algorithm (matches ass_karaoke.cpp).
     const QList<QVariantMap> syls =
-        AegisubCoreBridge::parseKaraokeLine(text, m_selectionStart, m_selectionEnd, false);
+        AegisubCoreBridge::parseKaraokeLine(text, startMs, endMs, false);
     if (syls.size() < 2) return out;
 
     out.reserve(syls.size());

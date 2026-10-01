@@ -35,6 +35,9 @@
 #include <QtTest/QSignalSpy>
 #include <memory>
 #include <functional>
+#ifdef Q_OS_WIN
+#include <qt_windows.h>
+#endif
 
 using namespace Automation;
 
@@ -118,6 +121,20 @@ static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
     return 0;
 }
 
+static void reportClipboardOwner(const char *stage) {
+#ifdef Q_OS_WIN
+    if (!qEnvironmentVariableIsSet("AEGISUB_CLIPBOARD_DIAGNOSTICS")) return;
+    DWORD ownerPid = 0;
+    GetWindowThreadProcessId(GetClipboardOwner(), &ownerPid);
+    auto *clipboard = QGuiApplication::clipboard();
+    fprintf(stderr, "Clipboard %s: self=%lu owner=%lu sequence=%lu owns=%d textLength=%lld\n",
+        stage, GetCurrentProcessId(), ownerPid, GetClipboardSequenceNumber(),
+        clipboard->ownsClipboard(), static_cast<long long>(clipboard->text().size()));
+#else
+    Q_UNUSED(stage);
+#endif
+}
+
 static int runClipboardTest(const QString &qmlRoot) {
         auto *clipboard = QGuiApplication::clipboard();
         auto savedClipboard = std::unique_ptr<QMimeData, std::function<void(QMimeData *)>>(
@@ -154,9 +171,12 @@ static int runClipboardTest(const QString &qmlRoot) {
         auto copied = clipModel.parseClipboardLines(clipboard->text());
         CHECK(copied.size() == 2 && copied[0].toMap().value("isComment").toBool());
         CHECK(copied[0].toMap().value("text") == QStringLiteral("keep,尾 "));
+        reportClipboardOwner("before external write");
         clipboard->setText(QStringLiteral("Comment: 3,0:00:04.00,0:00:05.00,Alt,B,1,2,3,fx,external,尾 \r\nplain text"));
+        reportClipboardOwner("after external write");
         QQmlExpression paste(clipEngine.rootContext(), clipProject.get(), QStringLiteral("pasteLines(false); true"));
         CHECK(paste.evaluate().toBool() && !paste.hasError());
+        reportClipboardOwner("after paste");
         CHECK(clipModel.rowCount() == 4 && clipModel.get(0).value("isComment").toBool());
         CHECK(clipModel.get(0).value("style") == "Alt" && clipModel.get(0).value("text") == QStringLiteral("external,尾 "));
         CHECK(clipModel.getLineStartMs(0) == 4000 && clipModel.get(0).value("marginRight").toInt() == 2);
@@ -2554,6 +2574,7 @@ QtObject {
         audioMockComponent.setData(R"qml(import QtQml
 QtObject {
     property bool hasAudio: false
+    property int activeSubtitleIndex: -1
     property int savedStart: -1
     property int savedEnd: -1
     function saveAudioClip(url, start, end) {
@@ -2573,6 +2594,10 @@ QtObject {
         CHECK(mainWindow->setProperty("viewMode", "subs"));
         auto *mainProject = mainWindow->property("project").value<QObject *>();
         CHECK(mainProject);
+        CHECK(audioMock->property("activeSubtitleIndex").toInt() == 0);
+        CHECK(mainProject->setProperty("currentSelectedIndex", 1));
+        CHECK(audioMock->property("activeSubtitleIndex").toInt() == 1);
+        CHECK(mainProject->setProperty("currentSelectedIndex", 0));
         auto *inlinePicker = mainWindow->property("dlgColorPicker").value<QObject *>();
         CHECK(inlinePicker && inlinePicker->setProperty("targetProp", "primary"));
         CHECK(QMetaObject::invokeMethod(inlinePicker, "colorAccepted", Q_ARG(QColor, QColor(17,34,51,85)),

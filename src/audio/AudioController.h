@@ -77,6 +77,7 @@ class AudioController : public QObject {
     Q_PROPERTY(bool autoCommit READ autoCommit WRITE setAutoCommit NOTIFY autoCommitChanged)
     Q_PROPERTY(bool autoNext READ autoNext WRITE setAutoNext NOTIFY autoNextChanged)
     Q_PROPERTY(bool karaokeMode READ karaokeMode WRITE setKaraokeMode NOTIFY karaokeModeChanged)
+    Q_PROPERTY(int activeSubtitleIndex READ activeSubtitleIndex WRITE setActiveSubtitleIndex NOTIFY drawOptionsChanged)
     Q_PROPERTY(bool medusaMode READ medusaMode WRITE setMedusaMode NOTIFY medusaModeChanged)
     Q_PROPERTY(double playbackSpeed READ playbackSpeed WRITE setPlaybackSpeed NOTIFY playbackSpeedChanged)
     Q_PROPERTY(int trackCursorMs READ trackCursorMs NOTIFY cursorChanged)
@@ -154,6 +155,8 @@ public:
     int overlayRevision() const { return m_overlayRevision; }
 
     void setSubtitleModel(SubtitleModel *model);
+    int activeSubtitleIndex() const { return m_activeSubtitleIndex; }
+    void setActiveSubtitleIndex(int index);
 
     // Viewport width in logical pixels reported by AudioDisplayController::setViewportSize,
     // utilized for auto-scrolling and scrollRangeInView.
@@ -277,6 +280,7 @@ private:
 
     VideoController *m_videoController = nullptr;
     SubtitleModel *m_subtitleModel = nullptr;
+    int m_activeSubtitleIndex = -1;
 
     // Overlay drawing flags initialized from native default_config.json.
     bool m_drawSeconds = true;          // Audio/Display/Draw/Seconds
