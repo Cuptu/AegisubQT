@@ -1436,6 +1436,60 @@ bool SubtitleModel::extractAttachment(int index, const QString &folder) const {
     return output.commit();
 }
 
+QVariantMap SubtitleModel::karaokeTiming(int index) const {
+    if (index < 0 || index >= static_cast<int>(m_lines.size()))
+        return {{"success", false}, {"message", tr("Select a subtitle line first")}};
+    const auto &line = m_lines[index];
+    if (line.endMs < line.startMs)
+        return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+    const auto parsed = AegisubCoreBridge::parseKaraokeLine(line.text, line.startMs, line.endMs, true);
+    if (parsed.isEmpty()) return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+    QVariantList syllables;
+    qint64 total = 0;
+    for (const auto &syllable : parsed) {
+        const int duration = syllable.value("duration").toInt();
+        if (duration < 0) return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+        total += duration;
+        syllables.append(syllable);
+    }
+    if (total != qint64(line.endMs) - line.startMs)
+        return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+    return {{"success", true}, {"index", index}, {"sourceText", line.text},
+            {"startMs", line.startMs}, {"endMs", line.endMs}, {"syllables", syllables}};
+}
+
+QVariantMap SubtitleModel::applyKaraokeTiming(int index, const QVariantMap &snapshot,
+                                            const QVariantList &durations) {
+    const auto current = karaokeTiming(index);
+    if (!current.value("success").toBool()) return current;
+    for (const auto &key : {"index", "sourceText", "startMs", "endMs"}) {
+        if (!snapshot.contains(key) || snapshot.value(key) != current.value(key))
+            return {{"success", false}, {"message", tr("The subtitle changed. Reload karaoke timing before applying.")}};
+    }
+    const auto syllables = current.value("syllables").toList();
+    if (durations.size() != syllables.size())
+        return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+    QString output;
+    qint64 total = 0;
+    for (qsizetype i = 0; i < durations.size(); ++i) {
+        bool ok = false;
+        const double number = durations[i].toDouble(&ok);
+        if (!ok || !std::isfinite(number) || std::trunc(number) != number || number < 0 || number > INT_MAX - 5)
+            return {{"success", false}, {"message", tr("Invalid karaoke timing")}};
+        const int duration = static_cast<int>(number);
+        total += duration;
+        const auto syllable = syllables[i].toMap();
+        output += "{" + syllable.value("tagType").toString() + QString::number((duration + 5) / 10) + "}";
+        output += syllable.value("textWithTags").toString();
+    }
+    if (total != qint64(m_lines[index].endMs) - m_lines[index].startMs)
+        return {{"success", false}, {"message", tr("Karaoke timing must stay within the subtitle line")}};
+    if (output == m_lines[index].text) return {{"success", true}, {"changed", false}};
+    pushUndo(tr("karaoke timing"), index, QList<int>{index});
+    setProperty(index, "text", output);
+    return {{"success", true}, {"changed", true}};
+}
+
 QVariantMap SubtitleModel::splitSelectedByKaraoke(const QVariantList &selectedIndices, int activeIndex) {
     QList<int> selected;
     for (const auto &value : selectedIndices) {

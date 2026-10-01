@@ -44,6 +44,80 @@ static bool writeScript(const QString &path, const QByteArray &body) {
 }
 #define CHECK(condition) do { if (!(condition)) { fprintf(stderr, "FAIL line %d: %s\n", __LINE__, #condition); return 1; } } while (0)
 
+static int runKaraokeToolbarTest(QQmlEngine &engine, const QString &qmlRoot) {
+        SubtitleModel karaokeRows;
+        const QString source = QString::fromUtf8("{\\pos(100,200)\\k10}前 😀 {\\kf20\\i1}中{comment}{\\ko20}尾 ");
+        karaokeRows.setAllLines({QVariantMap{{"text",source},{"start","0:00:01.00"},{"end","0:00:01.50"}},
+                                 QVariantMap{{"text","{\\k10}a{\\k20}b"},{"start","0:00:00.00"},{"end","0:00:00.30"}}});
+        karaokeRows.clearUndo();
+        QQmlEngine::setObjectOwnership(&karaokeRows, QQmlEngine::CppOwnership);
+        QQmlComponent component(&engine, QUrl::fromLocalFile(qmlRoot + "/views/KaraokeTimingBar.qml"));
+        std::unique_ptr<QObject> bar(component.createWithInitialProperties({
+            {"subtitleModel",QVariant::fromValue(&karaokeRows)}, {"currentIndex",0}, {"active",true}}));
+        if (!bar) for (const auto &error : component.errors()) fprintf(stderr,"%s\n",qPrintable(error.toString()));
+        CHECK(bar);
+        QQuickWindow karaokeWindow;
+        karaokeWindow.setGeometry(0,0,800,60);
+        auto *item = qobject_cast<QQuickItem *>(bar.get());
+        CHECK(item);
+        item->setWidth(800); item->setHeight(42);
+        item->setParentItem(karaokeWindow.contentItem());
+        karaokeWindow.show();
+        QTest::qWait(50);
+        if (const auto screenshot = qEnvironmentVariable("AEGISUB_KARAOKE_SCREENSHOT"); !screenshot.isEmpty())
+            CHECK(karaokeWindow.grabWindow().save(screenshot));
+        auto duration = [&](int index) {
+            QQmlExpression query(engine.rootContext(),bar.get(),QString("syllables[%1].duration").arg(index));
+            const int result = query.evaluate().toInt();
+            CHECK(!query.hasError());
+            return result;
+        };
+        CHECK(duration(0) == 100 && duration(1) == 200);
+        QList<QQuickItem *> visualItems{item};
+        QQuickItem *first = nullptr;
+        for (qsizetype i = 0; i < visualItems.size(); ++i) {
+            if (visualItems[i]->objectName() == "karaoke-syllable-0") first = visualItems[i];
+            visualItems.append(visualItems[i]->childItems());
+        }
+        auto *apply = bar->findChild<QQuickItem *>("karaoke-apply");
+        CHECK(first && apply);
+        const auto point = first->mapToScene(QPointF(first->width()/2,first->height()/2)).toPoint();
+        QTest::mousePress(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, point);
+        QTest::mouseMove(&karaokeWindow, point + QPoint(5,0));
+        QTest::mouseRelease(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, point + QPoint(5,0));
+        CHECK(duration(0) == 150 && duration(1) == 150 && !karaokeRows.canUndo());
+        QTest::mouseClick(&karaokeWindow,Qt::LeftButton,Qt::NoModifier,
+            apply->mapToScene(QPointF(apply->width()/2,apply->height()/2)).toPoint());
+        CHECK(karaokeRows.get(0).value("text") == QString::fromUtf8("{\\k15}{\\pos(100,200)}前 😀 {\\kf15}{\\i1}中{comment}{\\ko20}尾 "));
+        karaokeRows.undo();
+        CHECK(karaokeRows.get(0).value("text") == source && !karaokeRows.canUndo() && duration(0) == 100);
+        auto *numeric = bar->findChild<QQuickItem *>("karaoke-duration");
+        CHECK(numeric);
+        numeric->forceActiveFocus();
+        QTest::keyClick(&karaokeWindow,Qt::Key_Up);
+        CHECK(duration(0) == 110 && duration(1) == 190);
+        auto *input = numeric->property("contentItem").value<QQuickItem *>();
+        CHECK(input);
+        input->forceActiveFocus();
+        CHECK(QMetaObject::invokeMethod(input,"selectAll"));
+        QTest::keyClick(&karaokeWindow,Qt::Key_1);
+        QTest::keyClick(&karaokeWindow,Qt::Key_2);
+        QTest::keyClick(&karaokeWindow,Qt::Key_Return);
+        CHECK(duration(0) == 120 && duration(1) == 180);
+        CHECK(bar->setProperty("currentIndex",1));
+        CHECK(duration(0) == 100 && duration(1) == 200);
+        karaokeRows.setProperty(1,"text",QString::fromUtf8("{\\k10\\b1}新 😀 {\\kf20}句 "));
+        CHECK(duration(0) == 100 && duration(1) == 200);
+        CHECK(QMetaObject::invokeMethod(bar.get(),"apply"));
+        CHECK(karaokeRows.get(1).value("text") == QString::fromUtf8("{\\k10}{\\b1}新 😀 {\\kf20}句 "));
+        CHECK(karaokeRows.get(0).value("text") == source);
+        CHECK(bar->setProperty("active",false));
+        CHECK(!bar->property("visible").toBool());
+        puts("PASS actual audio karaoke toolbar mouse boundary drag/apply, keyboard duration, source reload, row switch and single undo preserve tags/Unicode/spaces");
+
+    return 0;
+}
+
 int main(int argc, char **argv) {
     QQuickStyle::setStyle("Aegisub");
     QQuickStyle::setFallbackStyle("Fusion");
@@ -149,6 +223,12 @@ int main(int argc, char **argv) {
     qmlRegisterType<TestVideoSurface>("Aegisub", 1, 0, "VideoSurface");
     qmlRegisterType<TestVideoSurface>("Aegisub", 1, 0, "SubtitleSurface");
     qmlRegisterType<TestSpectrogramView>("Aegisub", 1, 0, "SpectrogramView");
+    if (app.arguments().contains("--karaoke-toolbar-only")) {
+        QQmlEngine engine;
+        const auto qmlRoot = QDir(QStringLiteral(AUTOMATION_SOURCE_DIR)).absoluteFilePath("../qml");
+        engine.addImportPath(qmlRoot);
+        return runKaraokeToolbarTest(engine, qmlRoot);
+    }
 #ifdef Q_OS_WIN
     // The offscreen plugin does not enumerate Windows system fonts. Supply the
     // fonts that the production Windows platform plugin normally discovers.
@@ -624,6 +704,49 @@ end)
         CHECK(!split.splitSelectedByKaraoke({0,2}).value("success").toBool());
         CHECK(split.getAllLines() == beforeFailure && !split.canUndo());
         puts("PASS karaoke parsing and split: non-k tags/comments/drawings preserved, normalized and Lua raw timings, case/K variants, multi-row selection, metadata/timing, single undo/redo, no-op and overflow atomicity");
+    }
+    {
+        SubtitleModel timing;
+        const QString source = QString::fromUtf8("{\\pos(100,200)\\k10}前 😀 {\\kf20\\i1}中{comment}{\\t(0,100,\\fs20)}{\\ko20}尾 {\\p1}m 0 0 l 10 10{\\p0}");
+        timing.setAllLines({QVariantMap{{"text", source}, {"start", "0:00:01.00"}, {"end", "0:00:01.50"}, {"actor", "Singer"}}});
+        timing.clearUndo();
+        const auto before = timing.getAllLines();
+        const auto snapshot = timing.karaokeTiming(0);
+        CHECK(snapshot.value("success").toBool() && snapshot.value("syllables").toList().size() == 3);
+        CHECK(!timing.applyKaraokeTiming(0, snapshot, {100,200,201}).value("success").toBool());
+        CHECK(!timing.applyKaraokeTiming(0, snapshot, {100,-1,401}).value("success").toBool());
+        CHECK(!timing.applyKaraokeTiming(0, snapshot, {100,200,200.5}).value("success").toBool());
+        CHECK(!timing.applyKaraokeTiming(0, snapshot, {100,200,2147483647}).value("success").toBool());
+        CHECK(timing.getAllLines() == before && !timing.canUndo());
+        CHECK(timing.applyKaraokeTiming(0, snapshot, {150,150,200}).value("changed").toBool());
+        CHECK(timing.get(0).value("text") == QString::fromUtf8("{\\k15}{\\pos(100,200)}前 😀 {\\kf15}{\\i1}中{comment}{\\t(0,100,\\fs20)}{\\ko20}尾 {\\p1}m 0 0 l 10 10{\\p0}"));
+        CHECK(timing.get(0).value("actor") == "Singer" && timing.getLineStartMs(0) == 1000 && timing.getLineEndMs(0) == 1500);
+        CHECK(!timing.applyKaraokeTiming(0, snapshot, {100,200,200}).value("success").toBool());
+        timing.undo();
+        CHECK(timing.getAllLines() == before && !timing.canUndo());
+        timing.redo();
+        const auto after = timing.getAllLines();
+        const auto same = timing.karaokeTiming(0);
+        CHECK(!timing.applyKaraokeTiming(0, same, {150,150,200}).value("changed").toBool());
+        CHECK(timing.getAllLines() == after);
+        timing.setProperty(0, "text", QString::fromUtf8("{\\b1}你好 😀  world "));
+        timing.clearUndo();
+        const auto words = timing.karaokeTiming(0);
+        QVariantList durations;
+        for (const auto &value : words.value("syllables").toList()) durations.append(value.toMap().value("duration"));
+        CHECK(timing.applyKaraokeTiming(0, words, durations).value("success").toBool());
+        QString plain;
+        for (const auto &value : AegisubCoreBridge::parseKaraokeLine(timing.get(0).value("text").toString(),1000,1500,false)) plain += value.value("textWithTags").toString();
+        CHECK(plain == QString::fromUtf8("{\\b1}你好 😀  world "));
+        const auto staleTime = timing.karaokeTiming(0);
+        timing.setProperty(0, "end", "0:00:01.60");
+        timing.clearUndo();
+        const auto changedTime = timing.getAllLines();
+        CHECK(!timing.applyKaraokeTiming(0, staleTime, durations).value("success").toBool());
+        CHECK(timing.getAllLines() == changedTime && !timing.canUndo());
+        timing.setProperty(0,"text","{\\k2147483647}overflow");
+        CHECK(!timing.karaokeTiming(0).value("success").toBool());
+        puts("PASS audio karaoke commit preserves Unicode/spaces/override/drawing/comment data, tag types and metadata; timing bounds, stale edits, single undo/redo and no-op");
     }
     {
         SubtitleModel resampled;
@@ -1365,6 +1488,7 @@ QtObject {
         CHECK(project->setProperty("subtitleModel", QVariant::fromValue(&editor)));
         puts("PASS actual subtitle editor START/END VFR frames, inclusive duration, exact millisecond edits, mode no-op, undo, invalid input and timecodes close");
     }
+    CHECK(runKaraokeToolbarTest(engine, qmlRoot) == 0);
     {
         SubtitleModel formatModel;
         formatModel.newDocument();

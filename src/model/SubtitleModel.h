@@ -235,6 +235,9 @@ public:
     /// Upstream "Split by karaoke": replaces each selected line containing \k tags
     /// with one line per karaoke syllable, inheriting style/actor/margins from the original.
     Q_INVOKABLE QVariantMap splitSelectedByKaraoke(const QVariantList &selectedIndices, int activeIndex = 0);
+    Q_INVOKABLE QVariantMap karaokeTiming(int index) const;
+    Q_INVOKABLE QVariantMap applyKaraokeTiming(int index, const QVariantMap &snapshot,
+                                              const QVariantList &durations);
 
     // High-performance native search and filter operations
     Q_INVOKABLE QList<int> selectLines(int action, int fieldIdx, int mode, bool invert, bool matchCase, bool comments, bool dialogues, const QString &query, const QVariantList &currentSelectedIndices);
