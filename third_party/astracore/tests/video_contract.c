@@ -5,7 +5,7 @@
 
 int main(int argc, char **argv)
 {
-    if (argc != 3) return 1;
+    if (argc != 4) return 1;
     char error[512] = {0};
     double times[32] = {0}, keys[32] = {0};
     int64_t indices[32] = {0};
@@ -69,6 +69,36 @@ int main(int argc, char **argv)
             metadata.color_space, metadata.color_range);
         return 15;
     }
+    session = ac_video_open_session_utf8(argv[3], error, sizeof(error));
+    if (!session) return 16;
+    const double delayed_requests[] = {0.7, 0.9, 0.9, 0.8, 0.0};
+    for (size_t i = 0; i < sizeof(delayed_requests) / sizeof(delayed_requests[0]); ++i) {
+        result = ac_video_session_grab_frame(session, delayed_requests[i], 48, 32, 1,
+            image, sizeof(image), &width, &height, &actual, error, sizeof(error));
+        if (result || fabs(actual - delayed_requests[i]) > 0.001) {
+            fprintf(stderr, "B-frame request target=%f got=%f result=%d %s\n",
+                delayed_requests[i], actual, result, error);
+            ac_video_close_session(session);
+            return 17;
+        }
+    }
+    const double invalid_times[] = {NAN, INFINITY, -1.0, 1e300};
+    for (size_t i = 0; i < sizeof(invalid_times) / sizeof(invalid_times[0]); ++i) {
+        memset(image, 0x5a, sizeof(image));
+        result = ac_video_session_grab_frame(session, invalid_times[i], 48, 32, 1,
+            image, sizeof(image), &width, &height, &actual, error, sizeof(error));
+        if (result >= 0 || image[0] != 0x5a) { ac_video_close_session(session); return 18; }
+    }
+    if (ac_video_session_grab_frame(session, 0.3, 48, 32, 9, image, sizeof(image),
+        &width, &height, &actual, error, sizeof(error)) >= 0) { ac_video_close_session(session); return 19; }
+    if (ac_video_session_grab_frame(session, 0.3, 48, 32, 1, image, 1,
+        &width, &height, &actual, error, sizeof(error)) >= 0) { ac_video_close_session(session); return 20; }
+    if (ac_video_session_grab_frame(session, 0.3, 48, 32, 1, image, sizeof(image),
+        &width, &height, &actual, error, sizeof(error)) || fabs(actual - 0.3) > 0.001) {
+        ac_video_close_session(session); return 21;
+    }
+    ac_video_close_session(session);
+    ac_video_close_session(NULL);
     puts("Real decode, repeated seek, scaling, keyframes and timestamps passed.");
     return 0;
 }

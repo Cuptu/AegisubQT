@@ -392,6 +392,10 @@ AC_API int ac_probe_hdr_utf8(
  * 6. Persistent Video Decoding Session:
  * Maintains open container and codec contexts across multiple sequential or random-access
  * frame grab requests, eliminating repetitive container probing and codec init overhead.
+ * Calls on one session must be serialized; separate sessions are independent.
+ * Grab requires a finite, nonnegative time, nonnegative dimensions (0 = source
+ * size), pix_fmt 0/1/2 as above, and a sufficiently sized caller buffer.
+ * Delayed frames are drained at EOF. Closing NULL is allowed.
  */
 typedef struct AcVideoSession AcVideoSession;
 

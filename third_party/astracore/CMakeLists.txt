@@ -72,6 +72,7 @@ if(BUILD_TESTING)
         endif()
     endforeach()
     find_program(ASTRA_TEST_FFMPEG ffmpeg REQUIRED)
+    find_package(Python3 REQUIRED COMPONENTS Interpreter)
     # This executable has no link dependency on AstraCore or FFmpeg. It can be
     # copied to the deployed app's executable directory to check dlopen/LoadLibrary.
     add_executable(astra_native_dynamic_load tests/dynamic_load.c)
@@ -88,6 +89,7 @@ if(BUILD_TESTING)
         "-DVIDEO=$<TARGET_FILE:astra_native_video_contract>"
         "-DLOADER=$<TARGET_FILE:astra_native_dynamic_load>"
         "-DNATIVE=$<TARGET_FILE:aegisub_astracore>"
+        "-DPYTHON=${Python3_EXECUTABLE}"
         "-DWORK_DIR=${CMAKE_CURRENT_BINARY_DIR}/media-test/$<CONFIG>"
         -P "${CMAKE_CURRENT_SOURCE_DIR}/tests/media_smoke.cmake")
     set_tests_properties(astra_native_media_smoke PROPERTIES TIMEOUT 30)

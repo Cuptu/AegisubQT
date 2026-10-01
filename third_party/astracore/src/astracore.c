@@ -2002,6 +2002,7 @@ struct AcVideoSession {
     int last_pix_fmt;
     enum AVPixelFormat last_src_pix_fmt;
     double last_pts;
+    int draining;
 };
 
 AcVideoSession *ac_video_open_session_utf8(
@@ -2100,144 +2101,90 @@ AcVideoSession *ac_video_open_session_utf8(
 }
 
 int ac_video_session_grab_frame(
-    AcVideoSession *session,
-    double target_seconds,
-    int target_width,
-    int target_height,
-    int pix_fmt,
-    uint8_t *out_image_buffer,
-    size_t buffer_size,
-    int *out_width,
-    int *out_height,
-    double *out_actual_seconds,
-    char *error_buffer,
-    size_t error_buffer_size)
+    AcVideoSession *session, double target_seconds, int target_width, int target_height,
+    int pix_fmt, uint8_t *out_image_buffer, size_t buffer_size,
+    int *out_width, int *out_height, double *out_actual_seconds,
+    char *error_buffer, size_t error_buffer_size)
 {
-    if (!session || !session->format_ctx || !session->codec_ctx || !out_image_buffer) {
-        ac_write_error(AVERROR(EINVAL), error_buffer, error_buffer_size);
-        return AVERROR(EINVAL);
-    }
-
-    int dst_w = (target_width > 0) ? target_width : session->codec_ctx->width;
-    int dst_h = (target_height > 0) ? target_height : session->codec_ctx->height;
-    enum AVPixelFormat dst_pix_fmt = (pix_fmt == 1) ? AV_PIX_FMT_RGBA :
-                                    ((pix_fmt == 2) ? AV_PIX_FMT_BGRA : AV_PIX_FMT_RGB24);
-
-    int required_size = av_image_get_buffer_size(dst_pix_fmt, dst_w, dst_h, 1);
-    if ((size_t)required_size > buffer_size) {
-        ac_write_error(AVERROR(ENOBUFS), error_buffer, error_buffer_size);
-        return AVERROR(ENOBUFS);
-    }
-
-    /* The previous request consumed last_pts. Re-reading that position must
-       seek rather than silently advance to the following decoded frame. */
-    int need_seek = (target_seconds <= session->last_pts + 0.001) || (target_seconds > session->last_pts + 1.0);
-    if (need_seek) {
-        int64_t target_ts = (int64_t)(target_seconds / av_q2d(session->time_base));
-        avformat_seek_file(session->format_ctx, session->video_stream_idx, INT64_MIN, target_ts, target_ts, AVSEEK_FLAG_BACKWARD);
+    int code = AVERROR(EINVAL);
+    if (!session || !session->format_ctx || !session->codec_ctx || !out_image_buffer ||
+        !isfinite(target_seconds) || target_seconds < 0 || target_width < 0 || target_height < 0 ||
+        pix_fmt < 0 || pix_fmt > 2) goto failure;
+    const double time_base = av_q2d(session->time_base);
+    if (!isfinite(time_base) || time_base <= 0 || target_seconds / time_base >= (double)INT64_MAX)
+        goto failure;
+    const int dst_w = target_width ? target_width : session->codec_ctx->width;
+    const int dst_h = target_height ? target_height : session->codec_ctx->height;
+    const enum AVPixelFormat dst_format = pix_fmt == 1 ? AV_PIX_FMT_RGBA :
+        pix_fmt == 2 ? AV_PIX_FMT_BGRA : AV_PIX_FMT_RGB24;
+    const int required = av_image_get_buffer_size(dst_format, dst_w, dst_h, 1);
+    if (required < 0) { code = required; goto failure; }
+    if ((size_t)required > buffer_size) { code = AVERROR(ENOBUFS); goto failure; }
+    if (target_seconds <= session->last_pts + 0.001 || target_seconds > session->last_pts + 1.0) {
+        const int64_t target_ts = (int64_t)(target_seconds / time_base);
+        code = avformat_seek_file(session->format_ctx, session->video_stream_idx,
+            INT64_MIN, target_ts, target_ts, AVSEEK_FLAG_BACKWARD);
+        if (code < 0) goto failure;
         avcodec_flush_buffers(session->codec_ctx);
+        av_packet_unref(session->packet);
+        session->draining = 0;
         session->last_pts = -100.0;
     }
-
-    int frame_decoded = 0;
-    double best_pts = 0.0;
-
-    while (avcodec_receive_frame(session->codec_ctx, session->frame) >= 0) {
-        double pts = (session->frame->pts != AV_NOPTS_VALUE)
-            ? (double)session->frame->pts * av_q2d(session->time_base)
-            : ((session->frame->pkt_dts != AV_NOPTS_VALUE) ? (double)session->frame->pkt_dts * av_q2d(session->time_base) : 0.0);
-
-        best_pts = pts;
-        session->last_pts = pts;
-
-        if (!session->sws_ctx || session->last_dst_w != dst_w || session->last_dst_h != dst_h ||
-            session->last_pix_fmt != pix_fmt || session->last_src_pix_fmt != session->frame->format) {
-            if (session->sws_ctx) sws_freeContext(session->sws_ctx);
-            session->sws_ctx = sws_getContext(
-                session->codec_ctx->width, session->codec_ctx->height, (enum AVPixelFormat)session->frame->format,
-                dst_w, dst_h, dst_pix_fmt,
-                SWS_BILINEAR, NULL, NULL, NULL);
-            session->last_dst_w = dst_w;
-            session->last_dst_h = dst_h;
-            session->last_pix_fmt = pix_fmt;
-            session->last_src_pix_fmt = (enum AVPixelFormat)session->frame->format;
-        }
-
-        if (session->sws_ctx) {
-            av_image_fill_arrays(session->rgb_frame->data, session->rgb_frame->linesize,
-                                 out_image_buffer, dst_pix_fmt, dst_w, dst_h, 1);
-            sws_scale(session->sws_ctx, (const uint8_t *const *)session->frame->data,
-                      session->frame->linesize, 0, session->codec_ctx->height,
-                      session->rgb_frame->data, session->rgb_frame->linesize);
-            frame_decoded = 1;
-        }
-
-        if (pts >= target_seconds - 0.001) {
-            av_frame_unref(session->frame);
-            goto frame_done;
-        }
-        av_frame_unref(session->frame);
-    }
-
-    while (av_read_frame(session->format_ctx, session->packet) >= 0) {
-        if (session->packet->stream_index == session->video_stream_idx) {
-            int ret = avcodec_send_packet(session->codec_ctx, session->packet);
-            if (ret < 0) {
-                av_packet_unref(session->packet);
-                break;
-            }
-
-            while (avcodec_receive_frame(session->codec_ctx, session->frame) >= 0) {
-                double pts = (session->frame->pts != AV_NOPTS_VALUE)
-                    ? (double)session->frame->pts * av_q2d(session->time_base)
-                    : ((session->frame->pkt_dts != AV_NOPTS_VALUE) ? (double)session->frame->pkt_dts * av_q2d(session->time_base) : 0.0);
-
-                best_pts = pts;
-                session->last_pts = pts;
-
-                if (!session->sws_ctx || session->last_dst_w != dst_w || session->last_dst_h != dst_h ||
-                    session->last_pix_fmt != pix_fmt || session->last_src_pix_fmt != session->frame->format) {
-                    if (session->sws_ctx) sws_freeContext(session->sws_ctx);
-                    session->sws_ctx = sws_getContext(
-                        session->codec_ctx->width, session->codec_ctx->height, (enum AVPixelFormat)session->frame->format,
-                        dst_w, dst_h, dst_pix_fmt,
-                        SWS_BILINEAR, NULL, NULL, NULL);
-                    session->last_dst_w = dst_w;
-                    session->last_dst_h = dst_h;
-                    session->last_pix_fmt = pix_fmt;
-                    session->last_src_pix_fmt = (enum AVPixelFormat)session->frame->format;
-                }
-
-                if (session->sws_ctx) {
-                    av_image_fill_arrays(session->rgb_frame->data, session->rgb_frame->linesize,
-                                         out_image_buffer, dst_pix_fmt, dst_w, dst_h, 1);
-                    sws_scale(session->sws_ctx, (const uint8_t *const *)session->frame->data,
-                              session->frame->linesize, 0, session->codec_ctx->height,
-                              session->rgb_frame->data, session->rgb_frame->linesize);
-                    frame_decoded = 1;
-                }
-
-                if (pts >= target_seconds - 0.001) {
-                    av_frame_unref(session->frame);
-                    av_packet_unref(session->packet);
-                    goto frame_done;
-                }
+    int decoded = 0;
+    double best_pts = 0;
+    for (;;) {
+        code = avcodec_receive_frame(session->codec_ctx, session->frame);
+        if (code >= 0) {
+            const int64_t pts = session->frame->best_effort_timestamp;
+            best_pts = pts != AV_NOPTS_VALUE ? (double)pts * time_base :
+                session->frame->pts != AV_NOPTS_VALUE ? (double)session->frame->pts * time_base : 0.0;
+            session->last_pts = best_pts;
+            session->sws_ctx = sws_getCachedContext(session->sws_ctx,
+                session->frame->width, session->frame->height, (enum AVPixelFormat)session->frame->format,
+                dst_w, dst_h, dst_format, SWS_BILINEAR, NULL, NULL, NULL);
+            if (!session->sws_ctx) {
                 av_frame_unref(session->frame);
+                code = AVERROR(ENOMEM); goto failure;
             }
+            code = av_image_fill_arrays(session->rgb_frame->data, session->rgb_frame->linesize,
+                out_image_buffer, dst_format, dst_w, dst_h, 1);
+            if (code >= 0) code = sws_scale(session->sws_ctx,
+                (const uint8_t *const *)session->frame->data, session->frame->linesize,
+                0, session->frame->height, session->rgb_frame->data, session->rgb_frame->linesize);
+            av_frame_unref(session->frame);
+            if (code < 0) goto failure;
+            if (code != dst_h) { code = AVERROR(EIO); goto failure; }
+            decoded = 1;
+            if (best_pts >= target_seconds - 0.001) break;
+            continue;
         }
-        av_packet_unref(session->packet);
+        if (code == AVERROR_EOF) break;
+        if (code != AVERROR(EAGAIN)) goto failure;
+        if (session->draining) { code = AVERROR(EIO); goto failure; }
+        do {
+            av_packet_unref(session->packet);
+            code = av_read_frame(session->format_ctx, session->packet);
+        } while (code >= 0 && session->packet->stream_index != session->video_stream_idx);
+        if (code == AVERROR_EOF) {
+            // Delayed B frames remain in the codec after the last demuxed packet.
+            code = avcodec_send_packet(session->codec_ctx, NULL);
+            if (code < 0) goto failure;
+            session->draining = 1;
+        } else {
+            if (code < 0) goto failure;
+            code = avcodec_send_packet(session->codec_ctx, session->packet);
+            av_packet_unref(session->packet);
+            if (code < 0) goto failure;
+        }
     }
-
-frame_done:
-    if (!frame_decoded) {
-        ac_write_error(AVERROR(ENOENT), error_buffer, error_buffer_size);
-        return AVERROR(ENOENT);
-    }
-
+    if (!decoded) { code = AVERROR(ENOENT); goto failure; }
     if (out_width) *out_width = dst_w;
     if (out_height) *out_height = dst_h;
     if (out_actual_seconds) *out_actual_seconds = best_pts;
     return 0;
+failure:
+    ac_write_error(code, error_buffer, error_buffer_size);
+    return code;
 }
 
 void ac_video_close_session(AcVideoSession *session)
