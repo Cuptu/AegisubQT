@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 bundle="$1"
-destination="$bundle/Contents/Frameworks/astracore"
+destination="$bundle/Contents/Resources/astracore"
 [[ -d "$ASTRACORE_RUNTIME" && ! -e "$destination" ]]
 # Preserve the complete upstream payload and its flat @loader_path layout.
 ditto "$ASTRACORE_RUNTIME" "$destination"

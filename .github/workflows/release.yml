@@ -248,7 +248,7 @@ jobs:
           bash .github/scripts/DeployMacAstraCore.sh "$PWD/build/AegisubQT.app"
           xattr -cr build/AegisubQT.app
           # Thin universal binaries to pure arm64 to remove dead x86_64 slices
-          find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.dylib" -o -perm +111 \) -print 2>/dev/null | while IFS= read -r f; do
+          find build/AegisubQT.app/Contents/Frameworks build/AegisubQT.app/Contents/PlugIns build/AegisubQT.app/Contents/MacOS -type f \( -name "*.dylib" -o -perm +111 \) -print 2>/dev/null | while IFS= read -r f; do
             if [ ! -L "$f" ] && lipo -info "$f" 2>/dev/null | grep -q "x86_64"; then
               if lipo -thin arm64 "$f" -output "${f}.arm64" 2>/dev/null; then
                 mv "${f}.arm64" "$f"
@@ -259,7 +259,7 @@ jobs:
           done
 
           # Strip non-global symbols from Mach-O dynamic libraries and frameworks before signing
-          find build/AegisubQT.app/Contents/Frameworks -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
+          find build/AegisubQT.app/Contents/Frameworks -type f \( -name "*.dylib" -o -perm +111 \) -exec strip -x {} + 2>/dev/null || true
           find build/AegisubQT.app/Contents/PlugIns -type f -name "*.dylib" -exec strip -x {} + 2>/dev/null || true
           strip -x build/AegisubQT.app/Contents/MacOS/AegisubQT 2>/dev/null || true
 
@@ -273,14 +273,14 @@ jobs:
           rm -rf build/AegisubQT.app/Contents/Resources/qml/QtQuick/Timeline 2>/dev/null || true
 
           # Remove redundant developer metadata and intermediate build files
-          find build/AegisubQT.app -path "*/Frameworks/astracore" -prune -o -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -exec rm -f {} + 2>/dev/null || true
+          find build/AegisubQT.app -path "*/Resources/astracore" -prune -o -type f \( -name "*.prl" -o -name "*.la" -o -name "*.cmake" \) -exec rm -f {} + 2>/dev/null || true
           find build/AegisubQT.app/Contents/Frameworks -type d -name "Headers" -exec rm -rf {} + 2>/dev/null || true
 
           # Clean up any non-binary resource directories from Contents/MacOS that violate bundle layout
           rm -rf build/AegisubQT.app/Contents/MacOS/{assets,automation,qml,locale} 2>/dev/null || true
 
           if [ -d build/AegisubQT.app/Contents/Frameworks ]; then
-            find build/AegisubQT.app/Contents/Frameworks -path "*/Frameworks/astracore" -prune -o -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
+            find build/AegisubQT.app/Contents/Frameworks -type f -name "*.dylib" -exec codesign --force --timestamp=none --sign - {} + 2>/dev/null || true
             for fw in build/AegisubQT.app/Contents/Frameworks/*.framework; do
               if [ -d "$fw" ]; then
                 codesign --force --timestamp=none --sign - "$fw"

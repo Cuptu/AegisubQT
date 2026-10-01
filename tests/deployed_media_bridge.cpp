@@ -8,7 +8,7 @@
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
     if (argc != 2) return 2;
-    const QDir runtime(QCoreApplication::applicationDirPath() + "/../Frameworks/astracore");
+    const QDir runtime(QCoreApplication::applicationDirPath() + "/../Resources/astracore");
     if (QFileInfo(MediaTools::ffmpegPath()).canonicalFilePath()
         != QFileInfo(runtime.filePath("ffmpeg")).canonicalFilePath()) return 3;
     AstraCoreBridge bridge;

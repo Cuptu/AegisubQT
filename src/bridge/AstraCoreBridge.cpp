@@ -113,7 +113,7 @@ void AstraCoreBridge::loadLibrary()
     };
 #if defined(Q_OS_MACOS)
     if (app.dirName() == "MacOS") {
-        candidates.prepend({app.filePath("../Frameworks/astracore/" + libName), app.filePath("..")});
+        candidates.prepend({app.filePath("../Resources/astracore/" + libName), app.filePath("..")});
         candidates.append({app.filePath("../Frameworks/" + libName), app.filePath("..")});
     }
 #elif !defined(Q_OS_WIN)

@@ -15,7 +15,7 @@ inline QString ffmpegPath() {
     const QDir app(QCoreApplication::applicationDirPath());
 #ifdef Q_OS_MACOS
     if (app.dirName() == "MacOS") {
-        const QFileInfo bundled(app.filePath("../Frameworks/astracore/" + name));
+        const QFileInfo bundled(app.filePath("../Resources/astracore/" + name));
         if (bundled.isFile() && bundled.isExecutable()) return bundled.absoluteFilePath();
     }
 #endif
