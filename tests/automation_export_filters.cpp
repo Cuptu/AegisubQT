@@ -1150,6 +1150,96 @@ end)
     if (!project) for (const auto &error : projectComponent.errors()) fprintf(stderr, "%s\n", qPrintable(error.toString()));
     CHECK(project);
     {
+        SubtitleModel syncRows;
+        syncRows.setAllLines({QVariantMap{{"start", "0:00:01.00"}, {"end", "0:00:02.00"}, {"text", "first"}},
+                             QVariantMap{{"start", "0:00:03.00"}, {"end", "0:00:04.00"}, {"text", "second"}}});
+        QQmlEngine::setObjectOwnership(&syncRows, QQmlEngine::CppOwnership);
+        std::unique_ptr<QObject> syncProject(projectComponent.create());
+        CHECK(syncProject && syncProject->setProperty("subtitleModel", QVariant::fromValue(&syncRows)));
+        QQmlComponent mockComponent(&engine);
+        mockComponent.setData(R"qml(import QtQml
+QtObject {
+    property bool hasVideo: true
+    property bool autoScroll: true
+    property bool playing: true
+    readonly property bool isPlaying: playing
+    property int seeks: 0
+    property int pauses: 0
+    property int audioScrolls: 0
+    property real time: 8
+    property string subtitle: ""
+    function setActiveSubtitle(start, end, text) { subtitle = text; }
+    function pause() { playing = false; pauses++; }
+    function play() { playing = true; }
+    function seekTime(value) { time = value; seeks++; }
+    function scrollRangeInView(start, end) { audioScrolls++; }
+})qml", QUrl());
+        std::unique_ptr<QObject> media(mockComponent.create());
+        CHECK(media);
+        QQmlComponent syncComponent(&engine, QUrl::fromLocalFile(qmlRoot + "/project/SubtitleVideoSync.qml"));
+        std::unique_ptr<QObject> sync(syncComponent.createWithInitialProperties({
+            {"project", QVariant::fromValue(syncProject.get())},
+            {"videoCtrl", QVariant::fromValue(media.get())}, {"audioCtrl", QVariant::fromValue(media.get())}}));
+        CHECK(sync);
+        auto select = [&](const QString &code) {
+            QQmlExpression expression(engine.rootContext(), syncProject.get(), code + "; true");
+            CHECK(expression.evaluate().toBool() && !expression.hasError());
+            return 0;
+        };
+        CHECK(select("selectRow(1, false, false)") == 0);
+        CHECK(media->property("time").toDouble() == 3 && media->property("seeks").toInt() == 1);
+        CHECK(!media->property("playing").toBool() && media->property("subtitle").toString() == "second");
+        CHECK(select("selectRow(1, false, false)") == 0);
+        CHECK(media->property("seeks").toInt() == 1 && media->property("pauses").toInt() == 1);
+        CHECK(media->setProperty("autoScroll", false) && media->setProperty("playing", true));
+        CHECK(select("selectRow(0, false, false)") == 0);
+        CHECK(media->property("time").toDouble() == 3 && media->property("playing").toBool());
+        CHECK(media->property("subtitle").toString() == "first");
+        CHECK(syncRows.setProperty(0, "text", "edited"));
+        CHECK(media->property("subtitle").toString() == "edited" && media->property("seeks").toInt() == 1);
+        QQmlExpression jump(engine.rootContext(), sync.get(), "jumpToLine(0); true");
+        CHECK(jump.evaluate().toBool() && !jump.hasError());
+        CHECK(media->property("time").toDouble() == 1 && media->property("seeks").toInt() == 2);
+        CHECK(media->property("playing").toBool() && media->property("audioScrolls").toInt() == 1);
+        CHECK(media->setProperty("autoScroll", true) && media->setProperty("hasVideo", false));
+        CHECK(select("selectRow(1, false, false)") == 0);
+        CHECK(media->property("subtitle").toString() == "second" && media->property("seeks").toInt() == 2);
+        CHECK(media->setProperty("hasVideo", true) && media->setProperty("autoScroll", false));
+        QQuickWindow selectionWindow;
+        selectionWindow.resize(800, 180);
+        QQmlComponent gridComponent(&engine, QUrl::fromLocalFile(qmlRoot + "/views/SubtitleGridArea.qml"));
+        std::unique_ptr<QObject> gridObject(gridComponent.createWithInitialProperties({
+            {"project", QVariant::fromValue(syncProject.get())}, {"width", 800}, {"height", 180}}));
+        CHECK(gridObject);
+        auto *grid = qobject_cast<QQuickItem *>(gridObject.get());
+        CHECK(grid);
+        grid->setParentItem(selectionWindow.contentItem());
+        selectionWindow.show();
+        QTest::qWait(40);
+        auto *list = grid->findChild<QQuickItem *>("subtitle-grid-list");
+        CHECK(list);
+        const auto row0 = list->mapToScene(QPointF(120, 10)).toPoint();
+        const auto row1 = list->mapToScene(QPointF(120, 30)).toPoint();
+        QSignalSpy doubleClicks(grid, SIGNAL(lineDoubleClicked(int)));
+        CHECK(doubleClicks.isValid());
+        QTest::mouseClick(&selectionWindow, Qt::LeftButton, Qt::NoModifier, row0);
+        CHECK(syncProject->property("currentSelectedIndex").toInt() == 0);
+        CHECK(media->property("subtitle").toString() == "edited" && media->property("seeks").toInt() == 2);
+        QTest::mouseDClick(&selectionWindow, Qt::LeftButton, Qt::NoModifier, row1);
+        CHECK(doubleClicks.count() == 1 && doubleClicks.at(0).at(0).toInt() == 1);
+        CHECK(syncProject->property("currentSelectedIndex").toInt() == 1);
+        QTest::keyClick(&selectionWindow, Qt::Key_Up, Qt::AltModifier);
+        CHECK(syncProject->property("currentSelectedIndex").toInt() == 0);
+        CHECK(syncProject->property("selectedIndices").value<QJSValue>().toVariant().toList() == QVariantList{1});
+        QTest::keyClick(&selectionWindow, Qt::Key_End);
+        CHECK(syncProject->property("currentSelectedIndex").toInt() == 1);
+        QTest::keyClick(&selectionWindow, Qt::Key_Up, Qt::ShiftModifier);
+        CHECK(syncProject->property("selectedIndices").value<QJSValue>().toVariant().toList() == (QVariantList{0, 1}));
+        QTest::keyClick(&selectionWindow, Qt::Key_Down, Qt::ShiftModifier);
+        CHECK(syncProject->property("selectedIndices").value<QJSValue>().toVariant().toList() == QVariantList{1});
+        puts("PASS original selection/video sync, actual grid mouse/double-click, Alt active-only and anchored Shift keyboard selection");
+    }
+    {
         auto *clipboard = QGuiApplication::clipboard();
         auto savedClipboard = std::unique_ptr<QMimeData, std::function<void(QMimeData *)>>(
             new QMimeData, [clipboard](QMimeData *data) { clipboard->setMimeData(data); });

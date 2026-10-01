@@ -31,6 +31,7 @@ Rectangle {
 
     signal statusMessage(string text)
     signal createAudioClipRequested()
+    signal lineDoubleClicked(int row)
 
     // Column width metrics and visibility states (12 columns)
     property int col0Width: 28
@@ -400,6 +401,27 @@ Rectangle {
                 anchors.fill: parent
                 model: gridAreaRoot.project.subtitleModel
                 boundsBehavior: Flickable.StopAtBounds
+                Keys.onPressed: (event) => {
+                    var row = gridAreaRoot.project.currentSelectedIndex;
+                    var count = gridView.count;
+                    if (!count) return;
+                    var step = Math.max(1, Math.floor(height / gridAreaRoot.gridLineHeight) - 2);
+                    if (event.key === Qt.Key_Up) row--;
+                    else if (event.key === Qt.Key_Down) row++;
+                    else if (event.key === Qt.Key_PageUp) row -= step;
+                    else if (event.key === Qt.Key_PageDown) row += step;
+                    else if (event.key === Qt.Key_Home) row = 0;
+                    else if (event.key === Qt.Key_End) row = count - 1;
+                    else return;
+                    row = Math.max(0, Math.min(count - 1, row));
+                    var ctrl = event.modifiers & ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? Qt.MetaModifier : Qt.ControlModifier);
+                    var shift = event.modifiers & Qt.ShiftModifier;
+                    var alt = event.modifiers & Qt.AltModifier;
+                    if (!ctrl && !alt) gridAreaRoot.project.selectRow(row, false, shift);
+                    else gridAreaRoot.project.currentSelectedIndex = row;
+                    gridView.positionViewAtIndex(row, ListView.Contain);
+                    event.accepted = true;
+                }
 
                 delegate: Item {
                     id: rowItem
@@ -669,7 +691,7 @@ Rectangle {
 
                 // Active row indicator border (magenta box matching Aegisub BaseGrid active row)
                 Rectangle {
-                    visible: rowItem.isSelected
+                    visible: index === gridAreaRoot.project.currentSelectedIndex
                     anchors.fill: parent
                     color: "transparent"
                     border.color: gridAreaRoot.colWinActiveBorder
@@ -680,6 +702,38 @@ Rectangle {
                 MouseArea {
                     anchors.fill: parent
                     acceptedButtons: Qt.LeftButton | Qt.RightButton
+                    property int dragAnchor: -1
+                    onPressed: (mouse) => {
+                        if (mouse.button !== Qt.LeftButton) return;
+                        gridView.forceActiveFocus();
+                        dragAnchor = (mouse.modifiers & Qt.ShiftModifier)
+                            ? gridAreaRoot.project.selectionAnchor : index;
+                        var isMulti = (Qt.platform.os === "osx" || Qt.platform.os === "macos")
+                            ? Boolean(mouse.modifiers & Qt.MetaModifier)
+                            : Boolean(mouse.modifiers & Qt.ControlModifier);
+                        if (mouse.modifiers & Qt.AltModifier) {
+                            gridAreaRoot.project.currentSelectedIndex = index;
+                        } else {
+                            gridAreaRoot.project.selectRow(index, isMulti, mouse.modifiers & Qt.ShiftModifier);
+                        }
+                    }
+                    onPositionChanged: (mouse) => {
+                        if (!pressed || !(pressedButtons & Qt.LeftButton)) return;
+                        var point = mapToItem(gridView.contentItem, mouse.x, mouse.y);
+                        var row = Math.max(0, Math.min(gridView.count - 1,
+                            Math.floor(point.y / gridAreaRoot.gridLineHeight)));
+                        if (row === gridAreaRoot.project.currentSelectedIndex) return;
+                        gridAreaRoot.project.selectionAnchor = dragAnchor;
+                        var ctrl = mouse.modifiers & ((Qt.platform.os === "osx" || Qt.platform.os === "macos") ? Qt.MetaModifier : Qt.ControlModifier);
+                        gridAreaRoot.project.selectRow(row, ctrl, true);
+                    }
+                    onDoubleClicked: (mouse) => {
+                        var modifiers = mouse.modifiers & (Qt.ShiftModifier | Qt.ControlModifier | Qt.MetaModifier | Qt.AltModifier);
+                        if (mouse.button === Qt.LeftButton && !modifiers) {
+                            gridAreaRoot.project.selectRow(index, false, false);
+                            gridAreaRoot.lineDoubleClicked(index);
+                        }
+                    }
                     onClicked: (mouse) => {
                         if (mouse.button === Qt.RightButton) {
                             if (!gridAreaRoot.project.isRowSelected(index)) {
@@ -689,11 +743,6 @@ Rectangle {
                             gridContextMenu.x = Math.max(0, Math.min(gridAreaRoot.width - gridContextMenu.implicitWidth - 5, p.x));
                             gridContextMenu.y = Math.max(0, Math.min(gridAreaRoot.height - 430, p.y));
                             gridContextMenu.open();
-                        } else {
-                            var isMulti = (Qt.platform.os === "osx" || Qt.platform.os === "macos")
-                                ? Boolean(mouse.modifiers & Qt.MetaModifier)
-                                : Boolean(mouse.modifiers & Qt.ControlModifier);
-                            gridAreaRoot.project.selectRow(index, isMulti, mouse.modifiers & Qt.ShiftModifier);
                         }
                     }
                 }

@@ -76,6 +76,13 @@ ApplicationWindow {
         }
     }
 
+    SubtitleVideoSync {
+        id: subtitleVideoSync
+        project: subProject
+        videoCtrl: typeof videoController !== "undefined" ? videoController : null
+        audioCtrl: typeof audioController !== "undefined" ? audioController : null
+    }
+
     // Upstream View menu display modes: "subs" (grid only), "video" (video+grid),
     // "audio" (audio+grid), "full" (audio+video+grid).
     property string viewMode: "full"
@@ -632,6 +639,7 @@ ApplicationWindow {
             videoCtrl: typeof videoController !== "undefined" ? videoController : null
             onStatusMessage: (msg) => root.statusMsgText = msg
             onCreateAudioClipRequested: root.createAudioClip()
+            onLineDoubleClicked: (row) => subtitleVideoSync.jumpToLine(row)
         }
 
         // Status bar (two-pane status display)

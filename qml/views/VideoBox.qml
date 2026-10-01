@@ -1496,7 +1496,11 @@ Item {
                     border.width: 1
                 }
 
-                onClicked: videoController.setAutoScroll(!videoController.autoScroll)
+                onClicked: {
+                    videoController.setAutoScroll(!videoController.autoScroll);
+                    if (typeof aegisubCore !== "undefined" && aegisubCore)
+                        aegisubCore.setSetting("Video/Subtitle Sync", videoController.autoScroll);
+                }
                 ToolTip.visible: hovered
                 ToolTip.text: qsTr("Toggle automatically seeking video to the start time of selected lines"); ToolTip.delay: 700
             }

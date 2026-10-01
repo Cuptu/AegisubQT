@@ -18,6 +18,8 @@ QtObject {
     readonly property bool isModified: subtitleModel ? subtitleModel.modified : false
     property string currentFileName: subtitleModel ? subtitleModel.fileName : qsTr("Untitled")
     property int currentSelectedIndex: 0
+    property int selectionAnchor: 0
+    onCurrentSelectedIndexChanged: selectionAnchor = currentSelectedIndex
     property var selectedIndices: [0]
     property var internalSubClipboard: []
     property string initialSelectedText: ""
@@ -178,17 +180,26 @@ QtObject {
 
     function selectRow(idx, ctrlPressed, shiftPressed) {
         if (!subtitleModel || idx < 0 || idx >= subtitleModel.count) return;
+        var oldAnchor = selectionAnchor;
         if (shiftPressed) {
-            var startIdx = currentSelectedIndex;
+            var startIdx = Math.max(0, Math.min(selectionAnchor, subtitleModel.count - 1));
             var minIdx = Math.min(startIdx, idx);
             var maxIdx = Math.max(startIdx, idx);
             var newSel = [];
             for (var i = minIdx; i <= maxIdx; ++i) {
                 newSel.push(i);
             }
+            if (ctrlPressed) {
+                for (var j = 0; j < selectedIndices.length; ++j)
+                    if (newSel.indexOf(selectedIndices[j]) < 0) newSel.push(selectedIndices[j]);
+                newSel.sort(function(a, b) { return a - b; });
+            }
             selectedIndices = newSel;
             currentSelectedIndex = idx;
+            selectionAnchor = oldAnchor;
         } else if (ctrlPressed) {
+            selectionAnchor = idx;
+            currentSelectedIndex = idx;
             var pos = selectedIndices.indexOf(idx);
             var copy = selectedIndices.slice();
             if (pos !== -1) {
@@ -203,6 +214,7 @@ QtObject {
                 currentSelectedIndex = idx;
             }
         } else {
+            selectionAnchor = idx;
             selectedIndices = [idx];
             currentSelectedIndex = idx;
         }

@@ -834,10 +834,6 @@ Rectangle {
                     onTextChanged: {
                         if (!editBoxRoot.syncingFromProject && editBoxRoot.project.currentSelectedIndex < editBoxRoot.project.subtitleModel.count && editBoxRoot.project.currentSelectedIndex >= 0) {
                             editBoxRoot.setEditedProperty("text", text, qsTr("edit text"))
-                            if (editBoxRoot.videoCtrl) {
-                                var item = editBoxRoot.project.subtitleModel.get(editBoxRoot.project.currentSelectedIndex)
-                                editBoxRoot.videoCtrl.parseAndSetActiveSubtitle(item.start, item.end, text)
-                            }
                         }
                     }
                     Keys.onPressed: (event) => {
