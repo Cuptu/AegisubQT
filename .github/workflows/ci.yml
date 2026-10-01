@@ -30,7 +30,7 @@ jobs:
         with:
           version: "6.11.2"
           modules: qt5compat qtshadertools qtmultimedia
-          aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
+          aqtsource: "https://codeload.github.com/miurahr/aqtinstall/zip/076e1659807d0b362a3ed684d54c2e9c775eb9c7"
 
 
       - name: Setup build tools (Linux)

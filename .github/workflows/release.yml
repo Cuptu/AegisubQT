@@ -33,7 +33,7 @@ jobs:
           version: "6.11.2"
           modules: qt5compat qtshadertools qtmultimedia
           cache: true
-          aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
+          aqtsource: "https://codeload.github.com/miurahr/aqtinstall/zip/076e1659807d0b362a3ed684d54c2e9c775eb9c7"
 
       - name: Setup MSVC toolchain
         uses: ilammy/msvc-dev-cmd@v1
@@ -84,7 +84,7 @@ jobs:
           version: "6.11.2"
           modules: qt5compat qtshadertools qtmultimedia
           cache: true
-          aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
+          aqtsource: "https://codeload.github.com/miurahr/aqtinstall/zip/076e1659807d0b362a3ed684d54c2e9c775eb9c7"
 
       - name: Setup build tools
         run: |
@@ -206,7 +206,7 @@ jobs:
           version: "6.11.2"
           modules: qt5compat qtshadertools qtmultimedia
           cache: true
-          aqtsource: "git+https://github.com/miurahr/aqtinstall.git"
+          aqtsource: "https://codeload.github.com/miurahr/aqtinstall/zip/076e1659807d0b362a3ed684d54c2e9c775eb9c7"
 
       - name: Configure
         run: cmake -B build -G Ninja -DCMAKE_BUILD_TYPE=Release -DCMAKE_PREFIX_PATH="$Qt6_DIR"
