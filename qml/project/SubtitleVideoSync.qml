@@ -43,7 +43,7 @@ Item {
     Connections {
         target: sync.project.subtitleModel
         function onDataChanged() { sync.refresh(false); }
-        function onModelReset() { sync.refresh(false); }
+        function onModelReset() { sync.refresh(true); }
     }
     Component.onCompleted: {
         if (videoCtrl && typeof aegisubCore !== "undefined" && aegisubCore)

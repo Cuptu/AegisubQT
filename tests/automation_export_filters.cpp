@@ -667,9 +667,6 @@ end)
         QVariantMap aspect{{"sourceX",640},{"sourceY",480},{"destX",1280},{"destY",720},{"mode",0}};
         CHECK(resampled.resampleResolution(aspect).value("success").toBool());
         CHECK(resampled.get(0).value("text") == "{\\pos(200,300)\\fscx133.333\\clip(m 0 0 l 200 300)\\p1}m 0 0 l 150 300");
-        auto resampleStyle = resampled.styles().first().toMap();
-        resampleStyle["size"] = 20.0;
-        resampled.setStyles({resampleStyle});
         resampled.undo();
         aspect["mode"] = 1;
         CHECK(resampled.resampleResolution(aspect).value("success").toBool());
@@ -1264,7 +1261,11 @@ QtObject {
         CHECK(syncProject->property("selectedIndices").value<QJSValue>().toVariant().toList() == (QVariantList{0, 1}));
         QTest::keyClick(&selectionWindow, Qt::Key_Down, Qt::ShiftModifier);
         CHECK(syncProject->property("selectedIndices").value<QJSValue>().toVariant().toList() == QVariantList{1});
-        puts("PASS original selection/video sync, actual grid mouse/double-click, Alt active-only and anchored Shift keyboard selection");
+        CHECK(media->setProperty("autoScroll", true));
+        const int seeksBeforeReload = media->property("seeks").toInt();
+        syncRows.setAllLines(syncRows.getAllLines());
+        CHECK(media->property("seeks").toInt() == seeksBeforeReload + 1);
+        puts("PASS original selection/video sync, actual grid mouse/double-click, anchored keyboard selection and same-row document reload");
     }
     {
         auto *clipboard = QGuiApplication::clipboard();
