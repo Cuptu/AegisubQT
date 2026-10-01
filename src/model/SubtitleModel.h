@@ -237,7 +237,7 @@ public:
     Q_INVOKABLE QVariantMap splitSelectedByKaraoke(const QVariantList &selectedIndices, int activeIndex = 0);
     Q_INVOKABLE QVariantMap karaokeTiming(int index) const;
     Q_INVOKABLE QVariantMap applyKaraokeTiming(int index, const QVariantMap &snapshot,
-                                              const QVariantList &durations);
+                                              const QVariantList &durations, const QString &amendCommitId = QString());
 
     // High-performance native search and filter operations
     Q_INVOKABLE QList<int> selectLines(int action, int fieldIdx, int mode, bool invert, bool matchCase, bool comments, bool dialogues, const QString &query, const QVariantList &currentSelectedIndices);

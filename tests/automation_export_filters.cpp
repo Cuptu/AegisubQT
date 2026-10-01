@@ -60,6 +60,10 @@ QtObject {
     property int rangeStart: -1
     property int rangeEnd: -1
     property int playCalls: 0
+    property bool autoCommit: false
+    property int rejections: 0
+    signal committed()
+    function rejectCommit() { rejections++ }
     function setKaraokePlaybackRange(start, end) { rangeStart = start; rangeEnd = end }
     function playSelection() { playCalls++ }
 })qml", QUrl());
@@ -108,6 +112,7 @@ QtObject {
         const auto point = first->mapToScene(QPointF(first->width()/2,first->height()/2)).toPoint();
         QTest::mousePress(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, point);
         QTest::mouseMove(&karaokeWindow, point + QPoint(5,0));
+        QTest::qWait(30);
         QTest::mouseRelease(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, point + QPoint(5,0));
         CHECK(duration(0) == 150 && duration(1) == 150 && !karaokeRows.canUndo());
         QTest::mouseClick(&karaokeWindow,Qt::LeftButton,Qt::NoModifier,
@@ -128,6 +133,40 @@ QtObject {
         QTest::keyClick(&karaokeWindow,Qt::Key_2);
         QTest::keyClick(&karaokeWindow,Qt::Key_Return);
         CHECK(duration(0) == 120 && duration(1) == 180);
+        CHECK(QMetaObject::invokeMethod(audio.get(), "committed"));
+        CHECK(karaokeRows.get(0).value("text").toString().startsWith("{\\k12}{\\pos(100,200)}"));
+        karaokeRows.undo();
+        CHECK(karaokeRows.get(0).value("text") == source && !karaokeRows.canUndo());
+        CHECK(audio->setProperty("autoCommit", true));
+        // Undo reconstructs the Repeater delegates; wait for layout and find
+        // the current item instead of reusing coordinates from before reload.
+        QTest::qWait(50);
+        visualItems = {item};
+        first = nullptr;
+        for (qsizetype i = 0; i < visualItems.size(); ++i) {
+            if (visualItems[i]->objectName() == "karaoke-syllable-0") first = visualItems[i];
+            visualItems.append(visualItems[i]->childItems());
+        }
+        CHECK(first);
+        const auto autoPoint = first->mapToScene(QPointF(first->width()/2,first->height()/2)).toPoint();
+        QTest::mouseMove(&karaokeWindow, autoPoint);
+        QTest::qWait(30);
+        QTest::mousePress(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, autoPoint);
+        QTest::mouseMove(&karaokeWindow, autoPoint + QPoint(5,0));
+        QTest::qWait(30);
+        CHECK(karaokeRows.get(0).value("text").toString().startsWith("{\\k15}"));
+        QTest::mouseMove(&karaokeWindow, autoPoint + QPoint(10,0));
+        QTest::qWait(30);
+        CHECK(karaokeRows.get(0).value("text").toString().startsWith("{\\k20}"));
+        QTest::mouseRelease(&karaokeWindow, Qt::LeftButton, Qt::NoModifier, autoPoint + QPoint(10,0));
+        karaokeRows.undo();
+        CHECK(karaokeRows.get(0).value("text") == source && !karaokeRows.canUndo());
+        CHECK(audio->setProperty("autoCommit", false));
+        QQmlExpression invalidCommit(engine.rootContext(), bar.get(), "syllables[0].duration = -1; true");
+        CHECK(invalidCommit.evaluate().toBool() && !invalidCommit.hasError());
+        CHECK(QMetaObject::invokeMethod(audio.get(), "committed"));
+        CHECK(audio->property("rejections").toInt() == 1);
+        CHECK(karaokeRows.get(0).value("text") == source && !karaokeRows.canUndo());
         CHECK(bar->setProperty("currentIndex",1));
         CHECK(duration(0) == 100 && duration(1) == 200);
         karaokeRows.setProperty(1,"text",QString::fromUtf8("{\\k10\\b1}新 😀 {\\kf20}句 "));
@@ -861,6 +900,31 @@ end)
         timing.setProperty(0,"text","{\\k2147483647}overflow");
         CHECK(!timing.karaokeTiming(0).value("success").toBool());
         puts("PASS audio karaoke commit preserves Unicode/spaces/override/drawing/comment data, tag types and metadata; timing bounds, stale edits, single undo/redo and no-op");
+    }
+    {
+        SubtitleModel model;
+        model.setAllLines({QVariantMap{{"text","{\\k10}a{\\k20}b"},{"start","0:00:00.00"},{"end","0:00:00.30"}},
+                           QVariantMap{{"text","other"}}});
+        model.clearUndo();
+        const auto original = model.getAllLines();
+        const auto first = model.applyKaraokeTiming(0, model.karaokeTiming(0), {150,150});
+        CHECK(first.value("changed").toBool());
+        const auto second = model.applyKaraokeTiming(0, model.karaokeTiming(0), {200,100}, first.value("commitId").toString());
+        CHECK(second.value("changed").toBool());
+        model.undo();
+        CHECK(model.getAllLines() == original && !model.canUndo());
+        model.redo();
+        CHECK(model.get(0).value("text") == "{\\k20}a{\\k10}b");
+        model.pushUndo("other edit", 1, QList<int>{1});
+        CHECK(model.setProperty(1, "actor", "Added"));
+        CHECK(model.applyKaraokeTiming(0, model.karaokeTiming(0), {100,200}, second.value("commitId").toString()).value("changed").toBool());
+        model.undo();
+        CHECK(model.get(0).value("text") == "{\\k20}a{\\k10}b" && model.get(1).value("actor") == "Added");
+        model.undo();
+        CHECK(model.get(1).value("actor") == "" && model.get(0).value("text") == "{\\k20}a{\\k10}b");
+        model.undo();
+        CHECK(model.getAllLines() == original);
+        puts("PASS karaoke automatic commit coalescing, undo/redo and intervening-edit isolation");
     }
     {
         SubtitleModel resampled;

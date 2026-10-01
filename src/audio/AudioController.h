@@ -226,6 +226,7 @@ public Q_SLOTS:
     void playRange(int startMs, int endMs);
     void stop();
     void commit();
+    void rejectCommit() { m_commitRejected = true; }
     void leadIn(int deltaMs = 200);
     void leadOut(int deltaMs = 200);
     void jumpToTime(int timeMs);
@@ -309,6 +310,7 @@ private:
     int m_selectionEnd = 7250;
     int m_karaokeStart = -1;
     int m_karaokeEnd = -1;
+    bool m_commitRejected = false;
     double m_currentTime = 0.0;
     bool m_isPlaying = false;
     double m_playbackSpeed = 1.0;

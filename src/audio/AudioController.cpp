@@ -690,8 +690,20 @@ void AudioController::playToEnd()
 
 void AudioController::commit()
 {
+    m_commitRejected = false;
     Q_EMIT committed();
-    if (m_autoNext) {
+    if (!m_commitRejected && !m_karaokeMode && m_subtitleModel) {
+        const int row = m_activeSubtitleIndex;
+        if (row < 0 || row >= m_subtitleModel->rowCount()) {
+            m_commitRejected = true;
+            Q_EMIT audioError(tr("Select a subtitle line first"));
+        } else if (m_subtitleModel->getLineStartMs(row) != m_selectionStart
+                   || m_subtitleModel->getLineEndMs(row) != m_selectionEnd) {
+            m_subtitleModel->pushUndo(tr("timing"), row, QList<int>{row});
+            m_commitRejected = !m_subtitleModel->setLineTimes(row, m_selectionStart, m_selectionEnd);
+        }
+    }
+    if (m_autoNext && !m_commitRejected) {
         // Advance to next line upon commit (matches native Auto/Next Line on Commit option).
         Q_EMIT nextLineRequested();
     }

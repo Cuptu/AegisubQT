@@ -12,6 +12,8 @@ Rectangle {
     property var snapshot: null
     property var syllables: []
     property int selectedSyllable: 0
+    property bool applying: false
+    property string amendCommitId: ""
     signal statusMessage(string message)
     implicitHeight: active ? 42 : 0
     visible: active
@@ -19,6 +21,7 @@ Rectangle {
     border.color: "#d0d0d0"
 
     function reload(preserveSelection) {
+        amendCommitId = ""
         var previous = preserveSelection ? selectedSyllable : 0
         snapshot = null
         syllables = []
@@ -72,15 +75,25 @@ Rectangle {
         copy[neighbor] = {text: copy[neighbor].text, duration: total - value}
         syllables = copy
         updatePrimaryRange()
+        if (audioCtrl && audioCtrl.autoCommit) commitTiming(true)
     }
-    function apply() {
-        if (!snapshot || !subtitleModel) return
+    function apply() { return commitTiming(false) }
+    function commitTiming(automatic) {
+        if (!snapshot || !subtitleModel) return false
         var durations = syllables.map(function(s) { return s.duration })
-        var result = subtitleModel.applyKaraokeTiming(currentIndex, snapshot, durations)
+        applying = true
+        var result = subtitleModel.applyKaraokeTiming(currentIndex, snapshot, durations, automatic ? amendCommitId : "")
+        applying = false
         if (!result.success) {
             statusMessage(result.message)
             reload()
-        } else if (result.changed) statusMessage(qsTr("Applied karaoke timing"))
+            return false
+        }
+        snapshot = subtitleModel.karaokeTiming(currentIndex)
+        amendCommitId = automatic ? result.commitId : ""
+        updatePrimaryRange()
+        if (result.changed) statusMessage(qsTr("Applied karaoke timing"))
+        return true
     }
     onActiveChanged: reload()
     onCurrentIndexChanged: reload()
@@ -88,8 +101,16 @@ Rectangle {
     Component.onCompleted: reload()
     Connections {
         target: bar.subtitleModel
-        function onContentModified() { bar.reload(true) }
+        function onContentModified() { if (!bar.applying) bar.reload(true) }
         function onCountChanged() { bar.reload() }
+    }
+    Connections {
+        target: bar.audioCtrl
+        ignoreUnknownSignals: true
+        function onCommitted() {
+            if (bar.active && !bar.apply() && typeof bar.audioCtrl.rejectCommit === "function")
+                bar.audioCtrl.rejectCommit()
+        }
     }
 
     RowLayout {
@@ -129,6 +150,7 @@ Rectangle {
                             ToolTip.visible: containsMouse
                             ToolTip.text: qsTr("Drag to adjust the syllable boundary")
                             onPressed: function(mouse) {
+                                bar.amendCommitId = ""
                                 bar.selectedSyllable = index
                                 initialX = mapToItem(bar, mouse.x, mouse.y).x
                                 initialDuration = modelData.duration

@@ -1459,7 +1459,7 @@ QVariantMap SubtitleModel::karaokeTiming(int index) const {
 }
 
 QVariantMap SubtitleModel::applyKaraokeTiming(int index, const QVariantMap &snapshot,
-                                            const QVariantList &durations) {
+                                            const QVariantList &durations, const QString &amendCommitId) {
     const auto current = karaokeTiming(index);
     if (!current.value("success").toBool()) return current;
     for (const auto &key : {"index", "sourceText", "startMs", "endMs"}) {
@@ -1484,10 +1484,14 @@ QVariantMap SubtitleModel::applyKaraokeTiming(int index, const QVariantMap &snap
     }
     if (total != qint64(m_lines[index].endMs) - m_lines[index].startMs)
         return {{"success", false}, {"message", tr("Karaoke timing must stay within the subtitle line")}};
-    if (output == m_lines[index].text) return {{"success", true}, {"changed", false}};
-    pushUndo(tr("karaoke timing"), index, QList<int>{index});
+    if (output == m_lines[index].text) return {{"success", true}, {"changed", false}, {"commitId", QString::number(m_commitId)}};
+    bool validCommit = false;
+    const auto commit = amendCommitId.toULongLong(&validCommit);
+    const bool amend = validCommit && commit == m_commitId && !m_undoStack.empty()
+        && m_undoStack.back().selectedIndex == index && m_undoStack.back().description == tr("karaoke timing");
+    if (!amend) pushUndo(tr("karaoke timing"), index, QList<int>{index});
     setProperty(index, "text", output);
-    return {{"success", true}, {"changed", true}};
+    return {{"success", true}, {"changed", true}, {"commitId", QString::number(m_commitId)}};
 }
 
 QVariantMap SubtitleModel::splitSelectedByKaraoke(const QVariantList &selectedIndices, int activeIndex) {
