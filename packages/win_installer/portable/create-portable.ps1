@@ -42,7 +42,7 @@ $regexDlls = @(Get-ChildItem -LiteralPath $BuildRoot -Filter 'icu*.dll' | Where-
 if ($regexDlls.Count -lt 3) { throw 'The build payload is missing the ICU data/i18n/uc runtime DLLs.' }
 $regexDlls | Copy-Item -Destination $StagingDir
 Copy-Item -LiteralPath (Join-Path $BuildRoot 'licenses') -Destination $StagingDir -Recurse
-foreach ($dir in @("qml", "assets", "automation")) {
+foreach ($dir in @("qml", "assets", "automation", "source")) {
     Copy-Item -Path (Join-Path $BuildRoot $dir) -Destination $StagingDir -Recurse
 }
 New-Item -ItemType Directory -Path (Join-Path $StagingDir "locale") | Out-Null
@@ -96,6 +96,8 @@ Write-Host "[4/5] Writing portable marker"
 Set-Content -LiteralPath (Join-Path $StagingDir "portable.txt") -Value "AegisubQT portable mode"
 
 Write-Host "[5/5] Creating portable zip"
+& python (Join-Path $SourceRoot 'third_party/astracore_runtime_tools/verify-runtime.py') --runtime-dir (Join-Path $StagingDir 'assets/bin')
+if ($LASTEXITCODE -ne 0) { throw 'Staged AstraCore runtime verification failed' }
 Remove-Item -LiteralPath $PortableZipPath -Force -ErrorAction SilentlyContinue
 
 # Build the zip in a way that avoids some PowerShell versions emitting

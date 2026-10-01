@@ -3,6 +3,11 @@
 Upstream: https://github.com/Cuptu/AstraCore
 
 Source and header revision: `62e883d002dd060bcd74282154cfbdd8a1e834e8`.
+Default Windows builds use the complete verified upstream runtime archive in
+`../astracore_windows`, with the same revision and a pinned archive SHA256.
+The old v0.1.0 DLL has been removed. Runtime files, dependencies, licenses and
+the native source are copied into distributed Windows payloads. Explicit
+`AEGISUB_BUILD_NATIVE_MEDIA=ON` builds can still use a developer FFmpeg SDK.
 macOS builds also build this pinned upstream revision's complete runtime and
 preserve it under `Contents/Resources/astracore`, including ffmpeg, ffprobe,
 libmpv, all FFmpeg libraries, transitive dependencies, licenses and its hash

@@ -193,9 +193,9 @@ windeployqt --release --compiler-runtime --qmldir qml --dir build build\AegisubQ
 
 编译生成的 EXE 并不是完整的媒体分发包：还需部署 Astra 后端依赖和 FFmpeg 命令行工具。生成发布包时应使用打包脚本，并在源码目录之外验证产物。
 
-Windows 媒体部署可配置 `-DAEGISUB_MEDIA_RUNTIME_DIR=C:/media-runtime`，指定包含当前 Astra 桥所需 FFmpeg DLL 的目录。CMake 递归扫描桥和命令行工具的依赖，缺少依赖时失败，并把完整依赖复制到构建产物的 `assets/bin`；Windows 打包脚本会包含该目录。完整 CLI 位于其他目录时，设置 `-DAEGISUB_FFMPEG_EXECUTABLE=C:/ffmpeg/bin/ffmpeg.exe`。CLI 必须支持音频提取所需的 `pcm_s16le` 编码器；应用优先使用随包工具。发布时需记录运行库版本、来源与许可证材料；这些设置不会下载媒体依赖，也不会构建 Unix Astra 后端。
+Windows x64 默认使用 `third_party/astracore_windows` 中固定版本的完整上游 AstraCore 运行时。CMake 核验压缩包 SHA256 和源码提交，向 `assets/bin` 部署全部运行时文件并移除旧 DLL，包括 FFmpeg、ffprobe、libmpv、共享依赖、许可证和上游文件清单。CI、安装包和便携包打包会核验真实视频会话、FFmpeg 功能及完整依赖；打包需要 Python 3.9 及以上。Windows 分发包同时携带原生后端源码。
 
-Windows 如需从源码构建更新后的 AstraCore，再设置 `-DAEGISUB_BUILD_NATIVE_MEDIA=ON -DASTRA_FFMPEG_SDK=C:/ffmpeg-sdk`，SDK 需包含 FFmpeg 6.1 及以上的头文件和 MSVC 导入库。将 `AEGISUB_MEDIA_RUNTIME_DIR` 指向同一 SDK 的 `bin` 目录，`AEGISUB_FFMPEG_EXECUTABLE` 指向其中的 `ffmpeg.exe`。构建会一起部署新后端和匹配的 FFmpeg 依赖。新后端能向“视频详情”提供实际色彩矩阵和范围；旧预编译桥无法提供范围时会显示“Unknown”。
+Windows 如需从源码构建更新后的 AstraCore，再设置 `-DAEGISUB_BUILD_NATIVE_MEDIA=ON -DASTRA_FFMPEG_SDK=C:/ffmpeg-sdk`，SDK 需包含 FFmpeg 6.1 及以上的头文件和 MSVC 导入库。将 `AEGISUB_MEDIA_RUNTIME_DIR` 指向同一 SDK 的 `bin` 目录，`AEGISUB_FFMPEG_EXECUTABLE` 指向其中的 `ffmpeg.exe`。构建会一起部署新后端和匹配的 FFmpeg 依赖。新后端能向“视频详情”提供实际色彩矩阵和范围；默认上游运行时也提供这些信息。
 
 正式构建只从可执行文件、安装目录或应用 bundle 中加载应用 QML。开发时可配置 `-DAEGISUB_DEVELOPMENT_QML=ON`，显式启用该源码 checkout 的 QML 目录。
 
@@ -203,7 +203,7 @@ Linux/macOS 默认开启 `AEGISUB_BUILD_NATIVE_MEDIA`，从纳入工程的 Astra
 
 AstraCore 后端采用 GPLv3，完整许可证和来源见 `third_party/astracore/LICENSE`、`PROVENANCE.md`。包含该后端的应用发行版须遵守 GPLv3，并提供所要求的完整对应源码，包括应用、后端与构建修改；各组件保留各自许可证。
 
-Unix 发布流程明确部署动态加载的原生后端与 FFmpeg CLI：Linux AppImage 将 `libAstraCore.Native.so` 显式加入 linuxdeploy 依赖扫描，发行压缩包也包含安装后的 `lib` 目录。macOS 在 macdeployqt 之后、签名之前运行 `cmake/DeployMacMedia.cmake`，复制第三方依赖并修改 Mach-O 库引用。随后 `cmake/VerifyNativeMedia.cmake` 清除外部注入的库搜索路径，使用打包的 CLI 生成媒体，再由独立检查程序动态加载打包的后端并解码；Linux 检查还会拒绝来自软件包目录之外的 FFmpeg 库。
+Linux 发布继续部署原生后端及 FFmpeg 依赖闭包。macOS CI 和发布流程构建 `third_party/astracore/upstream-revision.txt` 指定的上游提交，把完整运行时原样放入 `Contents/Resources/astracore`，应用从这里加载后端和 CLI。最终 DMG 挂载后会把应用复制到新目录，逐项核验完整上游哈希清单，并验证二进制签名、编码解码器与滤镜、视频会话解码、独立 libmpv 和应用自身的桥接加载。
 
 ### macOS 用户安装与运行说明
 由于开源发布包采用 Ad-hoc 本地代码签名且未购买苹果商业开发者公证证书（Apple Notarization），从 GitHub 下载 DMG 镜像并拖入 `/Applications` 后：

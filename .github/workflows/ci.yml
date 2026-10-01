@@ -113,6 +113,7 @@ jobs:
           Copy-Item build\AegisubQT.exe dist_win\
           Copy-Item build\icu*.dll dist_win\
           Copy-Item -Recurse build\licenses dist_win\
+          Copy-Item -Recurse build\source dist_win\
           Copy-Item -Recurse qml dist_win\
           if (Test-Path build\assets) { Copy-Item -Recurse build\assets dist_win\ } else { Copy-Item -Recurse assets dist_win\ }
           if (Test-Path build\automation) { Copy-Item -Recurse build\automation dist_win\ } else { Copy-Item -Recurse automation dist_win\ }
@@ -151,6 +152,14 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: ./.github/scripts/SmokeWindows.ps1 -AppDirectory dist_win
+
+      - name: Verify deployed AstraCore sessions and complete runtime (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          Copy-Item build/astra_deployed_bridge_smoke.exe dist_win/
+          ./.github/scripts/VerifyWindowsAstraCore.ps1 -AppDirectory dist_win
+          Remove-Item -LiteralPath dist_win/astra_deployed_bridge_smoke.exe
 
       - name: Upload artifact (Windows)
         if: runner.os == 'Windows'

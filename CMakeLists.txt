@@ -40,7 +40,10 @@ endif()
 add_subdirectory(libaegisub)
 include(cmake/AutomationRegex.cmake)
 option(AEGISUB_BUILD_NATIVE_MEDIA "Build AstraCore from the bundled source (FFmpeg 6.1+ SDK required)" ${UNIX})
-if(APPLE AND BUILD_TESTING)
+if(WIN32 AND NOT AEGISUB_BUILD_NATIVE_MEDIA)
+    include(cmake/PrepareWindowsAstraCore.cmake)
+endif()
+if((APPLE OR WIN32) AND BUILD_TESTING)
     add_executable(astra_deployed_bridge_smoke tests/deployed_media_bridge.cpp
         src/bridge/AstraCoreBridge.cpp src/bridge/AstraCoreBridge.h)
     target_include_directories(astra_deployed_bridge_smoke PRIVATE src/bridge)
@@ -586,23 +589,17 @@ if(AEGISUB_BUILD_NATIVE_MEDIA)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             "${CMAKE_CURRENT_SOURCE_DIR}/third_party/astracore"
             "${AEGISUB_POST_BUILD_DEST}/source/astracore")
-elseif(WIN32 AND AEGISUB_MEDIA_RUNTIME_DIR)
-    get_filename_component(_msvc_binary_dir "${CMAKE_LINKER}" DIRECTORY)
-    find_program(AEGISUB_DUMPBIN dumpbin HINTS "${_msvc_binary_dir}" REQUIRED)
+elseif(WIN32 AND AEGISUB_BUNDLED_ASTRA_RUNTIME)
     list(APPEND AEGISUB_POST_BUILD_COMMANDS
         COMMAND ${CMAKE_COMMAND}
-            "-DMEDIA_DIR=${AEGISUB_MEDIA_RUNTIME_DIR}"
-            "-DFFMPEG_EXECUTABLE=${AEGISUB_FFMPEG_EXECUTABLE}"
-            "-DASTRA_LIBRARY=${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll"
-            "-DDUMPBIN=${AEGISUB_DUMPBIN}"
-            "-DDESTINATION=$<TARGET_FILE_DIR:AegisubQT>/assets/bin"
-            -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/DeployWindowsMedia.cmake")
-elseif(WIN32 AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
-    list(APPEND AEGISUB_POST_BUILD_COMMANDS
-        COMMAND ${CMAKE_COMMAND} -E copy_if_different
-            "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll"
-            $<TARGET_FILE_DIR:AegisubQT>
-    )
+            "-DRUNTIME=${AEGISUB_BUNDLED_ASTRA_RUNTIME}"
+            "-DAPP_DIR=$<TARGET_FILE_DIR:AegisubQT>"
+            -P "${CMAKE_CURRENT_SOURCE_DIR}/cmake/DeployWindowsAstraCore.cmake"
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            "${CMAKE_CURRENT_SOURCE_DIR}/third_party/astracore"
+            "${AEGISUB_POST_BUILD_DEST}/source/astracore")
+    install(DIRECTORY "${AEGISUB_BUNDLED_ASTRA_RUNTIME}/" DESTINATION bin)
+    install(DIRECTORY third_party/astracore/ DESTINATION share/AegisubQT/source/astracore)
 endif()
 
 add_custom_command(TARGET AegisubQT POST_BUILD ${AEGISUB_POST_BUILD_COMMANDS})
@@ -637,11 +634,6 @@ install(DIRECTORY qml assets automation
     DESTINATION share/AegisubQT
 )
 install(FILES ${AEGISUB_QM_FILES} DESTINATION share/AegisubQT/locale)
-if(WIN32 AND AEGISUB_MEDIA_RUNTIME_DIR AND NOT AEGISUB_BUILD_NATIVE_MEDIA)
-    install(DIRECTORY "$<TARGET_FILE_DIR:AegisubQT>/assets/bin/" DESTINATION bin)
-elseif(WIN32 AND NOT AEGISUB_BUILD_NATIVE_MEDIA AND EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll")
-    install(FILES "${CMAKE_CURRENT_SOURCE_DIR}/assets/bin/AstraCore.Native.dll" DESTINATION bin)
-endif()
 
 # Linux desktop integration: application launcher entry and hicolor icon.
 if(UNIX AND NOT APPLE)

@@ -8,15 +8,20 @@
 int main(int argc, char **argv) {
     QCoreApplication app(argc, argv);
     if (argc != 2) return 2;
+#ifdef Q_OS_WIN
+    const QDir runtime(QCoreApplication::applicationDirPath() + "/assets/bin");
+#else
     const QDir runtime(QCoreApplication::applicationDirPath() + "/../Resources/astracore");
+#endif
+    const QString media = app.arguments().at(1);
     if (QFileInfo(MediaTools::ffmpegPath()).canonicalFilePath()
         != QFileInfo(runtime.filePath("ffmpeg")).canonicalFilePath()) return 3;
     AstraCoreBridge bridge;
     MediaInfo info;
     if (!bridge.isAvailable() || bridge.abiVersion() != 5
-        || !bridge.probe(QString::fromLocal8Bit(argv[1]), info)
+        || !bridge.probe(media, info)
         || !info.hasVideo || !info.hasAudio) return 4;
-    void *session = bridge.openVideoSession(QString::fromLocal8Bit(argv[1]));
+    void *session = bridge.openVideoSession(media);
     if (!session) return 5;
     bool valid = true;
     for (double time : {0.3, 0.3, 0.6, 0.1, 0.9, 0.9}) {

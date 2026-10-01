@@ -16,10 +16,9 @@ bin/
 *.ilk
 *.exp
 
-# AegisubQT optional native runtime component shipped with the repo
-# (must re-include the directory first: `bin/` above excludes it).
-!assets/bin/
-!assets/bin/AstraCore.Native.dll
+# Python verification artifacts
+__pycache__/
+*.pyc
 
 # CMake generated (root only; vendored luajit ships its own Makefiles)
 CMakeCache.txt

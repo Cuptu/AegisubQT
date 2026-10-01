@@ -52,7 +52,7 @@ $regexDlls = @(Get-ChildItem -LiteralPath $BuildRoot -Filter 'icu*.dll' | Where-
 if ($regexDlls.Count -lt 3) { throw 'The build payload is missing the ICU data/i18n/uc runtime DLLs.' }
 $regexDlls | Copy-Item -Destination $StagingDir
 Copy-Item -LiteralPath (Join-Path $BuildRoot 'licenses') -Destination $StagingDir -Recurse
-foreach ($dir in @("qml", "assets", "automation")) {
+foreach ($dir in @("qml", "assets", "automation", "source")) {
     Copy-Item -Path (Join-Path $BuildRoot $dir) -Destination $StagingDir -Recurse
 }
 New-Item -ItemType Directory -Path (Join-Path $StagingDir "locale") | Out-Null
@@ -102,6 +102,9 @@ if ($missing.Count -gt 0) {
 }
 
 Write-Host "[4/5] Compiling installer (Inno Setup)"
+Copy-Item (Join-Path $BuildRoot 'astra_deployed_bridge_smoke.exe') -Destination $StagingDir
+& (Join-Path $SourceRoot '.github/scripts/VerifyWindowsAstraCore.ps1') -AppDirectory $StagingDir
+Remove-Item -LiteralPath (Join-Path $StagingDir 'astra_deployed_bridge_smoke.exe')
 $iscc = (Get-Command iscc.exe -ErrorAction SilentlyContinue).Source
 if (!$iscc) {
     $isccCandidates = @(
