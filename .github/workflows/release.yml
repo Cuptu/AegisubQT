@@ -27,6 +27,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Prepare native Qt archive extractor
+        shell: pwsh
+        run: |
+          $sevenZip = Join-Path $env:ProgramFiles '7-Zip\7z.exe'
+          if (!(Test-Path -LiteralPath $sevenZip)) { choco install 7zip --yes --no-progress }
+          if (!(Test-Path -LiteralPath $sevenZip)) { throw 'Native 7-Zip extractor is missing' }
+          Split-Path -Parent $sevenZip | Out-File -FilePath $env:GITHUB_PATH -Append -Encoding utf8
+
       - name: Install Qt
         uses: jurplel/install-qt-action@v4
         with:
@@ -34,6 +42,7 @@ jobs:
           modules: qt5compat qtshadertools qtmultimedia
           cache: true
           aqtsource: "https://codeload.github.com/miurahr/aqtinstall/zip/076e1659807d0b362a3ed684d54c2e9c775eb9c7"
+          extra: '--external 7z'
 
       - name: Setup MSVC toolchain
         uses: ilammy/msvc-dev-cmd@v1
